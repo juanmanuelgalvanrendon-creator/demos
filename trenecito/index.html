@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Renta de Trenecito · Aparta tu fecha (demo)</title>
+<meta name="theme-color" content="#1f9d55">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Renta de Trenecito · Demo de reservaciones">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: calendario con disponibilidad de los 3 trenecitos, cotizador al instante, desfiles escolares y agenda del equipo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<style>
+:root{
+  --g:#1f9d55; --g-d:#157a41; --g-dd:#0d5a2f; --g-l:#dcf3e5; --g-ll:#f0faf4;
+  --y:#ffc93c; --y-l:#fff3cf; --rd:#e5484d; --rd-l:#fde3e4;
+  --ink:#1d2a22; --ink-2:#3a4a40; --muted:#6f7d74; --line:#e6e1d3;
+  --paper:#fffaf0; --cream:#fffdf7; --red:#d63c3c;
+  --r:20px; --sh:0 14px 34px -16px rgba(29,42,34,.4);
+  --display:"Baloo 2",system-ui,sans-serif;
+  --body:"Archivo",system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+.btn{text-decoration:none}
+.menu-grid>*,.own-grid>*,.two>*{min-width:0}
+.display{text-transform:none;letter-spacing:-.01em;font-weight:800;line-height:.95}
+.display em{font-style:normal;color:var(--g)}
+.topbar{background:rgba(255,250,240,.94)}
+.brand-mark{background:var(--g);box-shadow:none;color:#fff}
+.brand-name{font-family:var(--display);text-transform:none;font-size:23px;font-weight:800;letter-spacing:0}
+.brand-name small{color:var(--g-d);white-space:nowrap}
+.cart-btn{background:var(--g-d)}
+.cart-btn b{background:var(--y);color:var(--ink)}
+.hero{background:radial-gradient(900px 480px at 90% 0%,#dcf3e5 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#fff3cf 0%,transparent 60%),var(--paper);color:var(--ink)}
+.hero::before{display:none}
+.hero h1{font-size:clamp(50px,7.4vw,98px)}
+.hero h1 span{display:block;color:var(--g)}
+.hero p.lead{opacity:1;color:var(--ink-2)}
+.hero .btn-g{background:var(--g);box-shadow:0 10px 24px -10px rgba(21,122,65,.8)}
+.hero .btn-w{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.status{background:#fff;color:var(--g-dd);box-shadow:inset 0 0 0 1px var(--line)}
+.hero-photo{position:relative;border-radius:30px;overflow:hidden;transform:rotate(-1.2deg);box-shadow:var(--sh);border:10px solid #fff;background:#fff}
+.hero-photo img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}
+.hero-photo figcaption{position:absolute;left:12px;bottom:10px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(29,42,34,.55);color:#fff;border-radius:999px;padding:3px 9px}
+.since{background:var(--y);top:-22px;right:-10px;z-index:2;transform:rotate(7deg)}
+.since b{color:var(--ink);font-family:var(--display);font-size:30px}
+.since span{color:var(--ink)}
+.wa-card{position:absolute;left:-12px;bottom:-22px;background:#fff;border-radius:18px;padding:12px 16px;box-shadow:var(--sh);font-size:12.5px;line-height:1.35;max-width:250px;z-index:2}
+.wa-card s{color:var(--muted)}
+.wa-card b{color:var(--g-dd)}
+.ticker{background:var(--g-dd)}
+.ticker div{font-family:var(--display);text-transform:none;font-size:26px;font-weight:800}
+.ticker i{color:var(--y);font-style:normal}
+.sec-head h2{font-size:clamp(38px,5vw,62px)}
+.two{display:grid;grid-template-columns:1.15fr 1fr;gap:20px;align-items:start}
+.panel{background:#fff;border-radius:24px;padding:22px;box-shadow:inset 0 0 0 1.5px var(--line)}
+.panel h3{font-family:var(--display);font-size:28px;font-weight:800;line-height:1.05;margin-bottom:4px}
+.panel>p{color:var(--muted);font-size:14px;line-height:1.5}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.chips button{min-height:40px;padding:6px 14px;border-radius:999px;background:var(--cream);box-shadow:inset 0 0 0 1.5px var(--line);font-weight:700;font-size:13.5px;text-align:left}
+.chips button small{display:block;font-size:11px;font-weight:600;color:var(--muted)}
+.chips button.on{background:var(--g-d);color:#fff;box-shadow:none}
+.chips button.on small{color:#cfeedd}
+.chips button.full{opacity:.4;text-decoration:line-through;pointer-events:none}
+/* paquetes */
+.pkgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.pk{position:relative;background:#fff;border-radius:22px;padding:16px;box-shadow:inset 0 0 0 1.5px var(--line);text-align:left;display:flex;flex-direction:column;gap:6px;transition:transform .2s}
+.pk:hover{transform:translateY(-2px)}
+.pk.on{box-shadow:inset 0 0 0 3px var(--g),var(--sh);background:var(--g-ll)}
+.pk .ic{width:48px;height:48px;border-radius:14px;background:var(--g-l);display:grid;place-items:center}
+.pk.on .ic{background:var(--g)}
+.pk.on .ic path,.pk.on .ic rect,.pk.on .ic circle{stroke:#fff}
+.pk h4{font-family:var(--display);font-size:22px;font-weight:800;line-height:1.05;margin-top:4px}
+.pk p{font-size:13px;color:var(--muted);line-height:1.35}
+.pk .pr{font-weight:800;font-size:18px;margin-top:auto}
+.pk .pr small{font-weight:600;font-size:12px;color:var(--muted)}
+.pk .tag{position:absolute;top:12px;right:12px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--rd);color:#fff;border-radius:999px;padding:3px 8px}
+/* calendario */
+.cal-wrap{background:#fff;border-radius:24px;padding:18px;box-shadow:inset 0 0 0 1.5px var(--line)}
+.cal-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px}
+.cal-top b{font-family:var(--display);font-size:26px}
+.cal-top .nav{display:flex;gap:6px}
+.cal-top .nav button{width:40px;height:40px;border-radius:12px;background:var(--cream);box-shadow:inset 0 0 0 1.5px var(--line);font-weight:800;font-size:18px}
+.cal-top .nav button:disabled{opacity:.35}
+.dow,.cgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.dow span{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-align:center;padding:4px 0}
+.cgrid button{aspect-ratio:1/1;border-radius:14px;background:var(--g-ll);box-shadow:inset 0 0 0 1.5px #cfe9d9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-weight:800;font-size:16px;position:relative}
+.cgrid button i{display:flex;gap:2px}
+.cgrid button i u{width:6px;height:6px;border-radius:50%;background:var(--g);text-decoration:none}
+.cgrid button i u.x{background:#d9d4c6}
+.cgrid button.few{background:var(--y-l);box-shadow:inset 0 0 0 1.5px #f2dc95}
+.cgrid button.full{background:#f3f0e8;box-shadow:none;color:#b3ad9f;text-decoration:line-through;pointer-events:none}
+.cgrid button.past{visibility:hidden}
+.cgrid button.on{background:var(--g-d);color:#fff;box-shadow:none}
+.cgrid button.on i u{background:#fff}.cgrid button.on i u.x{background:#2f8a57}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:12px;font-weight:700;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend span i{width:14px;height:14px;border-radius:5px;display:inline-block}
+.sum-line{display:flex;justify-content:space-between;gap:10px;font-size:14px;padding:7px 0;border-bottom:1px dashed var(--line)}
+.sum-line span{color:var(--muted)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid2>*{min-width:0}
+.checks{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.checks label{text-transform:none;letter-spacing:0;color:var(--ink);display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--cream);border-radius:12px;padding:10px 12px;box-shadow:inset 0 0 0 1.5px var(--line);font-weight:700;font-size:14px;cursor:pointer}
+.checks label span small{display:block;font-weight:500;font-size:12px;color:var(--muted)}
+.checks input{width:20px;height:20px;accent-color:var(--g)}
+.msi{display:flex;gap:10px;align-items:center;background:var(--y-l);border-radius:14px;padding:10px 12px;margin-top:12px;font-size:13px;font-weight:600;color:#6b5100}
+/* desfiles */
+.desf{background:var(--g-dd);color:#fff}
+.desf .eyebrow{color:var(--y)}
+.desf .sec-head p{color:#cfe5d7}
+.dgrid{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr));gap:8px;background:#0f4d29;border-radius:22px;padding:14px}
+.dgrid .h{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#cfe5d7;display:flex;align-items:center;justify-content:center}
+.dgrid .d{font-family:var(--display);font-size:20px;font-weight:800;display:flex;flex-direction:column;justify-content:center}
+.dgrid .d small{font-family:var(--body);font-size:11px;font-weight:700;color:var(--y)}
+.dgrid button{border-radius:14px;background:#1a6b3b;color:#fff;padding:10px 6px;font-weight:800;font-size:13px;text-align:center}
+.dgrid button small{display:block;font-size:11px;font-weight:600;color:#cfe5d7}
+.dgrid button.few{background:#8a6d12}
+.dgrid button.full{background:#0b3d20;color:#5f8b70;pointer-events:none}
+.dgrid button.full small{color:#5f8b70}
+.dgrid button:hover{outline:2px solid var(--y)}
+.loc-card{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.loc-card>*{min-width:0}
+/* agenda */
+.kds{background:#14201a}
+.kds-top{background:#14201a;border-color:#24352b}
+.kds-top h2{font-family:var(--display);text-transform:none}
+.kds-top h2 small{color:var(--y);font-family:var(--body)}
+.kds-ctrl button{background:#22332a;border-color:#33473b}
+.kds-stats div{background:#1d2c24;border-color:#33473b}
+.agw{display:grid;gap:12px;padding:6px 20px 24px}
+.ag{background:#1d2c24;border:1px solid #33473b;border-radius:18px;padding:14px}
+.ag header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.ag header b{font-family:var(--display);font-size:24px;color:#fff}
+.ag header span{font-size:12.5px;font-weight:700;color:#b9cdbf}
+.trains{display:flex;gap:6px}
+.trains em{font-style:normal;font-size:11px;font-weight:800;border-radius:6px;padding:3px 7px;background:#2c4236;color:#b9cdbf}
+.trains em.busy{background:var(--y);color:var(--ink)}
+.ln{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--paper);color:var(--ink);border-radius:12px;padding:10px 12px;margin-top:8px;animation:drop .35s}
+.ln .who{font-weight:800}
+.ln .det{font-size:12.5px;color:var(--muted);line-height:1.4}
+.ln .tm{font-family:var(--mono);font-weight:600;font-size:12px;background:var(--ink);color:var(--y);border-radius:8px;padding:3px 8px;margin-right:6px;white-space:nowrap}
+.ln .st{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:6px;padding:3px 7px;margin-left:6px}
+.ln .st.p{background:var(--y-l);color:#7a5c00}.ln .st.ok{background:var(--g-l);color:var(--g-dd)}
+.ln .src{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:6px;padding:3px 7px;margin-left:4px;background:#e7f0ff;color:#2d5bb3}
+.ln button{height:36px;padding:0 12px;border-radius:10px;font-weight:800;font-size:12.5px;background:var(--g);color:#fff;flex:none}
+.ln.ok button{background:#8a948e}
+.ln.fresh{box-shadow:0 0 0 3px var(--y)}
+.own{background:var(--paper)}
+.kpi b{font-family:var(--display);font-weight:800}
+.flv b{font-family:var(--display)}
+@media (max-width:980px){.two,.loc-card{grid-template-columns:1fr}}
+@media (max-width:720px){.grid2{grid-template-columns:1fr}.wa-card{left:6px;bottom:-16px}.since{right:4px}.dgrid{grid-template-columns:64px repeat(4,minmax(0,1fr));gap:5px;padding:10px}.dgrid .d{font-size:16px}.dgrid button{font-size:12px;padding:8px 2px}.dgrid button small{font-size:10px}.cgrid,.dow{gap:4px}.cgrid button{font-size:14px;border-radius:10px}.cgrid button i u{width:4px;height:4px}}
+</style>
+</head>
+<body>
+
+<main id="v-cliente">
+  <div class="topbar"><div class="wrap">
+    <div class="brand"><div class="brand-mark"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="9" height="9" rx="2" stroke="#fff" stroke-width="2"/><path d="M12 10h5l3 3v2h-8" stroke="#fff" stroke-width="2" stroke-linejoin="round"/><circle cx="7" cy="18" r="2" stroke="#fff" stroke-width="2"/><circle cx="16" cy="18" r="2" stroke="#fff" stroke-width="2"/></svg></div><div class="brand-name">Renta de Trenecito<small>Fiestas · Desfiles · Empresas</small></div></div>
+    <button class="cart-btn" id="toBook">Apartar <b>3</b></button>
+  </div></div>
+
+  <section class="hero"><div class="wrap">
+    <div>
+      <span class="chip status"><span class="dot pulse"></span><span>Agenda abierta: noviembre y diciembre</span></span>
+      <h1 class="display">La fiesta que <span>llega rodando.</span></h1>
+      <p class="lead">Ve qué fechas quedan libres, elige tu paquete y cotiza al instante con el traslado a tu colonia. Apartas en 2 minutos, sin esperar respuesta.</p>
+      <div class="actions"><a class="btn btn-g" href="#reservar">Ver fechas libres</a><a class="btn btn-w" href="#desfiles">Desfiles escolares</a></div>
+    </div>
+    <div class="hero-art">
+      <div class="since"><div><b>3 trenes</b><span>a la vez</span></div></div>
+      <figure class="hero-photo"><img src="img/hero.webp" alt="Trenecito de fiesta con luces y globos" width="800" height="533"><figcaption>Foto ilustrativa</figcaption></figure>
+      <div class="wa-card"><s>"Info por DM o WhatsApp"</s><br><b>Ahora: el cliente ve la fecha libre, cotiza y aparta solo.</b></div>
+    </div>
+  </div></section>
+
+  <div class="ticker" aria-hidden="true"><div id="tickerTxt"></div></div>
+
+  <section class="section" id="reservar"><div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow"><span class="step-num">1</span>Paquete</span><h2 class="display">¿Qué vas a <em>celebrar?</em></h2></div>
+      <p>Paquetes y precios de ejemplo. Incluyen música y luces; el cotizador suma traslado y extras automáticamente.</p></div>
+    <div class="field" style="margin-top:0"><label>Tipo de evento</label><div class="chips" id="evType"></div></div>
+    <div class="pkgs" id="pkgs" style="margin-top:16px"></div>
+  </div></section>
+
+  <section class="section" style="padding-top:0"><div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow"><span class="step-num">2</span>Fecha</span><h2 class="display">Fechas <em>libres</em></h2></div>
+      <p>Cada punto es un trenecito. Verde: libre. Amarillo: quedan pocos. Las fechas llenas se bloquean solas, sin dobles reservas.</p></div>
+    <div class="two">
+      <div class="cal-wrap">
+        <div class="cal-top"><b id="calMonth"></b><div class="nav"><button id="calPrev" aria-label="Mes anterior">&lsaquo;</button><button id="calNext" aria-label="Mes siguiente">&rsaquo;</button></div></div>
+        <div class="dow"><span>Dom</span><span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span></div>
+        <div class="cgrid" id="cgrid"></div>
+        <div class="legend"><span><i style="background:var(--g-ll);box-shadow:inset 0 0 0 1.5px #cfe9d9"></i>Libre</span><span><i style="background:var(--y-l);box-shadow:inset 0 0 0 1.5px #f2dc95"></i>Quedan pocos</span><span><i style="background:#f3f0e8"></i>Lleno</span></div>
+      </div>
+      <div class="panel" id="bookPanel">
+        <h3 id="bkTitle">Tu reserva</h3><p id="bkSub">Elige una fecha en el calendario.</p>
+        <div class="field"><label>Horario</label><div class="chips" id="slots"></div></div>
+        <div class="grid2">
+          <div class="field"><label for="mun">Municipio</label><select id="mun"></select></div>
+          <div class="field"><label for="col">Colonia</label><input id="col" placeholder="Ej. Contry, Linda Vista" autocomplete="off"></div>
+        </div>
+        <div class="field"><label>Extras</label><div class="checks" id="extras"></div></div>
+        <div style="margin-top:12px" id="sum"></div>
+        <div class="totals"><span>Total</span><b id="total">$0</b></div>
+        <div class="msi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 10h18" stroke="currentColor" stroke-width="2"/></svg><span>Aparta con 30% de anticipo. Con tarjeta, hasta 3 meses sin intereses.</span></div>
+        <div class="grid2">
+          <div class="field"><label for="fName">Nombre</label><input id="fName" placeholder="¿A nombre de quién?" autocomplete="off"></div>
+          <div class="field"><label for="fPhone">WhatsApp</label><input id="fPhone" inputmode="tel" maxlength="14" placeholder="10 dígitos" autocomplete="off"></div>
+        </div>
+        <button class="btn btn-g" id="send" style="width:100%;margin-top:14px">Apartar mi fecha</button>
+        <div class="err" id="err"></div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="section desf" id="desfiles"><div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Escuelas</span><h2 class="display">Desfiles del <em style="color:var(--y)">20 de noviembre</em></h2></div>
+      <p>La semana más pedida del año. Cada escuela ve los horarios libres de los 3 trenes y aparta el suyo; toca un horario para llenarlo en la reserva.</p></div>
+    <div class="dgrid" id="dgrid"></div>
+  </div></section>
+
+  <section class="section"><div class="wrap loc-card">
+    <div class="panel"><h3>Contrataciones</h3><p><b>WhatsApp 81 1065 9042 · 81 2687 2288</b><br>Fiestas infantiles, desfiles escolares, empresas, iglesias, XV años y reuniones familiares.</p></div>
+    <div class="panel"><h3>Un link en su bio</h3><p>Esta página puede ir en Instagram, Facebook y TikTok: el cliente ve la agenda y aparta solo, y ustedes reciben la reserva completa.</p></div>
+  </div></section>
+
+  <footer class="site wrap"><b>Demo concepto preparada por Code Nova para Renta de Trenecito.</b><br>No es el sitio oficial. Paquetes, precios, traslados, disponibilidad, reservas y cifras son de ejemplo. Fotos ilustrativas.<br>Code Nova · Nuevo León · WhatsApp 826 261 3262</footer>
+</main>
+
+<main id="v-cocina" class="kds" hidden>
+  <div class="kds-top">
+    <h2><small>Agenda del equipo</small>Próximos 7 días</h2>
+    <div class="kds-ctrl"><button id="agWa"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>Registrar reserva de WhatsApp</button></div>
+  </div>
+  <div class="kds-stats" id="agStats"></div>
+  <div class="agw" id="agw"></div>
+</main>
+
+<main id="v-dueno" class="own" hidden>
+  <div class="own-top"><div class="wrap"><h2><small>Panel del dueño</small>Este mes</h2><span class="chip live"><span class="dot pulse"></span>En vivo</span></div></div>
+  <div class="wrap">
+    <div class="kpis">
+      <div class="kpi"><span>Reservas del mes</span><b id="kRes">0</b><em id="kResE"></em></div>
+      <div class="kpi"><span>Ventas del mes</span><b id="kInc">$0</b><em>Total de eventos</em></div>
+      <div class="kpi"><span>Anticipos por cobrar</span><b id="kAnt">0</b><em id="kAntE"></em></div>
+      <div class="kpi"><span>Ocupación de trenes</span><b id="kOcc">0%</b><em>Turnos ocupados del mes</em></div>
+    </div>
+    <div class="own-grid">
+      <div class="card"><h3>Tipo de evento <small>reservas del mes</small></h3><div class="bars" id="oType"></div></div>
+      <div class="card"><h3>Municipios <small>a dónde van</small></h3><div class="bars" id="oMun"></div></div>
+      <div class="card" style="grid-column:1/-1"><h3>Movimientos <small>en tiempo real</small></h3><div class="feed" id="feed"></div></div>
+    </div>
+    <div class="own-foot">Cifras de ejemplo para la demo.</div>
+  </div>
+</main>
+
+<nav class="demobar" aria-label="Vistas de la demo">
+  <span class="lbl"><b>Demo</b>Code Nova</span>
+  <button data-v="cliente" class="on">Cliente</button>
+  <button data-v="cocina">Agenda<span class="badge" id="badgeK" hidden>0</span></button>
+  <button data-v="dueno">Dueño</button>
+</nav>
+<div id="layer"></div>
+
+<script>
+(()=>{
+const TYPES=["Cumpleaños","Desfile escolar","XV años","Empresa","Iglesia","Reunión familiar","Posada"];
+const ICON='<svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="9" height="9" rx="2" stroke="#157a41" stroke-width="2"/><path d="M12 10h5l3 3v2h-8" stroke="#157a41" stroke-width="2" stroke-linejoin="round"/><circle cx="7" cy="18" r="2" stroke="#157a41" stroke-width="2"/><circle cx="16" cy="18" r="2" stroke="#157a41" stroke-width="2"/></svg>';
+const PK=[
+  {id:"h1",n:"Paseo de 1 hora",d:"1 trenecito con música y luces. Ideal para fiestas en casa o salón.",p:2800,trains:1,hrs:1},
+  {id:"h2",n:"Paseo de 2 horas",d:"1 trenecito, más vueltas para todos los invitados.",p:4500,trains:1,hrs:2,tag:"El más pedido"},
+  {id:"trio",n:"Trío de trenecitos",d:"Los 3 trenes juntos: el desfile más llamativo de la fiesta.",p:7500,trains:3,hrs:1},
+  {id:"desf",n:"Desfile escolar",d:"Recorrido con la escuela de hasta 1.5 horas, con música.",p:3200,trains:1,hrs:1.5},
+  {id:"emp",n:"Evento de empresa",d:"3 horas para kermés, posada o día familiar de la empresa.",p:7800,trains:1,hrs:3}
+];
+const PM=Object.fromEntries(PK.map(p=>[p.id,p]));
+const SLOTS=[{id:"m",n:"Mañana",h:"9:00 a 1:00"},{id:"t",n:"Tarde",h:"2:00 a 6:00"},{id:"n",n:"Noche",h:"6:00 a 10:00"}];
+const SLM=Object.fromEntries(SLOTS.map(s=>[s.id,s]));
+const MUN=[["Guadalupe",0],["Monterrey",0],["San Nicolás",150],["Juárez",200],["Apodaca",250],["Escobedo",250],["San Pedro",250],["Santa Catarina",350]];
+const EXTRAS=[{id:"x1",n:"Hora extra",d:"Más tiempo de paseo",p:1200},{id:"x2",n:"Decoración temática del tren",d:"Con los colores o personaje de la fiesta",p:600},{id:"x3",n:"Animador a bordo",d:"Juegos y porras durante el recorrido",p:900}];
+const TRAINS=3;
+const DHOURS=["8:00","9:00","10:00","11:00"];
+const NAMES=["Karla M.","Luis G.","Mariela T.","Brenda R.","Óscar V.","Daniela P.","Rocío L.","Fernanda C.","Alejandra S.","Jorge E.","Paty H.","Ricardo N.","Sandra Q.","Miguel Á.","Lorena B.","Hugo F."];
+const SCHOOLS=["Jardín de Niños Benito Juárez","Colegio Anáhuac","Primaria Miguel Hidalgo","Kínder Arcoíris","Colegio Valle Alto","Escuela Nicolás Bravo","Jardín de Niños Rosaura Zapata","Primaria Leona Vicario","Colegio Bilingüe del Norte","Kínder Pequeños Pasos","Primaria Ignacio Zaragoza","Colegio San Patricio"];
+let NI=0;const nextName=()=>NAMES[(NI++)%NAMES.length];
+const $=s=>document.querySelector(s);const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;const pick=a=>a[Math.floor(Math.random()*a.length)];
+const cap=t=>t.charAt(0).toUpperCase()+t.slice(1);const peso=n=>"$"+Math.round(n).toLocaleString("es-MX");
+const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+function mty(){return new Date(new Date().toLocaleString("en-US",{timeZone:"America/Monterrey"}))}
+const today=mty();today.setHours(12,0,0,0);
+const minD=new Date(today);minD.setDate(minD.getDate()+1);
+const maxD=new Date(today);maxD.setDate(maxD.getDate()+70);
+const S={type:"Cumpleaños",pkg:"h2",date:null,slot:null,dhour:null,mun:"Guadalupe",ex:{},book:[],calM:new Date(today.getFullYear(),today.getMonth(),1),seq:400,view:"cliente",unseen:0};
+$("#tickerTxt").innerHTML=Array(2).fill("Fiestas infantiles<i>•</i>Desfiles escolares<i>•</i>XV años<i>•</i>Empresas<i>•</i>Iglesias<i>•</i>Posadas<i>•</i>Música y luces<i>•</i>").join("");
+$("#mun").innerHTML=MUN.map(([m,c])=>`<option value="${m}">${m}${c?" (+"+peso(c)+" traslado)":""}</option>`).join("");
+$("#mun").onchange=e=>{S.mun=e.target.value;renderSum()};
+
+const used=(d,s)=>{const bs=S.book.filter(b=>b.date===d&&b.slot===s);const nor=bs.filter(b=>!b.dhour).reduce((a,b)=>a+PM[b.pkg].trains,0);const dh=bs.filter(b=>b.dhour);const mx=dh.length?Math.max(...DHOURS.map(h=>dh.filter(b=>b.dhour===h).length)):0;return Math.min(TRAINS,nor+mx)};
+const freeT=(d,s)=>TRAINS-used(d,s);
+const dayFree=d=>SLOTS.reduce((a,s)=>a+freeT(d,s.id),0);
+const fits=(d,s,pk)=>freeT(d,s)>=PM[pk].trains;
+
+/* Desfiles: semana del 20 de noviembre */
+const DDAYS=(()=>{const y=today.getMonth()===11?today.getFullYear()+1:today.getFullYear();const out=[];for(const n of [17,18,19,20]){const d=new Date(y,10,n,12);if(d>=minD)out.push(d)}return out})();
+const dUsed=(d,h)=>S.book.filter(b=>b.date===d&&b.dhour===h).length;
+
+function renderTypes(){$("#evType").innerHTML=TYPES.map(t=>`<button class="${S.type===t?"on":""}" data-ty="${t}">${t}</button>`).join("")}
+function renderPkgs(){$("#pkgs").innerHTML=PK.map(p=>`<button class="pk ${S.pkg===p.id?"on":""}" data-pk="${p.id}">${p.tag?`<span class="tag">${p.tag}</span>`:""}<span class="ic">${ICON}</span><h4>${p.n}</h4><p>${p.d}</p><span class="pr">${peso(p.p)} <small>${p.trains>1?"3 trenes":"1 tren"} · ${p.hrs} h</small></span></button>`).join("")}
+function renderCal(){const m=S.calM;$("#calMonth").textContent=cap(m.toLocaleDateString("es-MX",{month:"long",year:"numeric"}));
+  const first=new Date(m.getFullYear(),m.getMonth(),1,12),days=new Date(m.getFullYear(),m.getMonth()+1,0).getDate();let h="";for(let i=0;i<first.getDay();i++)h+='<button class="past" tabindex="-1" aria-hidden="true"></button>';
+  for(let n=1;n<=days;n++){const d=new Date(m.getFullYear(),m.getMonth(),n,12),k=iso(d);if(d<minD||d>maxD){h+=`<button class="full" tabindex="-1" style="text-decoration:none;opacity:.5">${n}</button>`;continue}
+    const ok=SLOTS.some(s=>fits(k,s.id,S.pkg)),fr=dayFree(k);const cls=!ok?"full":fr<=3?"few":"";
+    const dots=SLOTS.map(s=>`<u class="${freeT(k,s.id)>0?"":"x"}"></u>`).join("");
+    h+=`<button class="${cls} ${S.date===k?"on":""}" data-d="${k}" aria-label="${n}">${n}<i>${dots}</i></button>`}
+  $("#cgrid").innerHTML=h;
+  $("#calPrev").disabled=m.getFullYear()===today.getFullYear()&&m.getMonth()===today.getMonth();
+  $("#calNext").disabled=new Date(m.getFullYear(),m.getMonth()+1,1)>maxD;}
+function renderSlots(){if(!S.date){$("#slots").innerHTML='<span class="slot-day">Primero elige una fecha.</span>';return}
+  if(S.dhour){$("#slots").innerHTML=`<button class="on">Desfile · ${S.dhour}<small>horario de la escuela</small></button><button data-clrd="1">Cambiar a turno normal</button>`;return}
+  if(S.slot&&!fits(S.date,S.slot,S.pkg))S.slot=null;if(!S.slot)S.slot=(SLOTS.find(s=>fits(S.date,s.id,S.pkg))||{}).id||null;
+  $("#slots").innerHTML=SLOTS.map(s=>{const f=freeT(S.date,s.id),ok=fits(S.date,s.id,S.pkg);return `<button class="${S.slot===s.id?"on":""} ${ok?"":"full"}" data-s="${s.id}">${s.n}<small>${s.h} · ${f} de ${TRAINS} trenes libres</small></button>`}).join("");}
+function renderExtras(){$("#extras").innerHTML=EXTRAS.map(x=>`<label><span>${x.n}<small>${x.d}</small></span><span style="display:flex;align-items:center;gap:10px"><b>+${peso(x.p)}</b><input type="checkbox" data-x="${x.id}" ${S.ex[x.id]?"checked":""}></span></label>`).join("")}
+function calc(){const p=PM[S.pkg],tr=(MUN.find(m=>m[0]===S.mun)||[0,0])[1];const ex=EXTRAS.filter(x=>S.ex[x.id]);const exT=ex.reduce((a,x)=>a+x.p*(x.id==="x1"&&p.trains>1?3:1),0);return{p,tr,ex,exT,total:p.p+tr+exT}}
+function renderSum(){const c=calc();const d=S.date?new Date(S.date+"T12:00:00"):null;
+  $("#bkTitle").textContent=c.p.n;$("#bkSub").textContent=d?`${S.type} · ${d.toLocaleDateString("es-MX",{weekday:"long",day:"numeric",month:"long"})}`:"Elige una fecha en el calendario.";
+  $("#sum").innerHTML=`<div class="sum-line"><span>${c.p.n}</span><b>${peso(c.p.p)}</b></div><div class="sum-line"><span>Traslado a ${S.mun}</span><b>${c.tr?peso(c.tr):"Incluido"}</b></div>${c.ex.map(x=>`<div class="sum-line"><span>${x.n}${x.id==="x1"&&c.p.trains>1?" (3 trenes)":""}</span><b>${peso(x.p*(x.id==="x1"&&c.p.trains>1?3:1))}</b></div>`).join("")}<div class="sum-line" style="border:0"><span>Anticipo para apartar (30%)</span><b>${peso(c.total*.3)}</b></div>`;
+  $("#total").textContent=peso(c.total);}
+function renderDesf(){if(!DDAYS.length){$("#dgrid").innerHTML='<div class="h" style="grid-column:1/-1;padding:20px">La temporada de desfiles de este año ya pasó. En primavera se abre la del 21 de marzo.</div>';return}
+  let h='<div></div>'+DHOURS.map(x=>`<div class="h">${x}</div>`).join("");
+  DDAYS.forEach(d=>{const k=iso(d);h+=`<div class="d">${d.toLocaleDateString("es-MX",{weekday:"short"}).replace(".","")} ${d.getDate()}<small>${d.getDate()===20?"Día del desfile":"nov"}</small></div>`;
+    DHOURS.forEach(x=>{const f=TRAINS-dUsed(k,x);h+=`<button class="${f<=0?"full":f===1?"few":""}" data-dd="${k}" data-dh="${x}">${f<=0?"Lleno":f+" libre"+(f>1?"s":"")}<small>${f<=0?"sin trenes":"de 3 trenes"}</small></button>`})});
+  $("#dgrid").innerHTML=h;}
+function renderAll(){renderTypes();renderPkgs();renderCal();renderSlots();renderExtras();renderSum();renderDesf()}
+
+document.addEventListener("click",e=>{
+  const ty=e.target.closest("[data-ty]");if(ty){S.type=ty.dataset.ty;if(S.type==="Desfile escolar")S.pkg="desf";else if(S.type==="Empresa")S.pkg="emp";else if(S.pkg==="desf"||S.pkg==="emp")S.pkg="h2";S.dhour=null;renderAll();return}
+  const pk=e.target.closest("[data-pk]");if(pk){S.pkg=pk.dataset.pk;if(S.pkg!=="desf")S.dhour=null;if(S.date&&!SLOTS.some(s=>fits(S.date,s.id,S.pkg))&&!S.dhour){S.date=null;toast("Esa fecha ya no tiene trenes suficientes para este paquete. Elige otra.")}renderAll();return}
+  const d=e.target.closest("[data-d]");if(d){S.date=d.dataset.d;S.dhour=null;S.slot=null;renderCal();renderSlots();renderSum();if(innerWidth<980)$("#bookPanel").scrollIntoView({behavior:"smooth",block:"start"});return}
+  const s=e.target.closest("[data-s]");if(s){S.slot=s.dataset.s;renderSlots();return}
+  if(e.target.closest("[data-clrd]")){S.dhour=null;renderSlots();renderCal();return}
+  const dd=e.target.closest("[data-dd]");if(dd){S.type="Desfile escolar";S.pkg="desf";S.date=dd.dataset.dd;S.dhour=dd.dataset.dh;S.slot="m";const dt=new Date(S.date+"T12:00:00");S.calM=new Date(dt.getFullYear(),dt.getMonth(),1);renderAll();$("#bookPanel").scrollIntoView({behavior:"smooth",block:"start"});toast(`Desfile del ${dt.getDate()} a las ${S.dhour}: completa los datos de la escuela.`);return}
+});
+document.addEventListener("change",e=>{const x=e.target.closest("[data-x]");if(x){S.ex[x.dataset.x]=x.checked;renderSum()}});
+$("#calPrev").onclick=()=>{S.calM=new Date(S.calM.getFullYear(),S.calM.getMonth()-1,1);renderCal()};
+$("#calNext").onclick=()=>{S.calM=new Date(S.calM.getFullYear(),S.calM.getMonth()+1,1);renderCal()};
+$("#toBook").onclick=()=>$("#reservar").scrollIntoView({behavior:"smooth"});
+$("#fPhone").addEventListener("input",e=>{e.target.value=e.target.value.replace(/[^\d ]/g,"")});
+$("#send").onclick=()=>{const err=$("#err");err.textContent="";const nm=$("#fName").value.trim(),ph=$("#fPhone").value.replace(/\D/g,""),col=$("#col").value.trim();
+  if(!S.date){err.textContent="Elige una fecha en el calendario.";return}if(!S.dhour&&!S.slot){err.textContent="Elige un horario.";return}
+  if(S.dhour&&dUsed(S.date,S.dhour)>=TRAINS){err.textContent="Ese horario de desfile ya se llenó.";return}
+  if(!S.dhour&&!fits(S.date,S.slot,S.pkg)){err.textContent="Ese horario ya no tiene trenes suficientes.";return}
+  if(col.length<3){err.textContent="Escribe la colonia del evento.";return}if(nm.length<2){err.textContent="Escribe tu nombre.";return}if(ph.length!==10){err.textContent="El WhatsApp debe tener 10 dígitos.";return}
+  const c=calc();const b=addBook({date:S.date,slot:S.slot||"m",dhour:S.dhour,pkg:S.pkg,type:S.type,mun:S.mun,col,name:nm,total:c.total,src:"web",mine:true});
+  $("#fName").value="";$("#fPhone").value="";$("#col").value="";const dt=new Date(b.date+"T12:00:00");
+  modal(`<div class="ticket-top" style="background:var(--g-d)"><span class="chip" style="background:rgba(255,255,255,.2)"><span class="dot"></span>Fecha apartada</span><h3 style="font-family:var(--display);text-transform:none;font-size:40px">¡Va el trenecito, ${esc(nm.split(" ")[0])}!</h3><div style="opacity:.92;margin-top:6px">${dt.toLocaleDateString("es-MX",{weekday:"long",day:"numeric",month:"long"})} · ${b.dhour?"desfile a las "+b.dhour:SLM[b.slot].n.toLowerCase()+" ("+SLM[b.slot].h+")"}</div></div>
+  <div class="ticket-body"><div class="tk-row"><span>${PM[b.pkg].n}</span><b>${b.type}</b></div><div class="tk-row"><span>Lugar</span><b>${esc(b.col)}, ${b.mun}</b></div><div class="tk-row"><span>Total</span><b>${peso(b.total)}</b></div><div class="tk-row" style="border:0"><span>Anticipo para confirmar</span><b>${peso(b.total*.3)}</b></div>
+  <div class="tk-code" style="justify-content:center;text-align:center"><div><span>Folio</span><b>${b.id}</b><span>Guárdalo para cualquier cambio.</span></div></div>
+  <div class="tk-wa"><span>En el sistema real llega la confirmación por WhatsApp con el link para pagar el anticipo (fase 2), y un recordatorio un día antes.</span></div>
+  <button class="btn btn-g" data-go="cocina">Ver cómo le llega al equipo</button><button class="btn btn-w" data-close>Seguir viendo la demo</button></div>`)};
+
+function addBook(o){S.seq++;const b={id:"TR-"+S.seq,st:"p",fresh:true,...o};S.book.push(b);
+  feed(`<b>${b.id}</b> · ${b.type} · ${PM[b.pkg].n} · ${fmtD(b.date)} · ${b.mun}${b.src==="wa"?" (WhatsApp)":""}`);renderCal();renderSlots();renderDesf();refreshViews();bump();setTimeout(()=>{b.fresh=false;if(S.view==="cocina")renderAg()},6000);return b}
+const fmtD=d=>new Date(d+"T12:00:00").toLocaleDateString("es-MX",{weekday:"short",day:"numeric",month:"short"});
+function bump(){if(S.view!=="cocina"){S.unseen++;badge()}}
+
+/* agenda */
+function trainsFor(list){let n=0;return list.map(b=>{const k=PM[b.pkg].trains;const ts=[];for(let i=0;i<k;i++)ts.push(++n);return ts})}
+$("#agWa").onclick=()=>{for(let i=0;i<40;i++){const d=new Date(minD);d.setDate(d.getDate()+rnd(0,6));const k=iso(d),s=pick(SLOTS).id,p=pick(["h1","h2","h2","trio"]);if(fits(k,s,p)){addBook({date:k,slot:s,pkg:p,type:pick(["Cumpleaños","Reunión familiar","Posada","XV años"]),mun:pick(MUN)[0],col:pick(["Contry","Linda Vista","Cumbres","Valle Soleado","Las Puentes","Mitras"]),name:nextName(),total:PM[p].p+rnd(0,2)*600,src:"wa"});toast("Reserva de WhatsApp registrada: la fecha ya se bloqueó en el calendario.");return}}toast("No hay turnos libres esta semana.")};
+function renderAg(){const days=[];for(let i=0;i<7;i++){const d=new Date(minD);d.setDate(d.getDate()+i);days.push(iso(d))}
+  const wk=S.book.filter(b=>days.includes(b.date));
+  $("#agStats").innerHTML=`<div><b>${wk.length}</b>eventos esta semana</div><div><b>${wk.filter(b=>b.st==="p").length}</b>esperan anticipo</div><div><b>${S.book.filter(b=>b.date>=iso(minD)).length}</b>reservas futuras</div>`;
+  $("#agw").innerHTML=days.map(k=>{const bs=S.book.filter(b=>b.date===k).sort((a,b)=>(a.dhour?0:SLOTS.findIndex(s=>s.id===a.slot)+1)-(b.dhour?0:SLOTS.findIndex(s=>s.id===b.slot)+1));
+    const occ=SLOTS.map(s=>`<em class="${used(k,s.id)?"busy":""}">${s.n[0]} ${used(k,s.id)}/${TRAINS}</em>`).join("");
+    return `<section class="ag"><header><b>${cap(new Date(k+"T12:00:00").toLocaleDateString("es-MX",{weekday:"long",day:"numeric",month:"short"}))}</b><span class="trains">${occ}</span></header>${bs.map(b=>`<div class="ln ${b.st==="ok"?"ok":""} ${b.fresh?"fresh":""}"><div><span class="tm">${b.dhour?b.dhour:SLM[b.slot].n}</span><span class="who">${esc(b.name)}</span><span class="st ${b.st}">${b.st==="ok"?"Confirmado":"Espera anticipo"}</span>${b.src==="wa"?'<span class="src">WhatsApp</span>':""}${b.mine?' <span style="color:var(--g);font-weight:800;font-size:12px">(tu reserva)</span>':""}<div class="det">${b.type}${PM[b.pkg].n!==b.type?" · "+PM[b.pkg].n:""} · ${esc(b.col)}, ${b.mun} · ${peso(b.total)}</div></div><button data-ok="${b.id}">${b.st==="ok"?"Confirmado":"Anticipo recibido"}</button></div>`).join("")||'<div class="kempty" style="color:#b9cdbf">Sin eventos: los 3 trenes libres</div>'}</section>`}).join("");}
+document.addEventListener("click",e=>{const o=e.target.closest("[data-ok]");if(o){const b=S.book.find(x=>x.id===o.dataset.ok);if(b.st!=="ok"){b.st="ok";toast(`Anticipo registrado: se mandó confirmación a ${b.name} por WhatsApp (simulado)`)}renderAg();return}});
+/* dueño */
+function renderOwn(){const m=today.getMonth(),y=today.getFullYear();const mb=S.book.filter(b=>{const d=new Date(b.date+"T12:00:00");return d.getMonth()===m&&d.getFullYear()===y});
+  $("#kRes").textContent=mb.length;$("#kResE").textContent=`${S.book.filter(b=>b.src==="web").length} apartadas desde la página`;$("#kInc").textContent=peso(mb.reduce((a,b)=>a+b.total,0));
+  const pend=S.book.filter(b=>b.st==="p");$("#kAnt").textContent=pend.length;$("#kAntE").textContent=peso(pend.reduce((a,b)=>a+b.total*.3,0))+" en anticipos";
+  const dim=new Date(y,m+1,0).getDate();let tot=0,us=0;for(let n=today.getDate();n<=dim;n++){const k=iso(new Date(y,m,n,12));SLOTS.forEach(s=>{tot+=TRAINS;us+=used(k,s.id)})}$("#kOcc").textContent=(tot?Math.round(us/tot*100):0)+"%";
+  const ct=TYPES.map(t=>[t,S.book.filter(b=>b.type===t).length]).sort((a,b)=>b[1]-a[1]);const mx=Math.max(1,...ct.map(x=>x[1]));
+  $("#oType").innerHTML=ct.map(([t,v])=>`<div class="bar"><span>${t}</span><div class="track"><div class="fill" style="width:${v/mx*100}%;background:var(--g)"></div></div><span class="v">${v}</span></div>`).join("");
+  const cm=MUN.map(([t])=>[t,S.book.filter(b=>b.mun===t).length]).sort((a,b)=>b[1]-a[1]).slice(0,6);const mm=Math.max(1,...cm.map(x=>x[1]));
+  $("#oMun").innerHTML=cm.map(([t,v])=>`<div class="bar"><span>${t}</span><div class="track"><div class="fill" style="width:${v/mm*100}%;background:var(--y)"></div></div><span class="v">${v}</span></div>`).join("");}
+function feed(h){const f=$("#feed");const d=document.createElement("div");d.innerHTML=`<span>${h}</span>`;f.prepend(d);while(f.children.length>12)f.lastChild.remove()}
+function setView(v){S.view=v;["cliente","cocina","dueno"].forEach(k=>$("#v-"+k).hidden=k!==v);document.querySelectorAll(".demobar [data-v]").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
+  if(v==="cocina"){S.unseen=0;badge();renderAg()}if(v==="dueno")renderOwn();window.scrollTo(0,0)}
+document.querySelectorAll(".demobar [data-v]").forEach(b=>b.onclick=()=>setView(b.dataset.v));
+document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g){closeModal();setView(g.dataset.go);return}if(e.target.closest("[data-close]")||e.target.classList.contains("scrim"))closeModal()});
+function refreshViews(){if(S.view==="cocina")renderAg();if(S.view==="dueno")renderOwn()}
+function badge(){const b=$("#badgeK");b.hidden=!S.unseen;b.textContent=S.unseen}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function modal(h){$("#layer").innerHTML=`<div class="scrim" role="dialog" aria-modal="true"><div class="modal">${h}</div></div>`}
+function closeModal(){$("#layer").innerHTML=""}
+let tT;function toast(m){document.querySelector(".toast")?.remove();const t=document.createElement("div");t.className="toast";t.innerHTML=`<span>${m}</span>`;document.body.append(t);clearTimeout(tT);tT=setTimeout(()=>t.remove(),4200)}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+
+/* datos de ejemplo */
+for(let i=0;i<70;i++){const d=new Date(minD);d.setDate(d.getDate()+i);const k=iso(d),wd=d.getDay(),wk=wd===0||wd===6,dec=d.getMonth()===11&&d.getDate()<=23;
+  const n=wk?rnd(2,5):dec?rnd(1,3):rnd(0,1);for(let j=0;j<n;j++){const s=wk?pick(["t","t","n","m"]):pick(["t","n"]),p=pick(wk?["h1","h2","h2","trio"]:["h1","h2","emp"]);if(!fits(k,s,p))continue;
+    S.book.push({id:"TR-"+(++S.seq),date:k,slot:s,pkg:p,type:dec&&Math.random()<.5?"Posada":p==="emp"?"Empresa":pick(["Cumpleaños","Cumpleaños","XV años","Reunión familiar","Iglesia"]),mun:pick(MUN)[0],col:pick(["Contry","Linda Vista","Cumbres","Valle Soleado","Las Puentes","Mitras","Anáhuac","Dos Ríos"]),name:nextName(),total:PM[p].p+pick([0,0,150,250,600,1200]),src:Math.random()<.5?"web":"wa",st:Math.random()<.7?"ok":"p",fresh:false})}}
+let SI=0;DDAYS.forEach(d=>{const k=iso(d);DHOURS.forEach(h=>{const n=d.getDate()===20?rnd(2,3):rnd(0,2);for(let j=0;j<n;j++)S.book.push({id:"TR-"+(++S.seq),date:k,slot:"m",dhour:h,pkg:"desf",type:"Desfile escolar",mun:pick(["Guadalupe","Monterrey","San Nicolás","Apodaca"]),col:pick(["Centro","Linda Vista","Contry","Las Puentes"]),name:SCHOOLS[(SI++)%SCHOOLS.length],total:3200,src:"wa",st:"ok",fresh:false})})});
+S.book.slice(-6).forEach(b=>feed(`<b>${b.id}</b> · ${b.type} · ${PM[b.pkg].n} · ${fmtD(b.date)} · ${b.mun}`));
+renderAll();
+setInterval(()=>{if(document.hidden)return;for(let i=0;i<20;i++){const d=new Date(minD);d.setDate(d.getDate()+rnd(2,40));const k=iso(d),s=pick(SLOTS).id;if(fits(k,s,"h2")){const b=addBook({date:k,slot:s,pkg:pick(["h1","h2"]),type:pick(["Cumpleaños","Reunión familiar","Posada"]),mun:pick(MUN)[0],col:pick(["Contry","Cumbres","Mitras"]),name:nextName(),total:PM.h2.p,src:"web"});if(S.view==="cliente")toast(`${b.name} acaba de apartar el ${fmtD(b.date)}`);return}}},35000);
+
+modal(`<div class="welcome"><span class="eyebrow">Demo para Renta de Trenecito</span>
+  <h3 style="font-family:var(--display);text-transform:none;font-weight:800">Su agenda, abierta las 24 horas</h3>
+  <p>Demo funcional preparada por Code Nova. Pruébela como cliente:</p>
+  <ol><li><b class="n">1</b><span>Elija paquete y fecha: el calendario muestra cuántos de los 3 trenes quedan libres por turno, y el total incluye el traslado a su municipio.</span></li>
+  <li><b class="n">2</b><span>Abajo, toque <b>Agenda</b>: los eventos de la semana con dirección y quién ya pagó anticipo.</span></li>
+  <li><b class="n">3</b><span>En <b>Dueño</b> vea ventas, anticipos por cobrar y ocupación de los trenes.</span></li></ol>
+  <button class="btn btn-g" data-close>Empezar</button><p style="font-size:12px;margin-top:12px;text-align:center">Paquetes, precios y cifras de ejemplo.</p></div>`);
+})();
+</script>
+</body>
+</html>
