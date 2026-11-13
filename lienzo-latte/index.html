@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lienzo & Latte · Reservaciones (demo)</title>
+<meta name="theme-color" content="#b9566b">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Lienzo & Latte · Demo de reservaciones">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: reservas en línea con cupo en vivo, agenda del día y panel de la dueña.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<style>
+:root{
+  --g:#b9566b; --g-d:#9a4357; --g-dd:#6e2d3c; --g-l:#f7e1e4; --g-ll:#fdf3f4;
+  --ink:#3b2a24; --ink-2:#5a453c; --muted:#8a776c; --line:#eddfd3;
+  --paper:#fbf5ee; --cream:#fffbf6; --latte:#c89f7c; --sage:#a8b79c;
+  --red:#d2493c; --r:20px; --sh:0 14px 34px -16px rgba(59,42,36,.35);
+  --display:"Fraunces",Georgia,serif;
+  --body:"Archivo",system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+.btn{text-decoration:none}
+.menu-grid>*,.own-grid>*,.book>*,.season>*,.loc-card>*{min-width:0}
+.display{text-transform:none;letter-spacing:-.01em;font-weight:500;line-height:1.02}
+.display em{font-style:italic;color:var(--g)}
+.topbar{background:rgba(255,251,246,.92)}
+.brand-mark{box-shadow:none;background:var(--g-l)}
+.brand-name{font-family:var(--display);text-transform:none;font-size:22px;font-weight:700}
+.brand-name small{color:var(--latte);letter-spacing:.05em;white-space:nowrap}
+.kds-ctrl select,.kds-ctrl button{background:#3a2a22;border-color:#4f3a30}
+.kds-stats div{background:#36271f;border-color:#4a372f}
+.kds-top h2{font-family:var(--display);text-transform:none}
+.cart-btn{background:var(--g)}
+.cart-btn b{background:var(--ink)}
+.hero{background:linear-gradient(160deg,#f7e1e4 0%,#fbf5ee 60%);color:var(--ink)}
+.hero::before{display:none}
+.hero h1{font-size:clamp(46px,7vw,86px)}
+.hero h1 span{color:var(--g);font-style:italic}
+.hero p.lead{opacity:1;color:var(--ink-2)}
+.hero .btn-g{background:var(--g);box-shadow:0 10px 24px -10px rgba(185,86,107,.8)}
+.hero .btn-w{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.status{background:#fff;color:var(--g-dd);box-shadow:inset 0 0 0 1px var(--line)}
+.hero-photo{position:relative;border-radius:30px;overflow:hidden;transform:rotate(1.5deg);box-shadow:var(--sh);border:10px solid #fff;background:#fff}
+.hero-photo img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}
+.hero-photo figcaption{position:absolute;left:12px;bottom:10px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(59,42,36,.55);color:#fff;border-radius:999px;padding:3px 9px}
+.since{background:var(--g);right:-8px;top:-22px;z-index:2}
+.since b{color:#fff;font-family:var(--display);font-style:italic;font-size:22px}
+.dm{position:absolute;left:-14px;bottom:-18px;background:#fff;border-radius:16px;padding:10px 14px;box-shadow:var(--sh);font-size:12.5px;line-height:1.35;max-width:220px;z-index:2}
+.dm s{color:var(--muted)}
+.dm b{color:var(--g-d)}
+.ticker{background:var(--ink)}
+.ticker div{font-family:var(--display);font-style:italic;text-transform:none;font-size:22px}
+.ticker i{color:var(--latte)}
+.exps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.exp{position:relative;text-align:left;background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:inset 0 0 0 1.5px var(--line);transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column}
+.exp:hover{transform:translateY(-3px)}
+.exp.on{box-shadow:inset 0 0 0 3px var(--g),var(--sh)}
+.exp .ph{height:130px;position:relative;background:var(--g-ll);display:grid;place-items:center;overflow:hidden}
+.exp .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.exp .ph svg{width:70%;height:auto}
+.exp .bd{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.exp h3{font-family:var(--display);font-weight:700;font-size:21px;line-height:1.1}
+.exp p{font-size:13px;color:var(--muted);line-height:1.4}
+.exp .meta{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:8px;font-weight:800}
+.exp .meta small{font-weight:600;color:var(--muted);font-size:11.5px}
+.exp .lim{position:absolute;top:10px;left:10px;background:var(--ink);color:#fff;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:800;z-index:1}
+.book{display:grid;grid-template-columns:1.35fr 1fr;gap:20px;align-items:start}
+.panel{background:#fff;border-radius:24px;padding:20px;box-shadow:inset 0 0 0 1.5px var(--line)}
+.panel h3{font-size:14px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.day{flex:none;width:64px;border-radius:16px;padding:10px 0;text-align:center;background:var(--cream);box-shadow:inset 0 0 0 1.5px var(--line)}
+.day b{display:block;font-family:var(--display);font-size:24px;line-height:1.1}
+.day span{font-size:11px;font-weight:800;text-transform:uppercase;color:var(--muted)}
+.day.on{background:var(--g);color:#fff;box-shadow:none}.day.on span{color:#fde6ea}
+.day[disabled]{opacity:.35;cursor:not-allowed}
+.times{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:16px}
+.time{border-radius:16px;padding:12px;text-align:left;background:var(--cream);box-shadow:inset 0 0 0 1.5px var(--line)}
+.time b{font-size:18px;display:block}
+.time small{font-size:12px;font-weight:700;color:var(--g-dd)}
+.time .cap{height:5px;border-radius:9px;background:#efe4da;margin-top:8px;overflow:hidden}
+.time .cap i{display:block;height:100%;background:var(--g)}
+.time.on{box-shadow:inset 0 0 0 2.5px var(--g);background:var(--g-ll)}
+.time.full{opacity:.45;pointer-events:none}
+.time.full small{color:var(--muted)}
+.ppl{display:flex;align-items:center;justify-content:space-between;background:var(--cream);border-radius:14px;padding:6px 6px 6px 14px;box-shadow:inset 0 0 0 1.5px var(--line);font-weight:700}
+.drinks{display:flex;flex-wrap:wrap;gap:8px}
+.drinks button{height:38px;padding:0 14px;border-radius:999px;background:var(--cream);box-shadow:inset 0 0 0 1.5px var(--line);font-weight:700;font-size:13.5px}
+.drinks button.on{background:var(--ink);color:#fff;box-shadow:none}
+.sum-row{display:flex;justify-content:space-between;font-size:14px;padding:5px 0}
+.sum-row span{color:var(--muted)}
+.season{background:var(--ink);color:#fff;border-radius:28px;padding:30px;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:center}
+.season h2{font-size:clamp(34px,5vw,54px);margin:8px 0 12px}
+.season h2 em{color:#f3b9c3}
+.season p{color:#dccbc1;line-height:1.55}
+.season .eyebrow{color:#f3b9c3}
+.kits{background:#4a372f;border-radius:20px;padding:18px}
+.kits b{font-family:var(--display);font-size:64px;line-height:1;display:block;color:#f3b9c3}
+.kits .bar2{height:10px;border-radius:9px;background:#5e4a40;margin:10px 0;overflow:hidden}
+.kits .bar2 i{display:block;height:100%;background:#f3b9c3;transition:width .6s}
+.loc-card{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.loc-card .panel p{color:var(--muted);line-height:1.5;margin-top:6px}
+/* agenda */
+.kds{background:#2c1f1a}
+.kds-top{background:#2c1f1a;border-color:#3d2c25}
+.kds-top h2 small{color:#f3b9c3}
+.slots-ag{display:grid;gap:12px;padding:6px 20px 24px}
+.slot-ag{background:#36271f;border:1px solid #4a372f;border-radius:18px;padding:14px}
+.slot-ag header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px;flex-wrap:wrap}
+.slot-ag header b{font-family:var(--display);font-size:26px;color:#fff}
+.slot-ag header span{font-size:12.5px;font-weight:700;color:#d7c4b8}
+.slot-ag .capbar{height:6px;border-radius:9px;background:#4a372f;overflow:hidden;flex-basis:100%}
+.slot-ag .capbar i{display:block;height:100%;background:#f3b9c3}
+.res{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fbf5ee;color:var(--ink);border-radius:12px;padding:10px 12px;margin-top:8px;animation:drop .35s}
+.res .who{font-weight:800}
+.res .det{font-size:12.5px;color:var(--muted)}
+.res .src{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:6px;padding:3px 7px;background:var(--g-l);color:var(--g-dd);margin-left:6px}
+.res .src.dmx{background:#e8e2f8;color:#4b3a8a}
+.res button{height:36px;padding:0 14px;border-radius:10px;font-weight:800;font-size:13px;background:var(--g);color:#fff;flex:none}
+.res.in{opacity:.6}.res.in button{background:#6e8f5c}
+.res.fresh{box-shadow:0 0 0 3px #f3b9c3}
+.own{background:#f8f2ec}
+.kpi b{font-family:var(--display);font-weight:500}
+.flv b{font-family:var(--display)}
+@media (max-width:980px){.exps{grid-template-columns:1fr 1fr}.book,.season,.loc-card{grid-template-columns:1fr}}
+@media (max-width:720px){.exps{grid-template-columns:1fr}.exp{flex-direction:row}.exp .ph{width:120px;height:auto;flex:none}.dm{left:6px;bottom:-14px}}
+</style>
+</head>
+<body>
+
+<main id="v-cliente">
+  <div class="topbar"><div class="wrap">
+    <div class="brand"><div class="brand-mark"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 19c3-1 4-4 6-7s5-6 8-7c-1 3-3 6-6 8s-5 4-8 6z" fill="#b9566b"/><circle cx="6" cy="18" r="2" fill="#3b2a24"/></svg></div>
+      <div class="brand-name">Lienzo&amp;Latte<small>Café y experiencias creativas</small></div></div>
+    <button class="cart-btn" id="toBook">Reservar <b id="pplCount">2</b></button>
+  </div></div>
+
+  <section class="hero"><div class="wrap">
+    <div>
+      <span class="chip status" id="statusChip"><span class="dot pulse"></span><span id="statusTxt">Abierto</span></span>
+      <h1 class="display">Aparta tu lugar <span>en un minuto.</span></h1>
+      <p class="lead">Elige tu experiencia, el día y la hora, y ve cuántos lugares quedan en vivo. Tu confirmación llega por WhatsApp y un día antes te lo recordamos.</p>
+      <div class="actions"><a class="btn btn-g" href="#reservar">Reservar ahora</a><a class="btn btn-w" href="#temporada">Edición de temporada</a></div>
+    </div>
+    <div class="hero-art">
+      <div class="since"><div><b>café</b><span>+ arte</span></div></div>
+      <figure class="hero-photo"><img src="img/hero.webp" alt="Mesa con lienzo a medio pintar, latte y cerámica" width="800" height="533"><figcaption>Foto ilustrativa</figcaption></figure>
+      <div class="dm"><s>"Reserva tu lugar por DM"</s><br><b>Ahora: reserva con cupo en vivo, sin esperar respuesta.</b></div>
+    </div>
+  </div></section>
+
+  <div class="ticker" aria-hidden="true"><div id="tickerTxt"></div></div>
+
+  <section class="section" id="reservar"><div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow"><span class="step-num">1</span>Experiencia</span><h2 class="display">¿Qué quieres <em>crear</em> hoy?</h2></div>
+      <p>Cada experiencia incluye material y una bebida. <b>Precios de ejemplo:</b> se cargan los suyos desde el panel.</p></div>
+    <div class="exps" id="exps"></div>
+  </div></section>
+
+  <section class="section" style="padding-top:0"><div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow"><span class="step-num">2</span>Día y hora</span><h2 class="display">Elige tu <em>momento</em></h2></div>
+      <p>Martes a domingo. El cupo se actualiza con cada reserva, incluidas las que el equipo registra desde el DM.</p></div>
+    <div class="book">
+      <div class="panel">
+        <h3>Día</h3><div class="days" id="days"></div>
+        <h3 style="margin-top:18px">Horario</h3><div class="times" id="times"></div>
+      </div>
+      <aside class="order-card" id="orderCard">
+        <header><b>Tu reserva</b><span id="sumExp"></span></header>
+        <div class="oc-body">
+          <div class="field"><label>¿Cuántas personas?</label><div class="ppl"><span id="pplTxt">2 personas</span><div class="stepper"><button data-ppl="-1" aria-label="Menos">&minus;</button><span id="pplN">2</span><button data-ppl="1" aria-label="Más">+</button></div></div></div>
+          <div class="field"><label>Bebida incluida</label><div class="drinks" id="drinks"></div></div>
+          <div class="field"><label for="fName">Nombre</label><input id="fName" placeholder="¿A nombre de quién?" autocomplete="off"></div>
+          <div class="field"><label for="fPhone">WhatsApp</label><input id="fPhone" inputmode="tel" placeholder="10 dígitos" maxlength="14" autocomplete="off"></div>
+          <div style="margin-top:14px">
+            <div class="sum-row"><span>Fecha</span><b id="sumDate">—</b></div>
+            <div class="sum-row"><span>Hora</span><b id="sumTime">—</b></div>
+          </div>
+          <div class="totals"><span>Total</span><b id="sumTotal">$0</b></div>
+          <button class="btn btn-g" id="sendRes">Confirmar reserva</button>
+          <div class="err" id="err"></div>
+          <div class="note-ex">Anticipo en línea opcional (fase 2). Demo: la reserva no sale de esta página.</div>
+        </div>
+      </aside>
+    </div>
+  </div></section>
+
+  <section class="section" id="temporada"><div class="wrap">
+    <div class="season">
+      <div><span class="eyebrow">Edición limitada</span><h2 class="display">Sus dinámicas de temporada, <em>con inventario.</em></h2>
+        <p>Halloween, Navidad, San Valentín: el sistema cuenta los kits y cierra solo cuando se agotan. Nada de "¿todavía hay?" por mensaje.</p></div>
+      <div class="kits"><span style="font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#d7c4b8">Cerámica navideña · kits disponibles</span><b id="kitN">18</b><div class="bar2"><i id="kitBar" style="width:60%"></i></div><span style="font-size:13px;color:#dccbc1" id="kitTxt">de 30 · se descuentan al reservar</span></div>
+    </div>
+  </div></section>
+
+  <section class="section" style="padding-top:0"><div class="wrap loc-card">
+    <div class="panel"><h3>Dónde estamos</h3><b>Av. de la Zanja 900A, 3er piso</b><p>Villa de San Miguel, Guadalupe, N.L.</p></div>
+    <div class="panel"><h3>Horario</h3><b>Martes a domingo, 9:00 am a 8:00 pm</b><p>Lunes cerrado. Horarios de experiencias de ejemplo.</p></div>
+  </div></section>
+
+  <footer class="site wrap"><b>Demo concepto preparada por Code Nova para Lienzo &amp; Latte.</b><br>No es el sitio oficial. Precios, cupos, reservas y cifras son de ejemplo. Fotos ilustrativas.<br>Code Nova · Nuevo León · WhatsApp 826 261 3262</footer>
+</main>
+
+<main id="v-cocina" class="kds" hidden>
+  <div class="kds-top">
+    <h2><small>Agenda del equipo</small><span id="agTitle">Hoy</span></h2>
+    <div class="kds-ctrl">
+      <select id="agDay" aria-label="Día"></select>
+      <button id="agDm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>Registrar reserva de DM</button>
+    </div>
+  </div>
+  <div class="kds-stats" id="agStats"></div>
+  <div class="slots-ag" id="agSlots"></div>
+</main>
+
+<main id="v-dueno" class="own" hidden>
+  <div class="own-top"><div class="wrap"><h2><small>Panel de la dueña</small>Esta semana</h2><span class="chip live"><span class="dot pulse"></span>En vivo</span></div></div>
+  <div class="wrap">
+    <div class="kpis">
+      <div class="kpi"><span>Reservas</span><b id="kRes">0</b><em id="kResE"></em></div>
+      <div class="kpi"><span>Personas</span><b id="kPpl">0</b><em>Lugares ocupados</em></div>
+      <div class="kpi"><span>Ingreso estimado</span><b id="kInc">$0</b><em>Experiencias reservadas</em></div>
+      <div class="kpi"><span>Ocupación</span><b id="kOcc">0%</b><em>Del cupo de la semana</em></div>
+    </div>
+    <div class="own-grid">
+      <div class="card"><h3>Ocupación por día <small>% del cupo</small></h3><div class="bars" id="occDays"></div></div>
+      <div class="card"><h3>Lo más reservado <small>personas</small></h3><div class="flavors" id="topExp"></div>
+        <h3 style="margin-top:20px">Horarios favoritos</h3><div class="hours" id="hrs"></div></div>
+      <div class="card"><h3>¿De dónde llegan? <small>reservas</small></h3><div class="bars" id="srcBars"></div>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:12px">Las del DM también se registran: así el cupo nunca se pasa.</p></div>
+      <div class="card"><h3>Reservas nuevas <small>en tiempo real</small></h3><div class="feed" id="feed"></div></div>
+    </div>
+    <div class="own-foot">Cifras de ejemplo para la demo.</div>
+  </div>
+</main>
+
+<nav class="demobar" aria-label="Vistas de la demo">
+  <span class="lbl"><b>Demo</b>Code Nova</span>
+  <button data-v="cliente" class="on">Cliente</button>
+  <button data-v="cocina">Agenda<span class="badge" id="badgeK" hidden>0</span></button>
+  <button data-v="dueno">Dueña</button>
+</nav>
+<div id="layer"></div>
+
+<script>
+(()=>{
+const EXP=[
+  {id:"lienzo",n:"Pinta tu lienzo",d:"Canvas, pinturas y diseño guía. Te lo llevas a casa.",p:290,dur:"2 h",img:"img/card-lienzo.webp"},
+  {id:"ceram",n:"Pinta tu cerámica",d:"Elige tu pieza y decórala a tu estilo.",p:320,dur:"2 h",img:"img/card-ceram.webp"},
+  {id:"galle",n:"Decora galletas",d:"Galletas, betún y toppings para decorar.",p:220,dur:"1.5 h",art:"cookie"},
+  {id:"bedaz",n:"Bedazzle Art",d:"Canvas con brillos y diseños pre-hechos.",p:350,dur:"2 h",art:"gem",lim:true}
+];
+const EM=Object.fromEntries(EXP.map(e=>[e.id,e]));
+const DRINKS=["Latte","Chai","Frappé","Matcha","Té"];
+const TIMES=[600,720,840,960,1080];/* 10,12,14,16,18 */
+const CAP=10;
+const NAMES=["Mariana G.","Sofía T.","Ana P.","Paola V.","Fernanda L.","Valeria Q.","Daniela O.","Regina B.","Camila R.","Ximena D.","Andrea M.","Luis F."];
+const $=s=>document.querySelector(s);const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;const pick=a=>a[Math.floor(Math.random()*a.length)];
+const peso=n=>"$"+Math.round(n).toLocaleString("es-MX");
+function mty(){return new Date(new Date().toLocaleString("en-US",{timeZone:"America/Monterrey"}))}
+const hh=t=>{let h=Math.floor(t/60),ap=h>=12?"pm":"am";h=h%12||12;return h+":"+String(t%60).padStart(2,"0")+" "+ap};
+const dkey=d=>d.toISOString().slice(0,10);
+const DOW=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
+const S={exp:"lienzo",day:null,time:null,ppl:2,drink:"Latte",res:[],kits:18,seq:510,view:"cliente",agDay:null,unseen:0};
+
+$("#tickerTxt").innerHTML=Array(2).fill("Pinta tu lienzo<i>·</i>Cerámica<i>·</i>Galletas decoradas<i>·</i>Café de especialidad<i>·</i>Plan con tu bestie<i>·</i>Reserva en línea<i>·</i>").join("");
+
+/* días disponibles: próximos 14, sin lunes */
+const today=mty();today.setHours(0,0,0,0);
+const DAYS=[];for(let i=0;i<14;i++){const d=new Date(today);d.setDate(d.getDate()+i);DAYS.push(d)}
+const isOpenDay=d=>d.getDay()!==1;
+function slotTaken(dk,t){return S.res.filter(r=>r.day===dk&&r.time===t).reduce((s,r)=>s+r.ppl,0)}
+
+function art(e){
+  if(e.img)return `<img src="${e.img}" alt="">`;
+  if(e.art==="cookie")return `<svg viewBox="0 0 120 80"><circle cx="45" cy="42" r="26" fill="#e9c08f"/><circle cx="45" cy="42" r="20" fill="#f7e1e4"/><path d="M33 40q12-10 24 0" stroke="#b9566b" stroke-width="3" fill="none"/><circle cx="85" cy="36" r="20" fill="#e9c08f"/><path d="M75 36h20M85 26v20" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg>`;
+  return `<svg viewBox="0 0 120 80"><rect x="25" y="10" width="70" height="60" rx="4" fill="#fff" stroke="#e7d7ca" stroke-width="2"/>${[[40,30],[60,25],[78,40],[50,52],[70,58]].map(([x,y])=>`<path d="M${x} ${y-7}l6 7-6 7-6-7z" fill="#b9566b" opacity=".85"/>`).join("")}</svg>`;
+}
+function renderExps(){
+  $("#exps").innerHTML=EXP.map(e=>`<button class="exp ${S.exp===e.id?"on":""}" data-exp="${e.id}">${e.lim?`<span class="lim">Edición limitada</span>`:""}<div class="ph">${art(e)}</div><div class="bd"><h3>${e.n}</h3><p>${e.d}</p><div class="meta"><span>${peso(e.p)} <small>por persona</small></span><small>${e.dur} · incluye bebida</small></div></div></button>`).join("");
+}
+function renderDays(){
+  if(!S.day){S.day=dkey(DAYS.find(d=>isOpenDay(d)&&(dkey(d)!==dkey(today)||mty().getHours()<17))||DAYS[1])}
+  $("#days").innerHTML=DAYS.map(d=>`<button class="day ${S.day===dkey(d)?"on":""}" data-day="${dkey(d)}" ${isOpenDay(d)?"":"disabled title='Lunes cerrado'"}><span>${dkey(d)===dkey(today)?"Hoy":DOW[d.getDay()]}</span><b>${d.getDate()}</b></button>`).join("");
+}
+function renderTimes(){
+  const now=mty(),isToday=S.day===dkey(today),m=now.getHours()*60+now.getMinutes();
+  $("#times").innerHTML=TIMES.map(t=>{const used=slotTaken(S.day,t),left=CAP-used,past=isToday&&t<=m+30,full=left<S.ppl||past;
+    if(S.time===t&&full)S.time=null;
+    return `<button class="time ${S.time===t?"on":""} ${full?"full":""}" data-time="${t}"><b>${hh(t)}</b><small>${past?"Ya pasó":left<=0?"Lleno":left<S.ppl?"Solo "+left+" lugar"+(left>1?"es":""):"Quedan "+left+" lugares"}</small><div class="cap"><i style="width:${Math.min(100,used/CAP*100)}%"></i></div></button>`}).join("");
+  if(S.time==null){const f=TIMES.find(t=>{const left=CAP-slotTaken(S.day,t);return left>=S.ppl&&!(isToday&&t<=m+30)});S.time=f??null;if(f!=null)renderTimes()}
+}
+function renderSum(){
+  const e=EM[S.exp];$("#sumExp").textContent=e.n;
+  $("#pplN").textContent=S.ppl;$("#pplTxt").textContent=S.ppl+(S.ppl>1?" personas":" persona");$("#pplCount").textContent=S.ppl;
+  $("#drinks").innerHTML=DRINKS.map(d=>`<button class="${S.drink===d?"on":""}" data-drink="${d}">${d}</button>`).join("");
+  const d=DAYS.find(x=>dkey(x)===S.day);
+  $("#sumDate").textContent=d?d.toLocaleDateString("es-MX",{weekday:"long",day:"numeric",month:"long"}):"—";
+  $("#sumTime").textContent=S.time!=null?hh(S.time):"Sin lugares";
+  $("#sumTotal").textContent=peso(e.p*S.ppl);
+}
+function paintStatus(){const n=mty(),m=n.getHours()*60+n.getMinutes(),open=n.getDay()!==1&&m>=540&&m<1200;$("#statusTxt").textContent=open?"Abierto hoy hasta las 8:00 pm":"Cerrado ahora · reserva para otro día";}
+function paintKits(){$("#kitN").textContent=S.kits;$("#kitBar").style.width=(S.kits/30*100)+"%"}
+function all(){renderExps();renderDays();renderTimes();renderSum()}
+
+document.addEventListener("click",e=>{
+  const x=e.target.closest("[data-exp]");if(x){S.exp=x.dataset.exp;renderExps();renderSum();return}
+  const d=e.target.closest("[data-day]");if(d&&!d.disabled){S.day=d.dataset.day;S.time=null;renderDays();renderTimes();renderSum();return}
+  const t=e.target.closest("[data-time]");if(t){S.time=+t.dataset.time;renderTimes();renderSum();return}
+  const p=e.target.closest("[data-ppl]");if(p){S.ppl=Math.max(1,Math.min(8,S.ppl+ +p.dataset.ppl));renderTimes();renderSum();return}
+  const dr=e.target.closest("[data-drink]");if(dr){S.drink=dr.dataset.drink;renderSum();return}
+});
+$("#toBook").onclick=()=>$("#orderCard").scrollIntoView({behavior:"smooth",block:"start"});
+$("#fPhone").addEventListener("input",e=>{e.target.value=e.target.value.replace(/[^\d ]/g,"")});
+$("#sendRes").onclick=()=>{
+  const err=$("#err");err.textContent="";const name=$("#fName").value.trim(),ph=$("#fPhone").value.replace(/\D/g,"");
+  if(S.time==null){err.textContent="Ese día ya no tiene lugares: elige otro.";return}
+  if(name.length<2){err.textContent="Escribe tu nombre.";return}
+  if(ph.length!==10){err.textContent="El WhatsApp debe tener 10 dígitos.";return}
+  const r=addRes({day:S.day,time:S.time,exp:S.exp,ppl:S.ppl,name,drink:S.drink,src:"web",mine:true});
+  ticket(r);$("#fName").value="";$("#fPhone").value="";
+};
+function addRes({day,time,exp,ppl,name,drink="Latte",src="web",mine=false}){
+  S.seq++;const r={id:"R-"+S.seq,code:String(rnd(1000,9999)),day,time,exp,ppl,name,drink,src,mine,in:false,fresh:true};
+  S.res.push(r);if(exp==="ceram"&&S.kits>0){S.kits=Math.max(0,S.kits-ppl);paintKits()}
+  if(S.view!=="cocina"&&day===S.agDay){S.unseen++;badge()}
+  feed(r);renderTimes();refreshViews();setTimeout(()=>{r.fresh=false;if(S.view==="cocina")renderAg()},6000);return r;
+}
+function ticket(r){
+  const e=EM[r.exp],d=DAYS.find(x=>dkey(x)===r.day);
+  modal(`<div class="ticket-top"><span class="chip" style="background:rgba(255,255,255,.2)"><span class="dot"></span>Reserva confirmada</span><h3 style="font-family:var(--display);text-transform:none;font-style:italic">¡Nos vemos, ${esc(r.name.split(" ")[0])}!</h3><div style="opacity:.92;margin-top:6px">${e.n} · ${d.toLocaleDateString("es-MX",{weekday:"long",day:"numeric",month:"long"})} · ${hh(r.time)}</div></div>
+  <div class="ticket-body"><div class="tk-row"><span>Personas</span><b>${r.ppl}</b></div><div class="tk-row"><span>Bebida</span><b>${r.drink}</b></div><div class="tk-row" style="border:0"><span>Total</span><b>${peso(e.p*r.ppl)}</b></div>
+  <div class="tk-code" style="justify-content:center;text-align:center"><div><span>Reserva ${r.id}</span><b>${r.code}</b><span>Muéstralo al llegar.</span></div></div>
+  <div class="tk-wa"><span>En el sistema real llega la confirmación por WhatsApp y un recordatorio un día antes, con opción de cambiar la hora. Menos lugares vacíos por olvidos.</span></div>
+  <button class="btn btn-g" data-go="cocina">Ver cómo le aparece al equipo</button><button class="btn btn-w" data-close>Seguir viendo la demo</button></div>`);
+}
+
+/* agenda */
+function renderAgDays(){
+  if(!S.agDay)S.agDay=S.day;
+  $("#agDay").innerHTML=DAYS.filter(isOpenDay).map(d=>`<option value="${dkey(d)}">${dkey(d)===dkey(today)?"Hoy · ":""}${d.toLocaleDateString("es-MX",{weekday:"long",day:"numeric",month:"short"})}</option>`).join("");$("#agDay").value=S.agDay;
+}
+$("#agDay").onchange=e=>{S.agDay=e.target.value;renderAg()};
+$("#agDm").onclick=()=>{const t=pick(TIMES.filter(t=>CAP-slotTaken(S.agDay,t)>=2));if(t==null){toast("Ese día ya está lleno.");return}addRes({day:S.agDay,time:t,exp:pick(["lienzo","ceram","galle"]),ppl:2,name:pick(NAMES),src:"dm"});toast("Reserva del DM registrada: el cupo ya se descontó en la página.")};
+function renderAg(){
+  const d=DAYS.find(x=>dkey(x)===S.agDay);$("#agTitle").textContent=d?d.toLocaleDateString("es-MX",{weekday:"long",day:"numeric",month:"long"}):"";
+  const list=S.res.filter(r=>r.day===S.agDay);const ppl=list.reduce((s,r)=>s+r.ppl,0);
+  $("#agStats").innerHTML=`<div><b>${list.length}</b>reservas</div><div><b>${ppl}</b>personas</div><div><b>${list.filter(r=>r.in).length}</b>ya llegaron</div><div><b>${Math.round(ppl/(CAP*TIMES.length)*100)}%</b>del cupo</div>`;
+  $("#agSlots").innerHTML=TIMES.map(t=>{const rs=list.filter(r=>r.time===t),u=rs.reduce((s,r)=>s+r.ppl,0);
+    return `<section class="slot-ag"><header><b>${hh(t)}</b><span>${u} de ${CAP} lugares</span><div class="capbar"><i style="width:${u/CAP*100}%"></i></div></header>${rs.length?rs.map(r=>`<div class="res ${r.in?"in":""} ${r.fresh?"fresh":""}"><div><span class="who">${esc(r.name)}</span><span class="src ${r.src==="dm"?"dmx":""}">${r.src==="dm"?"DM":"En línea"}</span>${r.mine?' <span style="color:#b9566b;font-weight:800;font-size:12px">(tu reserva)</span>':""}<div class="det">${EM[r.exp].n} · ${r.ppl} pers. · ${r.drink} · ${r.code}</div></div><button data-in="${r.id}">${r.in?"Llegó":"Marcar llegada"}</button></div>`).join(""):`<div class="kempty" style="padding:8px">Sin reservas</div>`}</section>`}).join("");
+}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-in]");if(!b)return;const r=S.res.find(x=>x.id===b.dataset.in);r.in=!r.in;renderAg()});
+
+/* dueña */
+function renderOwn(){
+  const wk=DAYS.slice(0,7).filter(isOpenDay).map(dkey);const rs=S.res.filter(r=>wk.includes(r.day));
+  const ppl=rs.reduce((s,r)=>s+r.ppl,0),inc=rs.reduce((s,r)=>s+EM[r.exp].p*r.ppl,0);
+  $("#kRes").textContent=rs.length;$("#kResE").textContent=`${rs.filter(r=>r.src==="web").length} en línea · ${rs.filter(r=>r.src==="dm").length} por DM`;
+  $("#kPpl").textContent=ppl;$("#kInc").textContent=peso(inc);$("#kOcc").textContent=Math.round(ppl/(CAP*TIMES.length*wk.length)*100)+"%";
+  $("#occDays").innerHTML=wk.map(k=>{const d=DAYS.find(x=>dkey(x)===k),u=S.res.filter(r=>r.day===k).reduce((s,r)=>s+r.ppl,0),pc=Math.round(u/(CAP*TIMES.length)*100);return `<div class="bar"><span>${DOW[d.getDay()]} ${d.getDate()}</span><div class="track"><div class="fill" style="width:${pc}%"></div></div><span class="v">${pc}%</span></div>`}).join("");
+  const te={};rs.forEach(r=>te[r.exp]=(te[r.exp]||0)+r.ppl);const top=Object.entries(te).sort((a,b)=>b[1]-a[1]);
+  $("#topExp").innerHTML=EXP.map(e=>`<div class="flv ${top[0]&&top[0][0]===e.id?"top":""}" style="${top[0]&&top[0][0]===e.id?"background:var(--g)":""}"><b>${te[e.id]||0}</b><span>${e.n}</span></div>`).join("");
+  const th=TIMES.map(t=>rs.filter(r=>r.time===t).reduce((s,r)=>s+r.ppl,0)),mx=Math.max(1,...th);
+  $("#hrs").innerHTML=th.map((v,i)=>`<div><i class="${v===mx?"peak":""}" style="height:${v/mx*100}%;${v===mx?"":"background:linear-gradient(#d98a9a,#b9566b)"}"></i><span>${hh(TIMES[i]).replace(":00","")}</span></div>`).join("");
+  const w=rs.filter(r=>r.src==="web").length,dm=rs.filter(r=>r.src==="dm").length,m2=Math.max(w,dm,1);
+  $("#srcBars").innerHTML=[["Reserva en línea",w],["Registrada del DM",dm]].map(([l,v])=>`<div class="bar"><span>${l}</span><div class="track"><div class="fill" style="width:${v/m2*100}%"></div></div><span class="v">${v}</span></div>`).join("");
+}
+function feed(r){const f=$("#feed");const d=document.createElement("div");const dd=DAYS.find(x=>dkey(x)===r.day);d.innerHTML=`<span><b>${r.id}</b> · ${EM[r.exp].n} · ${DOW[dd.getDay()]} ${dd.getDate()} ${hh(r.time)} · ${esc(r.name)}</span><b>${r.ppl} pers.</b>`;f.prepend(d);while(f.children.length>12)f.lastChild.remove()}
+
+function setView(v){S.view=v;["cliente","cocina","dueno"].forEach(k=>$("#v-"+k).hidden=k!==v);document.querySelectorAll(".demobar [data-v]").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
+  if(v==="cocina"){S.unseen=0;badge();renderAgDays();renderAg()}if(v==="dueno")renderOwn();window.scrollTo(0,0)}
+document.querySelectorAll(".demobar [data-v]").forEach(b=>b.onclick=()=>setView(b.dataset.v));
+document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g){closeModal();const last=S.res.filter(r=>r.mine).pop();if(last)S.agDay=last.day;setView(g.dataset.go);return}
+  if(e.target.closest("[data-close]")||e.target.classList.contains("scrim"))closeModal()});
+function refreshViews(){if(S.view==="cocina")renderAg();if(S.view==="dueno")renderOwn()}
+function badge(){const b=$("#badgeK");b.hidden=!S.unseen;b.textContent=S.unseen}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function modal(h){$("#layer").innerHTML=`<div class="scrim" role="dialog" aria-modal="true"><div class="modal">${h}</div></div>`}
+function closeModal(){$("#layer").innerHTML=""}
+let tT;function toast(m,act){document.querySelector(".toast")?.remove();const t=document.createElement("div");t.className="toast";t.innerHTML=`<span>${m}</span>`;if(act){const b=document.createElement("button");b.textContent=act[0];b.onclick=()=>{t.remove();act[1]()};t.append(b)}document.body.append(t);clearTimeout(tT);tT=setTimeout(()=>t.remove(),act?6500:4200)}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+
+/* datos de ejemplo */
+DAYS.filter(isOpenDay).forEach((d,i)=>{const n=i<6?rnd(4,9):rnd(1,4);for(let k=0;k<n;k++){const t=pick(TIMES);const p=rnd(1,4);if(CAP-slotTaken(dkey(d),t)>=p)S.res.push({id:"R-"+(++S.seq),code:String(rnd(1000,9999)),day:dkey(d),time:t,exp:pick(["lienzo","lienzo","ceram","galle","bedaz"]),ppl:p,name:pick(NAMES),drink:pick(DRINKS),src:Math.random()<.7?"web":"dm",in:false,fresh:false})}});
+S.res.slice(-8).reverse().forEach(feed);
+paintStatus();paintKits();all();
+setInterval(()=>{if(document.hidden)return;const d=pick(DAYS.filter(isOpenDay).slice(0,6));const t=pick(TIMES);if(CAP-slotTaken(dkey(d),t)<2)return;
+  const r=addRes({day:dkey(d),time:t,exp:pick(["lienzo","ceram","galle","bedaz"]),ppl:rnd(1,3),name:pick(NAMES),src:"web"});
+  if(S.view==="cliente"&&Math.random()<.4)toast(`${r.name} acaba de reservar ${EM[r.exp].n.toLowerCase()}`)},24000);
+
+modal(`<div class="welcome"><span class="eyebrow">Demo para Lienzo &amp; Latte</span>
+  <h3 style="font-family:var(--display);text-transform:none">Reservas sin contestar un DM por uno</h3>
+  <p>Demo funcional preparada por Code Nova. Pruébela como si fuera una clienta:</p>
+  <ol><li><b class="n">1</b><span>Elija una experiencia, el día y la hora: verá cuántos lugares quedan.</span></li>
+  <li><b class="n">2</b><span>Abajo, toque <b>Agenda</b>: así le aparece al equipo, y ahí también registran las reservas que lleguen por DM.</span></li>
+  <li><b class="n">3</b><span>En <b>Dueña</b> vea la ocupación de la semana y lo más reservado.</span></li></ol>
+  <button class="btn btn-g" data-close>Empezar</button><p style="font-size:12px;margin-top:12px;text-align:center">Precios, cupos y cifras de ejemplo.</p></div>`);
+})();
+</script>
+</body>
+</html>
