@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ciocco Cakes · Aparta sin fila (demo)</title>
+<meta name="theme-color" content="#c2588a">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Ciocco Cakes · Demo de apartados y preventa">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: roles apartados con turno de recogida, preventa de roscas, pasteles por encargo y fila virtual para eventos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<style>
+:root{
+  --g:#c2588a; --g-d:#a2416f; --g-dd:#6b2447; --g-l:#f9dce8; --g-ll:#fdf1f6;
+  --lila:#a58fd8; --lila-l:#ece6fa; --butter:#f6d77a; --butter-l:#fdf4d6;
+  --ink:#3a2418; --ink-2:#5a4134; --muted:#8a776b; --line:#eedfd3;
+  --paper:#fbf5ee; --cream:#fffaf4; --red:#c2493f;
+  --r:20px; --sh:0 14px 34px -16px rgba(58,36,24,.38);
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Archivo",system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+.btn{text-decoration:none}
+.menu-grid>*,.own-grid>*,.two>*,.three>*{min-width:0}
+.display{text-transform:none;letter-spacing:-.025em;font-weight:800;line-height:.98}
+.display em{font-style:normal;color:var(--g)}
+.topbar{background:rgba(255,250,244,.93)}
+.brand-mark{background:var(--ink);box-shadow:none;color:var(--butter);font-family:var(--display);font-size:15px;font-weight:800}
+.brand-name{font-family:var(--display);text-transform:none;font-size:22px;font-weight:800;letter-spacing:-.02em}
+.brand-name small{color:var(--g-d);letter-spacing:.06em;white-space:nowrap;text-transform:none;font-family:var(--mono)}
+.cart-btn{background:var(--ink)}
+.cart-btn b{background:var(--g)}
+.hero{background:radial-gradient(1000px 500px at 85% 10%,#f9dce8 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#ece6fa 0%,transparent 60%),var(--paper);color:var(--ink)}
+.hero::before{display:none}
+.hero h1{font-size:clamp(46px,7vw,92px)}
+.hero h1 span{display:block;color:var(--g)}
+.hero p.lead{opacity:1;color:var(--ink-2)}
+.hero .btn-g{background:var(--ink);box-shadow:0 10px 24px -10px rgba(58,36,24,.7)}
+.hero .btn-w{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.status{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+.hero-photo{position:relative;border-radius:30px;overflow:hidden;transform:rotate(1.5deg);box-shadow:var(--sh);border:10px solid #fff;background:#fff}
+.hero-photo img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}
+.hero-photo figcaption{position:absolute;left:12px;bottom:10px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(58,36,24,.55);color:#fff;border-radius:999px;padding:3px 9px}
+.since{background:var(--butter);left:-12px;right:auto;top:-22px;z-index:2;transform:rotate(-8deg)}
+.since b{color:var(--ink);font-family:var(--display);font-size:22px}
+.since span{color:var(--ink)}
+.queue-card{position:absolute;right:-10px;bottom:-22px;background:#fff;border-radius:18px;padding:12px 16px;box-shadow:var(--sh);font-size:12.5px;line-height:1.35;max-width:240px;z-index:2}
+.queue-card s{color:var(--muted)}
+.queue-card b{color:var(--g-dd)}
+.ticker{background:var(--ink)}
+.ticker div{font-family:var(--display);text-transform:none;font-size:24px;font-weight:800}
+.ticker i{color:var(--g);font-style:normal}
+.sec-head h2{font-size:clamp(34px,4.6vw,56px)}
+/* roles */
+.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none;margin-bottom:6px}
+.days button{flex:none;min-width:76px;padding:10px 12px;border-radius:16px;background:#fff;box-shadow:inset 0 0 0 1.5px var(--line);text-align:center}
+.days button span{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.days button b{display:block;font-family:var(--display);font-size:26px;line-height:1.05}
+.days button small{display:block;font-size:11px;font-weight:700;color:var(--g-d)}
+.days button.on{background:var(--ink);color:#fff;box-shadow:none}
+.days button.on span{color:#e9d5c6}.days button.on small{color:var(--butter)}
+.capline{display:flex;align-items:center;gap:12px;background:#fff;border-radius:16px;padding:12px 14px;box-shadow:inset 0 0 0 1.5px var(--line);margin:8px 0 16px;flex-wrap:wrap}
+.capline .meter{flex:1;min-width:140px;height:10px;border-radius:9px;background:#f1e5da;overflow:hidden}
+.capline .meter i{display:block;height:100%;background:linear-gradient(90deg,var(--g),var(--lila));transition:width .6s}
+.capline b{font-family:var(--display);font-size:20px}
+.capline span{font-size:13px;color:var(--muted);font-weight:600}
+.two{display:grid;grid-template-columns:1.25fr 1fr;gap:20px;align-items:start}
+.flv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.rl{background:#fff;border-radius:20px;padding:14px;box-shadow:inset 0 0 0 1.5px var(--line);display:flex;flex-direction:column;gap:8px;position:relative}
+.rl .sw{height:70px;border-radius:14px;display:grid;place-items:center;overflow:hidden}
+.rl .sw i{width:46px;height:46px;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(255,255,255,.55) 0 18deg,transparent 18deg 40deg);box-shadow:0 0 0 7px rgba(255,255,255,.45)}
+.rl h4{font-size:16px;font-weight:800;line-height:1.15}
+.rl p{font-size:12.5px;color:var(--muted);line-height:1.35}
+.rl .bot{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
+.rl .tag{position:absolute;top:10px;right:10px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--ink);color:#fff;border-radius:999px;padding:3px 8px}
+.rl.has{box-shadow:inset 0 0 0 2.5px var(--g)}
+.panel{background:#fff;border-radius:24px;padding:22px;box-shadow:inset 0 0 0 1.5px var(--line)}
+.panel h3{font-family:var(--display);font-size:26px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px}
+.panel>p{color:var(--muted);font-size:14px;line-height:1.5}
+.sum-line{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;border-bottom:1px dashed var(--line)}
+.sum-line span{color:var(--muted)}
+.slots button{border-radius:12px}
+.slots button.on{background:var(--ink)}
+.slots button.full{opacity:.4;text-decoration:line-through;pointer-events:none}
+.slots button small{display:block;font-size:10px;font-weight:700;opacity:.75}
+.slots button{height:auto;padding:7px 12px;text-align:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid2>*{min-width:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.chips button{min-height:40px;padding:6px 14px;border-radius:999px;background:var(--cream);box-shadow:inset 0 0 0 1.5px var(--line);font-weight:700;font-size:13.5px;text-align:left}
+.chips button small{display:block;font-size:11px;font-weight:600;color:var(--muted)}
+.chips button.on{background:var(--ink);color:#fff;box-shadow:none}
+.chips button.on small{color:#e9d5c6}
+/* roscas */
+.roscas{background:var(--lila-l)}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.size{background:#fff;border-radius:20px;padding:16px;box-shadow:inset 0 0 0 1.5px #ddd3f2;text-align:left;display:flex;flex-direction:column;gap:6px}
+.size b{font-family:var(--display);font-size:22px}
+.size span{font-size:13px;color:var(--muted)}
+.size em{font-style:normal;font-weight:800;font-size:18px;margin-top:6px}
+.size.on{box-shadow:inset 0 0 0 3px #7e66c2;background:#faf8ff}
+.rdays{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.rdays button{background:#fff;border-radius:14px;padding:10px 6px;box-shadow:inset 0 0 0 1.5px #ddd3f2;text-align:center}
+.rdays button b{display:block;font-family:var(--display);font-size:24px}
+.rdays button span{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.rdays button small{display:block;font-size:11px;font-weight:700;color:#6b54ad}
+.rdays button.on{background:#4b3a85;color:#fff;box-shadow:none}
+.rdays button.on span,.rdays button.on small{color:#e3dafc}
+.rdays button.full{opacity:.45;pointer-events:none}
+.roscas .panel{box-shadow:inset 0 0 0 1.5px #ddd3f2}
+.roscas .btn-g{background:#4b3a85;box-shadow:none}
+/* fila virtual */
+.fila{background:var(--ink);color:#fff}
+.fila .eyebrow{color:var(--butter)}
+.fila .sec-head p{color:#d8c6b8}
+.fila-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch}
+.fila-grid>*{min-width:0}
+.fcard{background:#4a3125;border-radius:24px;padding:24px;box-shadow:inset 0 0 0 1px #5c4033}
+.fcard h3{font-family:var(--display);font-size:28px;font-weight:800}
+.fcard p{color:#d8c6b8;margin-top:6px;line-height:1.5}
+.big{font-family:var(--display);font-size:88px;font-weight:800;line-height:1;color:var(--butter)}
+.prog{height:12px;border-radius:9px;background:#5c4033;overflow:hidden;margin:14px 0 8px}
+.prog i{display:block;height:100%;background:var(--butter);transition:width .6s}
+.fcard .field input{background:#3a2418;border-color:#5c4033;color:#fff}
+.fcard .field label{color:#e9d5c6}
+.fila .btn-g{background:var(--butter);color:var(--ink);box-shadow:none}
+.loc-card{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.loc-card>*{min-width:0}
+/* mostrador */
+.kds{background:#2b1b13}
+.kds-top{background:#2b1b13;border-color:#3e2a20}
+.kds-top h2{font-family:var(--display);text-transform:none}
+.kds-top h2 small{color:var(--butter);font-family:var(--body)}
+.kds-ctrl button{background:#3e2a20;border-color:#56392b}
+.kds-stats div{background:#3a271d;border-color:#56392b}
+.agw{display:grid;gap:12px;padding:6px 20px 24px}
+.ag{background:#3a271d;border:1px solid #56392b;border-radius:18px;padding:14px}
+.ag header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.ag header b{font-family:var(--display);font-size:24px;color:#fff}
+.ag header span{font-size:12.5px;font-weight:700;color:#d8c6b8}
+.ln{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--paper);color:var(--ink);border-radius:12px;padding:10px 12px;margin-top:8px;animation:drop .35s}
+.ln .who{font-weight:800}
+.ln .det{font-size:12.5px;color:var(--muted)}
+.ln .tm{font-family:var(--mono);font-weight:600;font-size:13px;background:var(--ink);color:var(--butter);border-radius:8px;padding:3px 8px;margin-right:8px}
+.ln button{height:36px;padding:0 14px;border-radius:10px;font-weight:800;font-size:13px;background:var(--g);color:#fff;flex:none}
+.ln.done{opacity:.55}.ln.done button{background:#8a776b}
+.ln.fresh{box-shadow:0 0 0 3px var(--butter)}
+.prod{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.prod div{background:var(--paper);color:var(--ink);border-radius:12px;padding:10px;text-align:center}
+.prod b{display:block;font-family:var(--display);font-size:26px}
+.prod span{font-size:11.5px;font-weight:700;color:var(--muted)}
+.own{background:var(--paper)}
+.kpi b{font-family:var(--display);font-weight:800}
+.flv b{font-family:var(--display)}
+@media (max-width:980px){.two,.fila-grid,.loc-card{grid-template-columns:1fr}}
+@media (max-width:720px){.three{grid-template-columns:1fr}.rdays{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.rdays button b{font-size:20px}.grid2{grid-template-columns:1fr}.queue-card{right:6px;bottom:-16px}.big{font-size:68px}.prod{grid-template-columns:repeat(3,1fr)}.since{left:4px}}
+</style>
+</head>
+<body>
+
+<main id="v-cliente">
+  <div class="topbar"><div class="wrap">
+    <div class="brand"><div class="brand-mark">CC</div><div class="brand-name">Ciocco Cakes<small>[chioco•cakes]</small></div></div>
+    <button class="cart-btn" id="toRoles">Apartar <b id="badgeCart">0</b></button>
+  </div></div>
+
+  <section class="hero"><div class="wrap">
+    <div>
+      <span class="chip status"><span class="dot pulse"></span><span id="openTxt">Galería</span></span>
+      <h1 class="display">Tu rol, apartado. <span>La fila, opcional.</span></h1>
+      <p class="lead">Elige el día, tu turno de recogida y tus roles. Llegas, das tu código y te vas. Además: preventa de roscas, pasteles por encargo y fila virtual para los eventos.</p>
+      <div class="actions"><a class="btn btn-g" href="#roles">Apartar roles</a><a class="btn btn-w" href="#roscas">Preventa de roscas</a></div>
+    </div>
+    <div class="hero-art">
+      <div class="since"><div><b>sin fila</b><span>recoge y listo</span></div></div>
+      <figure class="hero-photo"><img src="img/hero.webp" alt="Rol de canela gigante y rosca decorada" width="800" height="533"><figcaption>Foto ilustrativa</figcaption></figure>
+      <div class="queue-card"><s>Fila desde las 7 am</s><br><b>Ahora: turno de recogida apartado desde el celular.</b></div>
+    </div>
+  </div></section>
+
+  <div class="ticker" aria-hidden="true"><div id="tickerTxt"></div></div>
+
+  <section class="section" id="roles"><div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow"><span class="step-num">1</span>Roles del día</span><h2 class="display">Aparta con <em>turno</em></h2></div>
+      <p>Cupo diario limitado y turnos de recogida cada media hora: se reparte la producción sin filas. Máximo 6 roles por persona para que alcance para más gente.</p></div>
+    <div class="days" id="days"></div>
+    <div class="capline"><b id="capTxt">0 / 220</b><div class="meter"><i id="capBar"></i></div><span id="capSub">roles apartados para este día</span></div>
+    <div class="two">
+      <div class="flv-grid" id="flv"></div>
+      <div class="panel" id="rolPanel">
+        <h3>Tu apartado</h3><p id="rolDay"></p>
+        <div class="field"><label>Turno de recogida</label><div class="slots" id="slots"></div><div class="slot-day" id="slotHint"></div></div>
+        <div id="rolLines" style="margin-top:12px"></div>
+        <div class="grid2">
+          <div class="field"><label for="rName">Nombre</label><input id="rName" placeholder="¿A nombre de quién?" autocomplete="off"></div>
+          <div class="field"><label for="rPhone">WhatsApp</label><input id="rPhone" inputmode="tel" maxlength="14" placeholder="10 dígitos" autocomplete="off"></div>
+        </div>
+        <div class="totals"><span>Total</span><b id="rolTotal">$0</b></div>
+        <button class="btn btn-g" id="sendRol" style="width:100%;margin-top:12px;background:var(--ink)">Apartar mis roles</button>
+        <div class="err" id="rolErr"></div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="section roscas" id="roscas"><div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow"><span class="step-num">2</span>Temporada</span><h2 class="display">Cioccoroscas <em style="color:#6b54ad">2027</em></h2></div>
+      <p>Preventa con cupo por día de entrega: ustedes saben cuántas hornear desde diciembre y el cliente ya no tiene que formarse el 6 de enero.</p></div>
+    <div class="two">
+      <div>
+        <div class="three" id="sizes"></div>
+        <div class="field"><label>Sabor</label><div class="chips" id="rFlv"></div></div>
+        <div class="field"><label>Día de entrega</label><div class="rdays" id="rDays"></div></div>
+      </div>
+      <div class="panel">
+        <h3>Tu rosca</h3><p id="rsSub"></p>
+        <div class="field"><label>Horario</label><div class="chips" id="rTime"><button class="on" data-rt="Mañana (9 a 12)">Mañana<small>9:00 a 12:00</small></button><button data-rt="Tarde (12 a 5)">Tarde<small>12:00 a 5:00</small></button></div></div>
+        <div class="grid2">
+          <div class="field"><label>Cantidad</label><div class="ppl" style="display:flex;align-items:center;justify-content:space-between;background:var(--cream);border-radius:12px;padding:5px 5px 5px 14px;box-shadow:inset 0 0 0 1.5px var(--line);font-weight:700"><span id="rsQtyTxt">1 rosca</span><div class="stepper"><button data-rq="-1" aria-label="Menos">&minus;</button><span id="rsQty">1</span><button data-rq="1" aria-label="Más">+</button></div></div></div>
+          <div class="field"><label for="rsName">Nombre y WhatsApp</label><input id="rsName" placeholder="Ej. Ana · 81 1234 5678" autocomplete="off"></div>
+        </div>
+        <div class="field"><label>Pago</label><div class="chips" id="rsPay"><button class="on" data-rp="local">Al recoger</button><button data-rp="anticipo">Anticipo 50% en línea (fase 2)</button></div></div>
+        <div class="totals"><span>Total</span><b id="rsTotal">$0</b></div>
+        <button class="btn btn-g" id="sendRs" style="width:100%;margin-top:12px">Apartar mi rosca</button>
+        <div class="err" id="rsErr"></div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="section" id="pasteles"><div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow"><span class="step-num">3</span>Por encargo</span><h2 class="display">Tu pastel de <em>galería</em></h2></div>
+      <p>El calendario solo deja elegir fechas con 10 días de anticipación, y la solicitud les llega completa para cotizar: fecha, tamaño, estilo y mensaje.</p></div>
+    <div class="two">
+      <div class="panel">
+        <div class="grid2">
+          <div class="field"><label for="pDate">Fecha del evento</label><input id="pDate" type="date"></div>
+          <div class="field"><label for="pSize">Tamaño</label><select id="pSize"><option>10 personas</option><option selected>20 personas</option><option>30 personas</option><option>50 personas</option><option>Boda (más de 80)</option></select></div>
+        </div>
+        <div class="field"><label>Estilo</label><div class="chips" id="pStyle"><button class="on" data-ps="Pintura en pastel">Pintura en pastel</button><button data-ps="Temático">Temático</button><button data-ps="Minimal">Minimal</button><button data-ps="Boda">Boda</button></div></div>
+        <div class="field"><label for="pMsg">Idea o mensaje</label><input id="pMsg" placeholder="Ej. Cumpleaños 30, estilo Van Gogh, tonos lila" autocomplete="off"></div>
+        <div class="field"><label for="pName">Nombre y WhatsApp</label><input id="pName" placeholder="Ej. Sofía · 81 9876 5432" autocomplete="off"></div>
+        <button class="btn btn-g" id="sendP" style="width:100%;margin-top:16px;background:var(--g)">Pedir cotización</button>
+        <div class="err" id="pErr"></div>
+      </div>
+      <div class="panel" style="background:var(--butter-l);box-shadow:inset 0 0 0 1.5px #f1e1a8">
+        <h3>Así les llega</h3>
+        <p>Cada solicitud cae en la pestaña <b>Mostrador</b> con todos los datos. Desde ahí se manda la cotización por WhatsApp con un clic, y en <b>Dueña</b> se ve cuántos encargos hay por semana.</p>
+        <div class="sum-line" style="margin-top:12px"><span>Anticipación mínima</span><b>10 días</b></div>
+        <div class="sum-line"><span>Fechas llenas</span><b>Se bloquean solas</b></div>
+        <div class="sum-line" style="border:0"><span>Referencias</span><b>Foto adjunta (fase 2)</b></div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="section fila" id="fila"><div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Eventos y regalos</span><h2 class="display">Fila <em style="color:var(--butter)">virtual</em></h2></div>
+      <p>Para dinámicas como "gratis a los primeros 50": la gente se forma desde el celular, recibe su número y solo llega a su hora. Ejemplo con datos ficticios.</p></div>
+    <div class="fila-grid">
+      <div class="fcard">
+        <h3>Encendido de luces (ejemplo)</h3>
+        <p>Regalo para los primeros 50 lugares. Cada número se canjea en mostrador con su código.</p>
+        <div class="prog"><i id="fBar"></i></div>
+        <p style="margin:0"><b id="fTxt" style="color:#fff">0 de 50 lugares tomados</b></p>
+        <div class="field"><label for="fName">Tu nombre</label><input id="fName" placeholder="¿Cómo te llamas?" autocomplete="off"></div>
+        <button class="btn btn-g" id="fGo" style="width:100%;margin-top:14px">Formarme en la fila virtual</button>
+      </div>
+      <div class="fcard" style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start">
+        <p style="margin:0;font-weight:700;color:var(--butter)">Tu lugar</p>
+        <div class="big" id="fMine">--</div>
+        <p id="fMineTxt">Fórmate y aquí aparece tu número. En el sistema real te llega también por WhatsApp.</p>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="section"><div class="wrap loc-card">
+    <div class="panel"><h3>Galería Ciocco Cakes</h3><p><b>Padre Mier pte. 1043, Centro de Monterrey</b><br>Martes a domingo, 9:00 am a 5:00 pm</p></div>
+    <div class="panel"><h3>Un solo link para todo</h3><p>Hoy no hay link en su bio. Esta página puede ir ahí: roles, roscas, pasteles y la fila del próximo evento.</p></div>
+  </div></section>
+
+  <footer class="site wrap"><b>Demo concepto preparada por Code Nova para Ciocco Cakes.</b><br>No es el sitio oficial. Productos, precios, cupos, eventos, pedidos y cifras son de ejemplo; dirección y horario tomados de su Instagram. Fotos ilustrativas.<br>Code Nova · Nuevo León · WhatsApp 826 261 3262</footer>
+</main>
+
+<main id="v-cocina" class="kds" hidden>
+  <div class="kds-top">
+    <h2><small>Mostrador</small><span id="mDay">Hoy</span></h2>
+    <div class="kds-ctrl"><button id="mWalk"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>Simular apartado nuevo</button></div>
+  </div>
+  <div class="kds-stats" id="mStats"></div>
+  <div class="agw" id="mw"></div>
+</main>
+
+<main id="v-dueno" class="own" hidden>
+  <div class="own-top"><div class="wrap"><h2><small>Panel de la dueña</small>Ciocco en vivo</h2><span class="chip live"><span class="dot pulse"></span>En vivo</span></div></div>
+  <div class="wrap">
+    <div class="kpis">
+      <div class="kpi"><span>Roles apartados hoy</span><b id="kRoles">0</b><em id="kRolesE"></em></div>
+      <div class="kpi"><span>Apartados de hoy</span><b id="kInc">$0</b><em>Se cobran al recoger</em></div>
+      <div class="kpi"><span>Roscas en preventa</span><b id="kRs">0</b><em id="kRsE"></em></div>
+      <div class="kpi"><span>Pasteles por cotizar</span><b id="kP">0</b><em>Solicitudes nuevas</em></div>
+    </div>
+    <div class="own-grid">
+      <div class="card"><h3>Sabores más apartados <small>hoy</small></h3><div class="bars" id="oFlv"></div></div>
+      <div class="card"><h3>Roscas por día de entrega <small>para planear horneado</small></h3><div class="bars" id="oRs"></div>
+        <h3 style="margin-top:20px">Fila virtual</h3><div class="flavors" id="oFila"></div></div>
+      <div class="card" style="grid-column:1/-1"><h3>Movimientos <small>en tiempo real</small></h3><div class="feed" id="feed"></div></div>
+    </div>
+    <div class="own-foot">Cifras de ejemplo para la demo.</div>
+  </div>
+</main>
+
+<nav class="demobar" aria-label="Vistas de la demo">
+  <span class="lbl"><b>Demo</b>Code Nova</span>
+  <button data-v="cliente" class="on">Cliente</button>
+  <button data-v="cocina">Mostrador<span class="badge" id="badgeK" hidden>0</span></button>
+  <button data-v="dueno">Dueña</button>
+</nav>
+<div id="layer"></div>
+
+<script>
+(()=>{
+const FLV=[
+  {id:"cla",n:"Rol clásico de canela",d:"El original: masa suave, canela y glaseado de queso crema.",p:105,c:"#e9c9a8"},
+  {id:"cho",n:"Rol de chocolate",d:"Relleno de chocolate y cobertura de ganache.",p:120,c:"#8c5a43"},
+  {id:"red",n:"Red velvet",d:"Masa red velvet con glaseado de queso crema.",p:125,c:"#c95a6a"},
+  {id:"jyq",n:"Cioccorol jamón y queso",d:"Salado, con jamón serrano y finas hierbas.",p:140,c:"#e7b86a",tag:"Del mes"},
+  {id:"chu",n:"Churrol navideño",d:"Azúcar con canela estilo churro y cajeta.",p:130,c:"#d99a5b",tag:"Temporada"}
+];
+const FM=Object.fromEntries(FLV.map(f=>[f.id,f]));
+const SIZES=[{id:"ind",n:"Individual",d:"1 a 2 personas",p:95},{id:"med",n:"Mediana",d:"8 a 10 personas",p:520},{id:"fam",n:"Familiar",d:"15 a 18 personas",p:780}];
+const SM=Object.fromEntries(SIZES.map(s=>[s.id,s]));
+const RFLV=["Canela y queso crema","Chocolate","Red velvet"];
+const RDAYS=[{d:"2027-01-02",w:"Sáb",n:2},{d:"2027-01-03",w:"Dom",n:3},{d:"2027-01-04",w:"Lun",n:4},{d:"2027-01-05",w:"Mar",n:5},{d:"2027-01-06",w:"Mié",n:6}];
+const RCAP=120,DCAP=220,TCAP=14,MAXR=6;
+const TURNS=[];for(let m=540;m<=990;m+=30)TURNS.push(m);
+const NAMES=["Mariana G.","Sofía T.","Diego R.","Paola V.","Fernanda L.","Luis M.","Daniela O.","Regina B.","Camila R.","Jorge A.","Andrea M.","Valeria Q.","Emilio S.","Ximena D.","Natalia C.","Rodrigo P."];
+let NI=0;const nextName=()=>NAMES[(NI++)%NAMES.length];
+const $=s=>document.querySelector(s);const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;const pick=a=>a[Math.floor(Math.random()*a.length)];
+const peso=n=>"$"+Math.round(n).toLocaleString("es-MX");
+const hm=m=>{const h=Math.floor(m/60),mm=m%60;return `${h>12?h-12:h}:${String(mm).padStart(2,"0")}`};
+const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+function mty(){return new Date(new Date().toLocaleString("en-US",{timeZone:"America/Monterrey"}))}
+const now=mty(),nowMin=now.getHours()*60+now.getMinutes();
+const DAYS=[];{const d=new Date(now);for(let i=0;DAYS.length<6&&i<14;i++){const x=new Date(d);x.setDate(d.getDate()+i);if(x.getDay()===1)continue;if(i===0&&nowMin>960)continue;DAYS.push({d:iso(x),w:x.toLocaleDateString("es-MX",{weekday:"short"}).replace(".",""),n:x.getDate(),today:i===0})}}
+const S={day:DAYS[0].d,turn:null,cart:{},orders:[],rs:[],rsSize:"med",rsFlv:RFLV[0],rsDay:RDAYS[0].d,rsTime:"Mañana (9 a 12)",rsQty:1,cakes:[],pStyle:"Pintura en pastel",fila:0,mine:null,seq:300,view:"cliente",unseen:0};
+$("#tickerTxt").innerHTML=Array(2).fill("Cioccoroles<i>•</i>Cioccoroscas<i>•</i>Pasteles de galería<i>•</i>Brownies<i>•</i>Conchas<i>•</i>Art meets bakery<i>•</i>").join("");
+(function open(){const d=now.getDay(),open=d!==1&&nowMin>=540&&nowMin<1020;$("#openTxt").textContent=open?"Galería abierta · cierra 5:00 pm":(d===1?"Lunes cerrado · aparta para mañana":"Galería cerrada · aparta para el siguiente día")})();
+
+const rolesDay=d=>S.orders.filter(o=>o.day===d).reduce((s,o)=>s+o.qty,0);
+const rolesTurn=(d,t)=>S.orders.filter(o=>o.day===d&&o.turn===t).reduce((s,o)=>s+o.qty,0);
+const cartQty=()=>Object.values(S.cart).reduce((a,b)=>a+b,0);
+const rsDay=d=>S.rs.filter(r=>r.day===d).reduce((s,r)=>s+r.qty,0);
+const dayInfo=d=>DAYS.find(x=>x.d===d);
+
+function renderDays(){$("#days").innerHTML=DAYS.map(x=>{const l=DCAP-rolesDay(x.d);return `<button class="${S.day===x.d?"on":""}" data-day="${x.d}"><span>${x.today?"Hoy":x.w}</span><b>${x.n}</b><small>${l>0?"quedan "+l:"agotado"}</small></button>`}).join("");
+  const u=rolesDay(S.day);$("#capTxt").textContent=`${u} / ${DCAP}`;$("#capBar").style.width=Math.min(100,u/DCAP*100)+"%";}
+function renderFlv(){$("#flv").innerHTML=FLV.map(f=>{const q=S.cart[f.id]||0;return `<div class="rl ${q?"has":""}">${f.tag?`<span class="tag">${f.tag}</span>`:""}<div class="sw" style="background:${f.c}"><i></i></div><h4>${f.n}</h4><p>${f.d}</p><div class="bot"><span class="price">${peso(f.p)}</span><div class="stepper"><button data-f="${f.id}" data-n="-1" aria-label="Menos">&minus;</button><span>${q}</span><button data-f="${f.id}" data-n="1" aria-label="Más">+</button></div></div></div>`}).join("")}
+function renderSlots(){const di=dayInfo(S.day);const ts=TURNS.filter(t=>!(di.today&&t<nowMin+30));
+  if(S.turn===null||!ts.includes(S.turn)||rolesTurn(S.day,S.turn)+cartQty()>TCAP)S.turn=ts.find(t=>rolesTurn(S.day,t)+Math.max(1,cartQty())<=TCAP)??null;
+  $("#slots").innerHTML=ts.map(t=>{const l=TCAP-rolesTurn(S.day,t);const full=l<Math.max(1,cartQty());return `<button class="${S.turn===t?"on":""} ${full?"full":""}" data-t="${t}">${hm(t)}<small>${l<=0?"lleno":"quedan "+l}</small></button>`}).join("")||'<span class="slot-day">Ya no hay turnos hoy; elige otro día.</span>';
+  $("#slotHint").textContent=S.turn!==null?`Recoges entre ${hm(S.turn)} y ${hm(S.turn+30)}. Tu apartado se guarda 20 minutos después.`:"";}
+function renderRolPanel(){const di=dayInfo(S.day);$("#rolDay").textContent=`${di.today?"Hoy":di.w} ${di.n} · máximo ${MAXR} roles por persona.`;
+  const ls=FLV.filter(f=>S.cart[f.id]);$("#rolLines").innerHTML=ls.length?ls.map(f=>`<div class="sum-line"><span>${S.cart[f.id]} × ${f.n}</span><b>${peso(f.p*S.cart[f.id])}</b></div>`).join(""):'<div class="sum-line"><span>Agrega roles con el botón +</span><b>0</b></div>';
+  $("#rolTotal").textContent=peso(ls.reduce((s,f)=>s+f.p*S.cart[f.id],0));$("#badgeCart").textContent=cartQty();}
+function renderRoles(){renderDays();renderFlv();renderSlots();renderRolPanel()}
+
+function renderRoscas(){$("#sizes").innerHTML=SIZES.map(s=>`<button class="size ${S.rsSize===s.id?"on":""}" data-sz="${s.id}"><b>${s.n}</b><span>${s.d}</span><em>${peso(s.p)}</em></button>`).join("");
+  $("#rFlv").innerHTML=RFLV.map(f=>`<button class="${S.rsFlv===f?"on":""}" data-rf="${f}">${f}</button>`).join("");
+  $("#rDays").innerHTML=RDAYS.map(x=>{const l=RCAP-rsDay(x.d);return `<button class="${S.rsDay===x.d?"on":""} ${l<=0?"full":""}" data-rd="${x.d}"><span>${x.w}</span><b>${x.n}</b><small>${l>0?l+" lugares":"lleno"}</small></button>`}).join("");
+  const s=SM[S.rsSize],x=RDAYS.find(r=>r.d===S.rsDay);$("#rsSub").textContent=`${s.n} de ${S.rsFlv.toLowerCase()} · entrega ${x.w} ${x.n} de enero de 2027.`;
+  $("#rsQty").textContent=S.rsQty;$("#rsQtyTxt").textContent=S.rsQty+(S.rsQty>1?" roscas":" rosca");$("#rsTotal").textContent=peso(s.p*S.rsQty);}
+function renderFila(){$("#fBar").style.width=Math.min(100,S.fila/50*100)+"%";$("#fTxt").textContent=S.fila>=50?"Fila llena: los siguientes quedan en lista de espera":`${S.fila} de 50 lugares tomados`;}
+(function pMin(){const t=new Date(now);t.setDate(t.getDate()+10);$("#pDate").min=iso(t);$("#pDate").value=iso(t)})();
+
+document.addEventListener("click",e=>{
+  const dy=e.target.closest("[data-day]");if(dy){S.day=dy.dataset.day;S.turn=null;renderRoles();return}
+  const f=e.target.closest("[data-f]");if(f){const id=f.dataset.f,n=+f.dataset.n,cur=S.cart[id]||0;
+    if(n>0&&cartQty()>=MAXR){toast(`Máximo ${MAXR} roles por persona: así alcanza para más gente.`);return}
+    if(n>0&&rolesDay(S.day)+cartQty()>=DCAP){toast("Ya no quedan roles para este día. Prueba otro día.");return}
+    S.cart[id]=Math.max(0,cur+n);if(!S.cart[id])delete S.cart[id];renderFlv();renderSlots();renderRolPanel();return}
+  const t=e.target.closest("[data-t]");if(t){S.turn=+t.dataset.t;renderSlots();return}
+  const sz=e.target.closest("[data-sz]");if(sz){S.rsSize=sz.dataset.sz;renderRoscas();return}
+  const rf=e.target.closest("[data-rf]");if(rf){S.rsFlv=rf.dataset.rf;renderRoscas();return}
+  const rd=e.target.closest("[data-rd]");if(rd){S.rsDay=rd.dataset.rd;renderRoscas();return}
+  const rt=e.target.closest("[data-rt]");if(rt){S.rsTime=rt.dataset.rt;document.querySelectorAll("[data-rt]").forEach(b=>b.classList.toggle("on",b===rt));return}
+  const rq=e.target.closest("[data-rq]");if(rq){S.rsQty=Math.max(1,Math.min(5,S.rsQty+ +rq.dataset.rq));renderRoscas();return}
+  const rp=e.target.closest("[data-rp]");if(rp&&rp.dataset.rp==="anticipo"){toast("El anticipo en línea con tarjeta se activa en la fase 2.");return}
+  const ps=e.target.closest("[data-ps]");if(ps){S.pStyle=ps.dataset.ps;document.querySelectorAll("[data-ps]").forEach(b=>b.classList.toggle("on",b===ps));return}
+});
+$("#toRoles").onclick=()=>$("#roles").scrollIntoView({behavior:"smooth"});
+$("#rPhone").addEventListener("input",e=>{e.target.value=e.target.value.replace(/[^\d ]/g,"")});
+$("#sendRol").onclick=()=>{const err=$("#rolErr");err.textContent="";const q=cartQty(),nm=$("#rName").value.trim(),ph=$("#rPhone").value.replace(/\D/g,"");
+  if(!q){err.textContent="Agrega al menos un rol.";return}if(S.turn===null){err.textContent="Elige un turno de recogida.";return}
+  if(nm.length<2){err.textContent="Escribe tu nombre.";return}if(ph.length!==10){err.textContent="El WhatsApp debe tener 10 dígitos.";return}
+  const o=addOrder({day:S.day,turn:S.turn,items:{...S.cart},name:nm,mine:true});S.cart={};$("#rName").value="";$("#rPhone").value="";renderRoles();
+  const di=dayInfo(o.day);modal(`<div class="ticket-top" style="background:var(--ink)"><span class="chip" style="background:rgba(255,255,255,.18)"><span class="dot"></span>Apartado listo</span><h3 style="font-family:var(--display);text-transform:none">¡Listo, ${esc(nm.split(" ")[0])}!</h3><div style="opacity:.9;margin-top:6px">${di.today?"Hoy":di.w+" "+di.n} · recoges de ${hm(o.turn)} a ${hm(o.turn+30)}</div></div>
+  <div class="ticket-body">${Object.entries(o.items).map(([k,v])=>`<div class="tk-row"><span>${v} × ${FM[k].n}</span><b>${peso(FM[k].p*v)}</b></div>`).join("")}<div class="tk-row" style="border:0"><span>Total al recoger</span><b>${peso(total(o))}</b></div>
+  <div class="tk-code" style="justify-content:center;text-align:center"><div><span>Apartado ${o.id}</span><b>${o.code}</b><span>Dilo en mostrador y te lo entregan.</span></div></div>
+  <div class="tk-wa"><span>En el sistema real llega por WhatsApp con un recordatorio 30 minutos antes de tu turno.</span></div>
+  <button class="btn btn-g" data-go="cocina" style="background:var(--g)">Ver cómo le llega al mostrador</button><button class="btn btn-w" data-close>Seguir viendo la demo</button></div>`)};
+$("#sendRs").onclick=()=>{const err=$("#rsErr");err.textContent="";const nm=$("#rsName").value.trim();if(nm.length<3){err.textContent="Escribe tu nombre y WhatsApp.";return}
+  if(rsDay(S.rsDay)+S.rsQty>RCAP){err.textContent="Ya no hay lugar ese día; elige otro.";return}
+  S.seq++;const r={id:"RS-"+S.seq,code:String(rnd(1000,9999)),size:S.rsSize,flv:S.rsFlv,day:S.rsDay,time:S.rsTime,qty:S.rsQty,name:nm.split("·")[0].trim(),mine:true,fresh:true};S.rs.push(r);
+  feed(`<b>${r.id}</b> · ${r.qty} rosca${r.qty>1?"s":""} ${SM[r.size].n.toLowerCase()} · ${r.flv} · ${r.day.slice(8)} ene`);$("#rsName").value="";renderRoscas();refreshViews();bump();
+  const x=RDAYS.find(d=>d.d===r.day);modal(`<div class="ticket-top" style="background:#4b3a85"><span class="chip" style="background:rgba(255,255,255,.18)"><span class="dot"></span>Preventa apartada</span><h3 style="font-family:var(--display);text-transform:none">Tu rosca ya tiene lugar</h3><div style="opacity:.9;margin-top:6px">${x.w} ${x.n} de enero · ${r.time}</div></div>
+  <div class="ticket-body"><div class="tk-row"><span>${r.qty} × ${SM[r.size].n} · ${r.flv}</span><b>${peso(SM[r.size].p*r.qty)}</b></div>
+  <div class="tk-code" style="justify-content:center;text-align:center"><div><span>Preventa ${r.id}</span><b>${r.code}</b><span>Preséntalo al recoger.</span></div></div>
+  <div class="tk-wa"><span>Al cerrar la preventa, el equipo ve cuántas roscas hornear por día, tamaño y sabor.</span></div>
+  <button class="btn btn-g" data-go="cocina" style="background:#4b3a85">Ver la producción por día</button><button class="btn btn-w" data-close>Seguir viendo la demo</button></div>`)};
+$("#sendP").onclick=()=>{const err=$("#pErr");err.textContent="";const d=$("#pDate").value,nm=$("#pName").value.trim();
+  if(!d||d<$("#pDate").min){err.textContent="La fecha necesita al menos 10 días de anticipación.";return}if(nm.length<3){err.textContent="Escribe tu nombre y WhatsApp.";return}
+  S.seq++;const c={id:"P-"+S.seq,date:d,size:$("#pSize").value,style:S.pStyle,msg:$("#pMsg").value.trim()||"Sin detalles",name:nm.split("·")[0].trim(),st:"pend",mine:true,fresh:true};S.cakes.push(c);
+  feed(`<b>${c.id}</b> · Pastel ${c.style.toLowerCase()} · ${c.size} · ${fmtD(c.date)}`);$("#pName").value="";$("#pMsg").value="";refreshViews();bump();
+  modal(`<div class="ticket-top" style="background:var(--g)"><span class="chip" style="background:rgba(255,255,255,.2)"><span class="dot"></span>Solicitud enviada</span><h3 style="font-family:var(--display);text-transform:none">¡Gracias, ${esc(c.name.split(" ")[0])}!</h3><div style="opacity:.92;margin-top:6px">${c.style} · ${c.size} · ${fmtD(c.date)}</div></div><div class="ticket-body"><div class="tk-wa"><span>Ciocco recibe tu idea completa y te manda la cotización por WhatsApp.</span></div><button class="btn btn-g" data-go="cocina" style="background:var(--g)">Ver cómo le llega al equipo</button><button class="btn btn-w" data-close>Seguir viendo la demo</button></div>`)};
+$("#fGo").onclick=()=>{const nm=$("#fName").value.trim();if(nm.length<2){toast("Escribe tu nombre para formarte.");return}if(S.mine){toast("Ya tienes tu lugar en la fila.");return}
+  S.fila++;S.mine=S.fila;$("#fMine").textContent="#"+S.mine;$("#fMineTxt").textContent=S.mine<=50?`¡Alcanzaste lugar, ${nm.split(" ")[0]}! Tu código de canje es ${rnd(1000,9999)}.`:`Quedaste en lista de espera. Si alguien no llega, te avisamos.`;
+  $("#fName").value="";feed(`<b>Fila virtual</b> · ${esc(nm)} tomó el lugar #${S.mine}`);renderFila();refreshViews()};
+const fmtD=d=>new Date(d+"T12:00:00").toLocaleDateString("es-MX",{weekday:"short",day:"numeric",month:"short"});
+const total=o=>Object.entries(o.items).reduce((s,[k,v])=>s+FM[k].p*v,0);
+function addOrder({day,turn,items,name,mine=false}){S.seq++;const o={id:"A-"+S.seq,code:String(rnd(1000,9999)),day,turn,items,qty:Object.values(items).reduce((a,b)=>a+b,0),name,mine,done:false,fresh:true};S.orders.push(o);
+  feed(`<b>${o.id}</b> · ${o.qty} rol${o.qty>1?"es":""} · ${esc(name)} · turno ${hm(turn)}`);refreshViews();bump();setTimeout(()=>{o.fresh=false;if(S.view==="cocina")renderM()},6000);return o}
+function bump(){if(S.view!=="cocina"){S.unseen++;badge()}}
+function randItems(){const it={};const n=rnd(1,4);for(let i=0;i<n;i++){const f=pick(FLV).id;it[f]=(it[f]||0)+1}return it}
+function freeTurn(d,q){const di=dayInfo(d);const ts=TURNS.filter(t=>!(di.today&&t<nowMin+30)&&rolesTurn(d,t)+q<=TCAP);return ts.length?pick(ts):null}
+
+/* mostrador */
+$("#mWalk").onclick=()=>{const it=randItems(),q=Object.values(it).reduce((a,b)=>a+b,0),t=freeTurn(DAYS[0].d,q);if(t===null){toast("Ya no hay turnos libres hoy.");return}addOrder({day:DAYS[0].d,turn:t,items:it,name:nextName()});toast("Llegó un apartado nuevo (simulado)")};
+function renderM(){const d0=DAYS[0];$("#mDay").textContent=`${d0.today?"Hoy":d0.w} ${d0.n}`;
+  const os=S.orders.filter(o=>o.day===d0.d).sort((a,b)=>a.turn-b.turn);const pend=os.filter(o=>!o.done);
+  $("#mStats").innerHTML=`<div><b>${os.reduce((s,o)=>s+o.qty,0)}</b>roles apartados</div><div><b>${pend.length}</b>por entregar</div><div><b>${S.rs.reduce((s,r)=>s+r.qty,0)}</b>roscas en preventa</div><div><b>${S.cakes.filter(c=>c.st==="pend").length}</b>pasteles por cotizar</div>`;
+  const nextT=[...new Set(pend.map(o=>o.turn))].slice(0,3);
+  const vis=S.showAll?os:os.filter(o=>nextT.includes(o.turn)||o.mine);const hidden=os.length-vis.length;
+  const ordH=`<section class="ag"><header><b>${S.showAll?"Todos los apartados":"Próximos turnos"}</b><span>Se entregan con el código</span></header>${vis.map(o=>`<div class="ln ${o.done?"done":""} ${o.fresh?"fresh":""}"><div><span class="tm">${hm(o.turn)}</span><span class="who">${esc(o.name)}</span>${o.mine?' <span style="color:var(--g);font-weight:800;font-size:12px">(tu apartado)</span>':""}<div class="det">${Object.entries(o.items).map(([k,v])=>v+" "+FM[k].n).join(" · ")} · código ${o.code} · ${peso(total(o))}</div></div><button data-done="${o.id}">${o.done?"Entregado":"Entregar"}</button></div>`).join("")||'<div class="kempty">Sin apartados</div>'}${hidden>0||S.showAll?`<button class="mini ghost" data-all style="margin-top:10px">${S.showAll?"Ver solo próximos turnos":"Ver los "+hidden+" apartados de turnos posteriores"}</button>`:""}</section>`;
+  const fl=FLV.map(f=>[f,os.reduce((s,o)=>s+(o.items[f.id]||0),0)]);
+  const prodH=`<section class="ag"><header><b>Producción de hoy por sabor</b><span>Apartados, sin contar venta en mostrador</span></header><div class="prod">${fl.map(([f,v])=>`<div><b>${v}</b><span>${f.n.replace("Rol ","").replace("Cioccorol ","")}</span></div>`).join("")}</div></section>`;
+  const rsH=`<section class="ag"><header><b>Roscas 2027 por día</b><span>Preventa</span></header><div class="prod">${RDAYS.map(x=>`<div><b>${rsDay(x.d)}</b><span>${x.w} ${x.n} ene</span></div>`).join("")}</div>${S.rs.filter(r=>r.mine||r.fresh).map(r=>`<div class="ln fresh"><div><span class="who">${esc(r.name)}</span> <span style="color:var(--g);font-weight:800;font-size:12px">(tu preventa)</span><div class="det">${r.qty} × ${SM[r.size].n} · ${r.flv} · ${r.day.slice(8)} ene · ${r.time}</div></div></div>`).join("")}</section>`;
+  const pH=`<section class="ag"><header><b>Pasteles por encargo</b><span>Solicitudes para cotizar</span></header>${S.cakes.map(c=>`<div class="ln ${c.st==="ok"?"done":""} ${c.fresh?"fresh":""}"><div><span class="who">${esc(c.name)}</span>${c.mine?' <span style="color:var(--g);font-weight:800;font-size:12px">(tu solicitud)</span>':""}<div class="det">${c.style} · ${c.size} · ${fmtD(c.date)} · "${esc(c.msg)}"</div></div><button data-cot="${c.id}">${c.st==="ok"?"Cotizado":"Enviar cotización"}</button></div>`).join("")||'<div class="kempty">Sin solicitudes</div>'}</section>`;
+  $("#mw").innerHTML=prodH+ordH+rsH+pH;}
+document.addEventListener("click",e=>{
+  if(e.target.closest("[data-all]")){S.showAll=!S.showAll;renderM();return}
+  const d=e.target.closest("[data-done]");if(d){const o=S.orders.find(x=>x.id===d.dataset.done);o.done=!o.done;renderM();return}
+  const c=e.target.closest("[data-cot]");if(c){const x=S.cakes.find(y=>y.id===c.dataset.cot);if(x.st!=="ok"){x.st="ok";toast(`Cotización enviada por WhatsApp a ${x.name} (simulado)`)}renderM();return}
+});
+/* dueña */
+function renderOwn(){const d0=DAYS[0].d,os=S.orders.filter(o=>o.day===d0),q=os.reduce((s,o)=>s+o.qty,0);
+  $("#kRoles").textContent=q;$("#kRolesE").textContent=`de ${DCAP} de cupo`;$("#kInc").textContent=peso(os.reduce((s,o)=>s+total(o),0));
+  const rq=S.rs.reduce((s,r)=>s+r.qty,0);$("#kRs").textContent=rq;$("#kRsE").textContent=peso(S.rs.reduce((s,r)=>s+SM[r.size].p*r.qty,0))+" vendidos";$("#kP").textContent=S.cakes.filter(c=>c.st==="pend").length;
+  const fl=FLV.map(f=>[f.n,os.reduce((s,o)=>s+(o.items[f.id]||0),0)]).sort((a,b)=>b[1]-a[1]);const m=Math.max(1,...fl.map(x=>x[1]));
+  $("#oFlv").innerHTML=fl.map(([n,v])=>`<div class="bar"><span>${n.replace("Rol ","").replace("Cioccorol ","")}</span><div class="track"><div class="fill" style="width:${v/m*100}%;background:var(--g)"></div></div><span class="v">${v}</span></div>`).join("");
+  $("#oRs").innerHTML=RDAYS.map(x=>`<div class="bar"><span>${x.w} ${x.n} ene</span><div class="track"><div class="fill" style="width:${rsDay(x.d)/RCAP*100}%;background:#7e66c2"></div></div><span class="v">${rsDay(x.d)}/${RCAP}</span></div>`).join("");
+  $("#oFila").innerHTML=`<div class="flv top" style="background:var(--ink)"><b>${Math.min(S.fila,50)}/50</b><span>lugares tomados</span></div><div class="flv"><b>0</b><span>personas formadas en la calle</span></div>`;}
+function feed(h){const f=$("#feed");const d=document.createElement("div");d.innerHTML=`<span>${h}</span>`;f.prepend(d);while(f.children.length>12)f.lastChild.remove()}
+function setView(v){S.view=v;["cliente","cocina","dueno"].forEach(k=>$("#v-"+k).hidden=k!==v);document.querySelectorAll(".demobar [data-v]").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
+  if(v==="cocina"){S.unseen=0;badge();renderM()}if(v==="dueno")renderOwn();window.scrollTo(0,0)}
+document.querySelectorAll(".demobar [data-v]").forEach(b=>b.onclick=()=>setView(b.dataset.v));
+document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g){closeModal();setView(g.dataset.go);return}if(e.target.closest("[data-close]")||e.target.classList.contains("scrim"))closeModal()});
+function refreshViews(){if(S.view==="cocina")renderM();if(S.view==="dueno")renderOwn();if(S.view==="cliente"){renderDays();renderSlots()}}
+function badge(){const b=$("#badgeK");b.hidden=!S.unseen;b.textContent=S.unseen}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function modal(h){$("#layer").innerHTML=`<div class="scrim" role="dialog" aria-modal="true"><div class="modal">${h}</div></div>`}
+function closeModal(){$("#layer").innerHTML=""}
+let tT;function toast(m){document.querySelector(".toast")?.remove();const t=document.createElement("div");t.className="toast";t.innerHTML=`<span>${m}</span>`;document.body.append(t);clearTimeout(tT);tT=setTimeout(()=>t.remove(),4200)}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+
+/* datos de ejemplo */
+DAYS.forEach((x,i)=>{const target=i===0?rnd(120,160):Math.max(10,rnd(90,140)-i*18);let k=0,guard=0;while(k<target&&guard++<400){const it=randItems(),q=Object.values(it).reduce((a,b)=>a+b,0);const t=freeTurn(x.d,q);if(t===null)break;S.orders.push({id:"A-"+(++S.seq),code:String(rnd(1000,9999)),day:x.d,turn:t,items:it,qty:q,name:nextName(),done:x.today&&t<nowMin,fresh:false});k+=q}});
+[[0,96],[1,104],[2,61],[3,47],[4,112]].forEach(([i,n])=>{let k=0;while(k<n){const q=Math.min(rnd(1,2),n-k);S.rs.push({id:"RS-"+(++S.seq),code:"",size:pick(["ind","med","med","fam"]),flv:pick(RFLV),day:RDAYS[i].d,time:"",qty:q,name:"",fresh:false});k+=q}});
+S.cakes.push({id:"P-"+(++S.seq),date:"2026-12-05",size:"30 personas",style:"Pintura en pastel",msg:"Cumpleaños 30, estilo Monet en tonos lila",name:"Regina B.",st:"pend"},{id:"P-"+(++S.seq),date:"2027-02-14",size:"Boda (más de 80)",style:"Boda",msg:"Tres pisos, flores pintadas",name:"Andrea M.",st:"ok"});
+S.fila=37;
+S.orders.slice(-6).forEach(o=>feed(`<b>${o.id}</b> · ${o.qty} rol${o.qty>1?"es":""} · ${esc(o.name)} · turno ${hm(o.turn)}`));
+renderRoles();renderRoscas();renderFila();
+setInterval(()=>{if(document.hidden)return;const d=DAYS[0].d;const it=randItems(),q=Object.values(it).reduce((a,b)=>a+b,0),t=freeTurn(d,q);if(t===null)return;const o=addOrder({day:d,turn:t,items:it,name:nextName()});if(S.view==="cliente")toast(`${o.name} acaba de apartar ${o.qty} rol${o.qty>1?"es":""} para las ${hm(o.turn)}`)},30000);
+
+modal(`<div class="welcome"><span class="eyebrow">Demo para Ciocco Cakes</span>
+  <h3 style="font-family:var(--display);text-transform:none">Apartados sin fila, en un link</h3>
+  <p>Demo funcional preparada por Code Nova. Pruébela como clienta:</p>
+  <ol><li><b class="n">1</b><span>Aparte roles con turno de recogida (máximo 6 por persona) o una rosca 2027.</span></li>
+  <li><b class="n">2</b><span>Abajo, toque <b>Mostrador</b>: apartados por turno con código, producción por sabor y roscas por día.</span></li>
+  <li><b class="n">3</b><span>En <b>Dueña</b> vea cupo, ventas, sabores más pedidos y la fila virtual.</span></li></ol>
+  <button class="btn btn-g" data-close style="background:var(--ink)">Empezar</button><p style="font-size:12px;margin-top:12px;text-align:center">Productos, precios y cifras de ejemplo.</p></div>`);
+})();
+</script>
+</body>
+</html>
