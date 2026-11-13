@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Teo Burger · Pedidos directos (demo)</title>
+<meta name="theme-color" content="#1a1411">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Teo Burger · Demo de pedidos directos">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: pedidos para recoger y a domicilio sin comisión, pantalla de cocina por sucursal y panel del dueño.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<style>
+:root{
+  --g:#e4572e; --g-d:#c1401b; --g-dd:#8a2d12; --g-l:#fde6dc; --g-ll:#fff5ef;
+  --ink:#1a1411; --ink-2:#3a2f29; --muted:#76695f; --line:#eadfd2;
+  --paper:#f7f0e5; --cream:#fffaf2; --mustard:#f2b632;
+  --red:#d93a2b; --amber:#f0a023;
+  --r:18px; --sh:0 10px 30px -12px rgba(26,20,17,.3);
+  --display:"Anton","Archivo",system-ui,sans-serif;
+  --body:"Archivo",system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+.btn{text-decoration:none}
+.menu-grid>*,.ev-grid>*,.own-grid>*{min-width:0}
+.item .desc{overflow-wrap:anywhere}
+.topbar{background:rgba(26,20,17,.94);border-color:#2e241f;color:#fff}
+.brand-mark{background:var(--g);box-shadow:none}
+.brand-name small{color:var(--mustard)}
+.cart-btn{background:var(--g)}
+.cart-btn b{background:var(--ink)}
+.hero{background:var(--ink)}
+.hero::before{opacity:.05}
+.hero::after{content:"";position:absolute;inset:auto -10% -55% 30%;height:120%;background:radial-gradient(closest-side,rgba(228,87,46,.45),transparent);pointer-events:none}
+.hero h1 span{color:var(--g)}
+.hero .btn-g{background:var(--g)}
+.hero .btn-g:hover{background:var(--g-d)}
+.status{background:rgba(255,255,255,.1);color:#fff}
+.status.closed{color:#ffd28a}
+.hero-photo{position:relative;border-radius:26px;overflow:hidden;transform:rotate(-2deg);box-shadow:0 34px 60px -24px rgba(0,0,0,.7);border:8px solid #2e241f;background:#2e241f}
+.hero-photo img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}
+.hero-photo figcaption,.foto-note{position:absolute;left:12px;bottom:10px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(26,20,17,.6);color:#fff;border-radius:999px;padding:3px 9px}
+.since{background:var(--mustard);color:var(--ink);right:-6px;top:-22px;z-index:2}
+.since b{color:var(--ink)}
+.ticker i{color:var(--g)}
+.mode{display:inline-flex;background:#fff;border-radius:999px;padding:5px;box-shadow:inset 0 0 0 1.5px var(--line);margin-bottom:16px}
+.mode button{height:44px;padding:0 20px;border-radius:999px;font-weight:800;font-size:15px;display:flex;align-items:center;gap:8px}
+.mode button.on{background:var(--ink);color:#fff}
+.branches{grid-template-columns:repeat(4,1fr)}
+.branch.on{box-shadow:inset 0 0 0 2.5px var(--g),0 12px 24px -14px rgba(228,87,46,.7)}
+.branch .both{position:absolute;top:12px;right:12px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--mustard);color:var(--ink);border-radius:999px;padding:3px 8px}
+.tabs button .soon{font-size:10px;background:var(--mustard);color:var(--ink);border-radius:999px;padding:2px 7px;margin-left:6px;font-weight:800}
+.item.off{opacity:.45}
+.item.off .stepper,.item.off .quick{pointer-events:none}
+.lock-note{grid-column:1/-1;background:#fff7e3;border-radius:14px;padding:12px 14px;font-size:13.5px;color:#6b4708;box-shadow:inset 0 0 0 1px #f3dfb5}
+.lock-note button{font-weight:800;text-decoration:underline}
+.item .pic{background:var(--g-ll)}
+.item .pic img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.item .pic .tag{position:absolute;left:8px;bottom:8px;background:#fff;border-radius:999px;padding:3px 9px;font-size:11px;font-weight:800}
+.addr{display:grid;gap:8px}
+.ship{display:flex;justify-content:space-between;font-size:14px;margin-top:6px;color:var(--muted)}
+.duo{background:var(--ink);color:#fff;position:relative;overflow:hidden}
+.duo .wrap{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}
+.duo h2{font-size:clamp(40px,6vw,64px);margin:10px 0 14px}
+.duo h2 span{color:var(--mustard)}
+.duo p{color:#cfc3b8;line-height:1.55;max-width:460px}
+.duo .eyebrow{color:var(--mustard)}
+.duo figure{position:relative;border-radius:22px;overflow:hidden;border:6px solid #2e241f}
+.duo figure img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}
+.duo ul{list-style:none;margin-top:18px;display:grid;gap:10px}
+.duo li{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;line-height:1.45;color:#eadfd2}
+.duo li b{flex:none;width:26px;height:26px;border-radius:50%;background:var(--g);color:#fff;display:grid;place-items:center;font-size:12px}
+.locs{grid-template-columns:repeat(4,1fr)}
+.loc h4{color:var(--g-d)}
+/* dueño extra */
+.calc-own{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.calc-own label{font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;display:flex;flex-direction:column;gap:6px}
+.calc-own input{height:44px;border-radius:12px;border:1.5px solid var(--line);padding:0 12px;font-weight:800;font-size:16px;background:var(--cream);width:100%}
+.save{margin-top:14px;background:var(--ink);color:#fff;border-radius:16px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.save b{font-family:var(--display);font-weight:400;font-size:40px;color:var(--mustard);line-height:1}
+.save span{font-size:13px;color:#cfc3b8;max-width:300px;line-height:1.4}
+.chan{display:flex;height:22px;border-radius:999px;overflow:hidden;margin:6px 0 12px}
+.chan i{display:block;height:100%;transition:width .6s}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;font-weight:700}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.tk-h .src.del{background:#e3edff;color:#1f4fa3}
+.tk-h .src.tac{background:#fff1d6;color:#8a5a0b}
+@media (max-width:980px){.branches,.locs{grid-template-columns:repeat(2,1fr)}.duo .wrap{grid-template-columns:1fr}.calc-own{grid-template-columns:1fr 1fr 1fr}}
+@media (max-width:720px){.branches .branch:last-child{grid-column:auto}.locs{grid-template-columns:1fr}.calc-own{grid-template-columns:1fr}.mode{display:flex}.mode button{flex:1;justify-content:center;padding:0 10px}}
+</style>
+</head>
+<body>
+
+<main id="v-cliente">
+  <div class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <div class="brand-mark"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 10a8 6 0 0 1 16 0z" fill="#fff"/><rect x="3" y="12" width="18" height="3" rx="1.5" fill="#fff"/><path d="M4 17h16a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3z" fill="#fff"/></svg></div>
+        <div class="brand-name">Teo Burger<small>Desde 1982 · al carbón</small></div>
+      </div>
+      <button class="cart-btn" id="cartBtn" aria-label="Ver mi pedido">Mi pedido <b id="cartCount">0</b></button>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="chip status" id="statusChip"><span class="dot pulse"></span><span id="statusTxt">Abierto</span></span>
+        <h1 class="display">Tu Teo de siempre,<span>pedido directo.</span></h1>
+        <p class="lead">Hamburguesas al carbón y tortas desde 1982. Pide aquí para recoger en tu sucursal o para que te lo llevemos, sin apps de por medio.</p>
+        <div class="actions">
+          <a class="btn btn-g" href="#pedido">Pedir ahora</a>
+          <a class="btn btn-w" href="#teotacos">Conoce Teo Tacos</a>
+        </div>
+      </div>
+      <div class="hero-art">
+        <div class="since"><div><b>1982</b><span>Al<br>carbón</span></div></div>
+        <figure class="hero-photo"><img src="img/burger.webp" alt="Hamburguesa al carbón con papas a la francesa" width="800" height="533"><figcaption>Foto ilustrativa</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true"><div id="tickerTxt"></div></div>
+
+  <section class="section" id="pedido">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="eyebrow"><span class="step-num">1</span>Sucursal</span><h2 class="display">¿Cómo lo quieres?</h2></div>
+        <p>Cada sucursal recibe sus pedidos en su propia pantalla. El tiempo estimado sale de las órdenes que ya tiene en fila.</p>
+      </div>
+      <div class="mode" id="mode">
+        <button class="on" data-mode="recoger"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 8h14l-1.2 11H6.2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 8V6a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="2"/></svg>Para recoger</button>
+        <button data-mode="domicilio"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="7" cy="18" r="2" fill="currentColor"/><circle cx="17" cy="18" r="2" fill="currentColor"/></svg>A domicilio</button>
+      </div>
+      <div class="branches" id="branches"></div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="eyebrow"><span class="step-num">2</span>Menú</span><h2 class="display">Arma tu orden</h2></div>
+        <p><b>Precios de ejemplo.</b> En el sistema real se cargan los suyos y se cambian desde el panel en segundos.</p>
+      </div>
+      <div class="menu-grid">
+        <div>
+          <div class="tabs" id="tabs"></div>
+          <div class="items" id="items"></div>
+        </div>
+        <aside class="order-card" id="orderCard">
+          <header><b>Mi pedido</b><span id="ocBranch">Sucursal Tec</span></header>
+          <div class="oc-body">
+            <div class="oc-lines" id="ocLines"></div>
+            <div class="field" id="fWhen">
+              <label><span class="step-num" style="width:22px;height:22px;font-size:11px">3</span><span id="whenLbl">Hora de recogida</span></label>
+              <div class="slots" id="slots"></div>
+            </div>
+            <div class="field" id="fAddr" hidden>
+              <label for="fStreet">Dirección de entrega</label>
+              <div class="addr"><input id="fStreet" placeholder="Calle y número" autocomplete="off"><input id="fCol" placeholder="Colonia" autocomplete="off"></div>
+              <div class="ship"><span>Envío propio (ejemplo)</span><b id="shipFee">$35</b></div>
+            </div>
+            <div class="field"><label for="fName">Nombre</label><input id="fName" placeholder="¿A nombre de quién?" autocomplete="off"></div>
+            <div class="field"><label for="fPhone">WhatsApp</label><input id="fPhone" inputmode="tel" placeholder="10 dígitos" maxlength="14" autocomplete="off"></div>
+            <div class="field">
+              <label>Pago</label>
+              <div class="pay" id="pay">
+                <button class="on" data-p="entrega">Al recibir<small>Efectivo o tarjeta</small></button>
+                <button data-p="linea">En línea<small>Tarjeta (fase 2)</small></button>
+              </div>
+            </div>
+            <div class="totals"><span>Total</span><b id="ocTotal">$0</b></div>
+            <button class="btn btn-g" id="sendOrder">Enviar pedido a cocina</button>
+            <div class="err" id="ocErr"></div>
+            <div class="note-ex">Demo: el pedido no sale de esta página. Llega a la vista "Cocina".</div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section duo" id="teotacos">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Nuevo · Luis Elizondo</span>
+        <h2 class="display">Dos marcas,<span> un solo pedido.</span></h2>
+        <p>Teo Tacos ya abrió junto a Teo Burger Tec. Con este sistema el cliente pide hamburguesas y tacos en la misma orden, y cada cocina recibe solo lo que le toca.</p>
+        <ul>
+          <li><b>1</b><span>El menú de Teo Tacos aparece solo en las sucursales donde existe.</span></li>
+          <li><b>2</b><span>La comanda se separa: la parrilla de burgers y la de tacos ven cada quien lo suyo.</span></li>
+          <li><b>3</b><span>En el panel ven las ventas de cada marca por separado.</span></li>
+        </ul>
+      </div>
+      <figure><img src="img/tacos.webp" alt="Tacos de asada en tortilla de harina" width="800" height="533"><figcaption class="foto-note">Foto ilustrativa</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="sec-head"><div><span class="eyebrow">Sucursales</span><h2 class="display">Ya estamos en todos lados</h2></div><p>Algunas de sus sucursales, tomadas de sus listados en apps. En el sistema real aparecen todas, con su horario y su zona de entrega.</p></div>
+      <div class="locs" id="locs"></div>
+    </div>
+  </section>
+
+  <footer class="site wrap">
+    <b>Demo concepto preparada por Code Nova para Teo Burger.</b><br>
+    No es el sitio oficial. Precios, pedidos, cifras y horarios son de ejemplo; las direcciones vienen de sus listados en apps de entrega. Fotos ilustrativas.<br>
+    Code Nova · Nuevo León · WhatsApp 826 261 3262
+  </footer>
+</main>
+
+<main id="v-cocina" class="kds" hidden>
+  <div class="kds-top">
+    <h2><small>Pantalla de cocina</small><span id="kdsTitle">Sucursal Tec</span></h2>
+    <div class="kds-ctrl">
+      <select id="kdsBranch" aria-label="Sucursal"></select>
+      <button id="kdsSound" class="on" aria-pressed="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 9a4 4 0 0 1 0 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Sonido</button>
+      <button id="kdsSim"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>Simular pedido</button>
+      <span class="kds-clock" id="kdsClock">--:--</span>
+    </div>
+  </div>
+  <div class="kds-stats" id="kdsStats"></div>
+  <div class="kds-cols">
+    <section class="kcol c-new"><h3>Nuevos <b id="cNew">0</b></h3><div id="colNew"></div></section>
+    <section class="kcol c-prep"><h3>En la parrilla <b id="cPrep">0</b></h3><div id="colPrep"></div></section>
+    <section class="kcol c-ready"><h3>Listos / en camino <b id="cReady">0</b></h3><div id="colReady"></div></section>
+  </div>
+</main>
+
+<main id="v-dueno" class="own" hidden>
+  <div class="own-top">
+    <div class="wrap">
+      <h2><small>Panel del dueño</small>Todas las sucursales, hoy</h2>
+      <span class="chip live"><span class="dot pulse"></span>En vivo · <span id="ownDate"></span></span>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="kpis">
+      <div class="kpi"><span>Ventas de hoy</span><b id="kSales">$0</b><em id="kSalesE"></em></div>
+      <div class="kpi"><span>Pedidos</span><b id="kOrders">0</b><em id="kOrdersE"></em></div>
+      <div class="kpi"><span>Ticket promedio</span><b id="kAvg">$0</b><em>Todas las sucursales</em></div>
+      <div class="kpi"><span>Comisión ahorrada hoy</span><b id="kSaved">$0</b><em>Pedidos directos vs. apps</em></div>
+    </div>
+    <div class="own-grid">
+      <div class="card"><h3>Ventas por sucursal <small>pesos, hoy</small></h3><div class="bars" id="barBranches"></div></div>
+      <div class="card"><h3>¿Por dónde llegan los pedidos? <small>hoy</small></h3>
+        <div class="chan" id="chan"></div><div class="legend" id="legend"></div>
+        <h3 style="margin-top:20px">Teo Burger vs. Teo Tacos <small>pesos, hoy</small></h3><div class="bars" id="brandBars"></div></div>
+      <div class="card"><h3>Lo que se va en comisiones <small>ajústalo con sus números</small></h3>
+        <div class="calc-own">
+          <label>Pedidos en apps al día<input id="cOrders" type="number" min="0" value="80"></label>
+          <label>Ticket promedio ($)<input id="cTicket" type="number" min="0" value="260"></label>
+          <label>Comisión de la app (%)<input id="cPct" type="number" min="0" max="60" value="20"></label>
+        </div>
+        <div class="save"><div><b id="cMonth">$0</b></div><span>al mes en comisiones. Cada pedido que pasa a su canal propio es dinero que se queda en la sucursal.</span></div>
+        <p style="font-size:12px;color:var(--muted);margin-top:10px">Números de ejemplo: pongan el porcentaje que les cobra hoy cada app.</p></div>
+      <div class="card"><h3>Lo más pedido <small>piezas, hoy</small></h3><div class="flavors" id="flavors"></div>
+        <h3 style="margin-top:20px">Pedidos por hora</h3><div class="hours" id="hours"></div></div>
+      <div class="card" style="grid-column:1/-1"><h3>Pedidos directos <small>en tiempo real</small></h3><div class="feed" id="feed"></div></div>
+    </div>
+    <div class="own-foot">Cifras de ejemplo para la demo. En el sistema real salen de las ventas de cada sucursal.</div>
+  </div>
+</main>
+
+<nav class="demobar" aria-label="Vistas de la demo">
+  <span class="lbl"><b>Demo</b>Code Nova</span>
+  <button data-v="cliente" class="on">Cliente</button>
+  <button data-v="cocina">Cocina<span class="badge" id="badgeK" hidden>0</span></button>
+  <button data-v="dueno">Dueño</button>
+</nav>
+<div id="layer"></div>
+
+<script>
+(()=>{
+const BR=[
+  {id:"tec",n:"Tec",a:"Av. Luis Elizondo 325, Alta Vista, Monterrey",tacos:true},
+  {id:"cumbres",n:"Cumbres",a:"Paseo de los Leones 2859, Cumbres Elite 4to Sector"},
+  {id:"cerroazul",n:"Cerro Azul",a:"Av. Maestro Israel Cavazos Garza 315, Guadalupe"},
+  {id:"dosjunio",n:"2 de Junio",a:"Av. Benito Juárez, Dos de Junio 2do Sector, Guadalupe"},
+  {id:"central",n:"Central de Carga",a:"Calle C 790, Central de Carga, Guadalupe"},
+  {id:"escobedo",n:"Escobedo",a:"Av. Raúl Salinas Lozano 601, Nueva California"},
+  {id:"pinos",n:"Los Pinos",a:"Av. Las Torres 1000, Los Pinos, San Nicolás"}
+];
+const CATS=[["burgers","Hamburguesas"],["combos","Combos"],["tacos","Teo Tacos"],["extras","Papas y bebidas"]];
+const M=[
+  {id:"sen",c:"burgers",n:"Sencilla al carbón",d:"La clásica: carne al carbón, queso, verduras.",p:65,art:"burger"},
+  {id:"esp",c:"burgers",n:"Especial",d:"Con jamón, queso y tocino.",p:89,art:"burger"},
+  {id:"dob",c:"burgers",n:"Doble",d:"Dos carnes al carbón, doble queso.",p:115,art:"burger"},
+  {id:"haw",c:"burgers",n:"Hawaiana",d:"Con piña asada y jamón.",p:95,art:"burger"},
+  {id:"tor",c:"burgers",n:"Torta de asada",d:"En pan telera, con aguacate.",p:85,art:"burger"},
+  {id:"box",c:"combos",n:"Teito Box",d:"Para compartir: burgers, papas y refrescos.",p:189,art:"burger"},
+  {id:"cmb",c:"combos",n:"Combo especial",d:"Especial + papas + refresco.",p:139,art:"burger"},
+  {id:"tas",c:"tacos",n:"Tacos de asada",d:"Orden de 5, harina o maíz.",p:105,art:"tacos",brand:"tacos"},
+  {id:"tba",c:"tacos",n:"Tacos de barbacoa",d:"Orden de 5.",p:105,art:"tacos",brand:"tacos"},
+  {id:"tpi",c:"tacos",n:"Tacos de pierna",d:"Orden de 5.",p:95,art:"tacos",brand:"tacos"},
+  {id:"bur",c:"tacos",n:"Burrito de asada",d:"Tortilla de harina grande.",p:89,art:"tacos",brand:"tacos"},
+  {id:"jal",c:"tacos",n:"Jalapeños rellenos",d:"Orden de 4.",p:69,art:"tacos",brand:"tacos"},
+  {id:"pap",c:"extras",n:"Papas a la francesa",d:"Porción para uno.",p:45,art:"fries"},
+  {id:"ref",c:"extras",n:"Refresco",d:"Botella 355 ml.",p:30,art:"soda"}
+];
+const MAP=Object.fromEntries(M.map(x=>[x.id,x]));
+const NAMES=["Mariana G.","Luis F.","Sofía T.","Jorge R.","Ana P.","Diego M.","Paola V.","Roberto C.","Fernanda L.","Héctor S.","Valeria Q.","Andrés N.","Daniela O.","Carlos E.","Regina B."];
+const peso=n=>"$"+Math.round(n).toLocaleString("es-MX");
+const $=s=>document.querySelector(s);
+const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function mty(){return new Date(new Date().toLocaleString("en-US",{timeZone:"America/Monterrey"}))}
+const mins=d=>d.getHours()*60+d.getMinutes();
+const hhmm=d=>{let h=d.getHours(),m=d.getMinutes(),ap=h>=12?"pm":"am";h=h%12||12;return h+":"+String(m).padStart(2,"0")+" "+ap};
+const OPEN=600,CLOSE=1439; /* 10:00 a 23:59, ejemplo */
+const SHIP=35;
+const S={branch:"tec",mode:"recoger",cat:"burgers",cart:{},slot:"asap",orders:[],seq:2210,kdsBranch:"tec",sound:true,unseen:0,view:"cliente",audio:null};
+
+$("#tickerTxt").innerHTML=Array(2).fill("Al carbón<i>/</i>Desde 1982<i>/</i>Hamburguesas<i>/</i>Tortas<i>/</i>Teo Tacos<i>/</i>Pedido directo<i>/</i>Para recoger o a domicilio<i>/</i>").join("");
+
+function art(it){
+  if(it.art==="burger")return `<img src="img/burger-card.webp" alt=""><span class="tag" style="color:var(--g-d)">Teo Burger</span>`;
+  if(it.art==="tacos")return `<img src="img/tacos-card.webp" alt=""><span class="tag" style="color:#8a5a0b">Teo Tacos</span>`;
+  if(it.art==="fries")return `<svg viewBox="0 0 200 120" style="width:80%"><path d="M70 50h60l-8 60H78z" fill="#e4572e"/>${[0,1,2,3,4,5].map(i=>`<rect x="${74+i*9}" y="${18+(i%3)*6}" width="7" height="44" rx="2" fill="#f2b632"/>`).join("")}<path d="M70 50h60l-8 60H78z" fill="#e4572e"/></svg>`;
+  return `<svg viewBox="0 0 200 120" style="width:80%"><path d="M92 6h16v18q16 14 16 36v48a6 6 0 0 1-6 6H82a6 6 0 0 1-6-6V60q0-22 16-36z" fill="#3a2a22"/><rect x="76" y="60" width="48" height="24" fill="#e4572e"/></svg>`;
+}
+function openState(){const m=mins(mty());return m>=OPEN&&m<CLOSE?{open:true,txt:"Abierto · pedidos hasta las 11:45 pm"}:{open:false,txt:"Cerrado ahora · programa tu pedido desde las 10:00 am"}}
+function paintStatus(){const s=openState();$("#statusTxt").textContent=s.txt;$("#statusChip").classList.toggle("closed",!s.open)}
+function queue(bid){return S.orders.filter(o=>o.b===bid&&(o.st==="new"||o.st==="prep")).length}
+function eta(bid){return (S.mode==="domicilio"?25:10)+queue(bid)*3}
+const curBr=()=>BR.find(b=>b.id===S.branch);
+
+function renderBranches(){
+  $("#branches").innerHTML=BR.map(b=>`<button class="branch ${S.branch===b.id?"on":""}" data-b="${b.id}">
+    ${b.tacos?`<span class="both">+ Teo Tacos</span>`:""}
+    <div class="pin"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" stroke="#c1401b" stroke-width="2.2"/><path d="M12 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" stroke="#c1401b" stroke-width="2.2"/></svg></div>
+    <h3>${b.n}</h3><p>${b.a}</p>
+    <div class="eta" style="color:var(--g-dd)"><span class="dot" style="color:${queue(b.id)>3?"#f0a023":"#2fa75a"}"></span>${S.mode==="domicilio"?"Llega en":"Listo en"} ~${eta(b.id)} min · ${queue(b.id)} en fila</div>
+  </button>`).join("");
+  $("#ocBranch").textContent="Sucursal "+curBr().n;
+}
+function renderTabs(){$("#tabs").innerHTML=CATS.map(([k,l])=>`<button class="${S.cat===k?"on":""}" data-c="${k}">${l}${k==="tacos"?'<span class="soon">Nuevo</span>':""}</button>`).join("")}
+function renderItems(){
+  const lock=S.cat==="tacos"&&!curBr().tacos;
+  $("#items").innerHTML=(lock?`<div class="lock-note">Teo Tacos por ahora está solo en la sucursal Tec. <button data-b="tec">Cambiar a Tec</button> para pedir tacos y hamburguesas juntos.</div>`:"")+M.filter(x=>x.c===S.cat).map(it=>{
+    const q=S.cart[it.id]||0;
+    return `<article class="item ${lock?"off":""}"><div class="pic">${art(it)}</div><div class="main">
+      <h4>${it.n}</h4><p class="desc">${it.d}</p>
+      <div class="row"><span class="price">${peso(it.p)}</span>
+      <div class="stepper"><button data-add="${it.id}" data-n="-1" aria-label="Quitar">&minus;</button><span>${q}</span><button data-add="${it.id}" data-n="1" aria-label="Agregar">+</button></div></div>
+    </div></article>`}).join("");
+}
+const sub=(c=S.cart)=>Object.entries(c).reduce((s,[k,q])=>s+MAP[k].p*q,0);
+const cnt=(c=S.cart)=>Object.values(c).reduce((a,b)=>a+b,0);
+function renderCart(){
+  const e=Object.entries(S.cart).filter(([,q])=>q>0);
+  $("#ocLines").innerHTML=e.length?e.map(([k,q])=>`<div class="oc-line"><span><em>${q}×</em>${MAP[k].n}</span><b>${peso(MAP[k].p*q)}</b></div>`).join(""):`<div class="oc-empty">Agrega algo del menú</div>`;
+  const ship=S.mode==="domicilio"&&e.length?SHIP:0;
+  $("#ocTotal").textContent=peso(sub()+ship);
+  $("#cartCount").textContent=cnt();
+  $("#fAddr").hidden=S.mode!=="domicilio";
+  $("#whenLbl").textContent=S.mode==="domicilio"?"¿Cuándo lo entregamos?":"Hora de recogida";
+}
+function buildSlots(){
+  const n=mty(),m=mins(n);const opts=[];
+  const open=m>=OPEN&&m<CLOSE-15;
+  if(open)opts.push(["asap",`Lo antes posible · ~${eta(S.branch)} min`]);
+  let start=Math.ceil((m+30)/15)*15;if(!open||start<OPEN)start=OPEN+30;
+  for(let t=start,i=0;t<=CLOSE-14&&i<10;t+=15,i++){const d=new Date(n);d.setHours(Math.floor(t/60),t%60,0,0);opts.push([String(t),(open?"":"Mañana ")+hhmm(d)])}
+  if(!opts.find(o=>o[0]===String(S.slot)))S.slot=opts[0][0];
+  $("#slots").innerHTML=opts.map(([v,l])=>`<button class="${String(S.slot)===v?"on":""}" data-s="${v}">${l}</button>`).join("");
+}
+function renderLocs(){$("#locs").innerHTML=BR.map(b=>`<div class="loc"><h4>${b.n}</h4><p>${b.a}</p><div class="hrs">${b.tacos?"Teo Burger + Teo Tacos":"Teo Burger"}</div><div style="color:var(--muted)">Para recoger y a domicilio</div></div>`).join("")}
+
+document.addEventListener("click",e=>{
+  const md=e.target.closest("[data-mode]");if(md){S.mode=md.dataset.mode;document.querySelectorAll("[data-mode]").forEach(b=>b.classList.toggle("on",b===md));renderBranches();renderCart();buildSlots();return}
+  const b=e.target.closest("[data-b]");if(b){S.branch=b.dataset.b;
+    if(!curBr().tacos){let rm=false;Object.keys(S.cart).forEach(k=>{if(MAP[k].brand==="tacos"){delete S.cart[k];rm=true}});if(rm)toast("Quitamos los tacos: Teo Tacos solo está en la sucursal Tec.")}
+    renderBranches();renderItems();renderCart();buildSlots();return}
+  const c=e.target.closest("[data-c]");if(c){S.cat=c.dataset.c;renderTabs();renderItems();return}
+  const a=e.target.closest("[data-add]");if(a){const id=a.dataset.add;S.cart[id]=Math.max(0,(S.cart[id]||0)+ +a.dataset.n);if(!S.cart[id])delete S.cart[id];renderItems();renderCart();const cb=$("#cartBtn");cb.classList.remove("bump");void cb.offsetWidth;cb.classList.add("bump");return}
+  const s=e.target.closest("[data-s]");if(s){S.slot=s.dataset.s;buildSlots();return}
+  const p=e.target.closest("[data-p]");if(p&&p.dataset.p==="linea"){toast("El pago en línea con tarjeta se activa en la fase 2.");return}
+});
+$("#cartBtn").onclick=()=>$("#orderCard").scrollIntoView({behavior:"smooth",block:"start"});
+$("#fPhone").addEventListener("input",e=>{e.target.value=e.target.value.replace(/[^\d ]/g,"")});
+$("#sendOrder").onclick=()=>{
+  const err=$("#ocErr");err.textContent="";
+  const name=$("#fName").value.trim(),ph=$("#fPhone").value.replace(/\D/g,"");
+  if(!cnt()){err.textContent="Agrega al menos un producto.";return}
+  if(S.mode==="domicilio"&&($("#fStreet").value.trim().length<4||$("#fCol").value.trim().length<3)){err.textContent="Escribe la calle, número y colonia.";return}
+  if(name.length<2){err.textContent="Escribe el nombre para el pedido.";$("#fName").focus();return}
+  if(ph.length!==10){err.textContent="El WhatsApp debe tener 10 dígitos.";$("#fPhone").focus();return}
+  const o=newOrder({b:S.branch,name,items:{...S.cart},slot:S.slot,mode:S.mode,src:"directo",mine:true,addr:S.mode==="domicilio"?$("#fCol").value.trim():""});
+  ensureAudio();showTicket(o);
+  S.cart={};renderItems();renderCart();["#fName","#fPhone","#fStreet","#fCol"].forEach(x=>$(x).value="");
+};
+function slotTxt(o){if(o.slot==="asap")return"Lo antes posible";const t=+o.slot,d=mty();d.setHours(Math.floor(t/60),t%60,0,0);return hhmm(d)}
+function newOrder({b,name,items,slot,mode="recoger",src="directo",mine=false,addr=""}){
+  S.seq++;
+  const brands=[...new Set(Object.keys(items).map(k=>MAP[k].brand||"burger"))];
+  const o={id:"T-"+S.seq,code:String(rnd(1000,9999)),b,name,items,slot,mode,src,mine,addr,brands,st:"new",
+    total:sub(items)+(mode==="domicilio"?SHIP:0),created:Date.now(),fresh:true,hour:mty().getHours()};
+  S.orders.push(o);
+  if(b===S.kdsBranch&&S.view!=="cocina"){S.unseen++;paintBadge()}
+  if(b===S.kdsBranch&&S.sound&&S.view==="cocina")chime();
+  feedLine(o);refreshAll();
+  setTimeout(()=>{o.fresh=false;if(S.view==="cocina")renderKDS()},6000);
+  return o;
+}
+function showTicket(o){
+  const b=BR.find(x=>x.id===o.b);
+  const lines=Object.entries(o.items).map(([k,q])=>`<div class="tk-row"><span>${q}× ${MAP[k].n}</span><b>${peso(MAP[k].p*q)}</b></div>`).join("");
+  modal(`<div class="ticket-top" style="background:var(--ink)"><span class="chip" style="background:rgba(228,87,46,.3)"><span class="dot"></span>Pedido recibido</span><h3>¡Gracias, ${esc(o.name.split(" ")[0])}!</h3><div style="opacity:.85;margin-top:6px">${o.mode==="domicilio"?"A domicilio desde":"Recoger en"} ${b.n} · ${slotTxt(o)}</div></div>
+  <div class="ticket-body">${lines}${o.mode==="domicilio"?`<div class="tk-row"><span>Envío</span><b>${peso(SHIP)}</b></div>`:""}
+    <div class="tk-row" style="border:0"><span>Total</span><b style="font-size:18px">${peso(o.total)}</b></div>
+    <div class="tk-code" style="justify-content:center;text-align:center"><div><span>Pedido ${o.id}</span><b>${o.code}</b><span>${o.mode==="domicilio"?"El repartidor te pedirá este código.":"Dilo en caja al recoger."}</span></div></div>
+    <div class="tk-wa"><span>En el sistema real el cliente recibe su confirmación por WhatsApp y otro aviso cuando su pedido sale de la parrilla. <b>Sin comisión por pedido.</b></span></div>
+    <button class="btn btn-g" data-go="cocina">Ver cómo llega a la cocina</button>
+    <button class="btn btn-w" data-close>Seguir viendo la demo</button></div>`);
+}
+
+/* cocina */
+$("#kdsBranch").innerHTML=BR.map(b=>`<option value="${b.id}">Sucursal ${b.n}</option>`).join("");
+$("#kdsBranch").onchange=e=>{S.kdsBranch=e.target.value;renderKDS()};
+$("#kdsSound").onclick=e=>{S.sound=!S.sound;e.currentTarget.classList.toggle("on",S.sound);e.currentTarget.setAttribute("aria-pressed",S.sound);if(S.sound){ensureAudio();chime()}};
+$("#kdsSim").onclick=()=>{ensureAudio();simOrder(S.kdsBranch)};
+function ticketHTML(o){
+  const isDel=o.mode==="domicilio";
+  const btn=o.st==="new"?`<button class="b-start" data-mv="${o.id}" data-to="prep">A la parrilla</button>`:o.st==="prep"?`<button class="b-ready" data-mv="${o.id}" data-to="ready">${isDel?"Listo · sale con repartidor":"Listo · avisar por WhatsApp"}</button>`:`<button class="b-done" data-mv="${o.id}" data-to="done">${isDel?"Entregado":"Recogido"}</button>`;
+  return `<div class="tk ${o.fresh&&o.st==="new"?"fresh":""}"><div class="tk-h"><b>${o.id}</b><span style="display:flex;gap:6px">${o.brands.includes("tacos")?'<span class="src tac">Teo Tacos</span>':""}<span class="src ${isDel?"del":""}">${isDel?"Domicilio":o.src==="directo"?"Recoger":"Mostrador"}</span></span></div>
+  <div class="tk-m"><div class="who">${esc(o.name)}${o.mine?' <span style="color:#c1401b">(tu pedido)</span>':""}</div><ul>${Object.entries(o.items).map(([k,q])=>`<li><b>${q}</b>${MAP[k].n}${MAP[k].brand==="tacos"?" ·T":""}</li>`).join("")}</ul>${isDel&&o.addr?`<div style="font-size:12px;color:#76695f">Col. ${esc(o.addr)}</div>`:""}</div>
+  <div class="tk-t"><span>${slotTxt(o)}</span><span>Código ${o.code}</span></div><div class="tk-a">${btn}</div></div>`;
+}
+function renderKDS(){
+  const b=BR.find(x=>x.id===S.kdsBranch);$("#kdsTitle").textContent="Sucursal "+b.n;$("#kdsBranch").value=S.kdsBranch;
+  const mine=S.orders.filter(o=>o.b===S.kdsBranch);
+  const col=st=>mine.filter(o=>o.st===st).sort((a,c)=>a.created-c.created);
+  const fill=(id,arr,msg)=>{$(id).innerHTML=arr.length?arr.map(ticketHTML).join(""):`<div class="kempty">${msg}</div>`};
+  const nw=col("new"),pr=col("prep"),rd=col("ready");
+  fill("#colNew",nw,"Sin pedidos nuevos");fill("#colPrep",pr,"Nada en la parrilla");fill("#colReady",rd,"Nada esperando");
+  $("#cNew").textContent=nw.length;$("#cPrep").textContent=pr.length;$("#cReady").textContent=rd.length;
+  $("#kdsStats").innerHTML=`<div><b>${mine.length}</b>pedidos directos hoy</div><div><b>${mine.filter(o=>o.mode==="domicilio").length}</b>a domicilio</div><div><b>${mine.filter(o=>o.st==="done").length}</b>entregados</div><div><b>~${(S.mode==="domicilio"?25:10)+queue(S.kdsBranch)*3}</b>min de espera</div>`;
+}
+document.addEventListener("click",e=>{
+  const m=e.target.closest("[data-mv]");if(!m)return;
+  const o=S.orders.find(x=>x.id===m.dataset.mv);if(!o)return;o.st=m.dataset.to;o.fresh=false;
+  if(o.st==="ready")toast(o.mode==="domicilio"?`${o.id} salió con el repartidor. WhatsApp al cliente (simulado)`:`WhatsApp a ${o.name.split(" ")[0]}: "Tu pedido ${o.id} está listo" (simulado)`);
+  if(o.st==="done")toast(`${o.id} cerrado y registrado en ventas`);
+  refreshAll();
+});
+function simOrder(bid){
+  const br=BR.find(b=>b.id===bid);const pool=["sen","esp","dob","haw","tor","box","cmb","pap","ref"].concat(br.tacos?["tas","tba","tpi","bur","jal"]:[]);
+  const it={};for(let i=0;i<rnd(1,3);i++){const t=pick(pool);it[t]=(it[t]||0)+rnd(1,3)}
+  return newOrder({b:bid,name:pick(NAMES),items:it,slot:Math.random()<.6?"asap":String(Math.ceil((mins(mty())+30+rnd(0,60))/15)*15),mode:Math.random()<.45?"domicilio":"recoger",src:Math.random()<.85?"directo":"mostrador",addr:pick(["Mitras Centro","Contry","Linda Vista","Las Puentes","Cumbres","Valle del Mezquital","Tecnológico"])});
+}
+function ensureAudio(){try{if(!S.audio)S.audio=new (window.AudioContext||window.webkitAudioContext)();if(S.audio.state==="suspended")S.audio.resume()}catch(e){}}
+function chime(){try{if(!S.audio)return;const t=S.audio.currentTime;[784,1175].forEach((f,i)=>{const o=S.audio.createOscillator(),g=S.audio.createGain();o.frequency.value=f;g.gain.setValueAtTime(.0001,t+i*.14);g.gain.exponentialRampToValueAtTime(.25,t+i*.14+.02);g.gain.exponentialRampToValueAtTime(.0001,t+i*.14+.35);o.connect(g).connect(S.audio.destination);o.start(t+i*.14);o.stop(t+i*.14+.4)})}catch(e){}}
+
+/* dueño */
+const BASE={tec:{s:21480,o:142},cumbres:{s:16350,o:108},cerroazul:{s:12940,o:91},dosjunio:{s:11870,o:86},central:{s:9620,o:73},escobedo:{s:10450,o:79},pinos:{s:12210,o:88}};
+const BASE_TOP={sen:410,esp:368,dob:221,haw:96,tor:184,box:57,tas:88};
+const BASE_HRS=[14,22,31,28,24,30,46,61,72,58,34];/* 13h a 23h */
+const BASE_CH={mostrador:520,directo:0,apps:147};
+function renderOwner(){
+  const n=mty();$("#ownDate").textContent=n.toLocaleDateString("es-MX",{weekday:"long",day:"numeric",month:"long"});
+  const agg={};BR.forEach(b=>agg[b.id]={...BASE[b.id]});
+  const top={...BASE_TOP};const hrs=[...BASE_HRS];const ch={...BASE_CH};let brand={burger:0,tacos:0};
+  Object.values(BASE).forEach(v=>brand.burger+=v.s);brand.tacos=6240;brand.burger-=6240;
+  const direct=S.orders;
+  direct.forEach(o=>{const a=agg[o.b];a.s+=o.total;a.o++;ch[o.src==="mostrador"?"mostrador":"directo"]++;
+    Object.entries(o.items).forEach(([k,q])=>{top[k]=(top[k]||0)+q;brand[MAP[k].brand==="tacos"?"tacos":"burger"]+=MAP[k].p*q});
+    const hi=Math.min(10,Math.max(0,o.hour-13));hrs[hi]++});
+  const tot=Object.values(agg).reduce((s,a)=>s+a.s,0),ord=Object.values(agg).reduce((s,a)=>s+a.o,0);
+  const dirTotal=direct.filter(o=>o.src==="directo").reduce((s,o)=>s+o.total,0);
+  const pct=+$("#cPct").value||0;
+  $("#kSales").textContent=peso(tot);$("#kSalesE").textContent=`${peso(dirTotal)} por su canal propio`;
+  $("#kOrders").textContent=ord;$("#kOrdersE").textContent=`${direct.length} directos · ${ord-direct.length} mostrador y apps`;
+  $("#kAvg").textContent=peso(tot/ord);
+  $("#kSaved").textContent=peso(dirTotal*pct/100);
+  const mx=Math.max(...Object.values(agg).map(a=>a.s));
+  $("#barBranches").innerHTML=BR.map(b=>`<div class="bar"><span>${b.n}</span><div class="track"><div class="fill" style="width:${agg[b.id].s/mx*100}%"></div></div><span class="v">${peso(agg[b.id].s)}</span></div>`).join("");
+  const chT=ch.mostrador+ch.directo+ch.apps,col={mostrador:"#1a1411",directo:"#e4572e",apps:"#c9bdb0"},lab={mostrador:"Mostrador",directo:"Pedido directo",apps:"Apps de entrega"};
+  $("#chan").innerHTML=Object.keys(ch).map(k=>`<i style="width:${ch[k]/chT*100}%;background:${col[k]}"></i>`).join("");
+  $("#legend").innerHTML=Object.keys(ch).map(k=>`<span><i style="background:${col[k]}"></i>${lab[k]} · ${ch[k]}</span>`).join("");
+  const bm=Math.max(brand.burger,brand.tacos);
+  $("#brandBars").innerHTML=[["Teo Burger",brand.burger],["Teo Tacos",brand.tacos]].map(([l,v])=>`<div class="bar"><span>${l}</span><div class="track"><div class="fill" style="width:${v/bm*100}%;background:${l==="Teo Tacos"?"#f2b632":"var(--g)"}"></div></div><span class="v">${peso(v)}</span></div>`).join("");
+  const topE=Object.entries(top).sort((a,b)=>b[1]-a[1]).slice(0,4);
+  $("#flavors").innerHTML=topE.map(([k,v],i)=>`<div class="flv ${i===0?"top":""}" style="${i===0?"background:var(--g)":""}"><b>${v}</b><span>${MAP[k].n}</span></div>`).join("");
+  const hm=Math.max(...hrs);
+  $("#hours").innerHTML=hrs.map((v,i)=>`<div><i class="${v===hm?"peak":""}" style="height:${v/hm*100}%;${v===hm?"":"background:linear-gradient(#e4572e,#c1401b)"}"></i><span>${(13+i)%12||12}pm</span></div>`).join("");
+  calc();
+}
+function calc(){const o=+$("#cOrders").value||0,t=+$("#cTicket").value||0,p=+$("#cPct").value||0;$("#cMonth").textContent=peso(o*t*p/100*30)}
+["#cOrders","#cTicket","#cPct"].forEach(id=>$(id).addEventListener("input",()=>{calc();if(id==="#cPct")renderOwner()}));
+function feedLine(o){const f=$("#feed");if(!f)return;const b=BR.find(x=>x.id===o.b);const d=document.createElement("div");d.innerHTML=`<span><b>${o.id}</b> · ${b.n} · ${o.mode==="domicilio"?"Domicilio":"Recoger"} · ${esc(o.name)}</span><b>${peso(o.total)}</b>`;f.prepend(d);while(f.children.length>12)f.lastChild.remove()}
+
+function setView(v){
+  S.view=v;["cliente","cocina","dueno"].forEach(k=>$("#v-"+k).hidden=k!==v);
+  document.querySelectorAll(".demobar [data-v]").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
+  if(v==="cocina"){S.unseen=0;paintBadge();renderKDS();ensureAudio()}
+  if(v==="dueno")renderOwner();
+  window.scrollTo(0,0);
+}
+document.querySelectorAll(".demobar [data-v]").forEach(b=>b.onclick=()=>setView(b.dataset.v));
+document.addEventListener("click",e=>{
+  const g=e.target.closest("[data-go]");if(g){closeModal();if(g.dataset.go==="cocina"){const last=S.orders.filter(o=>o.mine).pop();if(last)S.kdsBranch=last.b}setView(g.dataset.go);return}
+  if(e.target.closest("[data-close]")||e.target.classList.contains("scrim"))closeModal();
+});
+function paintBadge(){const b=$("#badgeK");b.hidden=!S.unseen;b.textContent=S.unseen}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function modal(html){$("#layer").innerHTML=`<div class="scrim" role="dialog" aria-modal="true"><div class="modal">${html}</div></div>`}
+function closeModal(){$("#layer").innerHTML=""}
+let tT;function toast(msg,act){document.querySelector(".toast")?.remove();const t=document.createElement("div");t.className="toast";t.innerHTML=`<span>${msg}</span>`;if(act){const b=document.createElement("button");b.textContent=act[0];b.onclick=()=>{t.remove();act[1]()};t.append(b)}document.body.append(t);clearTimeout(tT);tT=setTimeout(()=>t.remove(),act?6500:4200)}
+function refreshAll(){renderBranches();if(S.view==="cocina")renderKDS();if(S.view==="dueno")renderOwner()}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+
+BR.forEach((b,i)=>{for(let k=0;k<[3,2,2,1,1,1,2][i];k++)simOrder(b.id)});
+S.orders.forEach((o,i)=>{o.fresh=false;if(i%3===1)o.st="prep";if(i%5===2)o.st="ready"});
+S.unseen=0;paintBadge();$("#feed").innerHTML="";S.orders.slice().reverse().forEach(feedLine);
+paintStatus();renderBranches();renderTabs();renderItems();renderCart();buildSlots();renderLocs();
+setInterval(()=>{paintStatus();buildSlots();$("#kdsClock").textContent=hhmm(mty());if(S.view==="cocina")renderKDS()},30000);
+$("#kdsClock").textContent=hhmm(mty());
+setInterval(()=>{if(document.hidden)return;const bid=S.view==="cocina"&&Math.random()<.7?S.kdsBranch:pick(BR).id;const o=simOrder(bid);
+  if(S.view==="cliente"&&Math.random()<.35)toast(`Nuevo pedido directo en ${BR.find(b=>b.id===o.b).n}`,["Ver cocina",()=>{S.kdsBranch=o.b;setView("cocina")}])},26000);
+
+modal(`<div class="welcome"><span class="eyebrow">Demo para Teo Burger</span>
+  <h3>Pedidos directos para todas sus sucursales</h3>
+  <p>Demo funcional preparada por Code Nova. Pruébela como si fuera un cliente:</p>
+  <ol>
+    <li><b class="n">1</b><span>Elija recoger o a domicilio, la sucursal y su orden. En Tec puede mezclar Teo Burger y Teo Tacos.</span></li>
+    <li><b class="n">2</b><span>Abajo, toque <b>Cocina</b>: el pedido llega a la pantalla de esa sucursal.</span></li>
+    <li><b class="n">3</b><span>En <b>Dueño</b> vea ventas por sucursal y por marca, y cuánto se ahorra en comisiones.</span></li>
+  </ol>
+  <button class="btn btn-g" data-close>Empezar</button>
+  <p style="font-size:12px;margin-top:12px;text-align:center">Precios, horarios y cifras de ejemplo.</p></div>`);
+})();
+</script>
+</body>
+</html>
