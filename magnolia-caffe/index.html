@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Magnolia Caffe · Reservaciones (demo)</title>
+<meta name="theme-color" content="#7f957c">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Magnolia Caffe · Demo de reservaciones">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: talleres con cupo en vivo, eventos privados, galletas por encargo y panel de la dueña.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<style>
+:root{
+  --g:#7f957c; --g-d:#5f7560; --g-dd:#3f5242; --g-l:#e6ece3; --g-ll:#f3f6f1;
+  --rose:#d98f99; --rose-d:#b5606d; --rose-l:#f8e6e8;
+  --ink:#33302b; --ink-2:#4f4a42; --muted:#857d72; --line:#e8e0d4;
+  --paper:#f8f3eb; --cream:#fffcf7; --red:#c2493f;
+  --r:20px; --sh:0 14px 34px -16px rgba(51,48,43,.35);
+  --display:"Playfair Display",Georgia,serif;
+  --body:"Archivo",system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+.btn{text-decoration:none}
+.menu-grid>*,.own-grid>*,.two>*{min-width:0}
+.display{text-transform:none;letter-spacing:-.01em;font-weight:500;line-height:1.04}
+.display em{font-style:italic;color:var(--rose-d)}
+.topbar{background:rgba(255,252,247,.93)}
+.brand-mark{background:var(--g);box-shadow:none;color:#fff;font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:.04em}
+.brand-name{font-family:var(--display);text-transform:none;font-size:22px;font-weight:700}
+.brand-name small{color:var(--g-d);letter-spacing:.08em;white-space:nowrap}
+.cart-btn{background:var(--g-d)}
+.cart-btn b{background:var(--rose)}
+.hero{background:linear-gradient(165deg,#e6ece3 0%,#f8f3eb 65%);color:var(--ink)}
+.hero::before{display:none}
+.hero h1{font-size:clamp(44px,6.6vw,82px)}
+.hero h1 span{color:var(--rose-d);font-style:italic;display:block}
+.hero p.lead{opacity:1;color:var(--ink-2)}
+.hero .btn-g{background:var(--g-d);box-shadow:0 10px 24px -10px rgba(63,82,66,.8)}
+.hero .btn-w{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.status{background:#fff;color:var(--g-dd);box-shadow:inset 0 0 0 1px var(--line)}
+.hero-photo{position:relative;border-radius:28px;overflow:hidden;transform:rotate(-1.5deg);box-shadow:var(--sh);border:10px solid #fff;background:#fff}
+.hero-photo img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}
+.hero-photo figcaption{position:absolute;left:12px;bottom:10px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(51,48,43,.55);color:#fff;border-radius:999px;padding:3px 9px}
+.since{background:var(--rose);right:-8px;top:-22px;z-index:2}
+.since b{color:#fff;font-family:var(--display);font-style:italic;font-size:21px}
+.dm{position:absolute;left:-14px;bottom:-18px;background:#fff;border-radius:16px;padding:10px 14px;box-shadow:var(--sh);font-size:12.5px;line-height:1.35;max-width:230px;z-index:2}
+.dm s{color:var(--muted)}
+.dm b{color:var(--g-dd)}
+.ticker{background:var(--g-dd)}
+.ticker div{font-family:var(--display);font-style:italic;text-transform:none;font-size:22px}
+.ticker i{color:var(--rose)}
+/* talleres */
+.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:12px;flex-wrap:wrap}
+.month{display:inline-flex;background:#fff;border-radius:999px;padding:5px;box-shadow:inset 0 0 0 1.5px var(--line)}
+.month button{height:40px;padding:0 18px;border-radius:999px;font-weight:800;font-size:14px}
+.month button.on{background:var(--g-d);color:#fff}
+.ws{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.w{position:relative;background:#fff;border-radius:24px;overflow:hidden;box-shadow:inset 0 0 0 1.5px var(--line);display:grid;grid-template-columns:150px 1fr;text-align:left;transition:transform .2s,box-shadow .2s}
+.w:hover{transform:translateY(-3px)}
+.w.on{box-shadow:inset 0 0 0 3px var(--g-d),var(--sh)}
+.w .date{background:var(--rose-l);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;text-align:center}
+.w .date span{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--rose-d)}
+.w .date b{font-family:var(--display);font-size:62px;line-height:1;color:var(--ink)}
+.w .date small{font-size:12px;font-weight:700;color:var(--muted)}
+.w .bd{padding:18px 18px 16px;display:flex;flex-direction:column;gap:8px}
+.w h3{font-family:var(--display);font-size:26px;font-weight:700;line-height:1.05}
+.w p{font-size:13.5px;color:var(--muted);line-height:1.4}
+.w .inc{display:flex;flex-wrap:wrap;gap:6px}
+.w .inc span{font-size:11.5px;font-weight:800;background:var(--g-l);color:var(--g-dd);border-radius:999px;padding:4px 10px}
+.w .foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;gap:10px}
+.w .price{font-family:var(--display);font-size:26px;font-weight:700}
+.w .left{font-size:12.5px;font-weight:800;color:var(--rose-d)}
+.w .capb{height:6px;border-radius:9px;background:#efe7dc;overflow:hidden}
+.w .capb i{display:block;height:100%;background:var(--rose);transition:width .6s}
+.w.full{opacity:.55}
+.w .tag{position:absolute;top:10px;right:10px;background:var(--ink);color:#fff;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:800}
+.soon{background:#fff;border-radius:24px;padding:26px;box-shadow:inset 0 0 0 1.5px var(--line);display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.soon h3{font-family:var(--display);font-size:28px}
+.soon p{color:var(--muted);margin-top:6px;max-width:440px;line-height:1.5}
+.soon form{display:flex;gap:8px;flex-wrap:wrap}
+.soon input{height:48px;border-radius:999px;border:1.5px solid var(--line);padding:0 16px;background:var(--cream);min-width:220px}
+.two{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:start}
+.panel{background:#fff;border-radius:24px;padding:22px;box-shadow:inset 0 0 0 1.5px var(--line)}
+.panel h3{font-family:var(--display);font-size:24px;margin-bottom:6px}
+.panel>p{color:var(--muted);font-size:14px;line-height:1.5}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.chips button{height:40px;padding:0 14px;border-radius:999px;background:var(--cream);box-shadow:inset 0 0 0 1.5px var(--line);font-weight:700;font-size:13.5px}
+.chips button.on{background:var(--g-d);color:#fff;box-shadow:none}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ppl{display:flex;align-items:center;justify-content:space-between;background:var(--cream);border-radius:14px;padding:6px 6px 6px 14px;box-shadow:inset 0 0 0 1.5px var(--line);font-weight:700}
+.sum-row{display:flex;justify-content:space-between;font-size:14px;padding:5px 0}
+.sum-row span{color:var(--muted)}
+.cookies{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.ck{background:var(--cream);border-radius:16px;padding:12px;box-shadow:inset 0 0 0 1.5px var(--line);display:flex;flex-direction:column;gap:6px}
+.ck b{font-size:14px}
+.ck small{font-size:12px;color:var(--muted)}
+.ck .stepper{background:#fff;align-self:flex-start}
+.event{background:var(--g-dd)}
+.event::after{background:radial-gradient(circle,rgba(217,143,153,.35),transparent 65%)}
+.event .eyebrow{color:#f3c2c8}
+.ev-panel{background:#4a5f4d;box-shadow:inset 0 0 0 1px #5b725e}
+.ev-panel .field input,.ev-panel .field select{background:#3a4c3d;border-color:#5b725e}
+.ev-panel .chips button{background:#3a4c3d;box-shadow:inset 0 0 0 1px #5b725e;color:#fff}
+.ev-panel .chips button.on{background:var(--rose);box-shadow:none}
+.loc-card{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.loc-card>*{min-width:0}
+/* agenda */
+.kds{background:#28302a}
+.kds-top{background:#28302a;border-color:#3a463c}
+.kds-top h2{font-family:var(--display);text-transform:none}
+.kds-top h2 small{color:#f3c2c8;font-family:var(--body)}
+.kds-ctrl select,.kds-ctrl button{background:#36423a;border-color:#4b5a4e}
+.kds-ctrl button.on{background:var(--rose);border-color:var(--rose)}
+.kds-stats div{background:#323d34;border-color:#45534a}
+.agw{display:grid;gap:12px;padding:6px 20px 24px}
+.ag{background:#323d34;border:1px solid #45534a;border-radius:18px;padding:14px}
+.ag header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.ag header b{font-family:var(--display);font-size:24px;color:#fff}
+.ag header span{font-size:12.5px;font-weight:700;color:#cbd5cb}
+.ag .capbar{height:6px;border-radius:9px;background:#45534a;overflow:hidden;flex-basis:100%}
+.ag .capbar i{display:block;height:100%;background:#f3c2c8}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#f8f3eb;color:var(--ink);border-radius:12px;padding:10px 12px;margin-top:8px;animation:drop .35s}
+.row .who{font-weight:800}
+.row .det{font-size:12.5px;color:var(--muted)}
+.row .src{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:6px;padding:3px 7px;background:var(--g-l);color:var(--g-dd);margin-left:6px}
+.row .src.dmx{background:#efe1f5;color:#6a3b85}
+.row button{height:36px;padding:0 14px;border-radius:10px;font-weight:800;font-size:13px;background:var(--g-d);color:#fff;flex:none}
+.row.done{opacity:.6}.row.done button{background:#8a8378}
+.row.fresh{box-shadow:0 0 0 3px #f3c2c8}
+.own{background:#f6f2ea}
+.kpi b{font-family:var(--display);font-weight:500}
+.flv b{font-family:var(--display)}
+@media (max-width:980px){.ws,.two,.loc-card{grid-template-columns:1fr}}
+@media (max-width:720px){.w{grid-template-columns:104px 1fr}.w .date b{font-size:46px}.cookies{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}.dm{left:6px;bottom:-14px}.soon input{min-width:0;flex:1}}
+</style>
+</head>
+<body>
+
+<main id="v-cliente">
+  <div class="topbar"><div class="wrap">
+    <div class="brand"><div class="brand-mark">MAG</div><div class="brand-name">Magnolia caffe<small>Coffee · Brunch · Art</small></div></div>
+    <button class="cart-btn" id="toBook">Reservar <b id="badgeLeft">2</b></button>
+  </div></div>
+
+  <section class="hero"><div class="wrap">
+    <div>
+      <span class="chip status"><span class="dot pulse"></span><span>Calendario de noviembre abierto</span></span>
+      <h1 class="display">Reserva tu lugar <span>sin esperar respuesta.</span></h1>
+      <p class="lead">Elige tu taller, ve cuántos lugares quedan y aparta en un minuto. También puedes pedir tu posada o cumpleaños privado y encargar tus galletas.</p>
+      <div class="actions"><a class="btn btn-g" href="#talleres">Ver talleres</a><a class="btn btn-w" href="#privado">Evento privado</a></div>
+    </div>
+    <div class="hero-art">
+      <div class="since"><div><b>brunch</b><span>+ arte</span></div></div>
+      <figure class="hero-photo"><img src="img/hero.webp" alt="Taller de pintar taza con brunch" width="800" height="533"><figcaption>Foto ilustrativa</figcaption></figure>
+      <div class="dm"><s>"Reserva tu lugar" (link a Maps)</s><br><b>Ahora: el link de su bio aparta el lugar al momento.</b></div>
+    </div>
+  </div></section>
+
+  <div class="ticker" aria-hidden="true"><div id="tickerTxt"></div></div>
+
+  <section class="section" id="talleres"><div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow"><span class="step-num">1</span>Talleres</span><h2 class="display">Calendario de <em>noviembre</em></h2></div>
+      <p>Los talleres, fechas y precios son los de su calendario de noviembre. El cupo es de ejemplo y baja con cada reserva.</p></div>
+    <div class="ws" id="ws"></div>
+    <div class="soon" style="margin-top:16px"><div><h3>Diciembre viene pronto</h3><p>Quien deja su WhatsApp recibe el calendario en cuanto lo publiquen, antes que en Instagram.</p></div>
+      <form id="wait"><input id="waitPh" inputmode="tel" placeholder="Tu WhatsApp" maxlength="14"><button class="btn btn-g" type="submit" style="height:48px">Avísame</button></form></div>
+  </div></section>
+
+  <section class="section" style="padding-top:0"><div class="wrap two">
+    <div class="panel" id="bookPanel">
+      <h3 id="bkTitle">Pinta tu taza</h3><p id="bkSub"></p>
+      <div class="field"><label>¿Cuántos lugares?</label><div class="ppl"><span id="pplTxt">2 lugares</span><div class="stepper"><button data-ppl="-1" aria-label="Menos">&minus;</button><span id="pplN">2</span><button data-ppl="1" aria-label="Más">+</button></div></div></div>
+      <div class="grid2">
+        <div class="field"><label for="fName">Nombre</label><input id="fName" placeholder="¿A nombre de quién?" autocomplete="off"></div>
+        <div class="field"><label for="fPhone">WhatsApp</label><input id="fPhone" inputmode="tel" placeholder="10 dígitos" maxlength="14" autocomplete="off"></div>
+      </div>
+      <div class="field"><label>Pago</label><div class="chips" id="pay"><button class="on" data-pay="local">En el café</button><button data-pay="anticipo">Anticipo en línea (fase 2)</button></div></div>
+      <div class="totals"><span>Total</span><b id="bkTotal">$0</b></div>
+      <button class="btn btn-g" id="sendRes" style="width:100%;margin-top:12px;background:var(--g-d)">Apartar mi lugar</button>
+      <div class="err" id="err"></div>
+    </div>
+    <div class="panel">
+      <h3>Galletas por encargo</h3><p>Hoy se encargan por DM. Aquí eligen sabor, cantidad y día para pasar por ellas. <b>Precios de ejemplo.</b></p>
+      <div class="cookies" id="cookies"></div>
+      <div class="field"><label for="ckDay">Día para recoger</label><select id="ckDay"></select></div>
+      <div class="totals"><span>Total</span><b id="ckTotal">$0</b></div>
+      <button class="btn btn-w" id="sendCk" style="width:100%;margin-top:12px">Encargar galletas</button>
+      <div class="err" id="ckErr"></div>
+    </div>
+  </div></section>
+
+  <section class="section event" id="privado"><div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Posadas y cumpleaños</span><h2 class="display">Tu evento <em style="color:#f3c2c8">privado</em>, aquí</h2></div>
+      <p style="color:#cbd5cb">El cliente deja fecha, personas y actividad; a ustedes les llega lista para cotizar, sin ir y venir de mensajes.</p></div>
+    <div class="ev-grid">
+      <div class="ev-panel">
+        <h3>¿Qué celebras?</h3>
+        <div class="chips" id="evType"><button class="on" data-et="Posada">Posada</button><button data-et="Cumpleaños">Cumpleaños</button><button data-et="Aniversario">Aniversario</button><button data-et="Despedida">Despedida</button></div>
+        <h3 style="margin-top:16px">Actividad</h3>
+        <div class="chips" id="evAct"><button class="on" data-ea="Pinta tu taza">Pinta tu taza</button><button data-ea="Acuarela">Acuarela</button><button data-ea="Decorar galletas">Decorar galletas</button><button data-ea="Solo brunch">Solo brunch</button></div>
+      </div>
+      <div class="ev-panel">
+        <div class="grid2">
+          <div class="field"><label for="evDate">Fecha</label><input id="evDate" type="date"></div>
+          <div class="field"><label for="evPpl">Personas</label><input id="evPpl" type="number" min="4" max="40" value="10"></div>
+        </div>
+        <div class="field"><label for="evName">Nombre y WhatsApp</label><input id="evName" placeholder="Ej. Paola Garza · 81 1234 5678" autocomplete="off"></div>
+        <button class="btn btn-g" id="evSend" style="width:100%;margin-top:14px;background:var(--rose);box-shadow:none">Pedir cotización</button>
+        <div class="err" id="evErr" style="color:#ffb3aa"></div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="section"><div class="wrap loc-card">
+    <div class="panel"><h3>Dónde estamos</h3><p><b>Plaza Terranova, Vista Hermosa, Monterrey</b></p><p>Coffee, brunch y talleres de arte.</p></div>
+    <div class="panel"><h3>Así queda el link de su bio</h3><p>En lugar de mandar a Google Maps, "Reserva tu lugar" abre esta página: talleres, galletas y eventos privados en un solo lugar.</p></div>
+  </div></section>
+
+  <footer class="site wrap"><b>Demo concepto preparada por Code Nova para Magnolia Caffe.</b><br>No es el sitio oficial. Talleres, fechas y precios tomados de su calendario de noviembre; cupos, galletas, reservas y cifras son de ejemplo. Fotos ilustrativas.<br>Code Nova · Nuevo León · WhatsApp 826 261 3262</footer>
+</main>
+
+<main id="v-cocina" class="kds" hidden>
+  <div class="kds-top">
+    <h2><small>Agenda del equipo</small>Lo que viene</h2>
+    <div class="kds-ctrl">
+      <button id="agDm"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>Registrar reserva de DM</button>
+    </div>
+  </div>
+  <div class="kds-stats" id="agStats"></div>
+  <div class="agw" id="agw"></div>
+</main>
+
+<main id="v-dueno" class="own" hidden>
+  <div class="own-top"><div class="wrap"><h2><small>Panel de la dueña</small>Noviembre</h2><span class="chip live"><span class="dot pulse"></span>En vivo</span></div></div>
+  <div class="wrap">
+    <div class="kpis">
+      <div class="kpi"><span>Lugares vendidos</span><b id="kSeats">0</b><em id="kSeatsE"></em></div>
+      <div class="kpi"><span>Ingreso de talleres</span><b id="kInc">$0</b><em>Lugares × precio</em></div>
+      <div class="kpi"><span>Eventos por cotizar</span><b id="kEv">0</b><em>Posadas y cumpleaños</em></div>
+      <div class="kpi"><span>Galletas por entregar</span><b id="kCk">0</b><em id="kCkE"></em></div>
+    </div>
+    <div class="own-grid">
+      <div class="card"><h3>Ocupación por taller <small>lugares</small></h3><div class="bars" id="occ"></div></div>
+      <div class="card"><h3>¿De dónde llegan? <small>reservas</small></h3><div class="bars" id="src"></div>
+        <h3 style="margin-top:20px">Lista de espera de diciembre</h3><div class="flavors" id="waitBox"></div></div>
+      <div class="card" style="grid-column:1/-1"><h3>Movimientos <small>en tiempo real</small></h3><div class="feed" id="feed"></div></div>
+    </div>
+    <div class="own-foot">Cifras de ejemplo para la demo.</div>
+  </div>
+</main>
+
+<nav class="demobar" aria-label="Vistas de la demo">
+  <span class="lbl"><b>Demo</b>Code Nova</span>
+  <button data-v="cliente" class="on">Cliente</button>
+  <button data-v="cocina">Agenda<span class="badge" id="badgeK" hidden>0</span></button>
+  <button data-v="dueno">Dueña</button>
+</nav>
+<div id="layer"></div>
+
+<script>
+(()=>{
+const WS=[
+  {id:"taza",n:"Pinta tu taza",d:"2026-11-21",day:"Sábado",num:21,hrs:"11:00 am a 1:00 pm",p:599,cap:14,desc:"Decora tu propia taza de cerámica mientras disfrutas el brunch.",inc:["Brunch completo","Clase","Materiales"]},
+  {id:"acua",n:"Introducción a la acuarela",d:"2026-11-28",day:"Sábado",num:28,hrs:"11:00 am a 1:00 pm",p:599,cap:14,desc:"Aprende las bases de la acuarela con brunch incluido.",inc:["Brunch completo","Clase","Materiales"]}
+];
+const WM=Object.fromEntries(WS.map(w=>[w.id,w]));
+const CK=[{id:"choco",n:"Chispas de chocolate",p:45},{id:"red",n:"Red velvet",p:50},{id:"deco",n:"Decoradas de temporada",p:55}];
+const CKM=Object.fromEntries(CK.map(c=>[c.id,c]));
+const NAMES=["Mariana G.","Sofía T.","Ana P.","Paola V.","Fernanda L.","Valeria Q.","Daniela O.","Regina B.","Camila R.","Ximena D.","Andrea M.","Lucía S."];
+const $=s=>document.querySelector(s);const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;const pick=a=>a[Math.floor(Math.random()*a.length)];let NI=0;const nextName=()=>NAMES[(NI++)%NAMES.length];
+const peso=n=>"$"+Math.round(n).toLocaleString("es-MX");
+function mty(){return new Date(new Date().toLocaleString("en-US",{timeZone:"America/Monterrey"}))}
+const S={w:"taza",ppl:2,res:[],ck:{choco:0,red:0,deco:0},cko:[],ev:[],et:"Posada",ea:"Pinta tu taza",wait:23,seq:120,view:"cliente",unseen:0};
+$("#tickerTxt").innerHTML=Array(2).fill("Pinta tu taza<i>·</i>Acuarela<i>·</i>Brunch<i>·</i>Galletas<i>·</i>Posadas creativas<i>·</i>Plaza Terranova<i>·</i>").join("");
+const used=id=>S.res.filter(r=>r.w===id).reduce((s,r)=>s+r.ppl,0);
+const left=id=>WM[id].cap-used(id);
+
+function renderWS(){
+  $("#ws").innerHTML=WS.map(w=>{const l=left(w.id),full=l<=0;return `<button class="w ${S.w===w.id?"on":""} ${full?"full":""}" data-w="${w.id}">${l>0&&l<=4?`<span class="tag">Últimos lugares</span>`:""}
+    <div class="date"><span>${w.day}</span><b>${w.num}</b><small>nov · ${w.hrs.replace(":00","").replace(":00","")}</small></div>
+    <div class="bd"><h3>${w.n}</h3><p>${w.desc}</p><div class="inc">${w.inc.map(i=>`<span>${i}</span>`).join("")}</div>
+    <div class="capb"><i style="width:${Math.min(100,used(w.id)/w.cap*100)}%"></i></div>
+    <div class="foot"><span class="price">${peso(w.p)}</span><span class="left">${full?"Lleno · lista de espera":"Quedan "+l+" de "+w.cap}</span></div></div></button>`}).join("");
+  $("#badgeLeft").textContent=left(S.w);
+}
+function renderBook(){
+  const w=WM[S.w],l=left(w.id);if(S.ppl>Math.max(1,l))S.ppl=Math.max(1,l);
+  $("#bkTitle").textContent=w.n;$("#bkSub").textContent=`${w.day} ${w.num} de noviembre · ${w.hrs} · ${peso(w.p)} por persona, incluye brunch, clase y materiales.`;
+  $("#pplN").textContent=S.ppl;$("#pplTxt").textContent=S.ppl+(S.ppl>1?" lugares":" lugar");$("#bkTotal").textContent=peso(w.p*S.ppl);
+  $("#sendRes").disabled=l<=0;$("#sendRes").textContent=l<=0?"Taller lleno":"Apartar mi lugar";
+}
+function renderCk(){
+  $("#cookies").innerHTML=CK.map(c=>`<div class="ck"><b>${c.n}</b><small>${peso(c.p)} c/u</small><div class="stepper"><button data-ck="${c.id}" data-n="-6" aria-label="Menos">&minus;</button><span>${S.ck[c.id]}</span><button data-ck="${c.id}" data-n="6" aria-label="Más">+</button></div></div>`).join("");
+  $("#ckTotal").textContent=peso(CK.reduce((s,c)=>s+c.p*S.ck[c.id],0));
+}
+(function ckDays(){const t=mty();const o=[];for(let i=1;i<=7;i++){const d=new Date(t);d.setDate(d.getDate()+i);if(d.getDay()!==1)o.push(`<option value="${d.toISOString().slice(0,10)}">${d.toLocaleDateString("es-MX",{weekday:"long",day:"numeric",month:"short"})}</option>`)}$("#ckDay").innerHTML=o.join("")})();
+(function evMin(){const t=mty();t.setDate(t.getDate()+7);$("#evDate").min=t.toISOString().slice(0,10);$("#evDate").value=new Date(2026,11,12).toISOString().slice(0,10)})();
+
+document.addEventListener("click",e=>{
+  const w=e.target.closest("[data-w]");if(w){S.w=w.dataset.w;renderWS();renderBook();$("#bookPanel").scrollIntoView({behavior:"smooth",block:"center"});return}
+  const p=e.target.closest("[data-ppl]");if(p){S.ppl=Math.max(1,Math.min(Math.max(1,left(S.w)),8,S.ppl+ +p.dataset.ppl));renderBook();return}
+  const c=e.target.closest("[data-ck]");if(c){S.ck[c.dataset.ck]=Math.max(0,S.ck[c.dataset.ck]+ +c.dataset.n);renderCk();return}
+  const pay=e.target.closest("[data-pay]");if(pay&&pay.dataset.pay==="anticipo"){toast("El anticipo en línea con tarjeta se activa en la fase 2.");return}
+  const et=e.target.closest("[data-et]");if(et){S.et=et.dataset.et;document.querySelectorAll("[data-et]").forEach(b=>b.classList.toggle("on",b===et));return}
+  const ea=e.target.closest("[data-ea]");if(ea){S.ea=ea.dataset.ea;document.querySelectorAll("[data-ea]").forEach(b=>b.classList.toggle("on",b===ea));return}
+});
+$("#toBook").onclick=()=>$("#talleres").scrollIntoView({behavior:"smooth"});
+["#fPhone","#waitPh"].forEach(id=>$(id).addEventListener("input",e=>{e.target.value=e.target.value.replace(/[^\d ]/g,"")}));
+$("#sendRes").onclick=()=>{const err=$("#err");err.textContent="";const name=$("#fName").value.trim(),ph=$("#fPhone").value.replace(/\D/g,"");
+  if(name.length<2){err.textContent="Escribe tu nombre.";return}if(ph.length!==10){err.textContent="El WhatsApp debe tener 10 dígitos.";return}
+  const r=addRes({w:S.w,ppl:S.ppl,name,src:"web",mine:true});ticket(r);$("#fName").value="";$("#fPhone").value=""};
+$("#sendCk").onclick=()=>{const err=$("#ckErr");err.textContent="";const n=Object.values(S.ck).reduce((a,b)=>a+b,0);if(!n){err.textContent="Agrega al menos media docena.";return}
+  S.seq++;const o={id:"G-"+S.seq,items:{...S.ck},day:$("#ckDay").value,name:"Tu encargo",mine:true,done:false,fresh:true};S.cko.push(o);feed(`<b>${o.id}</b> · Galletas · ${n} pzas · recoger ${fmtD(o.day)}`);
+  modal(simpleTicket("Galletas encargadas",`${n} galletas · recoger el ${fmtD(o.day)}`,`<div class="tk-wa"><span>En el sistema real llega la confirmación por WhatsApp y un aviso cuando estén listas para recoger.</span></div>`));
+  S.ck={choco:0,red:0,deco:0};renderCk();refreshViews();bump()};
+$("#evSend").onclick=()=>{const err=$("#evErr");err.textContent="";const nm=$("#evName").value.trim(),d=$("#evDate").value,p=+$("#evPpl").value;
+  if(!d){err.textContent="Elige la fecha.";return}if(nm.length<3){err.textContent="Escribe tu nombre y WhatsApp.";return}if(!(p>=4)){err.textContent="Mínimo 4 personas.";return}
+  S.seq++;const ev={id:"E-"+S.seq,type:S.et,act:S.ea,date:d,ppl:p,name:nm.split("·")[0].trim(),st:"pend",mine:true,fresh:true};S.ev.push(ev);feed(`<b>${ev.id}</b> · ${ev.type} · ${ev.act} · ${p} pers. · ${fmtD(d)}`);
+  modal(simpleTicket("Solicitud enviada",`${ev.type} · ${ev.act} · ${p} personas · ${fmtD(d)}`,`<div class="tk-wa"><span>A Magnolia le llega la solicitud completa en su panel para cotizar, y al cliente su confirmación por WhatsApp.</span></div><button class="btn btn-g" data-go="cocina">Ver cómo le llega al equipo</button>`));
+  $("#evName").value="";refreshViews();bump()};
+$("#wait").onsubmit=e=>{e.preventDefault();if($("#waitPh").value.replace(/\D/g,"").length!==10){toast("Escribe un WhatsApp de 10 dígitos.");return}S.wait++;$("#waitPh").value="";toast("Listo: te avisamos en cuanto salga el calendario de diciembre.");refreshViews()};
+const fmtD=d=>new Date(d+"T12:00:00").toLocaleDateString("es-MX",{weekday:"short",day:"numeric",month:"short"});
+function addRes({w,ppl,name,src="web",mine=false}){S.seq++;const r={id:"R-"+S.seq,code:String(rnd(1000,9999)),w,ppl,name,src,mine,in:false,fresh:true};S.res.push(r);
+  feed(`<b>${r.id}</b> · ${WM[w].n} · ${ppl} lugar${ppl>1?"es":""} · ${esc(name)}${src==="dm"?" (DM)":""}`);renderWS();renderBook();refreshViews();bump();setTimeout(()=>{r.fresh=false;if(S.view==="cocina")renderAg()},6000);return r}
+function bump(){if(S.view!=="cocina"){S.unseen++;badge()}}
+function simpleTicket(t,sub,extra){return `<div class="ticket-top" style="background:var(--g-d)"><span class="chip" style="background:rgba(255,255,255,.2)"><span class="dot"></span>Listo</span><h3 style="font-family:var(--display);text-transform:none;font-style:italic">${t}</h3><div style="opacity:.92;margin-top:6px">${sub}</div></div><div class="ticket-body">${extra}<button class="btn btn-w" data-close>Seguir viendo la demo</button></div>`}
+function ticket(r){const w=WM[r.w];modal(`<div class="ticket-top" style="background:var(--g-d)"><span class="chip" style="background:rgba(255,255,255,.2)"><span class="dot"></span>Lugar apartado</span><h3 style="font-family:var(--display);text-transform:none;font-style:italic">¡Nos vemos, ${esc(r.name.split(" ")[0])}!</h3><div style="opacity:.92;margin-top:6px">${w.n} · ${w.day} ${w.num} de noviembre · ${w.hrs}</div></div>
+  <div class="ticket-body"><div class="tk-row"><span>Lugares</span><b>${r.ppl}</b></div><div class="tk-row"><span>Incluye</span><b>Brunch, clase y materiales</b></div><div class="tk-row" style="border:0"><span>Total</span><b>${peso(w.p*r.ppl)}</b></div>
+  <div class="tk-code" style="justify-content:center;text-align:center"><div><span>Reserva ${r.id}</span><b>${r.code}</b><span>Muéstralo al llegar.</span></div></div>
+  <div class="tk-wa"><span>En el sistema real llega la confirmación por WhatsApp y un recordatorio un día antes. Si alguien cancela, el lugar pasa solo a la lista de espera.</span></div>
+  <button class="btn btn-g" data-go="cocina" style="background:var(--g-d)">Ver cómo le aparece al equipo</button><button class="btn btn-w" data-close>Seguir viendo la demo</button></div>`)}
+
+/* agenda */
+$("#agDm").onclick=()=>{const w=pick(WS.filter(x=>left(x.id)>=2));if(!w){toast("Los dos talleres están llenos.");return}addRes({w:w.id,ppl:2,name:nextName(),src:"dm"});toast("Reserva del DM registrada: el cupo de la página ya se actualizó.")};
+function renderAg(){
+  const seats=S.res.reduce((s,r)=>s+r.ppl,0);
+  $("#agStats").innerHTML=`<div><b>${seats}</b>lugares apartados</div><div><b>${S.ev.filter(e=>e.st==="pend").length}</b>eventos por cotizar</div><div><b>${S.cko.filter(o=>!o.done).length}</b>encargos de galletas</div>`;
+  const wsH=WS.map(w=>{const rs=S.res.filter(r=>r.w===w.id),u=used(w.id);return `<section class="ag"><header><b>${w.n}</b><span>${w.day} ${w.num} nov · ${u} de ${w.cap} lugares</span><div class="capbar"><i style="width:${u/w.cap*100}%"></i></div></header>${rs.map(r=>`<div class="row ${r.in?"done":""} ${r.fresh?"fresh":""}"><div><span class="who">${esc(r.name)}</span><span class="src ${r.src==="dm"?"dmx":""}">${r.src==="dm"?"DM":"En línea"}</span>${r.mine?' <span style="color:#b5606d;font-weight:800;font-size:12px">(tu reserva)</span>':""}<div class="det">${r.ppl} lugar${r.ppl>1?"es":""} · código ${r.code}</div></div><button data-in="${r.id}">${r.in?"Llegó":"Marcar llegada"}</button></div>`).join("")||'<div class="kempty">Sin reservas</div>'}</section>`}).join("");
+  const evH=`<section class="ag"><header><b>Eventos privados</b><span>Solicitudes para cotizar</span></header>${S.ev.map(e=>`<div class="row ${e.st==="ok"?"done":""} ${e.fresh?"fresh":""}"><div><span class="who">${esc(e.name)}</span><span class="src">${e.type}</span>${e.mine?' <span style="color:#b5606d;font-weight:800;font-size:12px">(tu solicitud)</span>':""}<div class="det">${e.act} · ${e.ppl} personas · ${fmtD(e.date)}</div></div><button data-ev="${e.id}">${e.st==="ok"?"Cotizado":"Enviar cotización"}</button></div>`).join("")||'<div class="kempty">Sin solicitudes</div>'}</section>`;
+  const ckH=`<section class="ag"><header><b>Galletas por encargo</b><span>Para recoger</span></header>${S.cko.map(o=>`<div class="row ${o.done?"done":""} ${o.fresh?"fresh":""}"><div><span class="who">${esc(o.name)}</span><div class="det">${Object.entries(o.items).filter(([,q])=>q).map(([k,q])=>q+" "+CKM[k].n).join(" · ")} · ${fmtD(o.day)}</div></div><button data-ck2="${o.id}">${o.done?"Entregado":"Listo para recoger"}</button></div>`).join("")||'<div class="kempty">Sin encargos</div>'}</section>`;
+  $("#agw").innerHTML=wsH+evH+ckH;
+}
+document.addEventListener("click",e=>{
+  const i=e.target.closest("[data-in]");if(i){const r=S.res.find(x=>x.id===i.dataset.in);r.in=!r.in;renderAg();return}
+  const v=e.target.closest("[data-ev]");if(v){const x=S.ev.find(y=>y.id===v.dataset.ev);if(x.st!=="ok"){x.st="ok";toast(`Cotización enviada por WhatsApp a ${x.name} (simulado)`)}renderAg();return}
+  const c=e.target.closest("[data-ck2]");if(c){const o=S.cko.find(y=>y.id===c.dataset.ck2);if(!o.done){o.done=true;toast("Aviso enviado: las galletas están listas para recoger (simulado)")}renderAg();return}
+});
+/* dueña */
+function renderOwn(){
+  const seats=S.res.reduce((s,r)=>s+r.ppl,0),inc=S.res.reduce((s,r)=>s+WM[r.w].p*r.ppl,0);
+  $("#kSeats").textContent=seats;$("#kSeatsE").textContent=`de ${WS.reduce((s,w)=>s+w.cap,0)} disponibles`;$("#kInc").textContent=peso(inc);
+  $("#kEv").textContent=S.ev.filter(e=>e.st==="pend").length;const pz=S.cko.filter(o=>!o.done).reduce((s,o)=>s+Object.values(o.items).reduce((a,b)=>a+b,0),0);$("#kCk").textContent=pz;$("#kCkE").textContent=`${S.cko.filter(o=>!o.done).length} encargos`;
+  $("#occ").innerHTML=WS.map(w=>`<div class="bar"><span>${w.n.replace("Introducción a la ","")}</span><div class="track"><div class="fill" style="width:${used(w.id)/w.cap*100}%;background:var(--rose)"></div></div><span class="v">${used(w.id)}/${w.cap}</span></div>`).join("");
+  const wb=S.res.filter(r=>r.src==="web").length,dm=S.res.filter(r=>r.src==="dm").length,m=Math.max(1,wb,dm);
+  $("#src").innerHTML=[["Reserva en línea",wb],["Registrada del DM",dm]].map(([l,v])=>`<div class="bar"><span>${l}</span><div class="track"><div class="fill" style="width:${v/m*100}%;background:var(--g-d)"></div></div><span class="v">${v}</span></div>`).join("");
+  $("#waitBox").innerHTML=`<div class="flv top" style="background:var(--g-d)"><b>${S.wait}</b><span>personas esperando</span></div><div class="flv"><b>1 clic</b><span>para avisarles</span></div>`;
+}
+function feed(h){const f=$("#feed");const d=document.createElement("div");d.innerHTML=`<span>${h}</span>`;f.prepend(d);while(f.children.length>12)f.lastChild.remove()}
+function setView(v){S.view=v;["cliente","cocina","dueno"].forEach(k=>$("#v-"+k).hidden=k!==v);document.querySelectorAll(".demobar [data-v]").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
+  if(v==="cocina"){S.unseen=0;badge();renderAg()}if(v==="dueno")renderOwn();window.scrollTo(0,0)}
+document.querySelectorAll(".demobar [data-v]").forEach(b=>b.onclick=()=>setView(b.dataset.v));
+document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g){closeModal();setView(g.dataset.go);return}if(e.target.closest("[data-close]")||e.target.classList.contains("scrim"))closeModal()});
+function refreshViews(){if(S.view==="cocina")renderAg();if(S.view==="dueno")renderOwn()}
+function badge(){const b=$("#badgeK");b.hidden=!S.unseen;b.textContent=S.unseen}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function modal(h){$("#layer").innerHTML=`<div class="scrim" role="dialog" aria-modal="true"><div class="modal">${h}</div></div>`}
+function closeModal(){$("#layer").innerHTML=""}
+let tT;function toast(m){document.querySelector(".toast")?.remove();const t=document.createElement("div");t.className="toast";t.innerHTML=`<span>${m}</span>`;document.body.append(t);clearTimeout(tT);tT=setTimeout(()=>t.remove(),4200)}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+
+/* datos de ejemplo */
+[["taza",9],["acua",5]].forEach(([w,n])=>{let k=0;while(k<n){const p=Math.min(rnd(1,3),n-k);S.res.push({id:"R-"+(++S.seq),code:String(rnd(1000,9999)),w,ppl:p,name:nextName(),src:Math.random()<.6?"web":"dm",in:false,fresh:false});k+=p}});
+S.ev.push({id:"E-"+(++S.seq),type:"Posada",act:"Pinta tu taza",date:"2026-12-12",ppl:12,name:"Oficina Treviño",st:"pend"},{id:"E-"+(++S.seq),type:"Cumpleaños",act:"Decorar galletas",date:"2026-12-05",ppl:8,name:"Regina B.",st:"ok"});
+S.cko.push({id:"G-"+(++S.seq),items:{choco:12,red:0,deco:6},day:new Date(mty().getTime()+864e5).toISOString().slice(0,10),name:"Andrea M.",done:false});
+S.res.slice(-6).forEach(r=>feed(`<b>${r.id}</b> · ${WM[r.w].n} · ${r.ppl} lugar${r.ppl>1?"es":""} · ${esc(r.name)}`));
+renderWS();renderBook();renderCk();
+setInterval(()=>{if(document.hidden)return;const w=pick(WS.filter(x=>left(x.id)>=1));if(!w)return;const r=addRes({w:w.id,ppl:1,name:nextName(),src:"web"});if(S.view==="cliente")toast(`${r.name} acaba de apartar en ${WM[r.w].n}`)},30000);
+
+modal(`<div class="welcome"><span class="eyebrow">Demo para Magnolia Caffe</span>
+  <h3 style="font-family:var(--display);text-transform:none">Su calendario, reservable en un clic</h3>
+  <p>Demo funcional preparada por Code Nova con los talleres de su calendario de noviembre. Pruébela como clienta:</p>
+  <ol><li><b class="n">1</b><span>Elija un taller y aparte su lugar: verá cuántos quedan.</span></li>
+  <li><b class="n">2</b><span>Abajo, toque <b>Agenda</b>: ahí aparecen los lugares, las solicitudes de posadas y los encargos de galletas.</span></li>
+  <li><b class="n">3</b><span>En <b>Dueña</b> vea lugares vendidos, ingresos y la lista de espera de diciembre.</span></li></ol>
+  <button class="btn btn-g" data-close style="background:var(--g-d)">Empezar</button><p style="font-size:12px;margin-top:12px;text-align:center">Cupos, galletas y cifras de ejemplo.</p></div>`);
+})();
+</script>
+</body>
+</html>
