@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Paykekes · Pide tu tarta bajo agenda (demo)</title>
+<meta name="theme-color" content="#b8742a">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Paykekes · Demo de pedidos bajo agenda">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: menú con tamaños y toppings, agenda de recolección con cupo, ediciones especiales en pre-order y pedidos para eventos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<style>
+:root{
+  --g:#b8742a; --g-d:#93591c; --g-dd:#5e3712; --g-l:#f6e3c8; --g-ll:#fcf3e6;
+  --butter:#f3c74f; --butter-l:#fdf2cf; --burnt:#2b1a10;
+  --ink:#3b2516; --ink-2:#5d4331; --muted:#8c7564; --line:#eedfcb;
+  --paper:#fff7ea; --cream:#fffbf4; --red:#c2493f;
+  --r:20px; --sh:0 14px 34px -16px rgba(59,37,22,.4);
+  --display:"DM Serif Display",Georgia,serif;
+  --body:"Archivo",system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+.btn{text-decoration:none}
+.menu-grid>*,.own-grid>*,.two>*{min-width:0}
+.display{text-transform:none;letter-spacing:-.01em;font-weight:400;line-height:1}
+.display em{font-style:italic;color:var(--g)}
+.topbar{background:rgba(255,247,234,.94)}
+.brand-mark{background:var(--burnt);box-shadow:none;color:var(--butter);font-family:var(--display);font-size:20px}
+.brand-name{font-family:var(--display);text-transform:none;font-size:25px;font-weight:400;letter-spacing:0}
+.brand-name small{color:var(--g-d);white-space:nowrap}
+.cart-btn{background:var(--burnt)}
+.cart-btn b{background:var(--butter);color:var(--ink)}
+.hero{background:radial-gradient(900px 480px at 85% 0%,#fdf2cf 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#f6e3c8 0%,transparent 60%),var(--paper);color:var(--ink)}
+.hero::before{display:none}
+.hero h1{font-size:clamp(50px,7vw,96px)}
+.hero h1 span{display:block;color:var(--g);font-style:italic}
+.hero p.lead{opacity:1;color:var(--ink-2)}
+.hero .btn-g{background:var(--burnt);box-shadow:0 10px 24px -10px rgba(43,26,16,.8)}
+.hero .btn-w{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.status{background:#fff;color:var(--g-dd);box-shadow:inset 0 0 0 1px var(--line)}
+.hero-photo{position:relative;border-radius:30px;overflow:hidden;transform:rotate(1.4deg);box-shadow:var(--sh);border:10px solid #fff;background:#fff}
+.hero-photo img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}
+.hero-photo figcaption{position:absolute;left:12px;bottom:10px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(43,26,16,.55);color:#fff;border-radius:999px;padding:3px 9px}
+.since{background:var(--butter);top:-22px;left:-12px;right:auto;z-index:2;transform:rotate(-8deg)}
+.since b{color:var(--ink);font-family:var(--display);font-size:24px;font-style:italic}
+.since span{color:var(--ink)}
+.wa-card{position:absolute;right:-10px;bottom:-22px;background:#fff;border-radius:18px;padding:12px 16px;box-shadow:var(--sh);font-size:12.5px;line-height:1.35;max-width:250px;z-index:2}
+.wa-card s{color:var(--muted)}
+.wa-card b{color:var(--g-dd)}
+.ticker{background:var(--burnt)}
+.ticker div{font-family:var(--display);text-transform:none;font-size:25px;font-style:italic}
+.ticker i{color:var(--butter);font-style:normal}
+.sec-head h2{font-size:clamp(40px,5vw,62px)}
+.two{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:start}
+.panel{background:#fff;border-radius:24px;padding:22px;box-shadow:inset 0 0 0 1.5px var(--line)}
+.panel h3{font-family:var(--display);font-size:30px;font-weight:400;line-height:1.05;margin-bottom:4px}
+.panel>p{color:var(--muted);font-size:14px;line-height:1.5}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.chips button{min-height:40px;padding:6px 14px;border-radius:999px;background:var(--cream);box-shadow:inset 0 0 0 1.5px var(--line);font-weight:700;font-size:13.5px;text-align:left}
+.chips button small{display:block;font-size:11px;font-weight:600;color:var(--muted)}
+.chips button.on{background:var(--burnt);color:#fff;box-shadow:none}
+.chips button.on small{color:#e7d3bf}
+/* tamaños y toppings */
+.sizes{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.sz{background:#fff;border-radius:20px;padding:14px 12px;box-shadow:inset 0 0 0 1.5px var(--line);text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px}
+.sz .disc{border-radius:50%;background:radial-gradient(circle at 50% 50%,#f4dfb6 0 38%,#c9873b 39% 60%,#3a2112 61%);box-shadow:0 6px 14px -8px rgba(43,26,16,.6);margin:4px 0 6px}
+.sz b{font-family:var(--display);font-size:21px;font-weight:400}
+.sz span{font-size:12px;color:var(--muted);line-height:1.3}
+.sz em{font-style:normal;font-weight:800;font-size:16px;margin-top:4px}
+.sz.on{box-shadow:inset 0 0 0 3px var(--g);background:var(--g-ll)}
+.tops{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.tp{background:#fff;border-radius:16px;padding:10px 12px;box-shadow:inset 0 0 0 1.5px var(--line);display:flex;align-items:center;gap:10px;text-align:left}
+.tp i{width:30px;height:30px;border-radius:50%;flex:none;box-shadow:inset 0 0 0 3px rgba(255,255,255,.6)}
+.tp b{display:block;font-size:14px}
+.tp small{font-size:12px;color:var(--muted);font-weight:600}
+.tp.on{box-shadow:inset 0 0 0 2.5px var(--g);background:var(--g-ll)}
+.addrow{display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap}
+.addrow .btn{flex:1;min-width:180px}
+/* agenda */
+.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
+.days button{flex:none;min-width:74px;padding:10px 10px;border-radius:16px;background:var(--cream);box-shadow:inset 0 0 0 1.5px var(--line);text-align:center}
+.days button span{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.days button b{display:block;font-family:var(--display);font-size:28px;font-weight:400;line-height:1.05}
+.days button small{display:block;font-size:11px;font-weight:700;color:var(--g-d)}
+.days button.on{background:var(--burnt);color:#fff;box-shadow:none}
+.days button.on span{color:#e7d3bf}.days button.on small{color:var(--butter)}
+.days button.full{opacity:.45;pointer-events:none}
+.slots button{border-radius:12px;height:auto;padding:7px 12px;text-align:center}
+.slots button.on{background:var(--burnt)}
+.slots button.full{opacity:.4;text-decoration:line-through;pointer-events:none}
+.slots button small{display:block;font-size:10px;font-weight:700;opacity:.75}
+.cart-line{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.cart-line span small{display:block;color:var(--muted);font-size:12px}
+.cart-line button{width:28px;height:28px;border-radius:50%;background:var(--paper);font-weight:800;color:var(--muted);flex:none}
+.oven{display:flex;align-items:center;gap:12px;background:var(--butter-l);border-radius:14px;padding:10px 12px;margin-top:12px;font-size:13px;font-weight:600;color:#6b5100}
+.oven .m{flex:1;height:8px;border-radius:9px;background:#f1dfa3;overflow:hidden;min-width:60px}
+.oven .m i{display:block;height:100%;background:var(--g)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid2>*{min-width:0}
+/* edición especial */
+.ed{background:var(--burnt);color:#fff}
+.ed .eyebrow{color:var(--butter)}
+.ed .sec-head p{color:#e2cdb8}
+.ed-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch}
+.ed-grid>*{min-width:0}
+.edc{background:#3d2618;border-radius:24px;padding:24px;box-shadow:inset 0 0 0 1px #563826}
+.edc h3{font-family:var(--display);font-size:34px;font-weight:400}
+.edc p{color:#e2cdb8;margin-top:6px;line-height:1.5}
+.cd{display:flex;gap:10px;margin-top:16px}
+.cd div{background:#2b1a10;border-radius:14px;padding:10px 12px;text-align:center;min-width:64px}
+.cd b{display:block;font-family:var(--display);font-size:32px;color:var(--butter);line-height:1}
+.cd span{font-size:11px;font-weight:700;color:#cbb39d}
+.prog{height:12px;border-radius:9px;background:#563826;overflow:hidden;margin:14px 0 8px}
+.prog i{display:block;height:100%;background:var(--butter);transition:width .6s}
+.edc .chips button{background:#2b1a10;box-shadow:inset 0 0 0 1px #563826;color:#fff}
+.edc .chips button.on{background:var(--butter);color:var(--ink)}
+.edc .chips button.on small{color:#6b5100}
+.edc .chips button small{color:#cbb39d}
+.edc .field input{background:#2b1a10;border-color:#563826;color:#fff}
+.edc .field label{color:#e7d3bf}
+.ed .btn-g{background:var(--butter);color:var(--ink);box-shadow:none}
+.loc-card{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.loc-card>*{min-width:0}
+/* cocina */
+.kds{background:#1f140c}
+.kds-top{background:#1f140c;border-color:#3a271a}
+.kds-top h2{font-family:var(--display);text-transform:none;font-weight:400}
+.kds-top h2 small{color:var(--butter);font-family:var(--body)}
+.kds-ctrl button{background:#33221a;border-color:#4a3224}
+.kds-stats div{background:#2c1d13;border-color:#4a3224}
+.agw{display:grid;gap:12px;padding:6px 20px 24px}
+.ag{background:#2c1d13;border:1px solid #4a3224;border-radius:18px;padding:14px}
+.ag header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.ag header b{font-family:var(--display);font-size:26px;font-weight:400;color:#fff}
+.ag header span{font-size:12.5px;font-weight:700;color:#cbb39d}
+.bake{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.bake div{background:var(--paper);color:var(--ink);border-radius:12px;padding:10px;text-align:center}
+.bake b{display:block;font-family:var(--display);font-size:30px;font-weight:400}
+.bake span{font-size:11.5px;font-weight:700;color:var(--muted)}
+.ln{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--paper);color:var(--ink);border-radius:12px;padding:10px 12px;margin-top:8px;animation:drop .35s}
+.ln .who{font-weight:800}
+.ln .det{font-size:12.5px;color:var(--muted);line-height:1.4}
+.ln .tm{font-family:var(--mono);font-weight:600;font-size:12px;background:var(--burnt);color:var(--butter);border-radius:8px;padding:3px 8px;margin-right:6px}
+.ln .st{white-space:nowrap;display:inline-block;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:6px;padding:3px 7px;margin-left:6px}
+.ln .st.n{background:var(--butter-l);color:#7a5c00}.ln .st.r{background:#e3f1e7;color:#22663b}.ln .st.d{background:#eee;color:#777}
+.ln button{height:36px;padding:0 12px;border-radius:10px;font-weight:800;font-size:12.5px;background:var(--g);color:#fff;flex:none}
+.ln.d{opacity:.55}.ln.d button{background:#8c7564}
+.ln.fresh{box-shadow:0 0 0 3px var(--butter)}
+.own{background:var(--paper)}
+.kpi b{font-family:var(--display);font-weight:400}
+.flv b{font-family:var(--display);font-weight:400}
+@media (max-width:980px){.two,.ed-grid,.loc-card{grid-template-columns:1fr}.sizes{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:720px){.sizes{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2{grid-template-columns:1fr}.wa-card{right:6px;bottom:-16px}.since{left:4px}}
+</style>
+</head>
+<body>
+
+<main id="v-cliente">
+  <div class="topbar"><div class="wrap">
+    <div class="brand"><div class="brand-mark">P</div><div class="brand-name">Paykekes<small>Tarta vasca · Monterrey</small></div></div>
+    <button class="cart-btn" id="toCart">Mi pedido <b id="badgeCart">0</b></button>
+  </div></div>
+
+  <section class="hero"><div class="wrap">
+    <div>
+      <span class="chip status"><span class="dot pulse"></span><span id="openTxt">Recolección bajo agenda</span></span>
+      <h1 class="display">Tu tarta, apartada <span>sin esperar respuesta.</span></h1>
+      <p class="lead">Elige tamaño y topping, mira qué días y horarios de recolección quedan libres y aparta en un minuto. Sin tienda física: solo recolección en Las Brisas.</p>
+      <div class="actions"><a class="btn btn-g" href="#menu">Armar mi pedido</a><a class="btn btn-w" href="#eventos">Posadas y eventos</a></div>
+    </div>
+    <div class="hero-art">
+      <div class="since"><div><b>4 años</b><span>cremosita</span></div></div>
+      <figure class="hero-photo"><img src="img/hero.webp" alt="Tarta vasca con centro cremoso" width="800" height="533"><figcaption>Foto ilustrativa</figcaption></figure>
+      <div class="wa-card"><s>Menú en Canva + pedido por WhatsApp</s><br><b>Ahora: menú, agenda y pedido en un solo link.</b></div>
+    </div>
+  </div></section>
+
+  <div class="ticker" aria-hidden="true"><div id="tickerTxt"></div></div>
+
+  <section class="section" id="menu"><div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow"><span class="step-num">1</span>Menú</span><h2 class="display">Elige tu <em>tamaño</em></h2></div>
+      <p>Tamaños, toppings y precios de ejemplo: se cargan los suyos. Puedes agregar varias tartas al mismo pedido.</p></div>
+    <div class="sizes" id="sizes"></div>
+    <div class="field" style="margin-top:20px"><label>Topping</label></div>
+    <div class="tops" id="tops"></div>
+    <div class="addrow"><button class="btn btn-g" id="addBtn" style="background:var(--burnt)">Agregar al pedido</button><span id="addTxt" style="font-weight:800"></span></div>
+  </div></section>
+
+  <section class="section" style="padding-top:0" id="agenda"><div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow"><span class="step-num">2</span>Recolección</span><h2 class="display">Tu día y <em>horario</em></h2></div>
+      <p>Martes a viernes de 12:00 a 5:00, sábado de 10:30 a 2:30. Cada día tiene cupo de horno: cuando se llena, se bloquea solo.</p></div>
+    <div class="two">
+      <div class="panel">
+        <div class="days" id="days"></div>
+        <div class="oven"><span id="ovenTxt"></span><div class="m"><i id="ovenBar"></i></div></div>
+        <div class="field"><label>Horario de recolección</label><div class="slots" id="slots"></div></div>
+        <div class="field"><label for="dedi">Tarjetita con dedicatoria (opcional)</label><input id="dedi" maxlength="60" placeholder="Ej. Feliz cumple, Majo" autocomplete="off"></div>
+      </div>
+      <div class="panel" id="cartPanel">
+        <h3>Tu pedido</h3><p id="cartSub">Agrega tartas desde el menú.</p>
+        <div id="cartLines" style="margin-top:8px"></div>
+        <div class="totals"><span>Total</span><b id="cartTotal">$0</b></div>
+        <div class="field"><label>Pago</label><div class="chips" id="pay"><button class="on" data-pay="tr">Transferencia<small>para confirmar</small></button><button data-pay="card">Tarjeta en línea<small>fase 2</small></button></div></div>
+        <div class="grid2">
+          <div class="field"><label for="fName">Nombre</label><input id="fName" placeholder="¿A nombre de quién?" autocomplete="off"></div>
+          <div class="field"><label for="fPhone">WhatsApp</label><input id="fPhone" inputmode="tel" maxlength="14" placeholder="10 dígitos" autocomplete="off"></div>
+        </div>
+        <button class="btn btn-g" id="sendOrder" style="width:100%;margin-top:14px;background:var(--burnt)">Apartar mi pedido</button>
+        <div class="err" id="err"></div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="section ed" id="edicion"><div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow">Edición especial</span><h2 class="display">Pre-order de <em style="color:var(--butter)">temporada</em></h2></div>
+      <p>Para lanzamientos como su cuchareable de aniversario: piezas limitadas, contador en vivo y pre-order sin contestar DM por DM. Ejemplo con datos ficticios.</p></div>
+    <div class="ed-grid">
+      <div class="edc">
+        <h3>Tarta de galleta de jengibre (ejemplo)</h3>
+        <p>Edición navideña limitada a 60 piezas. Se recoge el sábado 19 o el martes 22 de diciembre.</p>
+        <div class="cd" id="cd"></div>
+        <div class="prog"><i id="edBar"></i></div>
+        <p style="margin:0"><b id="edTxt" style="color:#fff"></b></p>
+      </div>
+      <div class="edc">
+        <div class="field" style="margin-top:0"><label>Día de recolección</label><div class="chips" id="edDay"><button class="on" data-ed="Sáb 19 dic">Sábado 19 dic<small>10:30 a 2:30</small></button><button data-ed="Mar 22 dic">Martes 22 dic<small>12:00 a 5:00</small></button></div></div>
+        <div class="grid2">
+          <div class="field"><label>Piezas (máx. 2)</label><div class="chips" id="edQty"><button class="on" data-eq="1">1 pieza<small>$520</small></button><button data-eq="2">2 piezas<small>$1,040</small></button></div></div>
+          <div class="field"><label for="edName">Nombre y WhatsApp</label><input id="edName" placeholder="Ej. Ana · 81 1234 5678" autocomplete="off"></div>
+        </div>
+        <button class="btn btn-g" id="edGo" style="width:100%;margin-top:16px">Hacer mi pre-order</button>
+        <div class="err" id="edErr" style="color:#ffb3aa"></div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="section" id="eventos"><div class="wrap">
+    <div class="sec-head"><div><span class="eyebrow"><span class="step-num">3</span>Mayoreo</span><h2 class="display">Posadas y <em>eventos</em></h2></div>
+      <p>Mini tartas por pieza, mesas de postres y regalos corporativos. La solicitud les llega completa para cotizar.</p></div>
+    <div class="two">
+      <div class="panel">
+        <div class="field" style="margin-top:0"><label>Tipo de evento</label><div class="chips" id="evType"><button class="on" data-et="Posada de empresa">Posada de empresa</button><button data-et="Regalos corporativos">Regalos corporativos</button><button data-et="Mesa de postres">Mesa de postres</button><button data-et="Baby shower o boda">Baby shower o boda</button></div></div>
+        <div class="grid2">
+          <div class="field"><label for="evDate">Fecha</label><input id="evDate" type="date"></div>
+          <div class="field"><label for="evQty">Mini tartas</label><input id="evQty" type="number" min="12" step="6" value="40"></div>
+        </div>
+        <div class="field"><label for="evName">Nombre, empresa y WhatsApp</label><input id="evName" placeholder="Ej. Laura · Grupo Norte · 81 5555 1234" autocomplete="off"></div>
+        <button class="btn btn-g" id="evSend" style="width:100%;margin-top:16px;background:var(--g)">Pedir cotización</button>
+        <div class="err" id="evErr"></div>
+      </div>
+      <div class="panel" style="background:var(--butter-l);box-shadow:inset 0 0 0 1.5px #f1e1a8">
+        <h3>Así les llega</h3>
+        <p>Cada pedido cae en la pestaña <b>Cocina</b> con día, horario y lo que hay que hornear. Con un botón le avisan al cliente que su tarta está lista, y en <b>Dueña</b> ven ventas, tamaños y toppings más pedidos.</p>
+        <div class="cart-line" style="margin-top:10px"><span>Pedidos de última hora</span><b>Hoy, antes de las 11 am</b></div>
+        <div class="cart-line"><span>Días llenos</span><b>Se bloquean solos</b></div>
+        <div class="cart-line" style="border:0"><span>Aviso de "ya está lista"</span><b>Por WhatsApp</b></div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="section" style="padding-top:0"><div class="wrap loc-card">
+    <div class="panel"><h3>Recolección</h3><p><b>Las Brisas, Monterrey</b> (la dirección exacta llega al confirmar)<br>Martes a viernes 12:00 a 5:00 pm · sábado 10:30 am a 2:30 pm<br>WhatsApp 81 1254 5290</p></div>
+    <div class="panel"><h3>Un solo link en su bio</h3><p>Reemplaza el menú de Canva y el ir y venir por WhatsApp: el cliente arma su pedido, ve el cupo y aparta solo.</p></div>
+  </div></section>
+
+  <footer class="site wrap"><b>Demo concepto preparada por Code Nova para Paykekes.</b><br>No es el sitio oficial. Tamaños, toppings, precios, cupos, ediciones, pedidos y cifras son de ejemplo; horarios y zona tomados de su Instagram. Fotos ilustrativas.<br>Code Nova · Nuevo León · WhatsApp 826 261 3262</footer>
+</main>
+
+<main id="v-cocina" class="kds" hidden>
+  <div class="kds-top">
+    <h2><small>Cocina</small><span id="kDay">Próximo día</span></h2>
+    <div class="kds-ctrl"><button id="kWa"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>Registrar pedido de WhatsApp</button></div>
+  </div>
+  <div class="kds-stats" id="kStats"></div>
+  <div class="agw" id="kw"></div>
+</main>
+
+<main id="v-dueno" class="own" hidden>
+  <div class="own-top"><div class="wrap"><h2><small>Panel de la dueña</small>Próximos 7 días</h2><span class="chip live"><span class="dot pulse"></span>En vivo</span></div></div>
+  <div class="wrap">
+    <div class="kpis">
+      <div class="kpi"><span>Pedidos agendados</span><b id="kOrd">0</b><em id="kOrdE"></em></div>
+      <div class="kpi"><span>Ventas agendadas</span><b id="kInc">$0</b><em>Próximos 7 días</em></div>
+      <div class="kpi"><span>Pre-orders de temporada</span><b id="kEd">0</b><em id="kEdE"></em></div>
+      <div class="kpi"><span>Eventos por cotizar</span><b id="kEv">0</b><em>Posadas y mayoreo</em></div>
+    </div>
+    <div class="own-grid">
+      <div class="card"><h3>Tamaños <small>tartas agendadas</small></h3><div class="bars" id="oSz"></div></div>
+      <div class="card"><h3>Toppings más pedidos</h3><div class="bars" id="oTp"></div></div>
+      <div class="card"><h3>Cupo de horno por día</h3><div class="bars" id="oOven"></div></div>
+      <div class="card"><h3>Movimientos <small>en tiempo real</small></h3><div class="feed" id="feed"></div></div>
+    </div>
+    <div class="own-foot">Cifras de ejemplo para la demo.</div>
+  </div>
+</main>
+
+<nav class="demobar" aria-label="Vistas de la demo">
+  <span class="lbl"><b>Demo</b>Code Nova</span>
+  <button data-v="cliente" class="on">Cliente</button>
+  <button data-v="cocina">Cocina<span class="badge" id="badgeK" hidden>0</span></button>
+  <button data-v="dueno">Dueña</button>
+</nav>
+<div id="layer"></div>
+
+<script>
+(()=>{
+const SIZES=[
+  {id:"cuch",n:"Cuchareable",d:"Vasito individual",p:85,w:.2,px:34},
+  {id:"mini",n:"Mini",d:"1 a 2 personas",p:120,w:.25,px:42},
+  {id:"chica",n:"Chica",d:"4 a 6 personas",p:420,w:.75,px:52},
+  {id:"med",n:"Mediana",d:"8 a 10 personas",p:620,w:1,px:62},
+  {id:"gde",n:"Grande",d:"12 a 15 personas",p:850,w:1.3,px:72}
+];
+const SM=Object.fromEntries(SIZES.map(s=>[s.id,s]));
+const TOPS=[
+  {id:"nat",n:"Natural",p:0,c:"#f4dfb6"},{id:"nut",n:"Nutella",p:60,c:"#5a3218"},{id:"pis",n:"Pistache",p:90,c:"#9fbf6a"},
+  {id:"fru",n:"Frutos rojos",p:60,c:"#b8323f"},{id:"lot",n:"Galleta Lotus",p:60,c:"#c4884a"},{id:"caj",n:"Cajeta",p:40,c:"#a8641f"}
+];
+const TM=Object.fromEntries(TOPS.map(t=>[t.id,t]));
+const OVEN=18,SLOTCAP=4,ED_CAP=60,ED_P=520;
+const NAMES=["Majo G.","Andrea L.","Valeria P.","Sofía R.","Daniela T.","Regina M.","Ximena C.","Paulina V.","Fernanda Q.","Mariana S.","Camila B.","Natalia H.","Lucía O.","Renata A."];
+let NI=0;const nextName=()=>NAMES[(NI++)%NAMES.length];
+const $=s=>document.querySelector(s);const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;const pick=a=>a[Math.floor(Math.random()*a.length)];
+const peso=n=>"$"+Math.round(n).toLocaleString("es-MX");const cap=t=>t.charAt(0).toUpperCase()+t.slice(1);
+const hm=m=>{const h=Math.floor(m/60),mm=m%60;return `${h>12?h-12:h}:${String(mm).padStart(2,"0")}`};
+const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+function mty(){return new Date(new Date().toLocaleString("en-US",{timeZone:"America/Monterrey"}))}
+const now=mty(),nowMin=now.getHours()*60+now.getMinutes();
+const slotsFor=wd=>{const o=[];if(wd===6){for(let m=630;m<=840;m+=30)o.push(m)}else for(let m=720;m<=990;m+=30)o.push(m);return o};
+const DAYS=[];for(let i=0;DAYS.length<10&&i<20;i++){const d=new Date(now);d.setDate(now.getDate()+i);const wd=d.getDay();if(wd===0||wd===1)continue;if(i===0&&nowMin>=660)continue;DAYS.push({d:iso(d),wd,n:d.getDate(),w:d.toLocaleDateString("es-MX",{weekday:"short"}).replace(".",""),today:i===0})}
+const S={size:"med",top:"nat",cart:[],day:DAYS[0].d,slot:null,orders:[],ed:0,edDay:"Sáb 19 dic",edQty:1,evType:"Posada de empresa",events:[],seq:500,view:"cliente",unseen:0};
+$("#tickerTxt").innerHTML=Array(2).fill("Tarta vasca cremosita<i>•</i>Cuchareables<i>•</i>Toppings<i>•</i>Bajo agenda<i>•</i>Solo recolección<i>•</i>Las Brisas<i>•</i>").join("");
+(function open(){const wd=now.getDay();const s=slotsFor(wd);const open=wd!==0&&wd!==1&&nowMin>=s[0]&&nowMin<=s[s.length-1]+30;$("#openTxt").textContent=open?"Recolección abierta hoy":"Agenda abierta · aparta para el siguiente día"})();
+
+const dayLoad=d=>S.orders.filter(o=>o.day===d).reduce((a,o)=>a+o.w,0);
+const slotLoad=(d,t)=>S.orders.filter(o=>o.day===d&&o.slot===t).length;
+const cartW=()=>S.cart.reduce((a,c)=>a+SM[c.size].w,0);
+const cartTotal=()=>S.cart.reduce((a,c)=>a+SM[c.size].p+TM[c.top].p,0);
+const dayInfo=d=>DAYS.find(x=>x.d===d);
+
+function renderMenu(){$("#sizes").innerHTML=SIZES.map(s=>`<button class="sz ${S.size===s.id?"on":""}" data-sz="${s.id}"><span class="disc" style="width:${s.px}px;height:${s.px}px"></span><b>${s.n}</b><span>${s.d}</span><em>${peso(s.p)}</em></button>`).join("");
+  $("#tops").innerHTML=TOPS.map(t=>`<button class="tp ${S.top===t.id?"on":""}" data-tp="${t.id}"><i style="background:${t.c}"></i><span><b>${t.n}</b><small>${t.p?"+"+peso(t.p):"Sin costo"}</small></span></button>`).join("");
+  $("#addTxt").textContent=`${SM[S.size].n} · ${TM[S.top].n} · ${peso(SM[S.size].p+TM[S.top].p)}`;}
+function renderDays(){$("#days").innerHTML=DAYS.map(x=>{const l=OVEN-dayLoad(x.d);const ok=l>=Math.max(.2,cartW());return `<button class="${S.day===x.d?"on":""} ${ok?"":"full"}" data-day="${x.d}"><span>${x.today?"Hoy":x.w}</span><b>${x.n}</b><small>${l<=0?"lleno":x.today?"último minuto":"cupo "+Math.floor(l)}</small></button>`}).join("");
+  const u=dayLoad(S.day);$("#ovenTxt").textContent=`Horno de este día: ${Math.round(u/OVEN*100)}% ocupado`;$("#ovenBar").style.width=Math.min(100,u/OVEN*100)+"%";}
+function renderSlots(){const di=dayInfo(S.day);const ts=slotsFor(di.wd).filter(t=>!(di.today&&t<nowMin+60));
+  if(S.slot===null||!ts.includes(S.slot)||slotLoad(S.day,S.slot)>=SLOTCAP)S.slot=ts.find(t=>slotLoad(S.day,t)<SLOTCAP)??null;
+  $("#slots").innerHTML=ts.map(t=>{const l=SLOTCAP-slotLoad(S.day,t);return `<button class="${S.slot===t?"on":""} ${l<=0?"full":""}" data-t="${t}">${hm(t)}<small>${l<=0?"lleno":"quedan "+l}</small></button>`}).join("")||'<span class="slot-day">Sin horarios libres este día.</span>';}
+function renderCart(){$("#badgeCart").textContent=S.cart.length;const di=dayInfo(S.day);
+  $("#cartSub").textContent=S.cart.length?`Recoges ${di.today?"hoy":di.w+" "+di.n}${S.slot!==null?" a las "+hm(S.slot):""} en Las Brisas.`:"Agrega tartas desde el menú.";
+  $("#cartLines").innerHTML=S.cart.map((c,i)=>`<div class="cart-line"><span>${SM[c.size].n}<small>${TM[c.top].n}</small></span><span style="display:flex;align-items:center;gap:10px"><b>${peso(SM[c.size].p+TM[c.top].p)}</b><button data-rm="${i}" aria-label="Quitar">&times;</button></span></div>`).join("");
+  $("#cartTotal").textContent=peso(cartTotal());}
+function renderEd(){$("#edBar").style.width=Math.min(100,S.ed/ED_CAP*100)+"%";const l=ED_CAP-S.ed;$("#edTxt").textContent=l>0?`Quedan ${l} de ${ED_CAP} piezas`:"Agotada: los siguientes entran a lista de espera";}
+function tickCd(){const t=new Date(2026,11,19,10,30)-mty();const d=Math.max(0,Math.floor(t/864e5)),h=Math.max(0,Math.floor(t%864e5/36e5)),m=Math.max(0,Math.floor(t%36e5/6e4));$("#cd").innerHTML=`<div><b>${d}</b><span>días</span></div><div><b>${h}</b><span>horas</span></div><div><b>${m}</b><span>min</span></div>`}
+(function evMin(){const t=new Date(now);t.setDate(t.getDate()+7);$("#evDate").min=iso(t);$("#evDate").value=iso(new Date(2026,11,11,12))})();
+function renderClient(){renderMenu();renderDays();renderSlots();renderCart();renderEd()}
+
+document.addEventListener("click",e=>{
+  const sz=e.target.closest("[data-sz]");if(sz){S.size=sz.dataset.sz;renderMenu();return}
+  const tp=e.target.closest("[data-tp]");if(tp){S.top=tp.dataset.tp;renderMenu();return}
+  const dy=e.target.closest("[data-day]");if(dy){S.day=dy.dataset.day;S.slot=null;renderDays();renderSlots();renderCart();return}
+  const t=e.target.closest("[data-t]");if(t){S.slot=+t.dataset.t;renderSlots();renderCart();return}
+  const rm=e.target.closest("[data-rm]");if(rm){S.cart.splice(+rm.dataset.rm,1);renderDays();renderCart();return}
+  const py=e.target.closest("[data-pay]");if(py&&py.dataset.pay==="card"){toast("El pago con tarjeta en línea se activa en la fase 2.");return}
+  const ed=e.target.closest("[data-ed]");if(ed){S.edDay=ed.dataset.ed;document.querySelectorAll("[data-ed]").forEach(b=>b.classList.toggle("on",b===ed));return}
+  const eq=e.target.closest("[data-eq]");if(eq){S.edQty=+eq.dataset.eq;document.querySelectorAll("[data-eq]").forEach(b=>b.classList.toggle("on",b===eq));return}
+  const et=e.target.closest("[data-et]");if(et){S.evType=et.dataset.et;document.querySelectorAll("[data-et]").forEach(b=>b.classList.toggle("on",b===et));return}
+});
+$("#addBtn").onclick=()=>{if(S.cart.length>=8){toast("Máximo 8 tartas por pedido; para más, pide cotización de evento.");return}
+  if(dayLoad(S.day)+cartW()+SM[S.size].w>OVEN){const alt=DAYS.find(x=>dayLoad(x.d)+cartW()+SM[S.size].w<=OVEN);if(alt){S.day=alt.d;S.slot=null;toast(`Ese día ya no tiene cupo de horno; te movimos al ${alt.w} ${alt.n}.`)}else{toast("No hay cupo de horno en los próximos días.");return}}
+  S.cart.push({size:S.size,top:S.top});renderDays();renderSlots();renderCart();toast(`${SM[S.size].n} con ${TM[S.top].n.toLowerCase()} agregada al pedido.`)};
+$("#toCart").onclick=()=>$("#cartPanel").scrollIntoView({behavior:"smooth",block:"center"});
+$("#fPhone").addEventListener("input",e=>{e.target.value=e.target.value.replace(/[^\d ]/g,"")});
+$("#sendOrder").onclick=()=>{const err=$("#err");err.textContent="";const nm=$("#fName").value.trim(),ph=$("#fPhone").value.replace(/\D/g,"");
+  if(!S.cart.length){err.textContent="Agrega al menos una tarta desde el menú.";return}if(S.slot===null){err.textContent="Elige un horario de recolección.";return}
+  if(dayLoad(S.day)+cartW()>OVEN){err.textContent="Ese día ya no tiene cupo; elige otro.";return}
+  if(nm.length<2){err.textContent="Escribe tu nombre.";return}if(ph.length!==10){err.textContent="El WhatsApp debe tener 10 dígitos.";return}
+  const o=addOrder({day:S.day,slot:S.slot,items:S.cart.slice(),name:nm,dedi:$("#dedi").value.trim(),mine:true});S.cart=[];$("#fName").value="";$("#fPhone").value="";$("#dedi").value="";renderClient();
+  const di=dayInfo(o.day);modal(`<div class="ticket-top" style="background:var(--burnt)"><span class="chip" style="background:rgba(255,255,255,.16)"><span class="dot"></span>Pedido apartado</span><h3 style="font-family:var(--display);text-transform:none;font-style:italic">¡Gracias, ${esc(nm.split(" ")[0])}!</h3><div style="opacity:.9;margin-top:6px">Recoges ${di.today?"hoy":di.w+" "+di.n} a las ${hm(o.slot)} en Las Brisas</div></div>
+  <div class="ticket-body">${o.items.map(c=>`<div class="tk-row"><span>${SM[c.size].n} · ${TM[c.top].n}</span><b>${peso(SM[c.size].p+TM[c.top].p)}</b></div>`).join("")}${o.dedi?`<div class="tk-row"><span>Dedicatoria</span><b>"${esc(o.dedi)}"</b></div>`:""}<div class="tk-row" style="border:0"><span>Total</span><b>${peso(o.total)}</b></div>
+  <div class="tk-code" style="justify-content:center;text-align:center"><div><span>Pedido ${o.id}</span><b>${o.code}</b><span>Dilo al recoger.</span></div></div>
+  <div class="tk-wa"><span>En el sistema real llegan por WhatsApp los datos de transferencia para confirmar, la dirección exacta y un aviso cuando tu tarta esté lista.</span></div>
+  <button class="btn btn-g" data-go="cocina" style="background:var(--g)">Ver cómo le llega a la cocina</button><button class="btn btn-w" data-close>Seguir viendo la demo</button></div>`)};
+$("#edGo").onclick=()=>{const err=$("#edErr");err.textContent="";const nm=$("#edName").value.trim();if(nm.length<3){err.textContent="Escribe tu nombre y WhatsApp.";return}
+  if(S.ed+S.edQty>ED_CAP){err.textContent="Ya no quedan piezas suficientes.";return}S.ed+=S.edQty;S.myEd={qty:S.edQty,day:S.edDay,name:nm.split("·")[0].trim()};
+  feed(`<b>Pre-order</b> · ${S.edQty} tarta${S.edQty>1?"s":""} de jengibre · ${S.edDay} · ${esc(S.myEd.name)}`);$("#edName").value="";renderEd();refreshViews();bump();
+  modal(`<div class="ticket-top" style="background:var(--burnt)"><span class="chip" style="background:rgba(255,255,255,.16)"><span class="dot"></span>Pre-order lista</span><h3 style="font-family:var(--display);text-transform:none;font-style:italic">Tu edición ya está apartada</h3><div style="opacity:.9;margin-top:6px">${S.edQty} pieza${S.edQty>1?"s":""} · ${S.edDay} · ${peso(ED_P*S.edQty)}</div></div><div class="ticket-body"><div class="tk-wa"><span>Al cerrar la pre-order, la cocina ve cuántas hornear por día. Si alguien cancela, la pieza pasa sola a la lista de espera.</span></div><button class="btn btn-w" data-close>Seguir viendo la demo</button></div>`)};
+$("#evSend").onclick=()=>{const err=$("#evErr");err.textContent="";const nm=$("#evName").value.trim(),d=$("#evDate").value,q=+$("#evQty").value;
+  if(!d||d<$("#evDate").min){err.textContent="Para eventos pedimos al menos 7 días de anticipación.";return}if(!(q>=12)){err.textContent="El mínimo para eventos es de 12 mini tartas.";return}if(nm.length<3){err.textContent="Escribe tu nombre y WhatsApp.";return}
+  S.seq++;const ev={id:"EV-"+S.seq,type:S.evType,date:d,qty:q,name:nm.split("·")[0].trim(),st:"pend",mine:true,fresh:true};S.events.push(ev);feed(`<b>${ev.id}</b> · ${ev.type} · ${q} mini tartas · ${fmtD(d)}`);$("#evName").value="";refreshViews();bump();
+  modal(`<div class="ticket-top" style="background:var(--g)"><span class="chip" style="background:rgba(255,255,255,.2)"><span class="dot"></span>Solicitud enviada</span><h3 style="font-family:var(--display);text-transform:none;font-style:italic">¡Gracias, ${esc(ev.name.split(" ")[0])}!</h3><div style="opacity:.92;margin-top:6px">${ev.type} · ${q} mini tartas · ${fmtD(d)}</div></div><div class="ticket-body"><div class="tk-wa"><span>Paykekes recibe la solicitud completa y te manda la cotización por WhatsApp.</span></div><button class="btn btn-g" data-go="cocina" style="background:var(--g)">Ver cómo le llega al equipo</button><button class="btn btn-w" data-close>Seguir viendo la demo</button></div>`)};
+const fmtD=d=>new Date(d+"T12:00:00").toLocaleDateString("es-MX",{weekday:"short",day:"numeric",month:"short"});
+function addOrder({day,slot,items,name,dedi="",src="web",mine=false}){S.seq++;const o={id:"PK-"+S.seq,code:String(rnd(1000,9999)),day,slot,items,w:items.reduce((a,c)=>a+SM[c.size].w,0),total:items.reduce((a,c)=>a+SM[c.size].p+TM[c.top].p,0),name,dedi,src,mine,st:"n",fresh:true};S.orders.push(o);
+  feed(`<b>${o.id}</b> · ${o.items.length} tarta${o.items.length>1?"s":""} · ${esc(name)} · ${fmtD(day)} ${hm(slot)}${src==="wa"?" (WhatsApp)":""}`);refreshViews();bump();setTimeout(()=>{o.fresh=false;if(S.view==="cocina")renderK()},6000);return o}
+function bump(){if(S.view!=="cocina"){S.unseen++;badge()}}
+function randItems(){const n=pick([1,1,1,2,2,3]);const it=[];for(let i=0;i<n;i++)it.push({size:pick(["mini","chica","med","med","gde","cuch"]),top:pick(["nat","nat","nut","pis","fru","lot","caj"])});return it}
+function freeSlot(d){const di=dayInfo(d);const ts=slotsFor(di.wd).filter(t=>!(di.today&&t<nowMin+60)&&slotLoad(d,t)<SLOTCAP);return ts.length?pick(ts):null}
+
+/* cocina */
+$("#kWa").onclick=()=>{const d=DAYS[0].d;const it=randItems(),w=it.reduce((a,c)=>a+SM[c.size].w,0);const t=freeSlot(d);if(t===null||dayLoad(d)+w>OVEN){toast("Ese día ya está lleno.");return}addOrder({day:d,slot:t,items:it,name:nextName(),src:"wa"});toast("Pedido de WhatsApp registrado: el cupo de la página ya se actualizó.")};
+function renderK(){const d0=DAYS[0];$("#kDay").textContent=`${d0.today?"Hoy":cap(d0.w)+" "+d0.n}`;const os=S.orders.filter(o=>o.day===d0.d).sort((a,b)=>a.slot-b.slot);
+  $("#kStats").innerHTML=`<div><b>${os.reduce((a,o)=>a+o.items.length,0)}</b>tartas por entregar</div><div><b>${os.filter(o=>o.st==="n").length}</b>por preparar</div><div><b>${Math.round(dayLoad(d0.d)/OVEN*100)}%</b>del horno</div><div><b>${S.events.filter(e=>e.st==="pend").length}</b>eventos por cotizar</div>`;
+  const bake={};os.forEach(o=>o.items.forEach(c=>{const k=SM[c.size].n;bake[k]=(bake[k]||0)+1}));const tops={};os.forEach(o=>o.items.forEach(c=>{if(c.top!=="nat"){const k=TM[c.top].n;tops[k]=(tops[k]||0)+1}}));
+  const bakeH=`<section class="ag"><header><b>Hornear para ${d0.today?"hoy":cap(d0.w)+" "+d0.n}</b><span>Por tamaño, más toppings aparte</span></header><div class="bake">${SIZES.map(s=>`<div><b>${bake[s.n]||0}</b><span>${s.n}</span></div>`).join("")}</div><div class="bake" style="margin-top:8px">${Object.entries(tops).map(([k,v])=>`<div style="background:#f3e3cf"><b>${v}</b><span>${k}</span></div>`).join("")||'<div style="background:#f3e3cf"><b>0</b><span>Con topping</span></div>'}</div></section>`;
+  const ordH=`<section class="ag"><header><b>Recolección por horario</b><span>Avisa por WhatsApp cuando esté lista</span></header>${os.map(o=>`<div class="ln ${o.st==="d"?"d":""} ${o.fresh?"fresh":""}"><div><span class="tm">${hm(o.slot)}</span><span class="who">${esc(o.name)}</span><span class="st ${o.st}">${o.st==="n"?"Por preparar":o.st==="r"?"Lista":"Entregada"}</span>${o.src==="wa"?'<span class="st n" style="background:#e7f0ff;color:#2d5bb3">WhatsApp</span>':""}${o.mine?' <span style="color:var(--g);font-weight:800;font-size:12px">(tu pedido)</span>':""}<div class="det">${o.items.map(c=>SM[c.size].n+" "+TM[c.top].n.toLowerCase()).join(" · ")}${o.dedi?` · tarjetita: "${esc(o.dedi)}"`:""} · código ${o.code} · ${peso(o.total)}</div></div><button data-st="${o.id}">${o.st==="n"?"Marcar lista":o.st==="r"?"Entregada":"Entregada"}</button></div>`).join("")||'<div class="kempty" style="color:#cbb39d">Sin pedidos</div>'}</section>`;
+  const edH=`<section class="ag"><header><b>Edición de temporada</b><span>Pre-order de jengibre</span></header><div class="bake"><div><b>${S.ed}</b><span>de ${ED_CAP} piezas</span></div><div><b>${ED_CAP-S.ed}</b><span>disponibles</span></div></div>${S.myEd?`<div class="ln fresh"><div><span class="who">${esc(S.myEd.name)}</span> <span style="color:var(--g);font-weight:800;font-size:12px">(tu pre-order)</span><div class="det">${S.myEd.qty} pieza${S.myEd.qty>1?"s":""} · ${S.myEd.day}</div></div></div>`:""}</section>`;
+  const evH=`<section class="ag"><header><b>Eventos y mayoreo</b><span>Solicitudes para cotizar</span></header>${S.events.map(e=>`<div class="ln ${e.st==="ok"?"d":""} ${e.fresh?"fresh":""}"><div><span class="who">${esc(e.name)}</span>${e.mine?' <span style="color:var(--g);font-weight:800;font-size:12px">(tu solicitud)</span>':""}<div class="det">${e.type} · ${e.qty} mini tartas · ${fmtD(e.date)}</div></div><button data-cot="${e.id}">${e.st==="ok"?"Cotizado":"Enviar cotización"}</button></div>`).join("")||'<div class="kempty" style="color:#cbb39d">Sin solicitudes</div>'}</section>`;
+  $("#kw").innerHTML=bakeH+ordH+edH+evH;}
+document.addEventListener("click",e=>{
+  const s=e.target.closest("[data-st]");if(s){const o=S.orders.find(x=>x.id===s.dataset.st);if(o.st==="n"){o.st="r";toast(`Aviso enviado a ${o.name}: su tarta está lista para recoger (simulado)`)}else o.st="d";renderK();return}
+  const c=e.target.closest("[data-cot]");if(c){const x=S.events.find(y=>y.id===c.dataset.cot);if(x.st!=="ok"){x.st="ok";toast(`Cotización enviada por WhatsApp a ${x.name} (simulado)`)}renderK();return}
+});
+/* dueña */
+function renderOwn(){const ds=DAYS.slice(0,7).map(x=>x.d);const os=S.orders.filter(o=>ds.includes(o.day));
+  $("#kOrd").textContent=os.length;$("#kOrdE").textContent=`${os.filter(o=>o.src==="web").length} desde la página`;$("#kInc").textContent=peso(os.reduce((a,o)=>a+o.total,0));
+  $("#kEd").textContent=S.ed;$("#kEdE").textContent=peso(S.ed*ED_P)+" en pre-orders";$("#kEv").textContent=S.events.filter(e=>e.st==="pend").length;
+  const items=os.flatMap(o=>o.items);const sz=SIZES.map(s=>[s.n,items.filter(c=>c.size===s.id).length]);const ms=Math.max(1,...sz.map(x=>x[1]));
+  $("#oSz").innerHTML=sz.map(([n,v])=>`<div class="bar"><span>${n}</span><div class="track"><div class="fill" style="width:${v/ms*100}%;background:var(--g)"></div></div><span class="v">${v}</span></div>`).join("");
+  const tp=TOPS.map(t=>[t.n,items.filter(c=>c.top===t.id).length]).sort((a,b)=>b[1]-a[1]);const mt=Math.max(1,...tp.map(x=>x[1]));
+  $("#oTp").innerHTML=tp.map(([n,v])=>`<div class="bar"><span>${n}</span><div class="track"><div class="fill" style="width:${v/mt*100}%;background:var(--butter)"></div></div><span class="v">${v}</span></div>`).join("");
+  $("#oOven").innerHTML=DAYS.slice(0,7).map(x=>`<div class="bar"><span>${x.today?"Hoy":cap(x.w)+" "+x.n}</span><div class="track"><div class="fill" style="width:${Math.min(100,dayLoad(x.d)/OVEN*100)}%;background:var(--burnt)"></div></div><span class="v">${Math.round(dayLoad(x.d)/OVEN*100)}%</span></div>`).join("");}
+function feed(h){const f=$("#feed");const d=document.createElement("div");d.innerHTML=`<span>${h}</span>`;f.prepend(d);while(f.children.length>10)f.lastChild.remove()}
+function setView(v){S.view=v;["cliente","cocina","dueno"].forEach(k=>$("#v-"+k).hidden=k!==v);document.querySelectorAll(".demobar [data-v]").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
+  if(v==="cocina"){S.unseen=0;badge();renderK()}if(v==="dueno")renderOwn();window.scrollTo(0,0)}
+document.querySelectorAll(".demobar [data-v]").forEach(b=>b.onclick=()=>setView(b.dataset.v));
+document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g){closeModal();setView(g.dataset.go);return}if(e.target.closest("[data-close]")||e.target.classList.contains("scrim"))closeModal()});
+function refreshViews(){if(S.view==="cocina")renderK();if(S.view==="dueno")renderOwn();if(S.view==="cliente"){renderDays();renderSlots()}}
+function badge(){const b=$("#badgeK");b.hidden=!S.unseen;b.textContent=S.unseen}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function modal(h){$("#layer").innerHTML=`<div class="scrim" role="dialog" aria-modal="true"><div class="modal">${h}</div></div>`}
+function closeModal(){$("#layer").innerHTML=""}
+let tT;function toast(m){document.querySelector(".toast")?.remove();const t=document.createElement("div");t.className="toast";t.innerHTML=`<span>${m}</span>`;document.body.append(t);clearTimeout(tT);tT=setTimeout(()=>t.remove(),4200)}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+
+/* datos de ejemplo */
+DAYS.forEach((x,i)=>{const target=i===0?rnd(10,13):Math.max(2,rnd(8,14)-i);let g=0;while(dayLoad(x.d)<target&&g++<80){const it=randItems(),w=it.reduce((a,c)=>a+SM[c.size].w,0);const t=freeSlot(x.d);if(t===null||dayLoad(x.d)+w>OVEN)break;S.seq++;S.orders.push({id:"PK-"+S.seq,code:String(rnd(1000,9999)),day:x.d,slot:t,items:it,w,total:it.reduce((a,c)=>a+SM[c.size].p+TM[c.top].p,0),name:nextName(),dedi:"",src:Math.random()<.5?"web":"wa",st:"n",fresh:false})}});
+S.ed=34;
+S.events.push({id:"EV-"+(++S.seq),type:"Posada de empresa",date:"2026-12-12",qty:60,name:"Laura · Grupo Norte",st:"pend"},{id:"EV-"+(++S.seq),type:"Regalos corporativos",date:"2026-12-16",qty:36,name:"Esencia Perfume Bar",st:"ok"});
+S.orders.slice(-5).forEach(o=>feed(`<b>${o.id}</b> · ${o.items.length} tarta${o.items.length>1?"s":""} · ${esc(o.name)} · ${fmtD(o.day)} ${hm(o.slot)}`));
+renderClient();tickCd();setInterval(tickCd,30000);
+setInterval(()=>{if(document.hidden)return;const x=pick(DAYS.slice(0,5));const it=randItems(),w=it.reduce((a,c)=>a+SM[c.size].w,0);const t=freeSlot(x.d);if(t===null||dayLoad(x.d)+w>OVEN)return;const o=addOrder({day:x.d,slot:t,items:it,name:nextName()});if(S.view==="cliente")toast(`${o.name} acaba de apartar para el ${fmtD(o.day)}`)},32000);
+
+modal(`<div class="welcome"><span class="eyebrow">Demo para Paykekes</span>
+  <h3 style="font-family:var(--display);text-transform:none;font-style:italic">Su agenda, en un solo link</h3>
+  <p>Demo funcional preparada por Code Nova. Pruébela como clienta:</p>
+  <ol><li><b class="n">1</b><span>Arme una tarta (tamaño y topping), elija día y horario de recolección y aparte su pedido.</span></li>
+  <li><b class="n">2</b><span>Abajo, toque <b>Cocina</b>: qué hornear por tamaño y topping, y el botón para avisar "ya está lista".</span></li>
+  <li><b class="n">3</b><span>En <b>Dueña</b> vea ventas agendadas, toppings más pedidos y el cupo de horno por día.</span></li></ol>
+  <button class="btn btn-g" data-close style="background:var(--burnt)">Empezar</button><p style="font-size:12px;margin-top:12px;text-align:center">Tamaños, precios y cifras de ejemplo.</p></div>`);
+})();
+</script>
+</body>
+</html>
