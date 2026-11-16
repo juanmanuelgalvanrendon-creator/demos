@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fika · Galletas y cookie kits (demo)</title>
+<meta name="theme-color" content="#5e7d8c">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Fika · Demo de pedidos">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: cookie kits, galletas personalizadas y kit hospital con agenda por día, kit navideño y cotización de eventos.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Nunito+Sans:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#6b8b9a;--g-d:#5e7d8c;--g-dd:#263a44;--g-l:#e2ecf0;--g-ll:#f5f9fa;--acc:#c29a6b;--acc-d:#9f7a4c;--acc-l:#f5ebdd;
+--ink:#1f2a2f;--ink-2:#435258;--muted:#7c8a90;--line:#e5edf0;--paper:#fafcfc;--cream:#fffffe;--red:#c2493f;--sh:0 14px 34px -16px rgba(31,42,47,.42);
+--display:"Playfair Display",Georgia,serif;--body:"Nunito Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:600;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#e2ecf0 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#f5ebdd 0%,transparent 60%),#fafcfc}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Fika",mark:"F",tag:"Zona Sur · MTY"},
+hero:{chip:"Sharing sweet moments",h1a:"Pide tus galletas",h1b:"sin esperar respuesta.",lead:"Cookie kits para decorar, galletas personalizadas, Big Cookie y kit hospital: arma tu pedido, deja la temática y aparta el día con 3 días de anticipación. Los pedidos de eventos llegan listos para cotizar.",cta1:["Ver galletas","#menu"],cta2:["Eventos","#eventos"],badge:["3","días antes"],alt:"Kit para decorar galletas navideñas con glaseado y sprinkles junto a galletas decoradas",old:"\"Comenta y te mandamos el catálogo por DM\"",now:"Ahora: catálogo, temática, día y pedido en un solo link."},
+ticker:["Cookie kits","Personalizadas","Kit hospital","Big Cookie","Baby shower","Zona Sur"],
+menuHead:{kicker:"Galletas",title:"Arma tu <em>pedido</em>",note:"Productos de sus destacadas (kits, temáticas, kit hospital, Big Cookie); tamaños y precios de ejemplo que se cargan con los suyos."},
+cats:[
+ {id:"kt",n:"Cookie kits",items:[
+  {id:"k1",n:"Cookie kit navideño",d:"Galletas de mantequilla, icing y sprinkles para decorar en casa.",p:380,w:2,bg:"#e2ecf0",c:"#5e7d8c",tag:"Temporada"},
+  {id:"k2",n:"Cookie kit familiar",d:"El doble de galletas para una tarde con niños o amigas.",p:620,w:3,bg:"#f5ebdd",c:"#9f7a4c"},
+  {id:"k3",n:"Mini kit individual",d:"Detalle para intercambio o para la escuela.",p:150,w:1,bg:"#f6e3e3",c:"#a86464"}]},
+ {id:"pe",n:"Personalizadas",items:[
+  {id:"p1",n:"Docena temática",d:"Galletas decoradas con la temática y colores de tu fiesta.",p:560,w:4,bg:"#f6e3e3",c:"#a86464",tag:"Más pedida"},
+  {id:"p2",n:"Big Cookie",d:"Galleta grande decorada con mensaje, para regalar.",p:320,w:2,bg:"#f5ebdd",c:"#9f7a4c"}]},
+ {id:"ba",n:"Bebé",items:[
+  {id:"b1",n:"Kit hospital",d:"Paquete de maternidad personalizado con el nombre del bebé.",p:690,w:4,bg:"#e2ecf0",c:"#5e7d8c"}]}],
+hours:{1:[600,1080],2:[600,1080],3:[600,1080],4:[600,1080],5:[600,1080],6:[600,840]},step:60,cutoff:720,capacity:40,slotCap:3,minDays:3,capLabel:"Galletas que se pueden decorar en el día",
+pickHead:{kicker:"Entrega",title:"Tu día y <em>horario</em>",note:"Recoges en Zona Sur, Monterrey. Horario de ejemplo. Se pide con 3 días de anticipación, como en su bio, y cada día tiene cupo: cuando se llena, se bloquea solo."},
+note:"Temática, colores o nombre",notePh:"Ej. Bienvenido Gonzalo, tonos azul cielo",
+waNote:"En el sistema real llega la confirmación por WhatsApp con los datos de pago y un aviso cuando tu pedido esté listo.",
+preorder:{kicker:"Navidad",title:"Kits para <em style=\"color:var(--acc-l)\">posadas</em>",text:"Cookie kits por volumen para posadas, escuelas y oficinas, con cupo por día que se cierra solo al llenarse. Precio, cupo y fechas de ejemplo.",n:"Mini kit navideño por volumen (ejemplo)",d:"Galletas, icing y sprinkles en bolsita individual.",p:130,cap:250,sold:96,days:["Vie 11 dic","Mar 15 dic","Vie 18 dic","Lun 21 dic"],dayLabel:"Día de entrega",unit:"kits"},
+quote:{kicker:"Eventos",title:"Baby shower, bautizo y <em>novias</em>",text:"Galletas para mesas de postres y recuerdos: la solicitud llega completa para cotizar, con fecha, piezas e idea.",types:["Baby shower","Bautizo","Boda","Teacher's Day"],qtyLabel:"Número de galletas",unit:"galletas",min:24,def:50,minDays:7,defDate:"2027-01-23",how:"Cada pedido cae en la pestaña <b>Cocina</b> con las galletas que hay que hornear y decorar por día. Con un botón le avisan al cliente que su pedido está listo, y en <b>Dueño</b> ven ventas y los productos más pedidos.",rows:[["Días llenos","Se bloquean solos"],["Aviso de \"ya está listo\"","Por WhatsApp"]]},
+loc:[["Fika","<b>Zona Sur, Monterrey, N.L.</b><br>Pedidos con 3 días de anticipación por DM o WhatsApp."],["Un link en su bio","Puede ir junto a su WhatsApp: el cliente ve el catálogo, elige día y aparta solo."]],
+disclaimer:"Tamaños, precios, cupos, horario, kits para posadas, pedidos y cifras son de ejemplo; zona, anticipación y tipos de productos tomados de su Instagram.",
+labels:["Cocina","Dueña"],prefix:"FK",prepTitle:"Hornear y decorar",
+seed:{names:["Mariana G.","Andrea L.","Sofía R.","Daniela T.","Regina M.","Ximena C.","Paulina V.","Fernanda Q.","Camila B.","Natalia H.","Lucía O.","Renata A."],quotes:[{type:"Baby shower",date:"2026-12-12",qty:60,name:"Familia Leal"}]},
+welcome:{title:"Sus pedidos de galletas, abiertos las 24 horas",steps:["Arme un pedido, deje temática o nombre, escoja día y horario y apártelo.","Abajo, toque <b>Cocina</b>: qué hornear y decorar por día y el botón para avisar \"ya está listo\".","En <b>Dueña</b> vea ventas, los productos más pedidos y el cupo por día."],note:"Precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/pedidos.js"></script>
+</body>
+</html>
