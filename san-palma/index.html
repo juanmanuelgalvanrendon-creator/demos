@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>San Palma Studio · Reserva tu sesión (demo)</title>
+<meta name="theme-color" content="#8a4224">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="San Palma Studio · Demo de reservaciones">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: sesiones de cerámica con cupo en vivo, talleres de temporada y eventos privados.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#a9542f;--g-d:#8a4224;--g-dd:#4a2414;--g-l:#f4e1d4;--g-ll:#fbf3ec;--acc:#6f7d3c;--acc-d:#55612b;--acc-l:#e6ebd2;
+--ink:#2a1a12;--ink-2:#4d382c;--muted:#857164;--line:#ecdfd5;--paper:#faf5ef;--cream:#fffcf8;--red:#c2493f;--sh:0 14px 34px -16px rgba(42,26,18,.45);
+--display:"DM Serif Display",Georgia,serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:400;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#f4e1d4 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#e6ebd2 0%,transparent 60%),#faf5ef;
+--dark:#21140d;--dark-2:#311e14;--dark-3:#4b3022;--dark-txt:#e2d2c6}
+.brand-name{font-style:italic}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"San Palma Studio",mark:"SP",tag:"Taller de cerámica · San Pedro"},
+topBtn:"Reservar",
+hero:{chip:"Sculpting Club · Casco Urbano de San Pedro",h1a:"Aparta tu sesión",h1b:"y ven a crear.",lead:"Elige tu Sculpting Night o la sesión del sábado, mira cuántos lugares quedan y aparta en un minuto. Sin experiencia: nosotros te guiamos en todo el proceso.",cta1:["Ver sesiones","#eventos"],cta2:["Evento privado","#privado"],badge:["barro","& vino"],alt:"Manos esculpiendo barro en un taller de cerámica",old:"\"Reserva tu sesión\" por mensaje",now:"Ahora: cada sesión se aparta sola, con cupo en vivo."},
+ticker:["Sculpting Nights","Jueves y viernes 7 a 10 pm","Sábados 11 a 2","Pieza libre","Esmaltado","Eventos privados"],
+eventsHead:{kicker:"Sesiones",title:"Próximas <em>sesiones</em>",note:"Los horarios son los de sus publicaciones; precios tomados de su taller de calabaza y cupos de ejemplo. El cupo baja con cada reserva."},
+events:[
+ {id:"j19",n:"Sculpting Night",date:"2026-11-19",hrs:"7:00 pm a 10:00 pm",short:"7 pm",p:550,cap:14,desc:"Escultura libre en barro con guía del equipo. Spike pots, diablitos o lo que imagines.",inc:["Barro y herramientas","Quema de tu pieza","Bebida"]},
+ {id:"v20",n:"Sculpting Night",date:"2026-11-20",hrs:"7:00 pm a 10:00 pm",short:"7 pm",p:550,cap:14,desc:"La noche más pedida: música, vino y barro. Esmaltado opcional al reservar.",inc:["Barro y herramientas","Quema de tu pieza","Bebida"],tag:"Se llena"},
+ {id:"s21",n:"Sculpt & Coffee",date:"2026-11-21",hrs:"11:00 am a 2:00 pm",short:"11 am",p:550,cap:14,desc:"Sesión de sábado con café. Ideal para venir en pareja o con amigas.",inc:["Barro y herramientas","Quema de tu pieza","Café"]},
+ {id:"nav",n:"Christmas Ceramic Night",date:"2026-12-09",hrs:"7:00 pm a 10:00 pm",short:"7 pm",p:650,cap:16,desc:"Esculpe tus esferas y figuras navideñas para regalar o para tu árbol.",inc:["Materiales","Esmaltado","Bebidas y snacks"],tag:"Temporada"}],
+unit:["lugar","lugares"],maxPer:6,
+pay:[["l","En el taller"],["a","Anticipo en línea (fase 2)"]],
+waitlist:{title:"¿Se llenó tu noche?",text:"Deja tu WhatsApp y te avisamos primero cuando se libere un lugar o abramos un taller de temporada.",start:23,ok:"Listo: te avisamos en cuanto se libere un lugar."},
+side:["Así funciona","El cliente aparta solo y a ustedes les llega la lista por sesión. Las reservas que siguen llegando por WhatsApp se registran en un clic y el cupo se actualiza solo.",[["Lugares apartados","En vivo"],["Recordatorio","Un día antes"],["Tu pieza salió del horno","Aviso por WhatsApp"]]],
+priv:{kicker:"Eventos privados",title:"Tu sesión de cerámica, <em style=\"color:var(--acc-l)\">privada</em>",text:"Cumpleaños, despedidas, citas o team building: el cliente deja fecha, personas y qué quieren esculpir, y les llega listo para cotizar.",types:["Cumpleaños","Team building","Despedida","Date night"],actLabel:"Qué quieren esculpir",acts:["Pieza libre","Tazas","Macetas","Piezas navideñas"],min:6,def:10,minDays:7,defDate:"2026-12-05",agTitle:"Privados"},
+loc:[["San Palma Studio","<b>Casco Urbano, San Pedro Garza García, N.L.</b><br>Sculpting Club: jueves y viernes de 7 a 10 pm, sábados de 11 am a 2 pm."],["Un link en su bio","Puede ir junto a su linktree: sesiones, talleres de temporada y privados en un solo lugar, sin ir y venir por mensaje."]],
+disclaimer:"Precios, cupos, fechas del taller navideño, reservas y cifras son de ejemplo; los horarios se tomaron de sus publicaciones.",
+labels:["Agenda","Dueño"],agendaTitle:"Sesiones y talleres",ownerTitle:"Este mes",
+seed:{names:["Mariana G.","Diego R.","Sofía T.","Andrés P.","Fernanda L.","Luis M.","Daniela O.","Regina B.","Jorge A.","Ximena D.","Paola V.","Rodrigo S."],fill:{j19:9,v20:12,s21:7,nav:5},priv:[{type:"Team building",act:"Tazas",date:"2026-12-03",ppl:18,name:"Despacho Garza & Asoc."},{type:"Cumpleaños",act:"Pieza libre",date:"2026-11-28",ppl:10,name:"Valeria M.",st:"ok"}]},
+welcome:{title:"Sus sesiones, reservables en un clic",steps:["Elija una sesión y aparte su lugar: verá cuántos quedan.","Abajo, toque <b>Agenda</b>: ahí aparecen los asistentes por sesión y las solicitudes de privados.","En <b>Dueño</b> vea lugares vendidos, ingresos y de dónde llegan las reservas."]}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/exp.js"></script>
+</body>
+</html>
