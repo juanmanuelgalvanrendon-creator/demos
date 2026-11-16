@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stranger Coffee · Reserva tu mesa (demo)</title>
+<meta name="theme-color" content="#7d1616">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Stranger Coffee · Demo de reservaciones">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: calendario de visitas y noches temáticas con mesas en vivo, cumpleaños de terror y agenda.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#8c1c1c;--g-d:#7d1616;--g-dd:#2a0e0e;--g-l:#f3dcd8;--g-ll:#faf1ef;--acc:#c4892b;--acc-d:#9c6a1c;--acc-l:#f6e2bf;
+--ink:#1a1212;--ink-2:#3e2c2c;--muted:#7f6e6b;--line:#e7dcd6;--paper:#f6f0e8;--cream:#fffbf6;--red:#c2493f;--sh:0 14px 34px -16px rgba(26,18,18,.5);
+--display:"Cinzel",Georgia,serif;--body:"Archivo",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:800;--em-style:normal;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#f3dcd8 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#f6e2bf 0%,transparent 60%),#f6f0e8;
+--dark:#140c0c;--dark-2:#221414;--dark-3:#3d2222;--dark-txt:#dccbc6}
+.display{letter-spacing:.01em}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Stranger Coffee",mark:"SC",tag:"Cafetería temática de terror"},
+topBtn:"Reservar",
+hero:{chip:"Lunes y miércoles a domingo · 2 a 9 pm",h1a:"Aparta tu mesa",h1b:"antes de la visita.",lead:"Mira el calendario de visitas y noches temáticas, cuántas mesas quedan y aparta en un minuto. También puedes pedir tu cumpleaños de terror.",cta1:["Ver calendario","#eventos"],cta2:["Cumpleaños de terror","#privado"],badge:["7 años","de terror"],alt:"Mesa de cafetería temática de terror",old:"Visitas anunciadas solo en publicaciones",now:"Ahora: calendario con mesas en vivo y reserva al momento."},
+ticker:["Visitas de personajes","Noches temáticas","Postres de terror","Navidad oscura","Cumpleaños","De los creadores de Horror Fest"],
+eventsHead:{kicker:"Calendario",title:"Próximas <em>visitas</em>",note:"Eventos, fechas y cupos de ejemplo para la demo; se carga su calendario real. Cada reserva aparta lugares en mesa y el cupo baja solo."},
+events:[
+ {id:"santa",n:"Navidad oscura",date:"2026-11-28",hrs:"5:00 pm a 9:00 pm",short:"5 pm",p:0,cap:40,desc:"Visita de un Santa siniestro y menú navideño de terror.",inc:["Visita de personaje","Bebida de temporada"],tag:"Nuevo"},
+ {id:"hist",n:"Noche de historias de terror",date:"2026-12-04",hrs:"7:00 pm a 9:00 pm",short:"7 pm",p:0,cap:32,desc:"Narración en vivo de leyendas regias con luces apagadas.",inc:["Narrador en vivo","Postre de la casa"]},
+ {id:"slash",n:"Visita sorpresa: slasher",date:"2026-12-12",hrs:"4:00 pm a 9:00 pm",short:"4 pm",p:0,cap:40,desc:"Un clásico del cine de terror visita las mesas. Fotos incluidas.",inc:["Visita de personaje","Fotos"]}],
+unit:["lugar","lugares"],maxPer:8,bookBtn:"Apartar mi mesa",
+pay:[["l","Reserva sin costo"],["a","Consumo mínimo en línea (fase 2)"]],
+waitlist:{title:"¿Se llenó la visita?",text:"Deja tu WhatsApp y te avisamos primero cuando anuncien la siguiente visita o se libere una mesa.",start:54,ok:"Listo: te avisamos de la próxima visita."},
+side:["Así llega al equipo","Cada reserva aparece en la Agenda con nombre, número de personas y código. Las reservas que llegan por DM se registran en un clic y el cupo de la página se actualiza solo.",[["Mesas apartadas","En vivo"],["Recordatorio","El mismo día"],["Si alguien cancela","Pasa a lista de espera"]]],
+priv:{kicker:"Cumpleaños y privados",title:"Tu cumpleaños, <em style=\"color:var(--acc-l)\">de terror</em>",text:"El cliente elige fecha, personas y qué quiere incluir; a ustedes les llega lista para cotizar, sin ir y venir de mensajes.",types:["Cumpleaños de terror","Fiesta privada","Sesión de fotos","Evento de empresa"],actLabel:"¿Qué incluimos?",acts:["Visita de personaje","Menú temático","Pastel de terror","Decoración especial"],min:6,def:12,minDays:5,defDate:"2026-12-05",agTitle:"Cumpleaños y privados"},
+loc:[["Stranger Coffee","<b>Plaza Tres 800, Av. Revolución, sur de Monterrey</b><br>Lunes y miércoles a domingo de 2:00 a 9:00 pm · martes cerrado"],["Un link en su bio","El calendario de visitas que hoy se anuncia publicación por publicación, con mesas reservables desde la bio."]],
+disclaimer:"Eventos, fechas, cupos, reservas y cifras son de ejemplo; horario y ubicación tomados de su Instagram y de notas publicadas.",
+labels:["Agenda","Dueño"],agendaTitle:"Visitas y mesas",ownerTitle:"Este mes",
+seed:{names:["Mariana G.","Diego R.","Sofía T.","Andrés P.","Fernanda L.","Luis M.","Daniela O.","Regina B.","Jorge A.","Ximena D.","Paola V.","Rodrigo S."],fill:{santa:28,hist:20,slash:31},priv:[{type:"Cumpleaños de terror",act:"Visita de personaje",date:"2026-12-06",ppl:15,name:"Valeria C."},{type:"Sesión de fotos",act:"Decoración especial",date:"2026-12-10",ppl:6,name:"Estudio Norte",st:"ok"}]},
+welcome:{title:"Su calendario de visitas, con mesas en vivo",steps:["Elija una visita o noche temática y aparte su mesa: verá cuántos lugares quedan.","Abajo, toque <b>Agenda</b>: ahí aparecen las reservas por evento y los cumpleaños por cotizar.","En <b>Dueño</b> vea ocupación, lista de espera y de dónde llegan las reservas."],note:"Eventos y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/exp.js"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kirei Maid Café · Reservaciones (demo)</title>
+<meta name="theme-color" content="#c4567f">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Kirei Maid Café · Demo de reservaciones">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: reservación de mesas, eventos de cosplay con cupo, cumpleaños kawaii y agenda.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800&family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#c4567f;--g-d:#a8436a;--g-dd:#5e2442;--g-l:#fbe0ea;--g-ll:#fdf2f6;--acc:#8b6fd6;--acc-d:#6c52b8;--acc-l:#e8e0fa;
+--ink:#2b1d26;--ink-2:#4d3a46;--muted:#8c7884;--line:#f0dfe7;--paper:#fff8fb;--cream:#fffcfd;--red:#c2493f;--sh:0 14px 34px -16px rgba(43,29,38,.4);
+--display:"M PLUS Rounded 1c",system-ui,sans-serif;--body:"Archivo",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:800;--em-style:normal;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#fbe0ea 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#e8e0fa 0%,transparent 60%),#fff8fb;
+--dark:#2a1830;--dark-2:#3a2342;--dark-3:#55355f;--dark-txt:#e3d3e8}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Kirei Maid Café",mark:"K",tag:"Comida asiática · Barrio Antiguo"},
+topBtn:"Reservar",
+hero:{chip:"Música, anime y maids · Barrio Antiguo",h1a:"Reserva tu mesa",h1b:"y tu lugar en los eventos.",lead:"Mira los próximos eventos de cosplay y dinámicas, cuántos lugares quedan y aparta en un minuto. También puedes pedir tu cumpleaños kawaii.",cta1:["Ver eventos","#eventos"],cta2:["Cumpleaños","#privado"],badge:["Ven con","tu cosplay"],alt:"Mesa con ramen, takoyakis y postres kawaii",old:"Reservaciones por mensaje",now:"Ahora: eventos con cupo en vivo y reserva al momento."},
+ticker:["Ramen","Takoyakis","Maids","Anime","Cosplay","Dinámicas","Barrio Antiguo"],
+eventsHead:{kicker:"Eventos",title:"Próximas <em>dinámicas</em>",note:"Eventos, fechas, precios y cupos de ejemplo para la demo; se carga su calendario real. Cada reserva baja el cupo sola."},
+events:[
+ {id:"cos",n:"Día de cosplay",date:"2026-11-28",hrs:"2:00 pm a 8:00 pm",short:"2 pm",p:0,cap:36,desc:"Ven con tu cosplay, etiquétanos y entra a la rifa del día.",inc:["Rifa","Fotos con las maids"],tag:"Rifa"},
+ {id:"kar",n:"Noche de karaoke anime",date:"2026-12-05",hrs:"6:00 pm a 10:00 pm",short:"6 pm",p:120,cap:30,desc:"Openings y endings favoritos con la comunidad.",inc:["Bebida","Karaoke"]},
+ {id:"xmas",n:"Navidad maid",date:"2026-12-19",hrs:"3:00 pm a 9:00 pm",short:"3 pm",p:0,cap:36,desc:"Maids con atuendo navideño, menú de temporada y dinámicas.",inc:["Dinámicas","Menú de temporada"]}],
+unit:["lugar","lugares"],maxPer:8,bookBtn:"Reservar mi lugar",
+pay:[["l","Pago en el café"],["a","Anticipo en línea (fase 2)"]],
+waitlist:{title:"¿Se llenó el evento?",text:"Deja tu WhatsApp y te avisamos primero cuando anuncien la siguiente dinámica.",start:27,ok:"Listo: te avisamos del próximo evento."},
+side:["Así llega al equipo","Cada reserva aparece en la Agenda con nombre, personas y código. Las que llegan por mensaje se registran en un clic y el cupo de la página se actualiza solo.",[["Lugares apartados","En vivo"],["Recordatorio","Un día antes"],["Si alguien cancela","Pasa a lista de espera"]]],
+priv:{kicker:"Cumpleaños y reuniones",title:"Tu cumpleaños, <em style=\"color:var(--acc-l)\">kawaii</em>",text:"El cliente elige fecha, personas y qué quiere incluir; a ustedes les llega lista para cotizar.",types:["Cumpleaños kawaii","Reunión de amigos","Sesión de fotos cosplay","Evento de escuela"],actLabel:"¿Qué incluimos?",acts:["Show de maids","Menú especial","Pastel temático","Decoración"],min:5,def:10,minDays:5,defDate:"2026-12-06",agTitle:"Cumpleaños y reuniones"},
+loc:[["Kirei Maid Café","<b>Barrio Antiguo, Monterrey</b><br>Comida asiática, música, anime y maids. Ambiente cálido y familiar."],["Un link en su bio","Eventos, reservaciones y cumpleaños en un solo link: lo que hoy está en historias destacadas, reservable al momento."]],
+disclaimer:"Eventos, fechas, precios, cupos, reservas y cifras son de ejemplo.",
+labels:["Agenda","Dueño"],agendaTitle:"Eventos y mesas",ownerTitle:"Este mes",
+seed:{names:["Mariana G.","Diego R.","Sofía T.","Andrés P.","Fernanda L.","Luis M.","Daniela O.","Regina B.","Jorge A.","Ximena D.","Paola V.","Rodrigo S."],fill:{cos:24,kar:17,xmas:9},priv:[{type:"Cumpleaños kawaii",act:"Show de maids",date:"2026-12-06",ppl:12,name:"Valeria C."}]},
+welcome:{title:"Sus eventos y mesas, reservables en un clic",steps:["Elija un evento y aparte su lugar: verá cuántos quedan.","Abajo, toque <b>Agenda</b>: las reservas por evento y los cumpleaños por cotizar.","En <b>Dueño</b> vea ocupación, lista de espera y de dónde llegan las reservas."],note:"Eventos y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/exp.js"></script>
+</body>
+</html>
