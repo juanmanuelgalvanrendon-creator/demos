@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Horneadaa · Cotiza y agenda tu pastel (demo)</title>
+<meta name="theme-color" content="#8a4fb3">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Horneadaa · Demo de pedidos">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: cotización de pasteles personalizados con referencia, agenda por día y pastelitos listos para pedir.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gloock&family=Nunito+Sans:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#8a4fb3;--g-d:#723e97;--g-dd:#3a1f4f;--g-l:#efe2f8;--g-ll:#faf5fd;--acc:#e3679b;--acc-d:#c24d80;--acc-l:#fbe0ec;
+--ink:#24182c;--ink-2:#4a3b52;--muted:#85778c;--line:#eee3f3;--paper:#fdfaff;--cream:#fffeff;--red:#c2493f;--sh:0 14px 34px -16px rgba(36,24,44,.42);
+--display:"Gloock",Georgia,serif;--body:"Nunito Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:400;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#fbe0ec 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#efe2f8 0%,transparent 60%),#fdfaff;
+--dark:#1f1228;--dark-2:#2e1b3b;--dark-3:#4a2e5c;--dark-txt:#e7d8f0}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Horneadaa",mark:"H",tag:"Cake designer · Obispado"},
+hero:{chip:"Pasteles personalizados · Zona Obispado",h1a:"Tu pastel icónico,",h1b:"cotizado y agendado.",lead:"Elige un diseño base o pide tu pastel personalizado con tu idea y referencia. Ves los días con cupo y apartas sin ir y venir de mensajes.",cta1:["Ver diseños","#menu"],cta2:["Cotizar personalizado","#eventos"],badge:["100%","a tu gusto"],alt:"Pasteles personalizados coloridos con mariposas, moños y cerezas",old:"\"Cotiza por DM\"",now:"Ahora: tu idea, tu día y tu apartado en un solo link."},
+ticker:["Pasteles personalizados","Pastel brujil","Dopamine cake","Pasteles temáticos","Cumpleañeras","Zona Obispado"],
+menuHead:{kicker:"Diseños base",title:"Arma tu <em>pedido</em>",note:"Estilos inspirados en sus publicaciones; tamaños y precios de ejemplo que se cargan con los suyos."},
+cats:[
+ {id:"pa",n:"Pasteles",items:[
+  {id:"br",n:"Pastel brujil",d:"Morado con detalles dorados. 12 a 15 personas.",p:1150,w:4,bg:"#efe2f8",c:"#723e97",tag:"Temporada"},
+  {id:"dp",n:"Dopamine cake",d:"Colorido con mariposas y flores. 12 a 15 personas.",p:1150,w:4,bg:"#fbe0ec",c:"#c24d80"},
+  {id:"mo",n:"Pastel con moños",d:"Buttercream con moños y cerezas. 10 a 12 personas.",p:950,w:3,bg:"#fbe0ec",c:"#e3679b"}]},
+ {id:"mi",n:"Pastelitos",items:[
+  {id:"pi",n:"Pastelito individual",d:"Mini pastel decorado, ideal para regalar.",p:250,w:1,bg:"#efe2f8",c:"#8a4fb3"},
+  {id:"bx",n:"Caja de 4 pastelitos",d:"Para compartir con tus amigas.",p:880,w:2,bg:"#fbe0ec",c:"#c24d80"}]}],
+hours:{1:[600,1140],2:[600,1140],3:[600,1140],4:[600,1140],5:[600,1140],6:[600,1080]},step:60,cutoff:720,capacity:12,slotCap:2,minDays:3,capLabel:"Pasteles que se pueden decorar en el día",
+pickHead:{kicker:"Recolección",title:"Tu día y <em>horario</em>",note:"Recoges en Zona Obispado. Horarios de ejemplo. Cada día tiene cupo: cuando se llena, se bloquea solo."},
+note:"Tu idea, colores o mensaje",notePh:"Ej. Morado con dorado y \"Feliz cumple Ana\"",
+waNote:"En el sistema real llega la confirmación por WhatsApp con los datos de pago y un aviso cuando tu pastel esté listo.",
+preorder:{kicker:"Navidad",title:"Pasteles <em style=\"color:var(--acc-l)\">navideños</em>",text:"Una colección de temporada con cupo por día que se cierra sola al llenarse. Ejemplo con datos ficticios.",n:"Pastel navideño (ejemplo)",d:"Rojo y verde con moños dorados, para 12 personas.",p:1050,cap:40,sold:16,days:["Sáb 19 dic","Lun 21 dic","Mar 22 dic","Jue 24 dic"],dayLabel:"Día de recolección",unit:"pasteles"},
+quote:{kicker:"Personalizado",title:"Cotiza tu pastel <em>personalizado</em>",text:"La clienta deja la ocasión, número de personas, fecha y su idea. Les llega completo para cotizar, sin 20 mensajes de ida y vuelta.",types:["Cumpleaños","Temático","Boda o XV","Baby shower"],qtyLabel:"Número de personas",unit:"personas",min:10,def:20,minDays:5,defDate:"2026-12-05",how:"Cada pedido cae en la pestaña <b>Cocina</b> con lo que hay que hornear y decorar por día. Con un botón le avisan a la clienta que su pastel está listo, y en <b>Dueña</b> ven ventas y los diseños más pedidos.",rows:[["Días llenos","Se bloquean solos"],["Cotizaciones","Llegan con todos los datos"]]},
+loc:[["Horneadaa","<b>Zona Obispado, Monterrey, N.L.</b><br>Pasteles personalizados por pedido."],["Un link en su bio","Puede ir junto a su WhatsApp: diseños, cotización y apartado en un solo lugar."]],
+disclaimer:"Diseños, tamaños, precios, horarios, cupos, pedidos y cifras son de ejemplo; estilos y zona tomados de su Instagram.",
+labels:["Cocina","Dueña"],prefix:"HA",prepTitle:"Hornear y decorar",
+seed:{names:["Mariana G.","Andrea L.","Sofía R.","Daniela T.","Regina M.","Ximena C.","Paulina V.","Fernanda Q.","Camila B.","Natalia H.","Lucía O.","Renata A."],quotes:[{type:"Temático",date:"2026-12-12",qty:30,name:"Valeria S."}]},
+welcome:{title:"Sus pedidos y cotizaciones, en un solo link",steps:["Elija un diseño o pida un personalizado, deje su idea y aparte su día.","Abajo, toque <b>Cocina</b>: qué hornear y decorar por día y el botón para avisar \"ya está listo\".","En <b>Dueña</b> vea ventas, cotizaciones pendientes y el cupo por día."],note:"Diseños, precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/pedidos.js"></script>
+</body>
+</html>
