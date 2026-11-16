@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Barks&amp;Bubbles · Agenda y seguimiento de tu peludito (demo)</title>
+<meta name="theme-color" content="#2f6f9f">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Barks&amp;Bubbles · Demo de citas">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: citas de grooming por tamaño y groomer, seguimiento en vivo por WhatsApp, ficha de cada mascota y recordatorio de su próximo baño.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<link rel="stylesheet" href="../_engine/citas.css">
+<style>
+:root{--g:#3a82b8;--g-d:#2f6f9f;--g-dd:#173a56;--g-l:#dcecf8;--g-ll:#f2f8fd;--acc:#5cb8b2;--acc-d:#3a9590;--acc-l:#d9f1ef;
+--ink:#16232e;--ink-2:#3a4a57;--muted:#748391;--line:#e1eaf1;--paper:#f8fbfd;--cream:#fdfeff;--red:#c2493f;--sh:0 14px 34px -16px rgba(22,35,46,.42);
+--display:"Fredoka",system-ui,sans-serif;--body:"Nunito Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:600;--em-style:normal;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#dcecf8 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#d9f1ef 0%,transparent 60%),#f8fbfd;
+--dark:#10202d;--dark-2:#182c3c;--dark-3:#28435a;--dark-txt:#c9d8e4}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Barks&amp;Bubbles",mark:"B",tag:"Cumbres del Sol"},
+topBtn:"Mi cita",
+hero:{chip:"Peluquería canina profesional",h1a:"Agenda su baño",h1b:"y sigue cómo va.",lead:"Elige el servicio y el tamaño de tu perro, mira los horarios libres de cada groomer y aparta en un minuto. Mientras lo arreglamos, te avisamos por WhatsApp cada paso, con su foto al final.",cta1:["Agendar","#servicios"],cta2:["Ver seguimiento","#seguimiento"],badge:["598","peluditos publicados"],alt:"Bichón frisé recién bañado con moño azul sobre una mesa de grooming",old:"\"¿Ya está mi perro?\" por teléfono",now:"Ahora: cada paso le llega al dueño por WhatsApp."},
+ticker:["Baño","Corte de raza","Deslanado","Uñas y oídos","Spa","Cumbres"],
+svcHead:{kicker:"Servicios",title:"¿Qué le <em>hacemos</em>?",note:"Servicios de ejemplo. El precio y la duración se ajustan solos al tamaño de tu perro, así la agenda no se empalma."},
+services:[
+ {id:"bano",n:"Baño completo",d:"Shampoo para su tipo de pelo, secado, cepillado, uñas y oídos.",min:60,p:280,from:1,every:3},
+ {id:"corte",n:"Baño y corte",d:"Baño completo más corte comercial o el de siempre, con su moño.",min:90,p:420,from:1,tag:"Más pedido",every:4},
+ {id:"raza",n:"Corte de raza",d:"Poodle, schnauzer, bichón: corte de estándar con tijera.",min:120,p:520,from:1,every:5},
+ {id:"deslan",n:"Deslanado",d:"Para husky, golden, pastor: retira el subpelo que más se cae.",min:120,p:480,from:1,every:6},
+ {id:"express",n:"Uñas, oídos y glándulas",d:"Visita rápida sin baño.",min:30,p:150,every:3},
+ {id:"spa",n:"Spa hidratante",d:"Baño con mascarilla, hidratación de cojinetes y perfume.",min:90,p:460,from:1,every:4}],
+variant:{label:"Tamaño de tu perro",short:"Tamaño",def:0,opts:[{id:"ch",n:"Chico",sub:"hasta 10 kg",mult:1},{id:"md",n:"Mediano",sub:"10 a 25 kg",mult:1.3,add:15},{id:"gd",n:"Grande",sub:"25 a 40 kg",mult:1.6,add:30},{id:"gg",n:"Gigante",sub:"más de 40 kg",mult:2,add:45}]},
+staff:[{id:"mar",n:"Mariana",role:"Groomer · cortes de raza"},{id:"die",n:"Diego",role:"Groomer · deslanados",svcs:["bano","corte","deslan","express","spa"]}],
+staffLabel:"Groomer",staffShort:"Groomer",anyLabel:"Quien esté libre",
+hours:{1:[540,1080],2:[540,1080],3:[540,1080],4:[540,1080],5:[540,1080],6:[540,960]},step:30,lead:90,ahead:12,
+fields:[{id:"pet",label:"Nombre de tu perro",short:"Peludito",ph:"Ej. Polar",req:1,inAg:1},{id:"breed",label:"Raza",short:"Raza",ph:"Ej. Bichón frisé",inAg:1},{id:"note",label:"Algo que debamos saber",short:"Nota",ph:"Ej. Le dan miedo las secadoras",inAg:0}],
+pickHead:"Tamaño, groomer y horario",sumTitle:"Su cita",bookBtn:"Agendar su cita",
+remind:"<b>Recordatorio un día antes</b> por WhatsApp y aviso de <b>\"ya está listo\"</b> con su foto.",
+waTicket:"En el sistema real te llega esta confirmación por WhatsApp, un recordatorio un día antes y su foto cuando esté listo.",codeNote:"Muéstralo al dejarlo",
+inBtn:"Llegó",doneBtn:"Listo",doneToast:b=>`Se le envía a ${b.name} la foto de ${b.x.pet||"su perro"} y "ya puedes pasar por él" por WhatsApp.`,
+manualSrc:"teléfono",manualKey:"tel",src3:"Teléfono / DM",gapBtn:"Ofrecer a lista de espera",
+kpi4:["Recordatorios de baño","Perros que regresan solos",(S,W)=>W.length+14],
+loc:[["Barks&amp;Bubbles","<b>Av. Verona 13002-4, Cumbres del Sol, Monterrey, N.L.</b><br>Citas al 81 2334 3030. Horario de ejemplo en esta demo."],["Un link en su bio","Junto a su teléfono: el dueño agenda solo, ve horarios reales y recibe cada aviso por WhatsApp."]],
+disclaimer:"Servicios, precios, duraciones, groomers, horario, mascotas y cifras son de ejemplo; dirección, teléfono y tipo de servicio tomados de su Instagram.",
+labels:["Agenda","Dueña"],agendaTitle:"Peluditos del día",ownerTitle:"Esta semana",
+seed:{names:["Sofía R.","Andrés M.","Paola G.","Luis T.","Fernanda V.","Jorge L.","Mariana C.","Ricardo S.","Valeria O.","Daniel P.","Regina B.","Carlos H."],fill:.38,pet:["Lolo","Coco","Nala","Max","Canela","Rocky","Luna","Toby","Kira","Bruno","Mía","Chispa"],breed:["Bichón frisé","Schnauzer","Poodle","Shih tzu","Golden","Husky","Yorkie","Maltés","Pitbull","French poodle"]},
+welcome:{title:"Agenda, seguimiento y recordatorios en un solo link",steps:["Elija servicio y tamaño, escoja groomer y horario y agende: verá cómo el precio y la duración cambian según el perro.","Baje a <b>Sabes cómo va tu peludito</b> y avance los pasos: así le llegan los avisos al dueño.","Abajo, toque <b>Agenda</b> para ver el día de cada groomer y <b>Dueña</b> para ventas y a quién le toca baño."],note:"Precios, nombres y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/citas.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
