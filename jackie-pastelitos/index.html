@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jackie Pastelitos · Pide tu pastel (demo)</title>
+<meta name="theme-color" content="#d1477a">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Jackie Pastelitos · Demo de pedidos">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: pasteles por tamaño y sabor con recolección o envío, rollos de canela y galletas, y cotización de pasteles creativos.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito+Sans:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#d1477a;--g-d:#b23463;--g-dd:#5c1631;--g-l:#fde0eb;--g-ll:#fff4f8;--acc:#3fa7a0;--acc-d:#2f857f;--acc-l:#d9f2ef;
+--ink:#2b1520;--ink-2:#513a45;--muted:#8a7380;--line:#f6e0e9;--paper:#fffafc;--cream:#fffeff;--red:#c2493f;--sh:0 14px 34px -16px rgba(43,21,32,.42);
+--display:"Fredoka",system-ui,sans-serif;--body:"Nunito Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:700;--em-style:normal;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#fde0eb 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#d9f2ef 0%,transparent 60%),#fffafc;
+--dark:#2a0f1b;--dark-2:#3d1828;--dark-3:#5e2a40;--dark-txt:#f3d6e2}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Jackie Pastelitos",mark:"J",tag:"Pastelería creativa · Guadalupe"},
+hero:{chip:"Pastelería creativa · envíos en el área metro",h1a:"Tu pastel,",h1b:"pedido en un minuto.",lead:"Elige tamaño y sabor, el día y la hora, y pasa por él o pide envío. Para los pasteles creativos, deja tu idea y te llega la cotización.",cta1:["Ver pasteles","#menu"],cta2:["Cotizar creativo","#eventos"],badge:["envíos","en MTY"],alt:"Pastel temático colorido, rollos de canela y galletas decoradas en el mostrador",old:"Cotizar y pedir por WhatsApp",now:"Ahora: tamaño, sabor, día y apartado en un solo link."},
+ticker:["Pasteles creativos","Rollitos de canela","Galletas","Pastel prueba","Envíos en MTY","León XIII, Guadalupe"],
+menuHead:{kicker:"Menú",title:"Arma tu <em>pedido</em>",note:"Tamaños y sabores como en sus destacadas; precios de ejemplo que se cargan con los suyos."},
+cats:[
+ {id:"pa",n:"Pasteles",items:[
+  {id:"pp",n:"Pastel prueba",d:"El tamaño ideal para probar sabores. 4 a 6 personas.",p:320,w:1,bg:"#fde0eb",c:"#b23463",tag:"Para probar"},
+  {id:"pc",n:"Pastel chico decorado",d:"10 a 12 personas, sabor a elegir.",p:690,w:3,bg:"#d9f2ef",c:"#2f857f"},
+  {id:"pm",n:"Pastel mediano decorado",d:"20 personas, sabor a elegir.",p:1050,w:4,bg:"#fde0eb",c:"#d1477a"}]},
+ {id:"ro",n:"Rollitos y galletas",items:[
+  {id:"r4",n:"Caja de 4 rollitos de canela",d:"Glaseados, sabores variados.",p:240,w:1,bg:"#f3e6d6",c:"#8a5a2b"},
+  {id:"g6",n:"Caja de 6 galletas",d:"Sabores de la semana.",p:210,w:1,bg:"#fbf0d9",c:"#b8862c"}]}],
+hours:{2:[540,1140],3:[540,1140],4:[540,1140],5:[540,1140],6:[540,1140],0:[600,960]},step:60,cutoff:720,capacity:20,slotCap:3,minDays:1,capLabel:"Pasteles que se pueden hacer en el día",
+delivery:{fee:120,note:"Envío en el área metropolitana (costo de ejemplo)",pickNote:"Recoges en Felipe Ángeles 1315, León XIII"},
+pickHead:{kicker:"Entrega",title:"Tu día y <em>horario</em>",note:"Martes a sábado de 9 am a 7 pm y domingo de 10 am a 4 pm. Recoge en tienda o pide envío. Cada día tiene cupo: cuando se llena, se bloquea solo."},
+note:"Sabor, colores o mensaje",notePh:"Ej. Chocolate, tonos lila, \"Feliz cumple Fer\"",
+waNote:"En el sistema real llega la confirmación por WhatsApp con los datos de pago y un aviso cuando tu pastel esté listo o en camino.",
+preorder:{kicker:"Navidad",title:"Pasteles <em style=\"color:var(--acc-l)\">navideños</em>",text:"Piezas de temporada con cupo por día, para que no se sature la agenda en diciembre. Ejemplo con datos ficticios.",n:"Pastel navideño (ejemplo)",d:"Decorado de temporada para 12 personas.",p:790,cap:50,sold:19,days:["Sáb 19 dic","Lun 21 dic","Mar 22 dic","Jue 24 dic"],dayLabel:"Día de entrega",unit:"pasteles"},
+quote:{kicker:"Creativos",title:"Cotiza tu pastel <em>creativo</em>",text:"Temática, personas, fecha y referencia: la cotización llega completa, sin ir y venir por WhatsApp.",types:["Cumpleaños temático","Baby shower","Boda o XV","Empresa"],qtyLabel:"Número de personas",unit:"personas",min:10,def:25,minDays:4,defDate:"2026-12-05",how:"Cada pedido cae en la pestaña <b>Cocina</b> con lo que hay que hornear y decorar por día, y si es envío o recolección. Con un botón le avisan al cliente que ya está listo, y en <b>Dueña</b> ven ventas y lo más pedido.",rows:[["Días llenos","Se bloquean solos"],["Envío o recolección","En el mismo pedido"]]},
+loc:[["Jackie Pastelitos","<b>Felipe Ángeles 1315, Col. León XIII, Guadalupe, N.L.</b><br>Martes a sábado 9 am a 7 pm · domingo 10 am a 4 pm"],["Un link en su bio","Puede ir junto a su linktree: tamaños, sabores, cotización y pedido en un solo lugar."]],
+disclaimer:"Tamaños, precios, costo de envío, cupos, pedidos y cifras son de ejemplo; dirección, horario y productos tomados de su Instagram.",
+labels:["Cocina","Dueña"],prefix:"JP",prepTitle:"Hornear y decorar",
+seed:{names:["Mariana G.","Andrea L.","Sofía R.","Daniela T.","Regina M.","Ximena C.","Paulina V.","Fernanda Q.","Camila B.","Natalia H.","Lucía O.","Renata A."],quotes:[{type:"Cumpleaños temático",date:"2026-12-06",qty:30,name:"Karla M."}]},
+welcome:{title:"Sus pedidos, en un solo link",steps:["Arme un pedido, elija envío o recolección, día y horario, y apártelo.","Abajo, toque <b>Cocina</b>: qué hornear y decorar por día y el botón para avisar \"ya está listo\".","En <b>Dueña</b> vea ventas, lo más pedido y el cupo por día."],note:"Tamaños, precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/pedidos.js"></script>
+</body>
+</html>
