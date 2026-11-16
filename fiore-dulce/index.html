@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fiore Dulce · Pedidos navideños (demo)</title>
+<meta name="theme-color" content="#b04a5a">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Fiore Dulce · Demo de pedidos">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: catálogo navideño en línea con agenda por día, entregas en Zona Centro o envío, y pasteles personalizados por cotización.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Nunito+Sans:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#c2566a;--g-d:#b04a5a;--g-dd:#57202a;--g-l:#f9e0e4;--g-ll:#fff5f6;--acc:#5b8a6b;--acc-d:#466e54;--acc-l:#dfeee4;
+--ink:#2b1a1d;--ink-2:#513c40;--muted:#8a7377;--line:#f3e3e6;--paper:#fffafa;--cream:#fffefe;--red:#c2493f;--sh:0 14px 34px -16px rgba(43,26,29,.42);
+--display:"Playfair Display",Georgia,serif;--body:"Nunito Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:600;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#f9e0e4 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#dfeee4 0%,transparent 60%),#fffafa}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Fiore Dulce",mark:"F",tag:"Monterrey, N.L."},
+hero:{chip:"Galletas y pasteles personalizados",h1a:"Tu catálogo navideño,",h1b:"listo para pedir.",lead:"Mira el catálogo completo sin pedirlo por mensaje, arma tu pedido, elige el día y recoge en Zona Centro o pide envío. Los pasteles personalizados llegan listos para cotizar.",cta1:["Ver catálogo","#menu"],cta2:["Pastel personalizado","#eventos"],badge:["2026","navidad"],alt:"Pastel de rol de canela con betún de queso crema junto a galletas navideñas decoradas",old:"\"Mándanos un mensajito y te compartimos el catálogo\"",now:"Ahora: el catálogo, el día y el pedido en un solo link."},
+ticker:["Galletas navideñas","Cinnamon Roll Cake","Cheesecakes","Alfajores","Pasteles","Envíos locales"],
+menuHead:{kicker:"Catálogo navideño",title:"Arma tu <em>pedido</em>",note:"Productos de sus publicaciones (galletas navideñas, Cinnamon Roll Cake, cheesecakes, alfajores); presentaciones y precios de ejemplo que se cargan con los suyos."},
+cats:[
+ {id:"gn",n:"Galletas navideñas",items:[
+  {id:"g1",n:"Caja navideña de 6 galletas",d:"Galletas decoradas de temporada en caja de regalo.",p:290,w:2,bg:"#f9e0e4",c:"#b04a5a",tag:"Para regalo"},
+  {id:"g2",n:"Caja navideña de 12 galletas",d:"La caja grande para compartir en la cena o la oficina.",p:540,w:3,bg:"#dfeee4",c:"#466e54"},
+  {id:"g3",n:"Galleta individual con nombre",d:"Detalle para intercambio o para la mesa de Navidad.",p:55,w:1,bg:"#fbeedd",c:"#a5763f"}]},
+ {id:"pa",n:"Pasteles",items:[
+  {id:"p1",n:"Cinnamon Roll Cake",d:"Rol de canela esponjoso con betún de queso crema. Nuevo.",p:480,w:3,bg:"#f6e7d6",c:"#9a6a3c",tag:"Nuevo"},
+  {id:"p2",n:"Cheesecake",d:"Entero, para 10 a 12 personas.",p:520,w:3,bg:"#fff1df",c:"#b5853f"}]},
+ {id:"al",n:"Alfajores",items:[
+  {id:"a1",n:"Caja de 9 alfajores",d:"Rellenos de cajeta, ideales para regalar.",p:230,w:1,bg:"#f6e7d6",c:"#9a6a3c"}]}],
+hours:{1:[600,1080],2:[600,1080],3:[600,1080],4:[600,1080],5:[600,1080],6:[600,900]},step:60,cutoff:720,capacity:24,slotCap:3,minDays:2,capLabel:"Pedidos que se pueden preparar en el día",
+delivery:{fee:90,note:"Envío local en Monterrey (costo de ejemplo)",pickNote:"Recoges en el punto de entrega de Zona Centro, Monterrey"},
+pickHead:{kicker:"Entrega",title:"Tu día y <em>horario</em>",note:"Recoge en el punto de Zona Centro o pide envío local. Horario de ejemplo. Cada día tiene cupo: cuando se llena, se bloquea solo, ideal para agendar con anticipación."},
+note:"Nombres, colores o mensaje",notePh:"Ej. Galletas con los nombres de la familia, tonos rojo y blanco",
+waNote:"En el sistema real llega la confirmación por WhatsApp con los datos de pago y un aviso cuando tu pedido salga a entrega.",
+preorder:{kicker:"Navidad",title:"Cajas para <em style=\"color:var(--acc-l)\">empresas</em>",text:"Regalos navideños por volumen con cupo por día que se cierra solo al llenarse. Producto, precio y fechas de ejemplo.",n:"Caja de regalo corporativa (ejemplo)",d:"4 galletas decoradas y 2 alfajores con tarjeta personalizada.",p:220,cap:150,sold:62,days:["Lun 14 dic","Mié 16 dic","Vie 18 dic","Lun 21 dic"],dayLabel:"Día de entrega",unit:"cajas"},
+quote:{kicker:"Personalizados",title:"Pasteles y galletas <em>personalizados</em>",text:"Para cumpleaños, bautizos y celebraciones: la solicitud llega completa para cotizar, con fecha, personas e idea.",types:["Cumpleaños","Bautizo","Baby shower","Posada"],qtyLabel:"Número de personas",unit:"personas",min:10,def:20,minDays:4,defDate:"2026-12-05",how:"Cada pedido cae en la pestaña <b>Cocina</b> con lo que hay que hornear y decorar por día, separado en entregas y recolecciones. Con un botón le avisan al cliente que su pedido va en camino, y en <b>Dueño</b> ven ventas y los productos más pedidos.",rows:[["Días llenos","Se bloquean solos"],["Aviso de \"va en camino\"","Por WhatsApp"]]},
+loc:[["Fiore Dulce","<b>Punto de entrega: Zona Centro de Monterrey, N.L.</b><br>Envíos locales. Pedidos por mensaje."],["Un link en su bio","El cliente ve el catálogo navideño completo, elige día y aparta solo, sin esperar a que le manden el catálogo."]],
+disclaimer:"Presentaciones, precios, cupos, horario, costo de envío, cajas para empresas, pedidos y cifras son de ejemplo; productos y zona de entrega tomados de su Instagram.",
+labels:["Cocina","Dueña"],prefix:"FD",prepTitle:"Hornear y decorar",
+seed:{names:["Mariana G.","Andrea L.","Sofía R.","Daniela T.","Regina M.","Ximena C.","Paulina V.","Fernanda Q.","Camila B.","Natalia H.","Lucía O.","Renata A."],quotes:[{type:"Posada",date:"2026-12-12",qty:40,name:"Oficina Salinas"}]},
+welcome:{title:"Su catálogo navideño, abierto las 24 horas",steps:["Arme un pedido del catálogo, elija recoger o envío, escoja día y horario y apártelo.","Abajo, toque <b>Cocina</b>: qué hornear y decorar por día y el botón para avisar \"va en camino\".","En <b>Dueña</b> vea ventas, los productos más pedidos y el cupo por día."],note:"Precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/pedidos.js"></script>
+</body>
+</html>
