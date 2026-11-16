@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Arena Soccer Monterrey · Aparta tu fiesta (demo)</title>
+<meta name="theme-color" content="#1f7a3a">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Arena Soccer Monterrey · Demo de reservaciones">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: calendario de fiestas en la cancha, paquetes con extras, anticipo de $1,000, camp y clases muestra.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#24903f;--g-d:#1f7a3a;--g-dd:#0f3d1e;--g-l:#d8f0de;--g-ll:#effaf2;--acc:#f2b705;--acc-d:#b88a00;--acc-l:#fff1bf;
+--ink:#111a14;--ink-2:#334038;--muted:#6c7a71;--line:#dfe8e1;--paper:#f7faf6;--cream:#fdfffd;--red:#c2493f;--sh:0 14px 34px -16px rgba(17,26,20,.45);
+--display:"Anton",Impact,sans-serif;--body:"Archivo",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:400;--em-style:normal;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#d8f0de 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#fff1bf 0%,transparent 60%),#f7faf6;
+--dark:#0c1f12;--dark-2:#143020;--dark-3:#22482f;--dark-txt:#cfe3d5}
+.display{text-transform:uppercase;letter-spacing:.01em}
+.since b,.since span{color:var(--ink)}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Arena Soccer",mark:"AS",tag:"Cancha fútbol 7 · Guadalupe"},
+topBtn:"Paquetes",
+hero:{chip:"Festeja en la cancha · Centro de Guadalupe",h1a:"Aparta tu fiesta",h1b:"en la cancha.",lead:"Ve qué fechas y horarios quedan libres, elige tu paquete y aparta con $1,000 en dos minutos. También: camp de vacaciones y clase muestra de la academia.",cta1:["Ver fechas libres","#reservar"],cta2:["Camp y academia","#extra"],badge:["$1,000","aparta tu fecha"],alt:"Cancha de fútbol 7 con mesa de cumpleaños",old:"Paquetes en folleto + reserva por WhatsApp",now:"Ahora: paquetes, fechas libres y apartado en un solo link."},
+ticker:["Arena Party","Festeja en la cancha","Renta por hora","Mundialito camp","Leones Elite FC","Fútbol 7 techado"],
+pkgHead:{kicker:"Paquete",title:"Elige tu <em>paquete</em>",note:"Los nombres Copa Mundial y Balón de Oro son de sus paquetes; contenido y precios son de ejemplo. El total se arma solo con los extras."},
+types:["Cumpleaños","Fiesta de equipo","Posada","Evento de empresa"],
+pkgs:[
+ {id:"copa",n:"Copa Mundial",d:"Para los más pequeños: cancha, coach de juegos y área de fiesta. Hasta 25 niños.",p:5900,meta:"3 horas"},
+ {id:"balon",n:"Balón de Oro",d:"Para adolescentes: partido arbitrado, trofeo para el festejado y área de fiesta. Hasta 30.",p:6900,meta:"3 horas",tag:"El más pedido"},
+ {id:"pro",n:"Torneo relámpago",d:"Cuatro equipos, árbitro y medallas. Ideal para equipos y empresas. Hasta 40.",p:8900,meta:"4 horas"}],
+slots:[{id:"m",n:"Mañana",h:"10:00 a 1:00",days:[0,6]},{id:"t",n:"Tarde",h:"2:00 a 5:00"},{id:"n",n:"Noche",h:"6:00 a 9:00"}],
+units:1,unitName:["cancha","canchas"],minDays:2,
+extras:[{id:"x1",n:"Pastel con forma de balón",d:"Para 30 personas",p:1200},{id:"x2",n:"Decoración del equipo favorito",d:"Colores y arco de globos",p:1500},{id:"x3",n:"Medallas para todos",d:"Hasta 30 piezas",p:900},{id:"x4",n:"Fotógrafo",d:"1 hora y fotos digitales",p:1400}],
+deposit:{fixed:1000},payNote:"Aparta tu fecha con $1,000 y liquida el resto antes del evento. El banquete puede ser de su proveedor o del tuyo.",
+calNote:"Cada punto es un turno. Verde: libre. Las fechas ocupadas se bloquean solas, sin dobles reservas.",
+extra:{kicker:"Camp y academia",title:"Entrena con <em style=\"color:var(--acc)\">nosotros</em>",text:"Inscripciones con cupo al momento para el camp de vacaciones y clases muestra de la academia. Fechas y precios de ejemplo.",per:"por niño",qtyLabel:"¿Cuántos niños?",items:[
+ {id:"camp",n:"Mundialito camp de invierno",date:"2026-12-21",hrs:"9:00 a 1:00 (5 días)",d:"Una semana de fútbol, juegos y torneo final.",p:1500,cap:40,fill:.6},
+ {id:"cl1",n:"Clase muestra · Leones Elite FC",date:"2026-11-23",hrs:"Lunes 5:00 pm",d:"Entrenamiento para niños desde los 3 años en cancha techada.",p:0,cap:12,fill:.5},
+ {id:"cl2",n:"Clase muestra · Leones Elite FC",date:"2026-11-25",hrs:"Miércoles 5:00 pm",d:"Entrenamiento para niños desde los 3 años en cancha techada.",p:0,cap:12,fill:.3}]},
+loc:[["Arena Soccer Monterrey","<b>José María Morelos 317, Col. Centro, Guadalupe, N.L.</b><br>Fiestas en la cancha, renta por hora, camp y casa de Leones Elite FC."],["Un link en su bio","Reemplaza el folleto de paquetes y el ir y venir por WhatsApp: el cliente ve fechas libres, arma su paquete y aparta solo."]],
+disclaimer:"Contenido de paquetes, precios, horarios, disponibilidad, camp, reservas y cifras son de ejemplo; los nombres de paquetes y el apartado de $1,000 se tomaron de sus publicaciones.",
+labels:["Agenda","Dueño"],prefix:"AS",
+seed:{names:["Familia Garza","Leonardo R.","Damián T.","Familia Treviño","Daniel P.","Santiago M.","Familia Cantú","Emiliano V.","Mateo S.","Diego L.","Familia Leal","Sebastián C."]},
+welcome:{title:"Sus fiestas en la cancha, reservables 24/7",steps:["Elija paquete y fecha: el calendario muestra los turnos libres y el total se arma con los extras.","Abajo, toque <b>Agenda</b>: las fiestas de la semana, quién ya dio anticipo y las inscripciones al camp.","En <b>Dueño</b> vea ventas, anticipos por cobrar y ocupación de la cancha."]}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/fechas.js"></script>
+</body>
+</html>
