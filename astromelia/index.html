@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Astromelia Coffee and Bakery · Pedidos (demo)</title>
+<meta name="theme-color" content="#6d7f4e">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Astromelia · Demo de pedidos">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: pasteles personalizados y cupcakes con agenda de 4 días, colección navideña con cierre de agenda y pedidos para empresas.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Nunito+Sans:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#6d7f4e;--g-d:#56663c;--g-dd:#2d361f;--g-l:#e6ecd9;--g-ll:#f5f8ef;--acc:#e09a8a;--acc-d:#c4776a;--acc-l:#fbe3dd;
+--ink:#232619;--ink-2:#454a36;--muted:#7f846f;--line:#e8ebdf;--paper:#fdfbf3;--cream:#fffef9;--red:#c2493f;--sh:0 14px 34px -16px rgba(35,38,25,.42);
+--display:"Young Serif",Georgia,serif;--body:"Nunito Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:400;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#fdf0c8 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#e6ecd9 0%,transparent 60%),#fdfbf3;
+--dark:#1d2216;--dark-2:#2a3120;--dark-3:#414b31;--dark-txt:#dde3cf}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Astromelia",mark:"A",tag:"Coffee &amp; Bakery · MTY"},
+hero:{chip:"Pasteles personalizados · pedidos con 4 días",h1a:"Tu pastelito,",h1b:"agendado sin DM.",lead:"Elige tu pastel o tus cupcakes florales, mira qué días quedan con cupo y aparta en un minuto. La agenda respeta los 4 días de anticipación y se cierra sola cuando se llena.",cta1:["Ver pasteles","#menu"],cta2:["Para empresas","#eventos"],badge:["no","fondant"],alt:"Pastel de betún con flores y cupcakes florales en el patio de una cafetería",old:"\"Realiza tu pedido por DM\"",now:"Ahora: catálogo, cupo por día y pedido en un solo link."},
+ticker:["Pasteles personalizados","Cupcakes florales","Panecitos con tulipanes","Pastel de chocolate","Hecho en casa","Good company and great coffee"],
+menuHead:{kicker:"Catálogo",title:"Arma tu <em>pedido</em>",note:"Productos de sus publicaciones; tamaños y precios de ejemplo que se cargan con los suyos."},
+cats:[
+ {id:"pa",n:"Pasteles personalizados",items:[
+  {id:"pc",n:"Pastelito personalizado chico",d:"Betún y flores a mano, sin fondant. 8 a 10 personas.",p:690,w:3,bg:"#fbe3dd",c:"#c4776a",tag:"Favorito"},
+  {id:"pg",n:"Pastel personalizado grande",d:"Diseño a tu gusto, sin fondant. 18 a 20 personas.",p:1150,w:5,bg:"#e6ecd9",c:"#56663c"},
+  {id:"ch",n:"Pastel de chocolate",d:"Bizcocho chocolatoso con ganache de la casa.",p:620,w:3,bg:"#efe2d6",c:"#6b4a33"}]},
+ {id:"cu",n:"Cupcakes y panecitos",items:[
+  {id:"c4",n:"Caja de 4 cupcakes florales",d:"Decorados a mano, en caja lista para regalar.",p:320,w:1,bg:"#fbe3dd",c:"#c4776a"},
+  {id:"c7",n:"Caja de 7 cupcakes florales",d:"Para compartir o regalar.",p:540,w:2,bg:"#fdf0c8",c:"#b8862c"},
+  {id:"pt",n:"Caja de 4 panecitos con tulipanes",d:"Panecitos de la casa con decoración floral.",p:280,w:1,bg:"#e6ecd9",c:"#56663c"}]}],
+hours:{2:[600,1260],3:[600,1260],4:[600,1260],5:[600,1260],6:[600,1260],0:[600,960]},step:60,cutoff:840,capacity:24,slotCap:3,minDays:4,capLabel:"Capacidad de producción del día",
+pickHead:{kicker:"Recolección",title:"Tu día y <em>horario</em>",note:"Pedidos con mínimo 4 días de anticipación. Martes a sábado de 10 am a 9 pm y domingo de 10 am a 4 pm. Cada día tiene cupo: cuando se llena, se bloquea solo."},
+note:"Idea o mensaje para tu pastel (opcional)",notePh:"Ej. Flores lilas y \"Feliz cumple, Abi\"",
+waNote:"En el sistema real llega la confirmación por WhatsApp con los datos de pago y un aviso cuando tu pedido esté listo.",
+preorder:{kicker:"Colección navideña",title:"Cupcakes de <em style=\"color:var(--acc-l)\">Navidad</em>",text:"Como su colección del Día de las Madres, pero con agenda que se cierra sola al llenarse. Ejemplo con datos ficticios.",n:"Caja navideña de 6 cupcakes (ejemplo)",d:"Pinos, nochebuenas y coronas decorados a mano.",p:480,cap:120,sold:58,days:["Sáb 19 dic","Dom 20 dic","Mar 22 dic","Mié 23 dic"],dayLabel:"Día de recolección",unit:"cajas"},
+quote:{kicker:"Empresas y eventos",title:"Pedidos <em>grandes</em>",text:"Cupcakes o galletas para posadas, clientes o eventos. La solicitud les llega completa para cotizar.",types:["Posada de oficina","Regalo para clientes","Evento familiar"],qtyLabel:"Número de piezas",unit:"piezas",min:24,def:60,minDays:7,defDate:"2026-12-12",how:"Cada pedido cae en la pestaña <b>Cocina</b> con lo que hay que hornear y decorar por día. Con un botón le avisan al cliente que su pedido está listo, y en <b>Dueño</b> ven ventas y lo más pedido.",rows:[["Días llenos","Se bloquean solos"],["Anticipación mínima","4 días, automática"]]},
+loc:[["Astromelia Coffee and Bakery","<b>Padre Mier 665, Centro, Monterrey</b><br>Martes a sábado 10 am a 9 pm · domingo 10 am a 4 pm · lunes cerrado"],["Un link en su bio","Puede ir junto a su Google Maps: el cliente arma su pedido, ve el cupo y aparta solo, con la anticipación que ustedes piden."]],
+disclaimer:"Tamaños, precios, cupos, colección navideña, pedidos y cifras son de ejemplo; productos, horarios y reglas de pedido tomados de su Instagram.",
+labels:["Cocina","Dueño"],prefix:"AS",prepTitle:"Hornear y decorar",
+seed:{names:["Mariana G.","Andrea L.","Sofía R.","Daniela T.","Regina M.","Ximena C.","Paulina V.","Fernanda Q.","Camila B.","Natalia H.","Lucía O.","Renata A."],quotes:[{type:"Posada de oficina",date:"2026-12-16",qty:80,name:"Despacho Treviño & Asoc."}]},
+welcome:{title:"Sus pedidos, agendados en un solo link",steps:["Arme un pedido, elija día (desde 4 días) y horario de recolección y apártelo.","Abajo, toque <b>Cocina</b>: cuánto hornear y decorar por producto y el botón para avisar \"ya está listo\".","En <b>Dueño</b> vea ventas agendadas, lo más pedido y la capacidad por día."],note:"Tamaños, precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/pedidos.js"></script>
+</body>
+</html>
