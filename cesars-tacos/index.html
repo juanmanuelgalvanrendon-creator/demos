@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cesar's Tacos · Pide para llevar (demo)</title>
+<meta name="theme-color" content="#a8321f">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Cesar's Tacos · Demo de pedidos">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: pedido para llevar con hora de recogida en Santa Catarina o San Pedro, taquizas para eventos y pantalla de cocina.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#a8321f;--g-d:#8a2717;--g-dd:#4a140b;--g-l:#f8ddd6;--g-ll:#fdf3ef;--acc:#e0a526;--acc-d:#b9841a;--acc-l:#fcefcd;
+--ink:#2a1712;--ink-2:#4f3a33;--muted:#88746c;--line:#f0e1db;--paper:#fdf8f3;--cream:#fffdfa;--red:#c2493f;--sh:0 14px 34px -16px rgba(42,23,18,.42);
+--display:"Alfa Slab One",Georgia,serif;--body:"Archivo",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:400;--em-style:normal;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#fcefcd 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#f8ddd6 0%,transparent 60%),#fdf8f3;
+--dark:#25100b;--dark-2:#381912;--dark-3:#57281d;--dark-txt:#f0d6cd}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Cesar's Tacos",mark:"C",tag:"Desde 1980 · 2 sucursales"},
+hero:{chip:"Santa Catarina y San Pedro",h1a:"Pide tus tacos",h1b:"y recógelos sin fila.",lead:"Arma tu pedido de tacos de guisado, elige sucursal y hora, y llega directo por él. También: taquizas para tu evento, cotizadas en un clic.",cta1:["Ver menú","#menu"],cta2:["Taquizas","#eventos"],badge:["46","años"],alt:"Comal con tortillas hechas a mano y cazuelas de guisados",old:"Llegar y hacer fila para pedir",now:"Ahora: pides desde el celular y lo recoges listo."},
+ticker:["Chicharrón","Nopales","Alambre","Barbacoa","Papas con chorizo","Tortillas de maíz y harina"],
+menuHead:{kicker:"Menú",title:"Arma tu <em>pedido</em>",note:"Guisados de sus publicaciones; precios de ejemplo que se cargan con los reales."},
+cats:[
+ {id:"ta",n:"Tacos",items:[
+  {id:"chi",n:"Taco de chicharrón",d:"En salsa, tortilla de maíz o harina hecha a mano.",p:28,w:.15,bg:"#f8ddd6",c:"#a8321f",tag:"Favorito"},
+  {id:"bar",n:"Taco de barbacoa",d:"Con cebolla y cilantro.",p:32,w:.15,bg:"#efe2d6",c:"#6b4a33"},
+  {id:"nop",n:"Taco de nopales",d:"Nopales guisados con salsa.",p:26,w:.15,bg:"#e6ecd9",c:"#56663c"},
+  {id:"pap",n:"Taco de papas con chorizo",d:"El clásico de la mañana.",p:26,w:.15,bg:"#fcefcd",c:"#b9841a"},
+  {id:"ala",n:"Taco de alambre",d:"Carne, pimiento, cebolla y queso.",p:38,w:.2,bg:"#f8ddd6",c:"#8a2717"}]},
+ {id:"or",n:"Órdenes",items:[
+  {id:"o5",n:"Orden de 5 tacos surtidos",d:"Escoge los guisados al recoger o en la nota.",p:130,w:.6,bg:"#fcefcd",c:"#b9841a"},
+  {id:"kt",n:"Kilo de guisado",d:"Para la familia, con tortillas.",p:290,w:1,bg:"#efe2d6",c:"#6b4a33"}]},
+ {id:"be",n:"Bebidas",items:[
+  {id:"ag",n:"Agua fresca 1 litro",d:"Horchata o jamaica.",p:45,w:.1,bg:"#e6ecd9",c:"#56663c"},
+  {id:"ca",n:"Café de olla",d:"Para acompañar.",p:30,w:.1,bg:"#efe2d6",c:"#6b4a33"}]}],
+branches:["San Pedro (Av. Vasconcelos, Centro)","Santa Catarina"],branchLabel:"Sucursal para recoger",
+hours:{1:[420,840],2:[420,840],3:[420,840],4:[420,840],5:[420,840],6:[420,900],0:[480,840]},step:15,cutoff:780,capacity:120,slotCap:10,capLabel:"Pedidos del día",
+pickHead:{kicker:"Recolección",title:"Sucursal y <em>hora</em>",note:"Horarios de ejemplo. Cada horario tiene cupo para que tu pedido esté listo a tiempo y la cocina no se sature."},
+note:"Indicaciones (opcional)",notePh:"Ej. Orden surtida: 2 chicharrón, 3 barbacoa",
+waNote:"En el sistema real llega la confirmación por WhatsApp y un aviso cuando tu pedido esté listo en la sucursal que elegiste.",
+quote:{kicker:"Eventos",title:"Taquizas para tu <em>evento</em>",text:"Cumpleaños, oficina o reunión familiar: el cliente elige guisados, personas y fecha, y la solicitud les llega lista para cotizar.",types:["Cumpleaños","Oficina","Reunión familiar","Posada"],qtyLabel:"Número de personas",unit:"personas",min:20,def:40,minDays:3,defDate:"2026-12-12",how:"Cada pedido cae en la pestaña <b>Cocina</b> separado por sucursal y horario. Con un botón le avisan al cliente que su pedido está listo, y en <b>Dueño</b> ven ventas de las dos sucursales y lo más pedido.",rows:[["Horarios llenos","Se bloquean solos"],["Aviso de \"ya está listo\"","Por WhatsApp"]]},
+loc:[["Cesar's Tacos San Pedro","<b>Av. José Vasconcelos, Centro de San Pedro Garza García</b><br>Sucursal abierta en 2024."],["Cesar's Tacos Santa Catarina","<b>Santa Catarina, N.L.</b><br>Desde 1980, con tortillas de maíz y harina hechas a mano."]],
+disclaimer:"Precios, horarios, cupos, pedidos y cifras son de ejemplo; guisados y sucursales tomados de sus publicaciones y de reseñas.",
+labels:["Cocina","Dueño"],prefix:"CT",prepTitle:"Preparar hoy",
+seed:{names:["Juan P.","Andrea L.","Carlos R.","Daniela T.","Roberto M.","Ximena C.","Luis V.","Fernanda Q.","Miguel B.","Natalia H.","Jorge O.","Renata A."],quotes:[{type:"Oficina",date:"2026-12-11",qty:60,name:"Constructora Garza"}]},
+welcome:{title:"Sus pedidos para llevar, en un solo link",steps:["Arme un pedido, elija sucursal y hora de recogida, y apártelo.","Abajo, toque <b>Cocina</b>: los pedidos por sucursal y horario y el botón para avisar \"ya está listo\".","En <b>Dueño</b> vea ventas de las dos sucursales y lo más pedido."],note:"Precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/pedidos.js"></script>
+</body>
+</html>
