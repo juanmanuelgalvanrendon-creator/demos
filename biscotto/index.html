@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Biscotto · Catálogo navideño y pedidos (demo)</title>
+<meta name="theme-color" content="#2f6b4f">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Biscotto · Demo de pedidos">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: catálogo navideño con pedidos y recolección agendada, preventa de pasteles de temporada y galletas para empresas.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#2f6b4f;--g-d:#24563f;--g-dd:#123224;--g-l:#dcefe4;--g-ll:#f1f9f4;--acc:#c8463c;--acc-d:#a5352d;--acc-l:#f9dcd8;
+--ink:#16241d;--ink-2:#36463e;--muted:#6f7f77;--line:#e0ebe4;--paper:#f8fbf8;--cream:#fffefc;--red:#c2493f;--sh:0 14px 34px -16px rgba(22,36,29,.42);
+--display:"Baloo 2",system-ui,sans-serif;--body:"Archivo",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:800;--em-style:normal;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#f9dcd8 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#dcefe4 0%,transparent 60%),#f8fbf8;
+--dark:#0f241a;--dark-2:#173326;--dark-3:#25483a;--dark-txt:#d3e6dc}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Biscotto",mark:"B",tag:"Repostería creativa · San Pedro"},
+hero:{chip:"Catálogo navideño · pedidos abiertos",h1a:"Tu pedido navideño,",h1b:"agendado en un minuto.",lead:"Elige galletas, cupcakes y pasteles, mira qué días quedan con cupo para recoger y aparta sin ir y venir de mensajes. También: preventa del pastel del duende y galletas para empresas.",cta1:["Ver catálogo","#menu"],cta2:["Para empresas","#eventos"],badge:["2026","navidad"],alt:"Galletas navideñas decoradas, cupcakes y pastel de temporada",old:"\"Marcanos para preparar el tuyo\"",now:"Ahora: catálogo, cupo por día y pedido en un solo link."},
+ticker:["Galletas decoradas","Cookie cakes","Cupcakes","Pasteles temáticos","Obleas","Healthy options"],
+menuHead:{kicker:"Catálogo navideño",title:"Arma tu <em>pedido</em>",note:"Productos y precios de ejemplo: se carga su catálogo navideño real y se actualiza en minutos."},
+cats:[
+ {id:"gall",n:"Galletas decoradas",items:[
+  {id:"g6",n:"Caja navideña de 6 galletas",d:"Pinos, renos y gorros de Santa decorados a mano.",p:390,w:1,bg:"#dcefe4",c:"#2f6b4f",tag:"Favorita"},
+  {id:"g12",n:"Caja navideña de 12 galletas",d:"Para regalar o para la posada, con listón.",p:720,w:2,bg:"#f9dcd8",c:"#c8463c"},
+  {id:"kit",n:"Kit para decorar en casa",d:"6 galletas, glaseados y sprinkles para los niños.",p:450,w:1,bg:"#fbf0d9",c:"#b8862c"}]},
+ {id:"cup",n:"Cupcakes y cookie cakes",items:[
+  {id:"cc",n:"Docena de cupcakes navideños",d:"Betún de vainilla y decoración de temporada.",p:540,w:2,bg:"#f9dcd8",c:"#c8463c"},
+  {id:"ck",n:"Cookie cake navideña",d:"Galleta gigante decorada con tu mensaje.",p:620,w:2,bg:"#dcefe4",c:"#2f6b4f"}]},
+ {id:"pas",n:"Pasteles",items:[
+  {id:"pt",n:"Pastel temático navideño",d:"Para 15 personas, diseño de temporada.",p:1150,w:4,bg:"#fbf0d9",c:"#8a5a2b"},
+  {id:"ph",n:"Opción healthy",d:"Pastel sin azúcar añadida para 10 personas.",p:890,w:3,bg:"#dcefe4",c:"#2f6b4f"}]}],
+hours:{1:[600,1140],2:[600,1140],3:[600,1140],4:[600,1140],5:[600,1140],6:[600,1080]},step:30,cutoff:840,capacity:36,slotCap:4,capLabel:"Capacidad de producción del día",
+pickHead:{kicker:"Recolección",title:"Tu día y <em>horario</em>",note:"Recoges en Juan Ignacio Ramón 244, Casco Urbano de San Pedro. Horarios de ejemplo. Cada día tiene cupo: cuando se llena, se bloquea solo."},
+note:"Mensaje en la galleta o tarjeta (opcional)",notePh:"Ej. Feliz Navidad, familia Garza",
+waNote:"En el sistema real llega la confirmación por WhatsApp con los datos de pago y un aviso cuando tu pedido esté listo.",
+preorder:{kicker:"Preventa",title:"Pastel del <em style=\"color:var(--acc-l)\">duende</em>",text:"Piezas limitadas con cupo por día: ustedes saben cuántos preparar desde ahora. Ejemplo con datos ficticios.",n:"Pastel del duende (ejemplo)",d:"Personaliza a tu duende, tamaño y sabor de pastel. Para 12 personas.",p:980,cap:40,sold:23,days:["Sáb 28 nov","Sáb 5 dic","Sáb 12 dic","Sáb 19 dic"],dayLabel:"Día de recolección",unit:"pasteles"},
+quote:{kicker:"Empresas",title:"Galletas para <em>empresas</em>",text:"Galletas con logo para clientes y colaboradores. La solicitud les llega completa para cotizar.",types:["Regalo para clientes","Posada de oficina","Kit para colaboradores"],qtyLabel:"Número de piezas",unit:"piezas",min:24,def:100,minDays:7,defDate:"2026-12-11",how:"Cada pedido cae en la pestaña <b>Cocina</b> con lo que hay que hornear y decorar por día. Con un botón le avisan al cliente que su pedido está listo, y en <b>Dueño</b> ven ventas y lo más pedido.",rows:[["Días llenos","Se bloquean solos"],["Aviso de \"ya está listo\"","Por WhatsApp"]]},
+loc:[["Biscotto","<b>Juan Ignacio Ramón 244, Casco Urbano, San Pedro Garza García</b><br>Galletas decoradas, pasteles, cupcakes y obleas."],["Un link en su bio","Puede ir junto a su WhatsApp: el cliente arma su pedido, ve el cupo del día y aparta solo."]],
+disclaimer:"Productos, precios, horarios, cupos, preventa, pedidos y cifras son de ejemplo; dirección tomada de su Instagram.",
+labels:["Cocina","Dueño"],prefix:"BC",prepTitle:"Hornear y decorar",
+seed:{names:["Mariana G.","Andrea L.","Sofía R.","Daniela T.","Regina M.","Ximena C.","Paulina V.","Fernanda Q.","Camila B.","Natalia H.","Lucía O.","Renata A."],quotes:[{type:"Regalo para clientes",date:"2026-12-15",qty:150,name:"Despacho Treviño & Asoc."}]},
+welcome:{title:"Su catálogo navideño, en un solo link",steps:["Arme un pedido, elija día y horario de recolección y apártelo.","Abajo, toque <b>Cocina</b>: cuánto hornear por producto y el botón para avisar \"ya está listo\".","En <b>Dueño</b> vea ventas agendadas, lo más pedido y la capacidad por día."],note:"Productos, precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/pedidos.js"></script>
+</body>
+</html>
