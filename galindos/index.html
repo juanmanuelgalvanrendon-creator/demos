@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Galindo's · Talleres y eventos en Barrio Antiguo (demo)</title>
+<meta name="theme-color" content="#7a3f2a">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Galindo's · Demo de reservaciones">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: talleres y eventos con cupo en vivo para Galindo's Café, Casa Galindo's y Café con Patio, pasteles por encargo y eventos privados.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#8b4a31;--g-d:#7a3f2a;--g-dd:#401f13;--g-l:#f4e2d8;--g-ll:#fbf4ef;--acc:#4f7a6a;--acc-d:#3c6052;--acc-l:#dceae4;
+--ink:#2a1a12;--ink-2:#4e392e;--muted:#887266;--line:#efe2d9;--paper:#fcf8f4;--cream:#fffdfb;--red:#c2493f;--sh:0 14px 34px -16px rgba(42,26,18,.42);
+--display:"Fraunces",Georgia,serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:600;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#f4e2d8 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#dceae4 0%,transparent 60%),#fcf8f4;
+--dark:#22140d;--dark-2:#331e14;--dark-3:#4f3022;--dark-txt:#e8d6cb}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Galindo's",mark:"G",tag:"3 casas · Barrio Antiguo"},
+topBtn:"Reservar",
+hero:{chip:"Galindo's Café · Casa Galindo's · Café con Patio",h1a:"Aparta tu lugar",h1b:"en nuestros talleres.",lead:"Talleres, noches de baile y eventos de las tres casas en un solo lugar: mira cuántos lugares quedan y aparta en un minuto. También pasteles por encargo y eventos privados.",cta1:["Ver eventos","#eventos"],cta2:["Evento privado","#privado"],badge:["3","casas"],alt:"Patio de casona con mesa preparada para un taller con brunch",old:"\"Cupo limitado\" y apartar por mensaje",now:"Ahora: cada evento se aparta solo, con cupo en vivo."},
+ticker:["Café","Libros","Baile","Cultura","Pasteles","Barrio Antiguo"],
+eventsHead:{kicker:"Talleres y eventos",title:"Próximos <em>eventos</em>",note:"El taller del 28 de noviembre es real (de su publicación); precios, cupos y los demás eventos son de ejemplo."},
+events:[
+ {id:"emo",n:"Taller creativo: emociones y brunch",date:"2026-11-28",hrs:"10:00 am a 1:00 pm",short:"10 am",p:650,cap:20,desc:"Meditación guiada, mini conferencia, dinámica de autoconocimiento y pintura de cerámica navideña. En Café con Patio.",inc:["Brunch","Cerámica navideña","Meditación"],tag:"Café con Patio"},
+ {id:"bai",n:"Noche de baile en el patio",date:"2026-12-04",hrs:"8:00 pm a 11:00 pm",short:"8 pm",p:150,cap:40,desc:"Clase de iniciación y baile libre en el patio. Ejemplo de evento.",inc:["Clase de 45 min","Bebida"]},
+ {id:"lib",n:"Club de lectura navideño",date:"2026-12-10",hrs:"7:00 pm a 8:30 pm",short:"7 pm",p:0,cap:16,desc:"Platicamos el libro del mes entre los libreros de Galindo's. Solo aparta tu lugar.",inc:["Café de la casa"],tag:"Galindo's"},
+ {id:"pos",n:"Posada en Casa Galindo's",date:"2026-12-18",hrs:"7:00 pm a 10:00 pm",short:"7 pm",p:350,cap:30,desc:"Ponche, tamales y piñata en la casa. Ejemplo de evento.",inc:["Ponche","Tamales","Piñata"],tag:"Casa Galindo's"}],
+unit:["lugar","lugares"],maxPer:6,
+pay:[["l","En el café"],["a","Anticipo en línea (fase 2)"]],
+waitlist:{title:"¿Se llenó el taller?",text:"Deja tu WhatsApp y te avisamos primero cuando se libere un lugar o abramos fecha nueva.",start:21,ok:"Listo: te avisamos en cuanto se libere un lugar."},
+shop:{title:"Pasteles por encargo",text:"Elige tu pastel y el día para recogerlo en Galindo's. Productos y precios de ejemplo.",dayLabel:"Día para recoger",btn:"Encargar",kpi:"Pasteles por entregar",unit:"pasteles",closed:[],items:[
+ {id:"cho",n:"Pastel de chocolate",p:520,per:"entero"},{id:"zan",n:"Pastel de zanahoria",p:490,per:"entero"},{id:"que",n:"Cheesecake",p:540,per:"entero"},{id:"pan",n:"Caja de pan dulce (6)",p:180,per:"caja"}]},
+priv:{kicker:"Eventos privados",title:"Tu evento en una de las <em style=\"color:var(--acc-l)\">tres casas</em>",text:"Cumpleaños, presentaciones de libro o reuniones: el cliente elige la casa, fecha y personas, y les llega listo para cotizar.",types:["Cumpleaños","Presentación de libro","Reunión de trabajo","Posada"],actLabel:"¿En qué casa?",acts:["Galindo's Café","Casa Galindo's","Café con Patio"],min:8,def:15,minDays:5,defDate:"2026-12-05",agTitle:"Privados"},
+loc:[["Galindo's Café","<b>José María Morelos 965, Barrio Antiguo, Monterrey</b><br>L-J 8:30 am a 10 pm · V-S 8:30 am a 11 pm · D 8:30 am a 9 pm"],["Café con Patio y Casa Galindo's","<b>Barrio Antiguo, Monterrey</b><br>Diferente casa, misma familia: café, baile, cultura y libros."]],
+disclaimer:"Salvo el taller del 28 de noviembre, eventos, precios, cupos, pasteles, reservas y cifras son de ejemplo; direcciones y horarios tomados de su Instagram.",
+labels:["Agenda","Dueño"],agendaTitle:"Eventos de las tres casas",ownerTitle:"Este mes",
+seed:{names:["Mariana G.","Diego R.","Sofía T.","Andrés P.","Fernanda L.","Luis M.","Daniela O.","Regina B.","Jorge A.","Ximena D.","Paola V.","Rodrigo S."],fill:{emo:12,bai:22,lib:7,pos:9},priv:[{type:"Presentación de libro",act:"Galindo's Café",date:"2026-12-06",ppl:30,name:"Editorial Norte"},{type:"Cumpleaños",act:"Café con Patio",date:"2026-11-29",ppl:12,name:"Valeria S.",st:"ok"}],orders:[{items:{cho:1},name:"Ana R.",day:"2026-11-18"},{items:{que:1,pan:2},name:"Oficina Treviño",day:"2026-11-19"}]},
+welcome:{title:"Los eventos de las tres casas, en un solo link",steps:["Elija un evento y aparte su lugar: verá cuántos quedan.","Abajo, toque <b>Agenda</b>: asistentes por evento, solicitudes de privados y pasteles por entregar.","En <b>Dueño</b> vea lugares vendidos, ingresos y de dónde llegan las reservas."]}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/exp.js"></script>
+</body>
+</html>
