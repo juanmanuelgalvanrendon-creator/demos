@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bitekery · Catálogo navideño en línea (demo)</title>
+<meta name="theme-color" content="#a23a3f">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Bitekery · Demo de pedidos">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: catálogo navideño en línea con agenda por día, listón impreso personalizado, regalos para empresas y pasteles personalizados.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Nunito+Sans:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#b3454a;--g-d:#a23a3f;--g-dd:#521b1e;--g-l:#f8dfe0;--g-ll:#fff5f5;--acc:#3f7a5e;--acc-d:#31624a;--acc-l:#dbede3;
+--ink:#2a181a;--ink-2:#4f3a3c;--muted:#8a7476;--line:#f2e2e3;--paper:#fffafa;--cream:#fffefe;--red:#c2493f;--sh:0 14px 34px -16px rgba(42,24,26,.42);
+--display:"Playfair Display",Georgia,serif;--body:"Nunito Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:600;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#f8dfe0 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#dbede3 0%,transparent 60%),#fffafa}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Bitekery",mark:"B",tag:"Plaza San Jemo"},
+hero:{chip:"Catálogo Navideño 2026",h1a:"Tu pedido navideño,",h1b:"sin esperar respuesta.",lead:"Todo el catálogo en línea: elige pasteles, galletas decoradas, cupcakes y Tortugas de la Casa, agrega tu listón impreso y aparta el día para recoger. Los pedidos de empresa llegan listos para cotizar.",cta1:["Ver catálogo","#menu"],cta2:["Pastel personalizado","#eventos"],badge:["4","días antes"],alt:"Pastel navideño, cupcakes, galletas decoradas y tortugas de chocolate sobre una barra",old:"Catálogo en PDF y \"pide por DM o WhatsApp\"",now:"Ahora: catálogo, listón, día y pedido en un solo link."},
+ticker:["Pasteles navideños","Christmas Cookies","Cupcakes","Brownies","Tortugas de la Casa","Listón impreso"],
+menuHead:{kicker:"Catálogo navideño",title:"Arma tu <em>pedido</em>",note:"Nombres tomados de su Catálogo Navideño 2026; tamaños y precios de ejemplo que se cargan con los suyos."},
+cats:[
+ {id:"pa",n:"Pasteles",items:[
+  {id:"p1",n:"Pino Navideño",d:"Pan de vainilla, chocolate o ambos; relleno de dulce de leche, Nutella o frutos rojos.",p:690,w:4,bg:"#dbede3",c:"#31624a",tag:"Centro de mesa"},
+  {id:"p2",n:"Casita Nevada",d:"Pastel decorado de casita con nieve de betún.",p:750,w:4,bg:"#eef2f6",c:"#4d6a86"},
+  {id:"p3",n:"Moños y Caramelos",d:"Moños rojos y caramelos sobre betún blanco.",p:690,w:4,bg:"#f8dfe0",c:"#a23a3f"},
+  {id:"p4",n:"Pinitos de Chocolate",d:"Pastelitos individuales en forma de pino.",p:85,w:1,bg:"#f1e4d8",c:"#7b4f2c"}]},
+ {id:"ga",n:"Galletas decoradas",items:[
+  {id:"g1",n:"Santa y sus Amigos",d:"Set de galletas de mantequilla decoradas a mano.",p:380,w:3,bg:"#f8dfe0",c:"#a23a3f",tag:"Más pedido"},
+  {id:"g2",n:"Mini Detalle Navideño",d:"Detalle individual para oficina o posada.",p:75,w:1,bg:"#dbede3",c:"#31624a"},
+  {id:"g3",n:"Card Cookie",d:"Galleta tarjeta con tu mensaje navideño.",p:120,w:1,bg:"#fbeedd",c:"#a5763f"},
+  {id:"g4",n:"Caja Joy",d:"Caja de regalo con galletas surtidas.",p:450,w:3,bg:"#f8dfe0",c:"#a23a3f"}]},
+ {id:"ot",n:"Cupcakes y más",items:[
+  {id:"o1",n:"Caja de 6 cupcakes navideños",d:"Betún rojo, verde y blanco.",p:330,w:2,bg:"#f8dfe0",c:"#a23a3f"},
+  {id:"o2",n:"Tortugas de la Casa (6)",d:"Chocolate, nuez y caramelo.",p:260,w:1,bg:"#f1e4d8",c:"#7b4f2c"},
+  {id:"o3",n:"Caja de brownies (6)",d:"Brownies de chocolate para compartir.",p:240,w:1,bg:"#f1e4d8",c:"#7b4f2c"}]}],
+hours:{1:[600,1200],2:[600,1200],3:[600,1200],4:[600,1200],5:[600,1200],6:[600,960]},step:60,cutoff:720,capacity:40,slotCap:5,minDays:4,capLabel:"Pedidos que se pueden preparar en el día",
+pickHead:{kicker:"Recolección",title:"Tu día y <em>horario</em>",note:"Recoges en Plaza San Jemo. Lunes a viernes de 10 am a 8 pm y sábado de 10 am a 4 pm. Se pide con 4 días de anticipación, como en su catálogo, y cada día tiene cupo: cuando se llena, se bloquea solo."},
+note:"Listón impreso: apellido, nombre o empresa",notePh:"Ej. Listón \"Familia Treviño\" o el nombre de tu empresa",
+waNote:"En el sistema real llega la confirmación por WhatsApp con los datos de pago y un aviso cuando tu pedido esté listo.",
+preorder:{kicker:"Empresas",title:"Regalos con <em style=\"color:var(--acc-l)\">tu logo</em>",text:"Detalles navideños para clientes y equipos con listón impreso con el logo de la empresa, con cupo por día que se cierra solo al llenarse. Precio, cupo y fechas de ejemplo.",n:"Mini Detalle Navideño con logo (ejemplo)",d:"Galleta decorada en bolsita con listón impreso de tu empresa.",p:85,cap:400,sold:155,days:["Lun 14 dic","Mié 16 dic","Vie 18 dic","Sáb 19 dic"],dayLabel:"Día de recolección",unit:"piezas"},
+quote:{kicker:"Personalizados",title:"Pasteles y postres <em>personalizados</em>",text:"Cumpleaños, bautizos y eventos: la solicitud llega completa para cotizar, con fecha, personas e idea.",types:["Cumpleaños","Bautizo","Posada","Evento de empresa"],qtyLabel:"Número de personas",unit:"personas",min:10,def:30,minDays:4,defDate:"2026-12-05",how:"Cada pedido cae en la pestaña <b>Cocina</b> con lo que hay que hornear y decorar por día, incluido el texto del listón. Con un botón le avisan al cliente que su pedido está listo, y en <b>Dueño</b> ven ventas y los productos más pedidos.",rows:[["Días llenos","Se bloquean solos"],["Aviso de \"ya está listo\"","Por WhatsApp"]]},
+loc:[["Bitekery","<b>Ave. Anillo Periférico 421 B, Plaza San Jemo, Monterrey, N.L.</b><br>L-V 10 am a 8 pm · S 10 am a 4 pm"],["En lugar del PDF","El link de su Linktree abre el catálogo completo, siempre al día, con precios y pedido en el mismo lugar."]],
+disclaimer:"Tamaños, precios, cupos, regalos para empresas, pedidos y cifras son de ejemplo; nombres de productos, horario, dirección y anticipación tomados de su Instagram.",
+labels:["Cocina","Dueño"],prefix:"BK",prepTitle:"Hornear y decorar",
+seed:{names:["Mariana G.","Andrea L.","Sofía R.","Daniela T.","Regina M.","Ximena C.","Paulina V.","Fernanda Q.","Camila B.","Natalia H.","Lucía O.","Renata A."],quotes:[{type:"Evento de empresa",date:"2026-12-11",qty:80,name:"Grupo Industrial Norte"}]},
+welcome:{title:"Su catálogo navideño, abierto las 24 horas",steps:["Arme un pedido, escriba el texto del listón, escoja día y horario y apártelo.","Abajo, toque <b>Cocina</b>: qué hornear y decorar por día y el botón para avisar \"ya está listo\".","En <b>Dueño</b> vea ventas, los productos más pedidos y el cupo por día."],note:"Precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/pedidos.js"></script>
+</body>
+</html>
