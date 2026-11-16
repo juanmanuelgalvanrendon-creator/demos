@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Café Hogar · Talleres y pedidos (demo)</title>
+<meta name="theme-color" content="#7a4a26">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Café Hogar · Demo de reservaciones y pedidos">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: talleres creativos con cupo en vivo, book club, eventos privados y pedidos para tu oficina.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=Nunito+Sans:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#9a5f33;--g-d:#7a4a26;--g-dd:#432713;--g-l:#f3e5d6;--g-ll:#fbf5ee;--acc:#6f8a6a;--acc-d:#55704f;--acc-l:#e3ece0;
+--ink:#2b1f16;--ink-2:#4e3d30;--muted:#857464;--line:#ece1d5;--paper:#fbf7f1;--cream:#fffdf9;--red:#c2493f;--sh:0 14px 34px -16px rgba(43,31,22,.45);
+--display:"Fraunces",Georgia,serif;--body:"Nunito Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:600;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#f3e5d6 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#e3ece0 0%,transparent 60%),#fbf7f1;
+--dark:#22170f;--dark-2:#332318;--dark-3:#4d3626;--dark-txt:#e4d6c8}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Café Hogar",mark:"CH",tag:"Barra de café · Mitras Centro"},
+topBtn:"Reservar",
+hero:{chip:"Talleres creativos · Book Club · Delivery",h1a:"Aparta tu lugar",h1b:"sin esperar el DM.",lead:"Elige tu taller o tu tarde de lectura, mira cuántos lugares quedan y aparta en un minuto. Y si es para la oficina, arma tu pedido y elige el día de entrega.",cta1:["Ver talleres","#eventos"],cta2:["Evento privado","#privado"],badge:["café","& arte"],alt:"Personas pintando joyeros de madera junto a lattes y un panini",old:"\"Mándanos DM para reservar\"",now:"Ahora: cada taller se aparta solo, con cupo en vivo."},
+ticker:["Pinta tu joyero","Eat & Paint","Book Club","Momo latte","Pumpkin spice latte","Paninis"],
+eventsHead:{kicker:"Talleres y eventos",title:"Próximas <em>tardes</em>",note:"El taller del joyero usa su fecha y precio reales; lo demás es de ejemplo. El cupo baja con cada reserva."},
+events:[
+ {id:"eat",n:"Eat & Paint de otoño",date:"2026-11-20",hrs:"6:00 pm a 9:00 pm",short:"6 pm",p:450,cap:16,desc:"Pinta con guía mientras cenas. Collab con @eatandpaint.mty.",inc:["Materiales de arte","Alimento y bebida","Postre"],tag:"Collab"},
+ {id:"joy",n:"Pinta tu joyero",date:"2026-11-28",hrs:"12:00 pm a 2:00 pm",short:"12 pm",p:150,cap:14,desc:"Una tarde creativa: pinta tu propio joyero y llévatelo a casa. No necesitas experiencia.",inc:["Joyero y pinturas","Bebida del menú","Panini"],tag:"Girls day"},
+ {id:"book",n:"Book Club de diciembre",date:"2026-12-05",hrs:"10:30 am a 12:00 pm",short:"10:30",p:0,cap:12,desc:"Platicamos el libro del mes con un café. Solo aparta tu lugar.",inc:["Café de la casa"]},
+ {id:"esf",n:"Pinta tu esfera navideña",date:"2026-12-12",hrs:"12:00 pm a 2:00 pm",short:"12 pm",p:180,cap:14,desc:"Decora esferas para tu árbol o para regalar, con chocolate caliente.",inc:["Esferas y pinturas","Bebida de temporada"],tag:"Navidad"}],
+unit:["lugar","lugares"],maxPer:6,
+pay:[["l","En el café (aceptan TDC)"],["a","Anticipo en línea (fase 2)"]],
+waitlist:{title:"¿Se llenó tu taller?",text:"Deja tu WhatsApp y te avisamos primero cuando se libere un lugar o abramos fecha nueva.",start:17,ok:"Listo: te avisamos en cuanto se libere un lugar."},
+shop:{title:"Pide para tu oficina",text:"Arma tu pedido de café y paninis, elige el día y les llega completo, sin llamadas. Productos y precios de ejemplo.",dayLabel:"Día de entrega",btn:"Enviar pedido",kpi:"Piezas por entregar",unit:"pzas",closed:[0],items:[
+ {id:"momo",n:"Momo latte",p:75},{id:"psl",n:"Pumpkin spice latte",p:75},{id:"ame",n:"Americano",p:45},{id:"pan",n:"Panini de la casa",p:95},{id:"cb",n:"Cold brew 1 litro",p:190}]},
+priv:{kicker:"Eventos privados",title:"Tu taller o reunión, <em style=\"color:var(--acc-l)\">en Hogar</em>",text:"Cumpleaños, baby showers o tardes con amigas: el cliente deja fecha, personas y actividad, y les llega lista para cotizar con precio de grupo.",types:["Cumpleaños","Tarde con amigas","Baby shower","Reunión de trabajo"],actLabel:"Actividad",acts:["Pintar joyero","Pintar taza","Book club privado","Solo café y snacks"],min:6,def:8,minDays:5,defDate:"2026-12-06",agTitle:"Privados"},
+loc:[["Café Hogar","<b>Reforma 3073, Mitras Centro, Monterrey, N.L.</b><br>Lunes a viernes 8 am a 5 pm · sábado 10 am a 5 pm · pedidos 81 3136 9591"],["Un link en su bio","Puede ir junto a su Google Maps: talleres, book club, privados y pedidos en un solo lugar, sin ir y venir por mensaje."]],
+disclaimer:"Salvo el taller del joyero (28 de noviembre, $150), fechas, precios, cupos, productos, reservas y cifras son de ejemplo; dirección y horarios tomados de su Instagram.",
+labels:["Agenda","Dueño"],agendaTitle:"Talleres y eventos",ownerTitle:"Este mes",
+seed:{names:["Mariana G.","Andrea L.","Sofía R.","Daniela T.","Regina M.","Ximena C.","Paulina V.","Fernanda Q.","Camila B.","Natalia H.","Lucía O.","Renata A."],fill:{eat:11,joy:9,book:6,esf:4},priv:[{type:"Cumpleaños",act:"Pintar taza",date:"2026-12-06",ppl:9,name:"Karla M."},{type:"Tarde con amigas",act:"Pintar joyero",date:"2026-11-29",ppl:6,name:"Valeria S.",st:"ok"}],orders:[{items:{momo:4,pan:4},name:"Oficina Garza",day:"2026-11-17"},{items:{cb:2,ame:6},name:"Despacho Treviño",day:"2026-11-18"}]},
+welcome:{title:"Sus talleres y pedidos, en un solo link",steps:["Elija un taller y aparte su lugar: verá cuántos quedan.","Abajo, toque <b>Agenda</b>: asistentes por taller, solicitudes de privados y pedidos por entregar.","En <b>Dueño</b> vea lugares vendidos, ingresos y de dónde llegan las reservas."]}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/exp.js"></script>
+</body>
+</html>

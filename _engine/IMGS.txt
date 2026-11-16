@@ -5,3 +5,4 @@ stranger-coffee 6afb6877-a990-83e8-8faf-75b5ceebb58d
 kirei-maid 6afb6889-caf0-83e8-a571-8c6a6dc1ad3f
 arena-soccer 6afb689b-0060-83e8-abba-a74f81fc4f79
 san-palma 6afb6fbf-1a94-83e8-9470-6399c8b394c3
+cafe-hogar 6afb722d-ff7c-83e8-9cf0-34e5cef108f4
