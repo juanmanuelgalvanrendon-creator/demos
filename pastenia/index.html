@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pastenia · Agenda tu pastel (demo)</title>
+<meta name="theme-color" content="#c7607a">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Pastenia · Demo de pedidos">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: pasteles de buttercream con agenda por día, colección navideña y pedidos para bodas, XV y eventos.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Nunito+Sans:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#c7607a;--g-d:#a94b64;--g-dd:#5a2333;--g-l:#fbe0e7;--g-ll:#fff4f7;--acc:#c49a5a;--acc-d:#a37b40;--acc-l:#f6ead6;
+--ink:#2b1920;--ink-2:#503a42;--muted:#8b7480;--line:#f3e1e7;--paper:#fffafb;--cream:#fffefe;--red:#c2493f;--sh:0 14px 34px -16px rgba(43,25,32,.42);
+--display:"Playfair Display",Georgia,serif;--body:"Nunito Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:600;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#fbe0e7 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#f6ead6 0%,transparent 60%),#fffafb;
+--dark:#2a1219;--dark-2:#3d1c26;--dark-3:#5c2d3b;--dark-txt:#f1d7df}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Pastenia",mark:"P",tag:"Buttercream · San Nicolás"},
+hero:{chip:"Pasteles de buttercream · agenda abierta",h1a:"Agenda tu pastel",h1b:"sin esperar respuesta.",lead:"Elige tu diseño y tamaño, mira qué días quedan con cupo y aparta en un minuto. Tu idea o referencia llega junto con el pedido.",cta1:["Ver pasteles","#menu"],cta2:["Bodas y XV","#eventos"],badge:["100%","buttercream"],alt:"Pastel vintage de buttercream rosa con olanes y moños",old:"\"Agenda por WhatsApp o DM\"",now:"Ahora: diseño, día y apartado en un solo link."},
+ticker:["Buttercream","Pasteles vintage","Pastelito individual","Diseños más pedidos","Talleres","San Nicolás"],
+menuHead:{kicker:"Diseños",title:"Arma tu <em>pedido</em>",note:"Diseños inspirados en sus publicaciones; tamaños y precios de ejemplo que se cargan con los suyos."},
+cats:[
+ {id:"pa",n:"Pasteles",items:[
+  {id:"v1",n:"Pastel vintage chico",d:"Buttercream con olanes y moños. 10 a 12 personas.",p:750,w:3,bg:"#fbe0e7",c:"#a94b64",tag:"Más pedido"},
+  {id:"v2",n:"Pastel vintage mediano",d:"Para 20 personas, color y mensaje a tu gusto.",p:1100,w:4,bg:"#f6ead6",c:"#a37b40"},
+  {id:"tm",n:"Pastel temático",d:"Tu temática favorita en buttercream. 15 personas.",p:980,w:4,bg:"#e8e3f4",c:"#6c5a9c"}]},
+ {id:"in",n:"Individuales",items:[
+  {id:"pi",n:"Pastelito individual",d:"Mini pastel decorado para una persona.",p:220,w:1,bg:"#fbe0e7",c:"#c7607a"},
+  {id:"cc",n:"Caja de 6 cupcakes",d:"Decorados a juego con tu pastel.",p:360,w:1,bg:"#f6ead6",c:"#a37b40"}]}],
+hours:{1:[540,1140],2:[540,1140],3:[540,1140],4:[540,1140],5:[540,1140],6:[540,1140]},step:60,cutoff:720,capacity:16,slotCap:2,minDays:2,capLabel:"Pasteles que se pueden decorar en el día",
+pickHead:{kicker:"Recolección",title:"Tu día y <em>horario</em>",note:"Recoges en San Nicolás. Lunes a sábado de 9 am a 7 pm. Cada día tiene cupo: cuando se llena, se bloquea solo."},
+note:"Tu idea: colores, mensaje o referencia",notePh:"Ej. Rosa pastel con moños, \"Happy birthday Sofi\"",
+waNote:"En el sistema real llega la confirmación por WhatsApp con los datos de pago y un aviso cuando tu pastel esté listo.",
+preorder:{kicker:"Navidad",title:"Colección <em style=\"color:var(--acc-l)\">navideña</em>",text:"Como sus colecciones de temporada, pero con cupo por día que se cierra solo al llenarse. Ejemplo con datos ficticios.",n:"Pastel navideño vintage (ejemplo)",d:"Buttercream rojo y crema con moños, para 10 a 12 personas.",p:850,cap:60,sold:27,days:["Sáb 19 dic","Lun 21 dic","Mar 22 dic","Jue 24 dic"],dayLabel:"Día de recolección",unit:"pasteles"},
+quote:{kicker:"Eventos",title:"Bodas, XV y <em>eventos</em>",text:"Pasteles de varios pisos y mesas de postres. La solicitud llega completa para cotizar.",types:["Boda","XV años","Bautizo","Evento de empresa"],qtyLabel:"Número de invitados",unit:"invitados",min:30,def:100,minDays:14,defDate:"2027-01-23",how:"Cada pedido cae en la pestaña <b>Cocina</b> con lo que hay que hornear y decorar por día. Con un botón le avisan al cliente que su pastel está listo, y en <b>Dueño</b> ven ventas y los diseños más pedidos.",rows:[["Días llenos","Se bloquean solos"],["Aviso de \"ya está listo\"","Por WhatsApp"]]},
+loc:[["Pastenia","<b>San Nicolás de los Garza, N.L.</b><br>Atención lunes a sábado de 9 am a 7 pm."],["Un link en su bio","Puede ir junto a su WhatsApp: el cliente elige diseño, ve el cupo y aparta solo."]],
+disclaimer:"Diseños, tamaños, precios, cupos, colección navideña, pedidos y cifras son de ejemplo; zona y horario tomados de su Instagram.",
+labels:["Cocina","Dueña"],prefix:"PS",prepTitle:"Hornear y decorar",
+seed:{names:["Mariana G.","Andrea L.","Sofía R.","Daniela T.","Regina M.","Ximena C.","Paulina V.","Fernanda Q.","Camila B.","Natalia H.","Lucía O.","Renata A."],quotes:[{type:"XV años",date:"2027-02-13",qty:150,name:"Familia Garza"}]},
+welcome:{title:"Su agenda de pasteles, abierta las 24 horas",steps:["Elija un diseño, deje su idea, escoja día y horario y apártelo.","Abajo, toque <b>Cocina</b>: qué hornear y decorar por día y el botón para avisar \"ya está listo\".","En <b>Dueña</b> vea ventas, los diseños más pedidos y el cupo por día."],note:"Diseños, precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/pedidos.js"></script>
+</body>
+</html>
