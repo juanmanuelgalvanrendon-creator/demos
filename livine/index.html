@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Livine Bakehouse · Pedidos navideños (demo)</title>
+<meta name="theme-color" content="#6b3f22">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Livine Bakehouse · Demo de pedidos navideños">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: catálogo navideño en línea con pedidos y recolección agendada, preventa de roscas y regalos corporativos.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#8a5631;--g-d:#6b3f22;--g-dd:#3e2414;--g-l:#f3e4d4;--g-ll:#faf3ea;--acc:#b8392e;--acc-d:#962c23;--acc-l:#f7dcd6;
+--ink:#2a1b11;--ink-2:#4e3b2d;--muted:#8a7766;--line:#eddfd0;--paper:#fcf7f1;--cream:#fffcf8;--red:#c2493f;--sh:0 14px 34px -16px rgba(42,27,17,.42);
+--display:"Young Serif",Georgia,serif;--body:"Archivo",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:400;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#f3e4d4 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#f7dcd6 0%,transparent 60%),#fcf7f1;
+--dark:#26170e;--dark-2:#3a2417;--dark-3:#573a27;--dark-txt:#e2cfbf}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Livine Bakehouse",mark:"L",tag:"Repostería artesanal · Monterrey"},
+hero:{chip:"Catálogo navideño · pedidos abiertos",h1a:"Tu pedido navideño,",h1b:"apartado en un minuto.",lead:"Elige tus cajas y postres, mira qué días y horarios de recolección quedan libres y aparta sin ir y venir de mensajes. También: preventa de roscas y regalos para empresa.",cta1:["Ver catálogo","#menu"],cta2:["Regalos para empresa","#eventos"],badge:["1 año","horneando"],alt:"Caja navideña de galletas y chocolate caliente",old:"Catálogo en PDF + pedido por WhatsApp",now:"Ahora: catálogo, cupo y pedido en un solo link."},
+ticker:["Galletas","Cajas navideñas","Roscas","Pasteles","Hot cocoa season","Seasonal drops"],
+menuHead:{kicker:"Catálogo navideño",title:"Arma tu <em>pedido</em>",note:"Productos y precios de ejemplo: se carga su catálogo navideño real y se actualiza en minutos."},
+cats:[
+ {id:"cajas",n:"Cajas navideñas",items:[
+  {id:"c6",n:"Caja navideña de 6",d:"Seis galletas surtidas en caja de regalo con listón.",p:420,w:1,bg:"#f7dcd6",c:"#b8392e",tag:"Favorita"},
+  {id:"c12",n:"Caja navideña de 12",d:"Doce galletas surtidas para compartir en la posada.",p:790,w:2,bg:"#f3e4d4",c:"#8a5631"},
+  {id:"ccoc",n:"Caja cocoa dream",d:"Cuatro galletas, mezcla de chocolate caliente y malvaviscos.",p:520,w:1,bg:"#efe5dd",c:"#5a3218"}]},
+ {id:"gall",n:"Galletas",items:[
+  {id:"wcc",n:"Walnut Chocolate Chip",d:"La galleta con la que todo comenzó.",p:75,w:.15,bg:"#f3e4d4",c:"#6b3f22"},
+  {id:"rv",n:"Red velvet",d:"Con chispas de chocolate blanco.",p:75,w:.15,bg:"#f7dcd6",c:"#a8323a"},
+  {id:"bite",n:"Bite size cookies",d:"Mini galletas para el desayuno o el antojo.",p:150,w:.3,bg:"#faf0d9",c:"#c48a2c"}]},
+ {id:"post",n:"Pasteles y postres",items:[
+  {id:"pg",n:"Pastel de galleta",d:"Para 10 a 12 personas, decorado de temporada.",p:890,w:3,bg:"#f3e4d4",c:"#8a5631"},
+  {id:"chz",n:"Cheesecake navideño",d:"Para 8 a 10 personas, con frutos rojos.",p:760,w:3,bg:"#f7dcd6",c:"#b8392e"}]}],
+hours:{2:[630,1170],3:[630,1170],4:[630,1170],5:[630,1170],6:[630,1170],0:[690,1110]},step:30,cutoff:840,capacity:40,slotCap:5,capLabel:"Capacidad de horno del día",
+pickHead:{kicker:"Recolección",title:"Tu día y <em>horario</em>",note:"Martes a sábado de 10:30 a 8:00 y domingo de 11:30 a 7:00, en sucursal. Cada día tiene cupo: cuando se llena, se bloquea solo."},
+note:"Tarjeta de regalo (opcional)",notePh:"Ej. Feliz Navidad, familia Garza",
+waNote:"En el sistema real llega la confirmación por WhatsApp con los datos de pago y un aviso cuando tu pedido esté listo. Para el antojo inmediato siguen Rappi y Uber Eats.",
+preorder:{kicker:"Preventa",title:"Roscas de <em style=\"color:var(--acc-l)\">Reyes</em>",text:"Piezas limitadas con cupo por día de entrega: ustedes saben cuántas hornear desde diciembre. Ejemplo con datos ficticios.",n:"Rosca de galleta (ejemplo)",d:"Rosca rellena con masa de galleta Walnut Chocolate Chip, para 10 a 12 personas.",p:690,cap:80,sold:46,days:["Sáb 2 ene","Lun 4 ene","Mar 5 ene","Mié 6 ene"],dayLabel:"Día de recolección",unit:"roscas"},
+quote:{kicker:"Empresas",title:"Regalos <em>corporativos</em>",text:"Cajas para clientes y colaboradores con tarjeta personalizada. La solicitud les llega completa para cotizar.",types:["Regalo para clientes","Posada de oficina","Kit para colaboradores"],qtyLabel:"Número de cajas",unit:"cajas",min:10,def:30,minDays:7,defDate:"2026-12-14",how:"Cada pedido cae en la pestaña <b>Cocina</b> con lo que hay que hornear por día. Con un botón le avisan al cliente que su pedido está listo, y en <b>Dueño</b> ven ventas y lo más pedido.",rows:[["Días llenos","Se bloquean solos"],["Aviso de \"ya está listo\"","Por WhatsApp"]]},
+loc:[["Livine Bakehouse","<b>Av. Lázaro Cárdenas 3105, Valle del Márquez, Monterrey</b><br>Martes a sábado 10:30 am a 8:00 pm · domingo 11:30 am a 7:00 pm"],["Un link en su bio","Reemplaza el catálogo en PDF y el ir y venir por WhatsApp: el cliente arma su pedido, ve el cupo y aparta solo."]],
+disclaimer:"Productos, precios, cupos, preventa, pedidos y cifras son de ejemplo; dirección y horarios tomados de su Instagram.",
+labels:["Cocina","Dueño"],prefix:"LV",prepTitle:"Hornear",
+seed:{names:["Mariana G.","Andrea L.","Sofía R.","Daniela T.","Regina M.","Ximena C.","Paulina V.","Fernanda Q.","Camila B.","Natalia H.","Lucía O.","Renata A."],quotes:[{type:"Regalo para clientes",date:"2026-12-15",qty:60,name:"Despacho Treviño & Asoc."}]},
+welcome:{title:"Su catálogo navideño, en un solo link",steps:["Arme un pedido, elija día y horario de recolección y apártelo.","Abajo, toque <b>Cocina</b>: cuánto hornear por producto y el botón para avisar \"ya está listo\".","En <b>Dueño</b> vea ventas agendadas, lo más pedido y la capacidad por día."],note:"Productos, precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/pedidos.js"></script>
+</body>
+</html>

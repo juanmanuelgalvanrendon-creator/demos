@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Drink Society · Reserva tu taller (demo)</title>
+<meta name="theme-color" content="#5b1f45">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="The Drink Society · Demo de reservaciones">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: talleres de mixología con cupo en vivo, eventos privados y barra para eventos.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,600;1,6..96,600&family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#8a2f63;--g-d:#6e2450;--g-dd:#3f1430;--g-l:#f6e2ee;--g-ll:#fbf2f7;--acc:#d9952e;--acc-d:#b0721a;--acc-l:#f9e3bd;
+--ink:#26141f;--ink-2:#4a3442;--muted:#86717e;--line:#ecdfe6;--paper:#fbf6f2;--cream:#fffbf8;--red:#c2493f;--sh:0 14px 34px -16px rgba(38,20,31,.45);
+--display:"Bodoni Moda",Georgia,serif;--body:"Archivo",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:600;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#f9e3bd 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#f6e2ee 0%,transparent 60%),#fbf6f2;
+--dark:#1e0f19;--dark-2:#2c1724;--dark-3:#452638;--dark-txt:#dccbd5}
+.brand-name{font-style:italic}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"The Drink Society",mark:"TDS",tag:"Talleres y mixología · MTY"},
+topBtn:"Reservar",
+hero:{chip:"Talleres en The Spot · cupo limitado",h1a:"Aparta tu lugar",h1b:"sin esperar el DM.",lead:"Elige tu taller de mixología, mira cuántos lugares quedan y aparta en un minuto. También puedes pedir tu taller privado o la barra para tu evento.",cta1:["Ver talleres","#eventos"],cta2:["Evento privado","#privado"],badge:["shake","& chill"],alt:"Taller de mixología con cocteles",old:"\"Envíanos mensaje para reservar\"",now:"Ahora: cada taller se aparta solo, con cupo en vivo."},
+ticker:["Talleres de mixología","Cocteles de autor","Collabs","The Spot","Eventos privados","Barra para tu evento"],
+eventsHead:{kicker:"Talleres",title:"Próximos <em>talleres</em>",note:"Fechas, talleres y precios de ejemplo para la demo; se cargan los suyos. El cupo baja con cada reserva."},
+events:[
+ {id:"clas",n:"Mixología clásica",date:"2026-11-27",hrs:"8:00 pm a 10:00 pm",short:"8 pm",p:850,cap:16,desc:"Aprende a preparar tres clásicos desde cero, con técnica de agitado y batido.",inc:["Cerveza de bienvenida","3 cocteles","Botanas"]},
+ {id:"mez",n:"Mezcal y tequila de autor",date:"2026-12-04",hrs:"8:00 pm a 10:00 pm",short:"8 pm",p:950,cap:16,desc:"Cocteles con mezcal y tequila, hielo gourmet y frutas de temporada.",inc:["3 cocteles","Hielo gourmet","Recetario"],tag:"Collab"},
+ {id:"nav",n:"Cocteles navideños",date:"2026-12-12",hrs:"7:00 pm a 9:00 pm",short:"7 pm",p:890,cap:18,desc:"Ponche con piquete, carajillo de temporada y un spritz de invierno.",inc:["3 cocteles","Botanas","Recetario"]}],
+unit:["lugar","lugares"],maxPer:6,
+pay:[["l","En The Spot"],["a","Anticipo en línea (fase 2)"]],
+waitlist:{title:"¿No alcanzaste lugar?",text:"Deja tu WhatsApp y te avisamos primero cuando abramos fechas nuevas, antes que en Instagram.",start:31,ok:"Listo: te avisamos en cuanto abramos fechas nuevas."},
+side:["Así funciona","El cliente aparta solo y a ustedes les llega la lista de asistentes por taller, con código de entrada. Las reservas que siguen llegando por DM se registran en un clic y el cupo se actualiza solo.",[["Lugares apartados","En vivo"],["Recordatorio","Un día antes"],["Si alguien cancela","Pasa a lista de espera"]]],
+priv:{kicker:"Eventos privados",title:"Tu taller o barra, <em style=\"color:var(--acc-l)\">privado</em>",text:"Cumpleaños, despedidas o posadas de empresa: el cliente deja fecha, personas y tipo de servicio, y les llega listo para cotizar.",types:["Taller privado","Barra para tu evento","Despedida","Posada de empresa"],actLabel:"Estilo de cocteles",acts:["Clásicos","Mezcal y tequila","Sin alcohol","De temporada"],min:8,def:15,minDays:7,defDate:"2026-12-11",agTitle:"Privados y barra"},
+loc:[["The Drink Society Spot","Monterrey, Nuevo León<br>Talleres, eventos privados y servicio de mixología para tu evento."],["Un link en su bio","Hoy la bio dice \"envíanos mensaje para reservar\". Este link puede ir ahí: talleres, privados y barra en un solo lugar."]],
+disclaimer:"Talleres, fechas, precios, cupos, reservas y cifras son de ejemplo.",
+labels:["Agenda","Dueño"],agendaTitle:"Talleres y eventos",ownerTitle:"Este mes",
+seed:{names:["Mariana G.","Diego R.","Sofía T.","Andrés P.","Fernanda L.","Luis M.","Daniela O.","Regina B.","Jorge A.","Ximena D.","Paola V.","Rodrigo S."],fill:{clas:12,mez:9,nav:6},priv:[{type:"Posada de empresa",act:"Clásicos",date:"2026-12-18",ppl:40,name:"Grupo Industrial Norte"},{type:"Despedida",act:"Mezcal y tequila",date:"2026-12-05",ppl:12,name:"Karla M.",st:"ok"}]},
+welcome:{title:"Sus talleres, reservables en un clic",steps:["Elija un taller y aparte su lugar: verá cuántos quedan.","Abajo, toque <b>Agenda</b>: ahí aparecen los asistentes por taller y las solicitudes de privados.","En <b>Dueño</b> vea lugares vendidos, ingresos y de dónde llegan las reservas."]}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/exp.js"></script>
+</body>
+</html>

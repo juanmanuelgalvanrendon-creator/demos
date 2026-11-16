@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kimbomba Parque Infantil · Aparta tu fecha (demo)</title>
+<meta name="theme-color" content="#3f7a4d">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Kimbomba · Demo de reservaciones">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: calendario de fechas libres, paquetes, anticipo de $3,000, playdates y agenda.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#4f8a5b;--g-d:#3f7a4d;--g-dd:#24502f;--g-l:#dcecdc;--g-ll:#f1f8f0;--acc:#e9775a;--acc-d:#c95a3e;--acc-l:#fde1d6;
+--ink:#1f2b22;--ink-2:#3c4a3f;--muted:#728076;--line:#e3e9dc;--paper:#fbfaf3;--cream:#fffef9;--red:#c2493f;--sh:0 14px 34px -16px rgba(31,43,34,.4);
+--display:"Fredoka",system-ui,sans-serif;--body:"Archivo",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:600;--em-style:normal;
+--hero-bg:radial-gradient(900px 480px at 90% 0%,#dcecdc 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#fde1d6 0%,transparent 60%),#fbfaf3;
+--dark:#183022;--dark-2:#22402e;--dark-3:#33583f;--dark-txt:#cfe1d3}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Kimbomba",mark:"K",tag:"Parque infantil · Plaza Omnia"},
+topBtn:"Paquetes",
+hero:{chip:"Agenda abierta · los fines de semana se llenan rápido",h1a:"Aparta la fiesta",h1b:"sin esperar respuesta.",lead:"Ve qué fechas y horarios quedan libres, elige tu paquete y separa tu fecha en dos minutos. También puedes apartar lugar en los playdates.",cta1:["Ver fechas libres","#reservar"],cta2:["Playdates","#extra"],badge:["$3,000","separa tu fecha"],alt:"Parque infantil decorado para fiesta",old:"Checar disponibilidad por WhatsApp o Instagram",now:"Ahora: el calendario muestra las fechas libres al momento."},
+ticker:["Cumpleaños","Bautizos","Posadas","Graduaciones","Playdates","Campamentos","Distintivo H"],
+pkgHead:{kicker:"Paquete",title:"¿Qué vas a <em>celebrar?</em>",note:"Paquetes y precios de ejemplo: se cargan los suyos. El total se arma solo con los extras que elijas."},
+types:["Cumpleaños","Bautizo","Posada","Graduación","Baby shower"],
+pkgs:[
+ {id:"esen",n:"Fiesta esencial",d:"Uso del parque, laberinto y anfitrionas. Hasta 25 niños.",p:9900,meta:"3.5 horas"},
+ {id:"kim",n:"Fiesta Kimbomba",d:"Todo lo esencial más decoración temática y mesa de regalos. Hasta 40 niños.",p:14900,meta:"3.5 horas",tag:"El más pedido"},
+ {id:"total",n:"Fiesta total",d:"Decoración, alimentos para niños y show. Hasta 60 niños.",p:19900,meta:"4 horas"}],
+slots:[{id:"m",n:"Mañana",h:"10:00 a 1:30"},{id:"t",n:"Tarde",h:"3:00 a 6:30"},{id:"n",n:"Noche",h:"7:00 a 10:30 (vie y sáb)",days:[5,6]}],
+units:1,unitName:["salón","salones"],minDays:2,
+extras:[{id:"x1",n:"Decoración temática premium",d:"Arco de globos y escenografía del personaje",p:1800},{id:"x2",n:"Pastel y mesa de dulces",d:"Para hasta 40 invitados",p:2500},{id:"x3",n:"Show o personaje",d:"45 minutos de animación",p:1500},{id:"x4",n:"Taquiza para adultos",d:"Para 30 personas",p:3200}],
+deposit:{fixed:3000},payNote:"Separa tu fecha con $3,000 y paga el resto como mejor te acomode: transferencia, tarjeta o efectivo.",
+calNote:"Cada punto es un turno: mañana, tarde y noche. Verde: libre. Las fechas ocupadas se bloquean solas, sin dobles reservas.",
+extra:{kicker:"Playdates y camp",title:"Días <em style=\"color:var(--acc-l)\">abiertos</em>",text:"En fechas libres abren el parque al público. Cada familia aparta su lugar desde aquí y el cupo se descuenta solo. Fechas de ejemplo.",per:"por niño",items:[
+ {id:"pd1",n:"Playdate navideño",date:"2026-12-20",hrs:"11:00 a 2:00",d:"Juego libre, manualidad navideña y foto con Santa.",p:250,cap:30,fill:.7},
+ {id:"pd2",n:"Playdate de fin de año",date:"2026-12-29",hrs:"11:00 a 2:00",d:"Juego libre y taller de galletas.",p:250,cap:30,fill:.4},
+ {id:"camp",n:"Camp de invierno",date:"2027-01-04",hrs:"9:00 a 1:00 (3 días)",d:"Tres mañanas de juegos, arte y cocina.",p:1800,cap:20,fill:.5}]},
+loc:[["Kimbomba Parque Infantil","<b>Plaza Omnia, Carretera Nacional</b><br>Fiestas infantiles, bautizos, posadas, graduaciones, playdates y campamentos. Distintivo H."],["Un link en su bio","Hoy se checa disponibilidad por WhatsApp o Instagram. Este link puede ir en su bio: fechas libres, paquetes y playdates en un solo lugar."]],
+disclaimer:"Paquetes, precios, horarios, disponibilidad, playdates, reservas y cifras son de ejemplo; el anticipo de $3,000 se tomó de una nota publicada sobre Kimbomba.",
+labels:["Agenda","Dueña"],prefix:"KB",
+seed:{names:["Familia Garza","Ana Lucía R.","Mariana T.","Familia Treviño","Daniela P.","Sofía M.","Familia Cantú","Regina V.","Paola S.","Fernanda L.","Familia Leal","Valeria C."]},
+welcome:{title:"Su agenda de fiestas, abierta las 24 horas",steps:["Elija paquete y fecha: el calendario muestra los turnos libres y el total se arma con los extras.","Abajo, toque <b>Agenda</b>: las fiestas de la semana y quién ya dio anticipo.","En <b>Dueña</b> vea ventas, anticipos por cobrar y ocupación."]}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/fechas.js"></script>
+</body>
+</html>
