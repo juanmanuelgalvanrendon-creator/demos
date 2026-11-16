@@ -6,7 +6,7 @@ const PM=Object.fromEntries(D.pkgs.map(p=>[p.id,p]));const SLM=Object.fromEntrie
 const today=mty();today.setHours(12,0,0,0);const minD=new Date(today);minD.setDate(minD.getDate()+(D.minDays||1));const maxD=new Date(today);maxD.setDate(maxD.getDate()+(D.maxDays||75));
 let NI=0;const nextName=()=>D.seed.names[(NI++)%D.seed.names.length];
 const S={type:D.types[0],pkg:D.pkgs.find(p=>!p.forType||p.forType===D.types[0]).id,date:null,slot:null,zone:D.zones?D.zones[0][0]:null,ex:{},book:[],calM:new Date(today.getFullYear(),today.getMonth(),1),reg:[],seq:400};
-const ICON=D.icon||'<svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.3 6.8 19l1-5.8L3.6 9.1l5.8-.8z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>';
+const ICON=D.icon||'<svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 11h16v9H4zM3 7h18v4H3zM12 7v13M12 7C10.5 4 7 4 7 6s3 1 5 1zm0 0c1.5-3 5-3 5-1s-3 1-5 1z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>';
 const used=(d,s)=>Math.min(T,S.book.filter(b=>b.date===d&&b.slot===s).reduce((a,b)=>a+(PM[b.pkg].units||1),0));
 const freeT=(d,s)=>T-used(d,s);
 const closed=d=>(D.closedDays||[]).includes(new Date(d+"T12:00:00").getDay());

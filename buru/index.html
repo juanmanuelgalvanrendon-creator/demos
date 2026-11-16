@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BŪRŪ · Celebra en nuestro privado (demo)</title>
+<meta name="theme-color" content="#5c4632">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="BŪRŪ · Demo de reservaciones">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: calendario del privado con paquetes y anticipo, brunch de temporada con cupo y agenda para el equipo.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#6b5139;--g-d:#5c4632;--g-dd:#2f2419;--g-l:#efe6da;--g-ll:#f9f5ef;--acc:#7c8b5a;--acc-d:#5f6d41;--acc-l:#e5ebd6;
+--ink:#231b14;--ink-2:#4a3e33;--muted:#867a6e;--line:#ebe3d8;--paper:#faf7f2;--cream:#fffdf9;--red:#c2493f;--sh:0 14px 34px -16px rgba(35,27,20,.42);
+--display:"Cormorant Garamond",Georgia,serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:600;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#efe6da 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#e5ebd6 0%,transparent 60%),#faf7f2;
+--dark:#1f1812;--dark-2:#2e241b;--dark-3:#4a3b2d;--dark-txt:#e3d8cb}
+.brand-name{letter-spacing:.06em}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"BŪRŪ",mark:"B",tag:"Bakery & Bistro · San Pedro"},
+topBtn:"Paquetes",
+hero:{chip:"Privado renovado en BŪRŪ Lomas",h1a:"Aparta tu celebración",h1b:"sin esperar el DM.",lead:"Ve qué fechas y horarios del privado quedan libres, elige tu paquete y aparta en dos minutos. También: brunch de temporada con lugares limitados.",cta1:["Ver fechas libres","#reservar"],cta2:["Brunch de temporada","#extra"],badge:["Arte","& brunch"],alt:"Mesa de brunch puesta para una celebración en un salón con arte",old:"\"RSVP: por DM\"",now:"Ahora: fechas libres, paquete y apartado en un solo link."},
+ticker:["Brunch","Bakery","Bistro","Rollo Selva Negra","Croque Madame","Eventos privados"],
+pkgHead:{kicker:"Paquete",title:"¿Qué vas a <em>celebrar?</em>",note:"Paquetes y precios de ejemplo: se cargan los suyos. El total se arma solo con los extras y las personas."},
+types:["Cumpleaños","Aniversario","Baby shower","Reunión de trabajo","Posada"],
+pkgs:[
+ {id:"br",n:"Brunch en privado",d:"Privado para tu grupo con menú de brunch y café de especialidad. Incluye 15 personas.",p:4500,meta:"3 horas"},
+ {id:"co",n:"Comida en privado",d:"Entrada, plato fuerte, postre y bebidas sin alcohol. Incluye 15 personas.",p:6500,meta:"3 horas",tag:"El más pedido"},
+ {id:"ce",n:"Celebración completa",d:"Comida, pastel de la casa, decoración y brindis. Incluye 15 personas.",p:8900,meta:"3.5 horas"}],
+slots:[{id:"m",n:"Mañana",h:"9:00 a 12:00"},{id:"d",n:"Mediodía",h:"12:30 a 3:00"},{id:"t",n:"Tarde",h:"3:30 a 6:30 (mar a sáb)",days:[2,3,4,5,6]}],
+units:1,unitName:["privado","privados"],minDays:2,closedDays:[1],
+guests:{label:"Personas",min:6,max:30,def:15,incl:15,extra:290,extraLabel:"Personas extra"},
+extras:[{id:"x1",n:"Pastel de la casa",d:"Rollo Selva Negra u otro sabor de temporada",p:650},{id:"x2",n:"Mesa de postres",d:"Bakery surtido para 20 personas",p:1500},{id:"x3",n:"Decoración",d:"Flores y mantelería del color que elijas",p:1200},{id:"x4",n:"Brindis",d:"Mimosas o espumoso para el grupo",p:900}],
+deposit:{fixed:1000},payNote:"Aparta tu fecha con $1,000 y liquida el resto el día del evento.",
+calNote:"Cada punto es un horario del privado. Verde: libre. Las fechas ocupadas se bloquean solas, sin dobles reservas. Lunes cerrado.",
+extra:{kicker:"Temporada",title:"Brunch <em style=\"color:var(--acc-l)\">navideño</em>",text:"Fechas especiales con lugares limitados: cada persona aparta desde aquí y el cupo se descuenta solo. Fechas y precios de ejemplo.",per:"por persona",qtyLabel:"¿Cuántas personas?",items:[
+ {id:"bn1",n:"Brunch navideño",date:"2026-12-13",hrs:"10:00 a 1:00",d:"Menú especial de temporada, chocolate caliente y postre navideño.",p:590,cap:40,fill:.55},
+ {id:"bn2",n:"Brunch navideño",date:"2026-12-20",hrs:"10:00 a 1:00",d:"Menú especial de temporada, chocolate caliente y postre navideño.",p:590,cap:40,fill:.35},
+ {id:"gal",n:"Taller de galletas navideñas",date:"2026-12-19",hrs:"4:00 a 6:00",d:"Decora tus galletas con el equipo de bakery y llévatelas.",p:450,cap:16,fill:.5}]},
+loc:[["BŪRŪ Lomas","<b>Lomas del Valle 445, Col. del Valle, San Pedro</b><br>Martes a sábado 9 am a 7 pm · domingo 9 am a 3 pm · lunes cerrado"],["BŪRŪ Kerkus","<b>Plaza Kerkus, 3er piso, San Pedro</b><br>Brunch, bakery y bistro dentro de la galería."]],
+disclaimer:"Paquetes, precios, horarios del privado, disponibilidad, brunch de temporada, reservas y cifras son de ejemplo; direcciones y horarios tomados de su Instagram.",
+labels:["Agenda","Dueño"],prefix:"BU",
+seed:{names:["Familia Garza","Ana Lucía R.","Mariana T.","Familia Treviño","Daniela P.","Sofía M.","Familia Cantú","Regina V.","Paola S.","Fernanda L.","Despacho Leal","Valeria C."]},
+welcome:{title:"Su privado, reservable las 24 horas",steps:["Elija paquete, personas y fecha: el calendario muestra los horarios libres y el total se arma solo.","Abajo, toque <b>Agenda</b>: los eventos de la semana, quién ya dio anticipo y los lugares del brunch de temporada.","En <b>Dueño</b> vea ventas, anticipos por cobrar y ocupación del privado."]}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/fechas.js"></script>
+</body>
+</html>
