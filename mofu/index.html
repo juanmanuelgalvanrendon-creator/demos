@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>mofu · Cheesecake japonés para llevar (demo)</title>
+<meta name="theme-color" content="#a3793f">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="mofu · Demo de pedidos">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: cheesecake soufflé japonés entero o individual con horario de recolección, ediciones especiales con cupo y pedidos para eventos.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#b3864a;--g-d:#a3793f;--g-dd:#4a3418;--g-l:#f6ecdc;--g-ll:#fdf9f3;--acc:#6f8f5c;--acc-d:#587448;--acc-l:#e3ecdb;
+--ink:#26201a;--ink-2:#4c4339;--muted:#857a6e;--line:#efe7dc;--paper:#fffcf8;--cream:#fffefc;--red:#c2493f;--sh:0 14px 34px -16px rgba(38,32,26,.42);
+--display:"Fraunces",Georgia,serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:600;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#f6ecdc 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#e3ecdb 0%,transparent 60%),#fffcf8}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"mofu",mark:"m",tag:"Centrito Valle"},
+hero:{chip:"Auténtico cheesecake soufflé japonés",h1a:"Aparta tu cheesecake",h1b:"antes de que se acabe.",lead:"Elige tu cheesecake entero o individual, agrega té o algo para acompañar, escoge el horario y recógelo en Plaza Mississippi sin hacer fila. Las ediciones especiales se apartan con cupo.",cta1:["Ver menú","#menu"],cta2:["Para eventos","#eventos"],badge:["9.8k","seguidores"],alt:"Cheesecake japonés esponjoso con una rebanada cortada junto a una taza de matcha",old:"Llegar y que ya no haya, o pedir por mensaje",now:"Ahora: menú, horario y apartado en un solo link."},
+ticker:["Cheesecake japonés","Soufflé","Matcha","Ediciones especiales","Hallazgos japoneses","San Pedro"],
+menuHead:{kicker:"Menú",title:"Arma tu <em>pedido</em>",note:"Productos de su perfil (cheesecake japonés, té y hallazgos japoneses); tamaños, sabores y precios de ejemplo que se cargan con los suyos."},
+cats:[
+ {id:"ch",n:"Cheesecakes",items:[
+  {id:"c1",n:"Cheesecake japonés original",d:"Entero, esponjoso y suave como nube. Para 6 a 8 personas.",p:420,w:3,bg:"#f6ecdc",c:"#a3793f",tag:"El clásico"},
+  {id:"c2",n:"Cheesecake japonés de matcha",d:"Entero, con matcha importado.",p:470,w:3,bg:"#e3ecdb",c:"#587448"},
+  {id:"c3",n:"Rebanada individual",d:"Para probarlo o acompañar tu té.",p:85,w:1,bg:"#f6ecdc",c:"#a3793f"}]},
+ {id:"te",n:"Té y bebidas",items:[
+  {id:"t1",n:"Matcha latte",d:"Matcha importado con leche, frío o caliente.",p:85,w:0,bg:"#e3ecdb",c:"#587448"},
+  {id:"t2",n:"Té japonés",d:"Sencha o hojicha de la casa.",p:60,w:0,bg:"#efe2cf",c:"#7a5a30"}]},
+ {id:"ha",n:"Hallazgos japoneses",items:[
+  {id:"h1",n:"Caja de regalo mofu",d:"Cheesecake entero en caja de regalo con té para llevar.",p:560,w:3,bg:"#f6ecdc",c:"#a3793f",tag:"Para regalo"}]}],
+hours:{2:[660,1200],3:[660,1200],4:[660,1200],5:[660,1260],6:[660,1260],0:[720,1140]},step:30,cutoff:600,capacity:28,slotCap:3,minDays:0,capLabel:"Cheesecakes que se pueden hornear en el día",
+pickHead:{kicker:"Recolección",title:"Tu día y <em>horario</em>",note:"Recoges en Plaza Mississippi, Centrito Valle, San Pedro. Horario de ejemplo. Cada horario tiene cupo según lo que sale del horno: cuando se llena, se bloquea solo."},
+note:"Comentario para tu pedido",notePh:"Ej. Es para regalo, con tarjeta",
+waNote:"En el sistema real llega la confirmación por WhatsApp y un aviso cuando tu cheesecake esté listo para recoger.",
+preorder:{kicker:"Edición especial",title:"Sabores de <em style=\"color:var(--acc-l)\">temporada</em>",text:"Como su edición de muerto con azahar y naranja: cada edición especial se aparta con cupo por día y se cierra sola al agotarse. Sabor, precio y fechas de ejemplo.",n:"Cheesecake japonés navideño (ejemplo)",d:"Edición especial por tiempo limitado, entero para 6 a 8 personas.",p:490,cap:80,sold:29,days:["Vie 18 dic","Sáb 19 dic","Mar 22 dic","Mié 23 dic"],dayLabel:"Día de recolección",unit:"cheesecakes"},
+quote:{kicker:"Eventos",title:"mofu para <em>eventos</em>",text:"Cheesecakes enteros o individuales para cumpleaños, oficinas y mesas de postres: la solicitud llega completa para cotizar.",types:["Cumpleaños","Oficina","Mesa de postres","Regalos de empresa"],qtyLabel:"Número de personas",unit:"personas",min:10,def:30,minDays:3,defDate:"2026-12-05",how:"Cada pedido cae en la pestaña <b>Cocina</b> con los cheesecakes que hay que hornear por día y horario. Con un botón le avisan al cliente que su pedido está listo, y en <b>Dueño</b> ven ventas y los sabores más pedidos.",rows:[["Horarios llenos","Se bloquean solos"],["Aviso de \"ya está listo\"","Por WhatsApp"]]},
+loc:[["mofu","<b>Plaza Mississippi, Centrito Valle, San Pedro Garza García, N.L.</b><br>Horario de ejemplo en esta demo."],["Un link en su bio","Junto a su ubicación: el cliente ve el menú, aparta su cheesecake y lo recoge sin fila."]],
+disclaimer:"Sabores, tamaños, precios, cupos, horario, edición navideña, pedidos y cifras son de ejemplo; ubicación y tipo de productos tomados de su Instagram.",
+labels:["Cocina","Dueño"],prefix:"MF",prepTitle:"Hornear por horario",
+seed:{names:["Mariana G.","Andrea L.","Sofía R.","Daniel T.","Regina M.","Ximena C.","Paulina V.","Fernando Q.","Camila B.","Natalia H.","Luis O.","Renata A."],quotes:[{type:"Oficina",date:"2026-12-11",qty:40,name:"Despacho Villarreal"}]},
+welcome:{title:"Sus cheesecakes, apartados las 24 horas",steps:["Elija su cheesecake, escoja día y horario y apártelo.","Abajo, toque <b>Cocina</b>: qué hornear por día y horario, y el botón para avisar \"ya está listo\".","En <b>Dueño</b> vea ventas, los sabores más pedidos y el cupo por horario."],note:"Precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/pedidos.js"></script>
+</body>
+</html>

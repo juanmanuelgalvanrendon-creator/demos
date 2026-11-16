@@ -23,3 +23,4 @@ the-cookie-box 6afb8b19-8570-83e8-ad75-dfc883eddf13
 fiore-dulce 6afb8c6e-e544-83e8-84fe-9a2c091aceb5
 bitekery 6afb8d70-b904-83e8-9eef-c71d74aa6b1e
 fika 6afb8e15-f484-83e8-b292-b3e399239008
+mofu 6afb904d-dc44-83e8-b462-49f71a1b7cba
