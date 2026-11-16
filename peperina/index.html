@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Peperina Repostería · Cursos y catálogo navideño (demo)</title>
+<meta name="theme-color" content="#9e2f2b">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Peperina Repostería · Demo de cursos y pedidos">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: cursos de galletas navideñas con cupo en vivo, catálogo navideño con fecha de entrega y cursos privados.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#a8332e;--g-d:#9e2f2b;--g-dd:#521613;--g-l:#f6dedb;--g-ll:#fcf3f1;--acc:#2f6b4f;--acc-d:#24553e;--acc-l:#d8ebe0;
+--ink:#2b1715;--ink-2:#4f3431;--muted:#8a6f6b;--line:#f0e1de;--paper:#fdf8f6;--cream:#fffdfc;--red:#c2493f;--sh:0 14px 34px -16px rgba(43,23,21,.42);
+--display:"Fraunces",Georgia,serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:600;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#f6dedb 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#d8ebe0 0%,transparent 60%),#fdf8f6;
+--dark:#241110;--dark-2:#361a18;--dark-3:#552a26;--dark-txt:#ecd6d2}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Peperina",mark:"P",tag:"Guadalupe, N.L."},
+topBtn:"Apartar",
+hero:{chip:"Peperina Repostería · Galletas decoradas",h1a:"Aparta tu lugar",h1b:"en el curso navideño.",lead:"Cursos de galletas navideñas y talleres de casitas de jengibre con cupo en vivo, y el catálogo navideño para pedir con su fecha de entrega. Todo en un solo link.",cta1:["Ver cursos","#eventos"],cta2:["Curso privado","#privado"],badge:["2026","navidad"],alt:"Mesa de trabajo con galletas navideñas decoradas con glaseado real y una casita de jengibre",old:"\"Aparta tu lugar\" y \"pide por WhatsApp\"",now:"Ahora: cada curso y cada pedido se apartan solos, con cupo y fecha."},
+ticker:["Galletas decoradas","Glaseado real","Cursos","Casitas de jengibre","Catálogo navideño","Guadalupe"],
+eventsHead:{kicker:"Cursos y talleres",title:"Próximos <em>cursos</em>",note:"Las fechas del curso para principiantes (21 y 22 de noviembre) son reales, de su publicación; precios, cupos y las demás fechas son de ejemplo."},
+events:[
+ {id:"b21",n:"Curso de galletas navideñas (principiantes)",date:"2026-11-21",hrs:"Curso de 1 día",short:"Sáb",p:850,cap:12,desc:"Aprende desde cero a decorar galletas navideñas con técnicas fáciles, paso a paso. No necesitas experiencia.",inc:["Materiales incluidos","Te llevas tus galletas"],tag:"Principiantes"},
+ {id:"b22",n:"Curso de galletas navideñas (principiantes)",date:"2026-11-22",hrs:"Curso de 1 día",short:"Dom",p:850,cap:12,desc:"Misma clase, otra fecha: elige la que más se te acomode. Materiales incluidos.",inc:["Materiales incluidos","Te llevas tus galletas"],tag:"Principiantes"},
+ {id:"ava",n:"Curso avanzado de galletas navideñas",date:"2026-12-05",hrs:"Curso de 1 día",short:"Sáb",p:1100,cap:10,desc:"Para quienes ya saben delinear y rellenar: nuevas técnicas, detalles y uso de proyector. Fecha de ejemplo.",inc:["Uso de proyector","Te llevas tus galletas"],tag:"Avanzado"},
+ {id:"cas",n:"Taller de casita de jengibre",date:"2026-12-12",hrs:"Taller de 1 día",short:"Sáb",p:650,cap:14,desc:"Arma y decora tu casita de jengibre con glaseado y dulces. Ideal para ir en familia. Fecha de ejemplo.",inc:["Casita para armar","Dulces y glaseado"],tag:"Familiar"}],
+unit:["lugar","lugares"],maxPer:4,
+pay:[["l","Anticipo por transferencia"],["a","Pago en línea (fase 2)"]],
+waitlist:{title:"¿Se llenó tu fecha?",text:"Deja tu WhatsApp y te avisamos primero cuando se libere un lugar o abramos fecha nueva.",start:28,ok:"Listo: te avisamos en cuanto se libere un lugar."},
+shop:{title:"Catálogo navideño 2026",text:"Elige tus galletas y el día de entrega. Las fechas de entrega son las de su catálogo; productos y precios de ejemplo.",dayLabel:"Día de entrega",btn:"Pedir",kpi:"Pedidos por entregar",unit:"pedidos",closed:[],days:[["2026-12-10","Jueves 10 dic (12 días)"],["2026-12-11","Viernes 11 dic (12 días)"],["2026-12-17","Jueves 17 dic"],["2026-12-18","Viernes 18 dic"],["2026-12-21","Lunes 21 dic"]],items:[
+ {id:"doc",n:"Caja de galletas navideñas (12)",p:420,per:"caja"},{id:"d12",n:"Galletas de 12 días para Navidad",p:560,per:"set"},{id:"mini",n:"Mini set de regalo (4)",p:160,per:"set"},{id:"cas",n:"Casita de jengibre decorada",p:480,per:"pieza"}]},
+priv:{kicker:"Cursos privados",title:"Tu propio <em style=\"color:var(--acc-l)\">curso navideño</em>",text:"Cumpleaños, posadas o equipos de trabajo: el cliente elige el tipo de curso, la fecha y cuántas personas, y les llega listo para cotizar.",types:["Cumpleaños","Posada","Equipo de trabajo","Escuela"],actLabel:"¿Qué curso?",acts:["Galletas navideñas","Casita de jengibre","Galletas personalizadas"],min:6,def:10,minDays:5,defDate:"2026-12-06",agTitle:"Privados"},
+loc:[["Peperina Repostería","<b>Eloy Cavazos 7721, Col. Rincón de Guadalupe, Guadalupe, N.L.</b><br>Pedidos e informes por WhatsApp 81 2586 6543."],["Entregas del catálogo","<b>10 y 11 de diciembre:</b> galletas de 12 días para Navidad.<br><b>17, 18 y 21 de diciembre:</b> pedidos del catálogo."]],
+disclaimer:"Salvo las fechas del curso para principiantes y las fechas de entrega del catálogo, cursos, precios, cupos, productos, pedidos y cifras son de ejemplo; dirección y teléfono tomados de su Instagram.",
+labels:["Agenda","Dueña"],agendaTitle:"Cursos y pedidos",ownerTitle:"Esta temporada",
+seed:{names:["Mariana G.","Diego R.","Sofía T.","Andrea P.","Fernanda L.","Luisa M.","Daniela O.","Regina B.","Karla A.","Ximena D.","Paola V.","Brenda S."],fill:{b21:9,b22:6,ava:4,cas:5},priv:[{type:"Posada",act:"Galletas navideñas",date:"2026-12-13",ppl:15,name:"Oficina Garza"},{type:"Cumpleaños",act:"Casita de jengibre",date:"2026-11-29",ppl:8,name:"Valeria S.",st:"ok"}],orders:[{items:{doc:2},name:"Ana R.",day:"2026-12-17"},{items:{d12:1,mini:3},name:"Colegio Linares",day:"2026-12-10"},{items:{cas:1},name:"Lorena T.",day:"2026-12-18"}]},
+welcome:{title:"Cursos y catálogo navideño, en un solo link",steps:["Elija un curso y aparte su lugar: verá cuántos quedan en cada fecha.","Abajo, toque <b>Agenda</b>: alumnas por curso, solicitudes de cursos privados y pedidos por día de entrega.","En <b>Dueña</b> vea lugares vendidos, ingresos y de dónde llegan los pedidos."]}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/exp.js"></script>
+</body>
+</html>
