@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lu'um Coffee Shop · Café y flores para regalar (demo)</title>
+<meta name="theme-color" content="#6b4a33">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Lu'um Coffee Shop · Demo de pedidos">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: kits de flores y café para regalar con recolección o envío, preventa navideña y regalos para empresas.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#7a5538;--g-d:#6b4a33;--g-dd:#3a271a;--g-l:#f1e5da;--g-ll:#faf5ef;--acc:#d98a9a;--acc-d:#b9687a;--acc-l:#f9e0e5;
+--ink:#2a1d14;--ink-2:#4e3d31;--muted:#877567;--line:#eee3d9;--paper:#fcf8f3;--cream:#fffdfa;--red:#c2493f;--sh:0 14px 34px -16px rgba(42,29,20,.42);
+--display:"DM Serif Display",Georgia,serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:400;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#f9e0e5 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#f1e5da 0%,transparent 60%),#fcf8f3;
+--dark:#21160f;--dark-2:#311f15;--dark-3:#4c3324;--dark-txt:#e6d6c9}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Lu'um",mark:"L",tag:"Café y flores · MTY Centro"},
+hero:{chip:"Kits de flores y café · Pick and Go",h1a:"Café y flores",h1b:"para regalar, sin mensajes.",lead:"Elige tu kit de flores y café, el día y la hora, y pasa por él o pide que lo llevemos. También: preventa navideña y regalos para empresas.",cta1:["Ver kits","#menu"],cta2:["Para empresas","#eventos"],badge:["3","años"],alt:"Kit de regalo con ramo de tulipanes y café latte para llevar",old:"Pedir el kit por mensaje y esperar respuesta",now:"Ahora: catálogo, horario y pedido en un solo link."},
+ticker:["Kit flores y café","Pick and Go","Ramos de temporada","Café de especialidad","Pet-friendly","Torre Historicah"],
+menuHead:{kicker:"Para regalar",title:"Arma tu <em>pedido</em>",note:"Kits, ramos y precios de ejemplo: se cargan los suyos y se actualizan en minutos."},
+cats:[
+ {id:"kit",n:"Kits flores y café",items:[
+  {id:"k1",n:"Kit flores y café",d:"Ramo pequeño de temporada y una bebida a elegir.",p:350,w:1,bg:"#f9e0e5",c:"#b9687a",tag:"Favorito"},
+  {id:"k2",n:"Kit para dos",d:"Ramo mediano, dos bebidas y dos postres.",p:620,w:2,bg:"#f1e5da",c:"#7a5538"},
+  {id:"k3",n:"Kit café en casa",d:"Ramo pequeño y café en grano de 250 g.",p:480,w:1,bg:"#f3ecd9",c:"#8a6a2b"}]},
+ {id:"ram",n:"Ramos",items:[
+  {id:"r1",n:"Ramo de tulipanes",d:"Tulipanes de temporada envueltos en kraft.",p:420,w:1,bg:"#f9e0e5",c:"#b9687a"},
+  {id:"r2",n:"Ramo de temporada grande",d:"Flores surtidas para un detalle especial.",p:690,w:2,bg:"#e6ecd9",c:"#56663c"}]},
+ {id:"caf",n:"Café para llevar",items:[
+  {id:"c1",n:"Latte",d:"Con leche a elegir.",p:65,w:.2,bg:"#f1e5da",c:"#7a5538"},
+  {id:"c2",n:"Bebida de temporada",d:"Pregunta por la del mes.",p:85,w:.2,bg:"#f3ecd9",c:"#8a6a2b"}]}],
+hours:{1:[540,1200],2:[540,1200],3:[540,1200],4:[540,1200],5:[540,1200],6:[540,1200],0:[540,960]},step:30,cutoff:1080,capacity:30,slotCap:4,capLabel:"Kits que se pueden armar en el día",
+delivery:{fee:80,note:"Envío en Monterrey (ejemplo)",pickNote:"Recoges en Torre Historicah"},
+pickHead:{kicker:"Entrega",title:"Tu día y <em>horario</em>",note:"Lunes a sábado de 9 am a 8 pm y domingo de 9 am a 4 pm. Pasa por él o pide envío. Cada horario tiene cupo para que tu kit esté listo a tiempo."},
+note:"Mensaje para la tarjeta (opcional)",notePh:"Ej. Feliz cumple, te quiero",
+waNote:"En el sistema real llega la confirmación por WhatsApp con los datos de pago y un aviso cuando tu kit esté listo o en camino.",
+preorder:{kicker:"Preventa",title:"Kit <em style=\"color:var(--acc-l)\">navideño</em>",text:"Piezas limitadas con cupo por día: ustedes saben cuántas flores pedir desde antes. Ejemplo con datos ficticios.",n:"Kit navideño (ejemplo)",d:"Arreglo de nochebuena, café en grano y galletas de temporada.",p:690,cap:80,sold:31,days:["Sáb 19 dic","Lun 21 dic","Mar 22 dic","Mié 23 dic"],dayLabel:"Día de entrega",unit:"kits"},
+quote:{kicker:"Empresas",title:"Regalos para <em>empresas</em>",text:"Kits para clientes o colaboradores con tarjeta personalizada. La solicitud llega completa para cotizar.",types:["Regalo para clientes","Detalle para colaboradores","Evento de oficina"],qtyLabel:"Número de kits",unit:"kits",min:10,def:25,minDays:5,defDate:"2026-12-15",how:"Cada pedido cae en la pestaña <b>Cocina</b> por horario, con lo que hay que armar. Con un botón le avisan al cliente que su kit está listo, y en <b>Dueño</b> ven ventas y lo más pedido.",rows:[["Horarios llenos","Se bloquean solos"],["Aviso de \"ya está listo\"","Por WhatsApp"]]},
+loc:[["Lu'um Coffee Shop","<b>Torre Historicah, Serafín Peña 1146 local 2, Monterrey Centro</b><br>Lunes a sábado 9 am a 8 pm · domingo 9 am a 4 pm"],["Un link en su bio","Hoy la bio no tiene link. Este puede ir ahí: kits, ramos y pedidos con recolección o envío en un solo lugar."]],
+disclaimer:"Kits, ramos, precios, envío, cupos, preventa, pedidos y cifras son de ejemplo; horario y ubicación tomados de su Instagram y de notas publicadas.",
+labels:["Cocina","Dueño"],prefix:"LU",prepTitle:"Armar hoy",
+seed:{names:["Mariana G.","Andrea L.","Sofía R.","Daniela T.","Regina M.","Ximena C.","Paulina V.","Fernanda Q.","Camila B.","Natalia H.","Lucía O.","Renata A."],quotes:[{type:"Regalo para clientes",date:"2026-12-15",qty:40,name:"Despacho Treviño & Asoc."}]},
+welcome:{title:"Sus kits de regalo, en un solo link",steps:["Arme un pedido, elija recolección o envío, el día y el horario, y apártelo.","Abajo, toque <b>Cocina</b>: qué armar por horario y el botón para avisar \"ya está listo\".","En <b>Dueño</b> vea ventas, lo más pedido y la capacidad por día."],note:"Kits, precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/pedidos.js"></script>
+</body>
+</html>
