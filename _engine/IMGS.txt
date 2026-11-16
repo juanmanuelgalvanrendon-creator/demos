@@ -7,3 +7,4 @@ arena-soccer 6afb689b-0060-83e8-abba-a74f81fc4f79
 san-palma 6afb6fbf-1a94-83e8-9470-6399c8b394c3
 cafe-hogar 6afb722d-ff7c-83e8-9cf0-34e5cef108f4
 biscotto 6afb73a5-a260-83e8-b252-17b792cb1135
+dona-alegria 6afb763d-6798-83e8-81e3-32a4498558c0

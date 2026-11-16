@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Doña Alegría Pastelería · Aparta tu pastel (demo)</title>
+<meta name="theme-color" content="#c23a73">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Doña Alegría Pastelería · Demo de pedidos">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: aparta tu pastel en línea y recógelo en la sucursal que elijas, preventa de roscas y pedidos para eventos.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#c23a73;--g-d:#a12d5f;--g-dd:#561733;--g-l:#fbdde9;--g-ll:#fff3f8;--acc:#e8a33d;--acc-d:#bf8124;--acc-l:#fdeccd;
+--ink:#2a1420;--ink-2:#4f3442;--muted:#8a7280;--line:#f3dfe8;--paper:#fff8fb;--cream:#fffdfe;--red:#c2493f;--sh:0 14px 34px -16px rgba(42,20,32,.42);
+--display:"Lilita One",system-ui,sans-serif;--body:"Archivo",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:400;--em-style:normal;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#fbdde9 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#fdeccd 0%,transparent 60%),#fff8fb;
+--dark:#2a0f1d;--dark-2:#3d1729;--dark-3:#5c2640;--dark-txt:#f0d3e0}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Doña Alegría",mark:"DA",tag:"Pastelería · 5 sucursales"},
+hero:{chip:"Alegra tu día · Guadalupe, Aztlán, Fidel Velázquez, Garza Sada y Apodaca",h1a:"Aparta tu pastel",h1b:"y recógelo sin fila.",lead:"Elige tu pastel o tus Tikititos, la sucursal y la hora para recoger, y llega directo por él. También: preventa de roscas y pasteles para eventos y empresas.",cta1:["Ver pasteles","#menu"],cta2:["Para eventos","#eventos"],badge:["5","sucursales"],alt:"Vitrina de pastelería con pasteles caseros y mini pastelitos",old:"Llegar a la sucursal y esperar a ver qué hay",now:"Ahora: aparta en línea y lo encuentras listo en tu sucursal."},
+ticker:["Lo has logrado todo","Tres leches bien bonito","Fresas con crema","Poncho pastel","Rosa pastel","Rosca Alegría","Tikititos"],
+menuHead:{kicker:"Nuestros sabores",title:"Arma tu <em>pedido</em>",note:"Los nombres de los sabores son los suyos; tamaños y precios son de ejemplo y se cargan los reales."},
+cats:[
+ {id:"gr",n:"Pasteles grandes",items:[
+  {id:"lhl",n:"Lo has logrado todo",d:"Pastel grande para celebrar en familia.",p:420,w:2,bg:"#fbdde9",c:"#c23a73",tag:"Favorito"},
+  {id:"tl",n:"Tres leches bien bonito",d:"El clásico tres leches, bien húmedo.",p:390,w:2,bg:"#fdeccd",c:"#bf8124"},
+  {id:"fc",n:"Fresas con crema",d:"Fresas frescas y crema batida.",p:410,w:2,bg:"#fbdde9",c:"#c23a73"},
+  {id:"pp",n:"Poncho pastel",d:"Pastel grande para compartir.",p:430,w:2,bg:"#f1e2d6",c:"#8a5631"},
+  {id:"rp",n:"Rosa pastel",d:"Pastel con betún rosa para festejar.",p:400,w:2,bg:"#fbdde9",c:"#a12d5f"}]},
+ {id:"ro",n:"Roscas",items:[
+  {id:"ra",n:"Rosca Alegría",d:"Rosca para la sobremesa o el café.",p:280,w:1,bg:"#fdeccd",c:"#bf8124"},
+  {id:"rac",n:"Rosca Alegría Cajeta",d:"Con cajeta, de las más pedidas.",p:300,w:1,bg:"#f1e2d6",c:"#8a5631"}]},
+ {id:"tk",n:"Tikititos",items:[
+  {id:"tk4",n:"Caja de 4 Tikititos",d:"Mini pasteles surtidos, ideales para regalar.",p:180,w:.5,bg:"#fbdde9",c:"#c23a73"},
+  {id:"tk8",n:"Caja de 8 Tikititos",d:"Para la oficina o la reunión.",p:340,w:1,bg:"#fdeccd",c:"#bf8124"}]}],
+branches:["Guadalupe","Aztlán","Fidel Velázquez","Garza Sada","Apodaca (Gaspar Castaño 211)"],branchLabel:"Sucursal para recoger",
+hours:{1:[540,1260],2:[540,1260],3:[540,1260],4:[540,1260],5:[540,1260],6:[540,1260],0:[540,1140]},step:30,cutoff:1080,capacity:60,slotCap:8,capLabel:"Pasteles apartados del día",
+pickHead:{kicker:"Recolección",title:"Sucursal, día y <em>hora</em>",note:"Lunes a sábado de 9 am a 9 pm y domingo de 9 am a 7 pm. Cada horario tiene cupo para que el pedido esté listo a tiempo."},
+note:"Mensaje en el pastel (opcional)",notePh:"Ej. Felicidades, mamá",
+waNote:"En el sistema real llega la confirmación por WhatsApp y un aviso cuando tu pastel esté listo en la sucursal que elegiste.",
+preorder:{kicker:"Preventa",title:"Rosca de <em style=\"color:var(--acc-l)\">Reyes</em>",text:"Piezas limitadas con cupo por día: ustedes saben cuántas hornear por sucursal desde diciembre. Ejemplo con datos ficticios.",n:"Rosca de Reyes Alegría (ejemplo)",d:"Rosca tradicional para 12 a 15 personas.",p:450,cap:300,sold:184,days:["Sáb 2 ene","Lun 4 ene","Mar 5 ene","Mié 6 ene"],dayLabel:"Día de recolección",unit:"roscas"},
+quote:{kicker:"Eventos y empresas",title:"Pasteles para <em>eventos</em>",text:"Posadas, cumpleaños de oficina o regalos para clientes. La solicitud llega completa para cotizar.",types:["Posada de empresa","Regalo para clientes","Evento familiar"],qtyLabel:"Número de pasteles",unit:"pasteles",min:5,def:20,minDays:5,defDate:"2026-12-12",how:"Cada pedido cae en la pestaña <b>Cocina</b> separado por sucursal y horario. Con un botón le avisan al cliente que su pastel está listo, y en <b>Dueño</b> ven ventas y los sabores más pedidos.",rows:[["Horarios llenos","Se bloquean solos"],["Aviso de \"ya está listo\"","Por WhatsApp"]]},
+loc:[["Doña Alegría Pastelería","<b>Guadalupe, Aztlán, Fidel Velázquez, Garza Sada y Apodaca</b><br>Lunes a sábado 9 am a 9 pm · domingo 9 am a 7 pm"],["Un link en su bio","Hoy la bio no tiene link. Este puede ir ahí: sabores, sucursales y apartado en un solo lugar, sin vueltas."]],
+disclaimer:"Tamaños, precios, cupos, preventa, pedidos y cifras son de ejemplo; sabores, sucursales y horarios tomados de su Instagram y de notas publicadas.",
+labels:["Cocina","Dueño"],prefix:"DA",prepTitle:"Preparar hoy",
+seed:{names:["Mariana G.","Andrea L.","Sofía R.","Daniela T.","Regina M.","Ximena C.","Paulina V.","Fernanda Q.","Camila B.","Natalia H.","Lucía O.","Renata A."],quotes:[{type:"Posada de empresa",date:"2026-12-18",qty:30,name:"Grupo Industrial Norte"}]},
+welcome:{title:"Sus pasteles, apartados en línea",steps:["Arme un pedido, elija sucursal, día y hora, y apártelo.","Abajo, toque <b>Cocina</b>: los pedidos por sucursal y el botón para avisar \"ya está listo\".","En <b>Dueño</b> vea ventas, sabores más pedidos y el cupo por día."],note:"Tamaños, precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/pedidos.js"></script>
+</body>
+</html>
