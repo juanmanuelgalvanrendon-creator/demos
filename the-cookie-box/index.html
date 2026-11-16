@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Cookie Box · Galletas personalizadas (demo)</title>
+<meta name="theme-color" content="#7d5fa6">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="The Cookie Box · Demo de pedidos">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: galletas decoradas personalizadas con agenda por día, catálogo de temporada y cotización de sets para eventos.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Nunito+Sans:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#8a6bb4;--g-d:#7d5fa6;--g-dd:#3b2a52;--g-l:#ece4f6;--g-ll:#f8f5fc;--acc:#e0a96d;--acc-d:#b9824a;--acc-l:#fbeedd;
+--ink:#251d2e;--ink-2:#4a3f56;--muted:#857a91;--line:#ece6f3;--paper:#fcfaff;--cream:#fffeff;--red:#c2493f;--sh:0 14px 34px -16px rgba(37,29,46,.42);
+--display:"Playfair Display",Georgia,serif;--body:"Nunito Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:600;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#ece4f6 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#fbeedd 0%,transparent 60%),#fcfaff}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"The Cookie Box",mark:"C",tag:"Monterrey Sur"},
+hero:{chip:"Custom sugar cookies · Bake Studio",h1a:"Pide tus galletas",h1b:"sin esperar respuesta.",lead:"Elige tu set o tu Birthday Box, deja la temática y los colores, mira qué días quedan con cupo y apártalo en un minuto. Los sets para bodas y baby showers llegan listos para cotizar.",cta1:["Ver sets","#menu"],cta2:["Sets para eventos","#eventos"],badge:["100%","a mano"],alt:"Caja de regalo con galletas decoradas con glaseado en tonos pastel",old:"\"Pedidos por WhatsApp o DM\"",now:"Ahora: set, temática, día y apartado en un solo link."},
+ticker:["Custom sugar cookies","Birthday Box","Wedding","Baby","Galletas 3D","Monterrey Sur"],
+menuHead:{kicker:"Sets",title:"Arma tu <em>pedido</em>",note:"Sets inspirados en sus destacadas (Birthday Box, Baby, Wedding, 3D); tamaños y precios de ejemplo que se cargan con los suyos."},
+cats:[
+ {id:"bx",n:"Birthday Box",items:[
+  {id:"b1",n:"Birthday Box chica",d:"6 galletas decoradas con la temática y el nombre que elijas.",p:390,w:3,bg:"#ece4f6",c:"#7d5fa6",tag:"Más pedida"},
+  {id:"b0",n:"Birthday Box mini",d:"4 galletas decoradas, ideal como detalle o regalo.",p:260,w:2,bg:"#fde4ea",c:"#b85a73"},
+  {id:"b2",n:"Birthday Box grande",d:"12 galletas a juego con la fiesta, en caja de regalo.",p:720,w:5,bg:"#fbeedd",c:"#b9824a"}]},
+ {id:"st",n:"Sets temáticos",items:[
+  {id:"s1",n:"Docena temática",d:"Tu personaje o película favorita en galletas.",p:650,w:5,bg:"#e1f1ea",c:"#4f8a6f"},
+  {id:"s2",n:"Galleta 3D",d:"Pieza especial con volumen para centro de mesa o regalo.",p:220,w:2,bg:"#fde4ea",c:"#b85a73"},
+  {id:"s3",n:"Mini galletas (20)",d:"Para bolos o mesa de dulces.",p:300,w:3,bg:"#ece4f6",c:"#7d5fa6"}]},
+ {id:"ba",n:"Baby",items:[
+  {id:"y1",n:"Set baby shower (12)",d:"Bodies, biberones y nubes en los colores del evento.",p:680,w:5,bg:"#e3eef9",c:"#4c7aa8"}]}],
+hours:{1:[600,1140],2:[600,1140],3:[600,1140],4:[600,1140],5:[600,1140],6:[600,840]},step:60,cutoff:720,capacity:60,slotCap:3,minDays:4,capLabel:"Galletas que se pueden decorar en el día",
+pickHead:{kicker:"Entrega",title:"Tu día y <em>horario</em>",note:"Recoges en Monterrey Sur. Horario de ejemplo. Las galletas se decoran a mano, por eso se piden con al menos 4 días y cada día tiene cupo: cuando se llena, se bloquea solo."},
+note:"Temática, colores y nombre",notePh:"Ej. Moana, tonos turquesa y coral, \"Florencia 5\"",
+waNote:"En el sistema real llega la confirmación por WhatsApp con los datos de pago y un aviso cuando tus galletas estén listas.",
+preorder:{kicker:"Temporada",title:"Catálogo <em style=\"color:var(--acc-l)\">navideño</em>",text:"Como su catálogo de Halloween, pero con cupo por día que se cierra solo al llenarse. Producto, precio y fechas de ejemplo.",n:"Caja navideña de 6 galletas (ejemplo)",d:"Diseños navideños en tonos pastel, en caja de regalo.",p:420,cap:70,sold:24,days:["Vie 18 dic","Sáb 19 dic","Lun 21 dic","Mar 22 dic"],dayLabel:"Día de entrega",unit:"cajas"},
+quote:{kicker:"Eventos",title:"Sets para <em>eventos</em>",text:"Bodas, baby showers, bautizos y empresas: la solicitud llega completa para cotizar, con fecha, piezas e idea.",types:["Boda","Baby shower","Bautizo","Evento de empresa"],qtyLabel:"Número de galletas",unit:"galletas",min:24,def:60,minDays:10,defDate:"2027-01-16",how:"Cada pedido cae en la pestaña <b>Cocina</b> con las galletas que hay que hornear y decorar por día. Con un botón le avisan al cliente que su pedido está listo, y en <b>Dueño</b> ven ventas y los sets más pedidos.",rows:[["Días llenos","Se bloquean solos"],["Aviso de \"ya está listo\"","Por WhatsApp"]]},
+loc:[["The Cookie Box","<b>Monterrey Sur, Nuevo León</b><br>Pedidos por WhatsApp 811 007 4636 o DM."],["Un link en su bio","Puede ir junto a su WhatsApp: el cliente elige su set, deja la temática y aparta solo."]],
+disclaimer:"Sets, tamaños, precios, cupos, horario, catálogo navideño, pedidos y cifras son de ejemplo; zona, teléfono y tipos de galletas tomados de su Instagram.",
+labels:["Cocina","Dueña"],prefix:"CB",prepTitle:"Hornear y decorar",
+seed:{names:["Mariana G.","Andrea L.","Sofía R.","Daniela T.","Regina M.","Ximena C.","Paulina V.","Fernanda Q.","Camila B.","Natalia H.","Lucía O.","Renata A."],quotes:[{type:"Boda",date:"2027-02-20",qty:120,name:"Ana y Pablo"}]},
+welcome:{title:"Sus pedidos de galletas, abiertos las 24 horas",steps:["Elija un set, deje temática y colores, escoja día y horario y apártelo.","Abajo, toque <b>Cocina</b>: qué hornear y decorar por día y el botón para avisar \"ya está listo\".","En <b>Dueña</b> vea ventas, los sets más pedidos y el cupo por día."],note:"Sets, precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/pedidos.js"></script>
+</body>
+</html>
