@@ -9,3 +9,4 @@ cafe-hogar 6afb722d-ff7c-83e8-9cf0-34e5cef108f4
 biscotto 6afb73a5-a260-83e8-b252-17b792cb1135
 dona-alegria 6afb763d-6798-83e8-81e3-32a4498558c0
 buru 6afb79cc-d214-83e8-a8b7-77fcf71b1380
+querida-adela 6afb7b3e-6ce8-83e8-a021-53713abac47f

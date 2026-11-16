@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Querida Adela · Aparta tu posada (demo)</title>
+<meta name="theme-color" content="#b07a1f">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Querida Adela · Demo de reservaciones">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: calendario de posadas y eventos con paquetes y anticipo, desayunos de temporada con cupo y agenda para el equipo.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=Nunito+Sans:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#2f5d50;--g-d:#244a40;--g-dd:#132922;--g-l:#dcebe5;--g-ll:#f2f8f5;--acc:#d39a2c;--acc-d:#b07a1f;--acc-l:#fbecc9;
+--ink:#1b2622;--ink-2:#3c4a45;--muted:#77847f;--line:#e2ebe7;--paper:#fbf9f3;--cream:#fffefa;--red:#c2493f;--sh:0 14px 34px -16px rgba(27,38,34,.42);
+--display:"Fraunces",Georgia,serif;--body:"Nunito Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:600;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#fbecc9 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#dcebe5 0%,transparent 60%),#fbf9f3;
+--dark:#11221c;--dark-2:#1a3129;--dark-3:#2a4a3f;--dark-txt:#d4e3dc}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Querida Adela",mark:"QA",tag:"Desayuno y brunch · San Pedro"},
+topBtn:"Paquetes",
+hero:{chip:"Posadas y cierres de año · pet-friendly",h1a:"Aparta tu posada",h1b:"en un par de minutos.",lead:"Ve qué fechas y horarios quedan libres, elige tu paquete, cuántos vienen y aparta en línea. Sin esperar respuesta por WhatsApp. También: desayunos de temporada con lugares limitados.",cta1:["Ver fechas libres","#reservar"],cta2:["Desayunos de temporada","#extra"],badge:["8 a 4","diario"],alt:"Mesa larga decorada para una posada de mañana con chilaquiles, pan dulce y café",old:"Reservaciones e informes por WhatsApp",now:"Ahora: fechas libres, paquete y apartado en un solo link."},
+ticker:["Nido de chilaquiles","Dúo de molletes","Ceviche aguacate panela","Postres de temporada","Pet-friendly","Posadas"],
+pkgHead:{kicker:"Paquete",title:"¿Qué vas a <em>celebrar?</em>",note:"Paquetes y precios de ejemplo: se cargan los suyos. El total se arma solo con los extras y las personas."},
+types:["Posada de empresa","Reunión familiar","Cumpleaños","Baby shower"],
+pkgs:[
+ {id:"de",n:"Desayuno de fin de año",d:"Menú de desayuno a elegir, café y jugo. Incluye 15 personas.",p:4200,meta:"2.5 horas"},
+ {id:"br",n:"Brunch posada",d:"Entrada, plato fuerte, postre de temporada y bebidas. Incluye 15 personas.",p:5900,meta:"3 horas",tag:"El más pedido"},
+ {id:"ce",n:"Celebración completa",d:"Brunch, decoración navideña, pastel y brindis sin alcohol. Incluye 15 personas.",p:7900,meta:"3 horas"}],
+slots:[{id:"m",n:"Desayuno",h:"8:00 a 10:30"},{id:"b",n:"Brunch",h:"11:00 a 1:30"},{id:"c",n:"Comida",h:"1:30 a 4:00"}],
+units:1,unitName:["espacio","espacios"],minDays:2,
+guests:{label:"Personas",min:8,max:40,def:15,incl:15,extra:260,extraLabel:"Personas extra"},
+extras:[{id:"x1",n:"Postres de temporada",d:"Para 15 personas",p:950},{id:"x2",n:"Decoración navideña",d:"Centro de mesa con nochebuenas y luces",p:1100},{id:"x3",n:"Intercambio de regalos",d:"Dinámica y mesa de regalos preparada",p:500},{id:"x4",n:"Fotógrafo",d:"1 hora y fotos digitales",p:1400}],
+deposit:{fixed:1000},payNote:"Aparta tu fecha con $1,000 y liquida el resto el día del evento.",
+calNote:"Cada punto es un horario. Verde: libre. Las fechas ocupadas se bloquean solas, sin dobles reservas.",
+extra:{kicker:"Temporada",title:"Desayunos <em style=\"color:var(--acc-l)\">navideños</em>",text:"Fechas especiales con lugares limitados: cada persona aparta desde aquí y el cupo se descuenta solo. Fechas y precios de ejemplo.",per:"por persona",qtyLabel:"¿Cuántas personas?",items:[
+ {id:"ds1",n:"Desayuno navideño",date:"2026-12-13",hrs:"9:00 a 11:30",d:"Menú especial, chocolate caliente y pan de temporada.",p:420,cap:40,fill:.5},
+ {id:"ds2",n:"Desayuno navideño",date:"2026-12-20",hrs:"9:00 a 11:30",d:"Menú especial, chocolate caliente y pan de temporada.",p:420,cap:40,fill:.3},
+ {id:"pet",n:"Brunch pet-friendly navideño",date:"2026-12-19",hrs:"10:00 a 1:00",d:"Ven con tu perrito: foto navideña y premio para él.",p:380,cap:30,fill:.45}]},
+loc:[["Querida Adela","<b>Río de la Plata Ote. 302, Del Valle, San Pedro Garza García</b><br>Todos los días de 8 am a 4 pm · pet-friendly"],["Un link en su bio","Puede ir junto a su WhatsApp: fechas libres, paquetes y apartado en un solo lugar, sin ir y venir por mensaje."]],
+disclaimer:"Paquetes, precios, horarios de eventos, disponibilidad, desayunos de temporada, reservas y cifras son de ejemplo; dirección, horario y platillos tomados de su Instagram.",
+labels:["Agenda","Dueño"],prefix:"QA",
+seed:{names:["Despacho Garza","Ana Lucía R.","Mariana T.","Familia Treviño","Daniela P.","Grupo Leal","Familia Cantú","Regina V.","Paola S.","Fernanda L.","Constructora Norte","Valeria C."]},
+welcome:{title:"Sus posadas y eventos, reservables las 24 horas",steps:["Elija paquete, personas y fecha: el calendario muestra los horarios libres y el total se arma solo.","Abajo, toque <b>Agenda</b>: los eventos de la semana, quién ya dio anticipo y los lugares de los desayunos de temporada.","En <b>Dueño</b> vea ventas, anticipos por cobrar y ocupación."]}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/fechas.js"></script>
+</body>
+</html>
