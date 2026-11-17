@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fisiovet Monterrey · Citas y plan de rehabilitación (demo)</title>
+<meta name="theme-color" content="#2a6f9a">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Fisiovet Monterrey · Demo de citas y rehabilitación">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: citas por terapia y terapeuta, paquetes de sesiones y plan de rehabilitación de cada paciente con avance y ejercicios en casa.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<link rel="stylesheet" href="../_engine/citas.css">
+<style>
+:root{--g:#3480b0;--g-d:#2a6f9a;--g-dd:#123049;--g-l:#dcebf6;--g-ll:#f3f8fc;--acc:#3fb39f;--acc-d:#2b917f;--acc-l:#d6f2ec;
+--ink:#14212c;--ink-2:#394b5a;--muted:#728494;--line:#e0eaf1;--paper:#f8fbfd;--cream:#fdfeff;--red:#c2493f;--sh:0 14px 34px -16px rgba(20,33,44,.42);
+--display:"Sora",system-ui,sans-serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:600;--em-style:normal;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#dcebf6 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#d6f2ec 0%,transparent 60%),#f8fbfd;
+--dark:#0e1c27;--dark-2:#16293a;--dark-3:#25425a;--dark-txt:#c4d5e2}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Fisiovet",mark:"F",tag:"Monterrey"},
+topBtn:"Mi cita",
+hero:{chip:"Fisioterapia y rehabilitación veterinaria",h1a:"Su recuperación,",h1b:"sesión por sesión.",lead:"Agenda la valoración o la siguiente sesión con su terapeuta y ve el plan de tu mascota: sesiones que lleva, terapias, cómo baja el dolor y los ejercicios para casa. Perros, gatos y exóticos.",cta1:["Agendar","#servicios"],cta2:["Ver un plan","#plan"],badge:["6.5k","seguidores"],alt:"Perro salchicha sobre una pelota de equilibrio en una sala de rehabilitación",old:"Agendar por teléfono y apuntar los ejercicios",now:"Ahora: citas, paquete y avance en un solo link."},
+ticker:["Láser","Magnetoterapia","Electroterapia","Ultrasonido","Fototerapia","Ejercicios"],
+svcHead:{kicker:"Terapias",title:"¿Qué <em>necesita</em>?",note:"Terapias de sus publicaciones (láser, magneto, electroterapia, ultrasonido, fototerapia y ejercicios); duraciones y precios de ejemplo. Las sesiones de un paquete se descuentan solas."},
+services:[
+ {id:"val",n:"Valoración inicial",d:"Revisión de movilidad y dolor para armar su plan de rehabilitación.",min:60,p:700,tag:"Primera vez"},
+ {id:"ses",n:"Sesión de rehabilitación",d:"Protocolo combinado según su plan: magneto, láser, electro y ejercicios.",min:60,p:550,tag:"La más común"},
+ {id:"laser",n:"Terapia láser",d:"Desinflama y alivia el dolor en articulaciones y columna.",min:30,p:380},
+ {id:"magneto",n:"Magnetoterapia",d:"Relaja la musculatura y ayuda a la regeneración.",min:30,p:350},
+ {id:"electro",n:"Electroterapia",d:"Estimula músculos que perdieron fuerza.",min:30,p:350},
+ {id:"ultra",n:"Ultrasonido terapéutico",d:"Para tendones, ligamentos y contracturas.",min:30,p:350}],
+variant:{label:"Paciente",short:"Paciente",def:0,opts:[{id:"perro",n:"Perro",mult:1},{id:"gato",n:"Gato",mult:1},{id:"exo",n:"Exótico",sub:"conejo, ave, tortuga",mult:1.1}]},
+staff:[{id:"fer",n:"Fernanda R.",role:"Fisioterapeuta"},{id:"lui",n:"Luis M.",role:"Fisioterapeuta",svcs:["ses","laser","magneto","electro","ultra"]}],
+staffLabel:"Terapeuta",staffShort:"Terapeuta",anyLabel:"El primero disponible",
+hours:{1:[540,1140],2:[540,1140],3:[540,1140],4:[540,1140],5:[540,1140],6:[540,840]},step:30,lead:120,ahead:14,
+fields:[{id:"pet",label:"Nombre del paciente",short:"Paciente",ph:"Ej. Rocky",req:1,inAg:1},{id:"why",label:"Motivo o diagnóstico",short:"Motivo",ph:"Ej. Hernia discal, cadera, post operatorio",inAg:1}],
+pickHead:"Paciente, terapeuta y horario",sumTitle:"Su cita",bookBtn:"Agendar cita",
+remind:"<b>Recordatorio un día antes</b> por WhatsApp y, al terminar, los <b>ejercicios para casa</b> de esa semana.",
+waTicket:"En el sistema real te llega esta confirmación por WhatsApp, un recordatorio un día antes y, después de cada sesión, las notas del terapeuta y los ejercicios para casa.",codeNote:"Previa cita",
+inBtn:"Llegó",inTxt:"En sesión",doneBtn:"Terminar",doneToast:b=>`Se guardan las notas de ${b.x.pet||"el paciente"} en su plan y se le mandan al dueño los ejercicios de la semana.`,
+manualSrc:"teléfono",manualKey:"tel",src3:"Teléfono / DM",gapBtn:"Ofrecer a pacientes en plan",fillToast:"Aviso enviado a pacientes con plan activo: \"Se liberó un horario hoy, ¿lo quieren adelantar?\"",
+kpi4:["Pacientes en plan","Rehabilitación activa",()=>5],
+loc:[["Fisiovet Monterrey","<b>Monterrey, N.L. · previa cita</b><br>Citas al 81 2403 7894. Horario y terapeutas de ejemplo en esta demo."],["Un link en su bio","El dueño agenda su sesión, ve el plan de su mascota y recibe los ejercicios, sin llamadas de ida y vuelta."]],
+disclaimer:"Terapeutas, horario, duraciones, precios, pacientes, planes y cifras son de ejemplo; terapias, especies que atienden y teléfono tomados de su Instagram.",
+labels:["Agenda","Dueño"],agendaTitle:"Sesiones del día",ownerTitle:"Esta semana",
+seed:{names:["Sofía L.","Andrés M.","Paola G.","Luis T.","Fernanda V.","Jorge L.","Mariana C.","Ricardo S.","Valeria O.","Daniel P.","Regina B.","Carlos H."],fill:.4,pet:["Pelusa","Toby","Bruno","Mía","Max","Canela","Lola","Rocco","Nina","Thor"],why:["Displasia de cadera","Hernia discal","Post operatorio de rodilla","Artrosis","Lesión de columna","Debilidad de patas traseras"]},
+welcome:{title:"Citas, paquetes y el plan de cada paciente, en un solo link",steps:["Elija la terapia, el paciente y el terapeuta, y agende: las sesiones se descuentan del paquete.","Baje a <b>Plan de rehabilitación</b>: avance, dolor y movilidad, y los ejercicios para casa.","Abajo, toque <b>Agenda</b> para ver pacientes en plan y <b>Dueño</b> para paquetes por renovar."],note:"Pacientes, precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/citas.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
