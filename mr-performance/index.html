@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MR Performance · Citas y presupuestos (demo)</title>
+<meta name="theme-color" content="#14171b">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="MR Performance · Demo de citas y seguimiento">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: citas al taller por servicio y vehículo, presupuesto que el cliente aprueba pieza por pieza, avance por WhatsApp e historial por placa.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<link rel="stylesheet" href="../_engine/citas.css">
+<style>
+:root{--g:#2b2f36;--g-d:#1d2026;--g-dd:#0e1013;--g-l:#e7e9ec;--g-ll:#f6f7f8;--acc:#d33a2c;--acc-d:#b02a1e;--acc-l:#f8dcd8;
+--ink:#121418;--ink-2:#3b3f46;--muted:#7a8088;--line:#e5e7ea;--paper:#f7f8f9;--cream:#fdfdfd;--red:#c2493f;--sh:0 14px 34px -16px rgba(18,20,24,.45);
+--display:"Archivo",system-ui,sans-serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:800;--em-style:normal;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#e7e9ec 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#f8dcd8 0%,transparent 60%),#f7f8f9;
+--dark:#0b0d10;--dark-2:#15181c;--dark-3:#2a2f36;--dark-txt:#c6cbd2}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"MR Performance",mark:"M",tag:"Servicio automotriz"},
+topBtn:"Mi cita",okChip:"Cita en el taller",
+hero:{chip:"Atendemos con cita",h1a:"Agenda tu servicio",h1b:"y aprueba desde el celular.",lead:"Elige el servicio y tu vehículo, aparta tu horario y llega sin esperas. Después del diagnóstico te llega el presupuesto: apruebas pieza por pieza y ves el avance hasta que tu auto esté listo.",cta1:["Agendar servicio","#servicios"],cta2:["Ver un presupuesto","#seguimiento"],badge:["Sin","esperas"],alt:"Sedán deportivo en un elevador de taller con el freno a la vista",old:"\"Mándanos mensaje y agenda tu servicio\"",now:"Ahora: cita, presupuesto y avance en un solo link."},
+ticker:["Mantenimiento","Cambio de aceite","Frenos","Suspensión","Diagnóstico","Afinación"],
+svcHead:{kicker:"Servicios",title:"¿Qué necesita <em>tu auto</em>?",note:"Servicios de sus publicaciones; precios y duraciones de ejemplo. El precio cambia según el tipo de vehículo."},
+services:[
+ {id:"aceite",n:"Cambio de aceite",d:"Aceite sintético, filtro y revisión de niveles.",min:60,p:1100,from:1,tag:"Rápido"},
+ {id:"prev",n:"Mantenimiento preventivo",d:"Revisión de 30 puntos, filtros y niveles.",min:120,p:1900,from:1},
+ {id:"frenos",n:"Frenos",d:"Revisión y cambio de balatas, discos y líquido.",min:120,p:1450,from:1},
+ {id:"susp",n:"Suspensión",d:"Amortiguadores, bujes y rótulas.",min:180,p:2400,from:1},
+ {id:"diag",n:"Diagnóstico por escáner",d:"Foco del tablero, ruidos o fallas.",min:60,p:550}],
+variant:{label:"Tu vehículo",short:"Vehículo",def:0,opts:[{id:"sed",n:"Sedán o compacto",mult:1},{id:"suv",n:"SUV o pickup",mult:1.25,add:30},{id:"prem",n:"Premium / europeo",sub:"BMW, Audi, Mercedes",mult:1.5,add:30}]},
+staff:[{id:"b1",n:"Bahía 1",role:"Mecánica"},{id:"b2",n:"Bahía 2",role:"Frenos y suspensión"}],pickStaff:false,showStaff:1,staffShort:"Bahía",
+hours:{1:[540,1080],2:[540,1080],3:[540,1080],4:[540,1080],5:[540,1080],6:[540,840]},step:30,lead:120,ahead:14,
+fields:[{id:"car",label:"Marca, modelo y año",short:"Vehículo",ph:"Ej. Jetta 2019",req:1,inAg:1},{id:"issue",label:"¿Qué le notas?",short:"Detalle",ph:"Ej. Rechinan los frenos",inAg:1}],
+pickHead:"Vehículo y horario",sumTitle:"Tu servicio",bookBtn:"Agendar servicio",
+remind:"<b>Recordatorio un día antes</b>, presupuesto al celular para aprobar y aviso cuando tu auto esté listo.",
+waTicket:"En el sistema real te llega esta confirmación por WhatsApp. Después del diagnóstico recibes el presupuesto para aprobar cada pieza y un aviso cuando esté listo.",codeNote:"Llega a tu hora, sin esperas",
+inBtn:"Recibido",inTxt:"En taller",doneBtn:"Listo",doneToast:b=>`Se le avisa a ${b.name} que su ${b.x.car||"auto"} está listo y queda guardado en su historial.`,
+manualSrc:"mensaje",manualKey:"dm",src3:"DM / llamada",gapBtn:"Ofrecer espacio",fillToast:"Aviso enviado a clientes con servicio pendiente: \"Se liberó un espacio hoy\".",
+kpi4:["Presupuestos aprobados","De 18 enviados esta semana",()=>11],
+loc:[["MR Performance","<b>Santiago Tapia 1058 Pte., entre Juan Álvarez y Julián Villagrán, Monterrey</b><br>Cotiza al +52 81 1821 0581. Horario de ejemplo en esta demo."],["Un link en su bio","El cliente agenda solo y aprueba el presupuesto desde su celular: menos llamadas y trabajos que se aprueban más rápido."]],
+disclaimer:"Precios, duraciones, horario, bahías, vehículos, presupuestos y cifras son de ejemplo; servicios, dirección y teléfono tomados de su Instagram.",
+labels:["Agenda","Dueño"],agendaTitle:"Servicios del día",ownerTitle:"Esta semana",
+seed:{names:["Ana R.","Jorge L.","Luis M.","Paola G.","Ricardo S.","Daniela P.","Hugo R.","Fernanda V.","Carlos H.","Valeria O."],fill:.3,car:["Mazda 3","Lobo","BMW Serie 3","Tiguan","Jetta","Civic","Ram 1500","Audi A4"],issue:["Ruido en frenos","Foco del motor","Cambio de aceite","Vibra al frenar","Golpeteo en suspensión"]},
+welcome:{title:"Citas, presupuesto aprobable y avance en un solo link",steps:["Elija servicio y vehículo y agende su horario.","Baje a <b>Tú apruebas cada pieza</b>: apruebe o deje para después cada trabajo y vea el avance.","Abajo, toque <b>Agenda</b> para los autos en taller y <b>Dueño</b> para presupuestos aprobados."],note:"Precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/citas.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

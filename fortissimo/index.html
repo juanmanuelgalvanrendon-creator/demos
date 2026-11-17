@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fortissimo Music Academy · Clase muestra y portal (demo)</title>
+<meta name="theme-color" content="#3b2f5c">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Fortissimo Music Academy · Demo">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: clase muestra gratis por instrumento y maestro, y portal para papás con avance, asistencia, mensualidad y recitales.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<link rel="stylesheet" href="../_engine/citas.css">
+<style>
+:root{--g:#4a3b72;--g-d:#3b2f5c;--g-dd:#1c1630;--g-l:#e9e5f3;--g-ll:#f7f5fb;--acc:#d4a24c;--acc-d:#b3842e;--acc-l:#f6ead2;
+--ink:#1c1926;--ink-2:#433f52;--muted:#7d798a;--line:#e8e5ef;--paper:#faf9fc;--cream:#fefeff;--red:#c2493f;--sh:0 14px 34px -16px rgba(28,25,38,.42);
+--display:"Playfair Display",Georgia,serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:600;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#e9e5f3 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#f6ead2 0%,transparent 60%),#faf9fc;
+--dark:#15121f;--dark-2:#1f1a2e;--dark-3:#352d4d;--dark-txt:#d2cde0}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Fortissimo",mark:"F",tag:"Music Academy · Cumbres"},
+topBtn:"Mi clase",okChip:"Clase muestra agendada",
+hero:{chip:"Clase muestra gratis",h1a:"Descubre tu instrumento",h1b:"con una clase gratis.",lead:"Elige instrumento y maestro, aparta tu clase muestra en un horario libre y, si te encanta, la inscripción, la mensualidad y el avance quedan en un mismo link para los papás.",cta1:["Agendar clase muestra","#servicios"],cta2:["Ver portal de papás","#papas"],badge:["Gratis","1a clase"],alt:"Piano, violín y guitarra en un salón de música luminoso",old:"\"Agenda tu clase muestra\" por WhatsApp",now:"Ahora: horario real del maestro y portal para papás."},
+ticker:["Piano","Violín","Canto","Guitarra","Cello","Iniciación musical"],
+svcHead:{kicker:"Clase muestra",title:"¿Qué quieres <em>tocar</em>?",note:"Instrumentos de su perfil; maestros, horarios y precios de ejemplo. La clase muestra no tiene costo."},
+services:[
+ {id:"piano",inst:"Piano",n:"Piano",d:"Desde 5 años. Lectura, técnica y repertorio.",min:45,p:0,durTxt:"45 min"},
+ {id:"violin",inst:"Violín",n:"Violín",d:"Desde 6 años. Postura, arco y afinación.",min:45,p:0,durTxt:"45 min"},
+ {id:"canto",inst:"Canto",n:"Canto",d:"Técnica vocal para niños, jóvenes y adultos.",min:45,p:0,durTxt:"45 min"},
+ {id:"guitarra",inst:"Guitarra",n:"Guitarra",d:"Acústica o eléctrica, acordes y lectura.",min:45,p:0,durTxt:"45 min"},
+ {id:"cello",inst:"Cello",n:"Cello",d:"Desde 7 años, con instrumento en la academia.",min:45,p:0,durTxt:"45 min"},
+ {id:"inicia",inst:"Iniciación musical",n:"Iniciación musical",d:"De 3 a 5 años: ritmo, canto y juego.",min:30,p:0,durTxt:"30 min",tag:"Pequeños"}],
+staff:[{id:"and",n:"Maestra Andrea",role:"Piano e iniciación",svcs:["piano","inicia"],color:"#3b2f5c"},{id:"car",n:"Maestro Carlos",role:"Guitarra y canto",svcs:["guitarra","canto"],color:"#b3842e"},{id:"lau",n:"Maestra Laura",role:"Violín y cello",svcs:["violin","cello"],color:"#6b8a5e"}],
+staffLabel:"Maestro",staffShort:"Maestro",anyLabel:"Cualquier maestro",
+hours:{1:[900,1230],2:[900,1230],3:[900,1230],4:[900,1230],5:[900,1230],6:[540,840]},step:45,lead:180,ahead:14,
+fields:[{id:"student",label:"Nombre del alumno",short:"Alumno",ph:"Ej. Valentina",req:1,inAg:1},{id:"age",label:"Edad",short:"Edad",ph:"Ej. 8 años",inAg:1}],
+pickHead:"Maestro y horario",sumTitle:"Tu clase muestra",bookBtn:"Agendar clase muestra",totalLabel:"Costo",
+remind:"<b>Recordatorio un día antes</b> y, después de la clase, la propuesta de horario fijo para inscribirse.",
+waTicket:"En el sistema real te llega esta confirmación por WhatsApp y un recordatorio un día antes. Después de la clase te mandamos el horario disponible para inscribirse.",codeNote:"Puerta de Hierro 516, Cumbres",
+inBtn:"Llegó",inTxt:"En clase",doneBtn:"Terminar",doneToast:b=>`Se le manda a la familia de ${b.x.student||"el alumno"} la nota del maestro y el link para inscribirse con horario fijo.`,
+manualSrc:"WhatsApp",manualKey:"wa",src3:"DM",gapBtn:"Ofrecer reposición",fillToast:"Aviso enviado a alumnos con clase por reponer: \"Hay un horario libre hoy\".",
+kpi4:["Clases muestra → inscritos","Este mes",()=>"12 de 19"],
+loc:[["Fortissimo Music Academy","<b>Puerta de Hierro 516, Cumbres, Monterrey, N.L.</b><br>Horario de ejemplo en esta demo."],["Un link en su bio","En lugar del link de WhatsApp: la familia agenda su clase muestra sola y, ya inscrita, ve todo en el portal."]],
+disclaimer:"Maestros, horarios, niveles, mensualidades, alumnos, recitales y cifras son de ejemplo; instrumentos, dirección y clase muestra gratis tomados de su Instagram.",
+labels:["Agenda","Academia"],agendaTitle:"Clases de hoy",ownerTitle:"Este mes",
+seed:{names:["Familia Ríos","Familia Leal","Familia Garza","Familia Treviño","Familia Pérez","Familia Salinas","Familia Cantú","Familia Elizondo"],fill:.45,student:["Mateo","Sofía","Diego","Regina","Emilio","Valeria","Santiago","Camila"],age:["6 años","8 años","10 años","12 años","Adulto"]},
+welcome:{title:"Clase muestra y portal para papás en un solo link",steps:["Elija instrumento y maestro y agende la clase muestra gratis.","Baje a <b>El portal para papás</b>: avance en sus piezas, asistencia, mensualidad y recital.","Abajo, toque <b>Agenda</b> para las clases y mensualidades, y <b>Academia</b> para inscritos y cobranza."],note:"Alumnos y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/citas.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

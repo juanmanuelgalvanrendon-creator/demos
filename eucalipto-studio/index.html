@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Eucalipto Studio · Uñas y pestañas (demo)</title>
+<meta name="theme-color" content="#4f7a5e">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Eucalipto Studio · Demo de citas">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: citas de uñas y pestañas por técnica y artista, PromMiércoles automática, retoques a tiempo y tarjeta de sellos.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<link rel="stylesheet" href="../_engine/citas.css">
+<style>
+:root{--g:#5b8a6b;--g-d:#4f7a5e;--g-dd:#203328;--g-l:#e3efe6;--g-ll:#f5faf6;--acc:#c98f86;--acc-d:#a96f66;--acc-l:#f6e3df;
+--ink:#1b241e;--ink-2:#405046;--muted:#7a877e;--line:#e3ebe5;--paper:#fafcfa;--cream:#fefffe;--red:#c2493f;--sh:0 14px 34px -16px rgba(27,36,30,.42);
+--display:"Cormorant Garamond",Georgia,serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:600;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#e3efe6 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#f6e3df 0%,transparent 60%),#fafcfa;
+--dark:#131c16;--dark-2:#1c2a20;--dark-3:#2f4535;--dark-txt:#cddbd1}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Eucalipto Studio",mark:"E",tag:"Uñas y pestañas · Cumbres"},
+topBtn:"Mi cita",
+hero:{chip:"Tu nuevo lugar favorito",h1a:"Agenda tus uñas",h1b:"y pestañas en un minuto.",lead:"Elige tu técnica y tu artista, mira los horarios libres y aparta sin esperar respuesta. Los miércoles tu promo se aplica sola, y te avisamos cuando toque tu retoque.",cta1:["Agendar","#servicios"],cta2:["Ver retoques","#retoques"],badge:["Miér","promo"],alt:"Mesa de manicura con esmaltes y herramientas de pestañas",old:"\"Agenda una cita al 81 2586 7165\"",now:"Ahora: horarios reales y retoques a tiempo."},
+ticker:["Pestañas clásicas","Híbridas","Volumen","Lifting","Uñas acrílicas","Gelish"],
+cats:[{id:"pest",n:"Pestañas"},{id:"unas",n:"Uñas"}],
+svcHead:{kicker:"Servicios",title:"¿Qué te <em>hacemos</em>?",note:"Técnicas de sus publicaciones; duraciones y precios de ejemplo que se cargan con los suyos."},
+services:[
+ {id:"pest-cla",cat:"pest",n:"Pestañas clásicas",d:"Una extensión por pestaña, efecto natural.",min:90,p:650},
+ {id:"pest-hib",cat:"pest",n:"Pestañas híbridas",d:"Mezcla de clásicas y volumen, mirada definida.",min:120,p:750,tag:"La más pedida"},
+ {id:"pest-vol",cat:"pest",n:"Volumen",d:"Abanicos ligeros para más densidad.",min:150,p:850},
+ {id:"lift",cat:"pest",n:"Lifting y tinte",d:"Curvatura a tus pestañas naturales.",min:60,p:450},
+ {id:"acri",cat:"unas",n:"Uñas acrílicas",d:"Largo y forma a tu gusto, con diseño sencillo.",min:120,p:550},
+ {id:"rubber",cat:"unas",n:"Rubber base",d:"Nivelación sobre tu uña natural.",min:90,p:420},
+ {id:"gelm",cat:"unas",n:"Gelish manos",d:"Color que dura sin despostillarse.",min:60,p:280},
+ {id:"gelp",cat:"unas",n:"Gelish pies",d:"Con limpieza y exfoliación.",min:60,p:320}],
+staff:[{id:"fer",n:"Fer",role:"Lash artist",svcs:["pest-cla","pest-hib","pest-vol","lift"],color:"#c98f86"},{id:"ale",n:"Ale",role:"Nail artist",svcs:["acri","rubber","gelm","gelp"],color:"#4f7a5e"},{id:"cyn",n:"Cyn",role:"Uñas y pestañas",color:"#8a6aa8"}],
+staffLabel:"Artista",staffShort:"Artista",anyLabel:"Quien esté libre",
+hours:{1:[600,1200],2:[600,1200],3:[600,1200],4:[600,1200],5:[600,1200],6:[540,1080]},step:30,lead:120,ahead:14,
+dayPromo:{wd:3,pct:15,label:"PromMiércoles",short:"Promo -15%"},
+fields:[{id:"note",label:"Diseño o referencia",short:"Nota",ph:"Ej. Almendra nude con brillo",inAg:1}],
+pickHead:"Artista y horario",sumTitle:"Tu cita",bookBtn:"Agendar mi cita",
+remind:"<b>Recordatorio un día antes</b> por WhatsApp y aviso cuando se acerque tu <b>retoque</b>.",
+waTicket:"En el sistema real te llega esta confirmación por WhatsApp, un recordatorio un día antes y un aviso cuando toque tu retoque.",codeNote:"Av. Real de Cumbres 1037",
+inBtn:"Llegó",inTxt:"En cabina",doneBtn:"Terminar",doneToast:b=>`Se suma un sello a la tarjeta de ${b.name} y queda programado el aviso de su retoque.`,
+manualSrc:"WhatsApp",manualKey:"wa",src3:"DM",gapBtn:"Ofrecer a lista de espera",
+kpi4:["Retoques por vencer","Clientas que regresan solas",()=>14],
+loc:[["Eucalipto Studio","<b>Av. Real de Cumbres 1037, Monterrey, N.L.</b><br>Citas al 81 2586 7165. Horario de ejemplo en esta demo."],["Un link en su bio","Junto a su teléfono: la clienta agenda sola, ve la promo del miércoles y recibe sus recordatorios."]],
+disclaimer:"Servicios, precios, duraciones, artistas, horario, porcentaje de la promo, sellos y cifras son de ejemplo; técnicas, dirección, teléfono y PromMiércoles tomados de su Instagram.",
+labels:["Agenda","Dueña"],agendaTitle:"Citas del día",ownerTitle:"Esta semana",
+seed:{names:["Karla M.","Sofía R.","Ana P.","Daniela T.","Valeria O.","Fernanda L.","Paola G.","Mariana C.","Regina B.","Ximena D."],fill:.35,note:["Almendra nude","Cat eye","Francés","Efecto natural","Volumen ligero"]},
+welcome:{title:"Citas, promo de miércoles y retoques en un solo link",steps:["Elija la técnica y la artista y agende: si elige miércoles, la promo se aplica sola.","Baje a <b>Tus retoques a tiempo</b>: la fecha de su próximo retoque y su tarjeta de sellos.","Abajo, toque <b>Agenda</b> para el día de cada artista y <b>Dueña</b> para retoques por vencer."],note:"Precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/citas.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
