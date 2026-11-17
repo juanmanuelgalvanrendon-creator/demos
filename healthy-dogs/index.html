@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Healthy Dogs · Veterinaria a domicilio (demo)</title>
+<meta name="theme-color" content="#2f7d6d">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Healthy Dogs · Demo de citas a domicilio">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: citas a domicilio por zona y día, paquetes de vacunación, cartilla digital con recordatorio de refuerzos y ruta del día.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<link rel="stylesheet" href="../_engine/citas.css">
+<style>
+:root{--g:#3a8f7d;--g-d:#2f7d6d;--g-dd:#16392f;--g-l:#dcf0ea;--g-ll:#f2faf7;--acc:#e08a5c;--acc-d:#c06c3f;--acc-l:#fbe6d8;
+--ink:#16241f;--ink-2:#3b4c45;--muted:#74867e;--line:#e0ece7;--paper:#f8fcfa;--cream:#fdfffe;--red:#c2493f;--sh:0 14px 34px -16px rgba(22,36,31,.42);
+--display:"Fraunces",Georgia,serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:600;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#dcf0ea 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#fbe6d8 0%,transparent 60%),#f8fcfa;
+--dark:#0f1f1a;--dark-2:#182e27;--dark-3:#29473d;--dark-txt:#c6dbd3}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Healthy Dogs",mark:"H",tag:"MVZ Ángela Gzz"},
+topBtn:"Mi cita",
+hero:{chip:"Solo servicio a domicilio",h1a:"La veterinaria va",h1b:"a tu casa.",lead:"Elige el servicio y cuántas mascotas, pon tu zona y verás solo los días en que la doctora pasa por ahí. Apartas en un minuto y su cartilla de vacunas queda guardada, con aviso antes de cada refuerzo.",cta1:["Agendar visita","#servicios"],cta2:["Ver cartilla","#cartilla"],badge:["12k","seguidores"],alt:"Perro y gato tranquilos en una sala junto a un maletín veterinario",old:"Agendar por DM y esperar respuesta",now:"Ahora: zona, día y hora en un solo link."},
+ticker:["Vacunas","Consulta","Desparasitación","Chequeo","A domicilio","Monterrey"],
+svcHead:{kicker:"Servicios a domicilio",title:"¿Qué <em>necesita</em>?",note:"Los paquetes de vacunación usan los precios de su promoción del Buen Fin como ejemplo (2 mascotas tienen precio especial). El resto de servicios y precios son de ejemplo."},
+services:[
+ {id:"vperro",n:"Paquete de vacunación perro",d:"Aplicación a domicilio con revisión general. 2 perros: precio especial.",min:45,each:20,p:800,p2:1500,tag:"2 por $1,500"},
+ {id:"vgato",n:"Paquete de vacunación gato",d:"Aplicación a domicilio con revisión general. 2 gatos: precio especial.",min:45,each:20,p:500,p2:900,tag:"2 por $900"},
+ {id:"cons",n:"Consulta a domicilio",d:"Revisión completa, diagnóstico y receta sin sacarlo de casa.",min:60,each:30,p:650},
+ {id:"desp",n:"Desparasitación",d:"Interna y externa, según peso y edad.",min:30,each:10,p:350},
+ {id:"geri",n:"Chequeo de mascota senior",d:"Revisión de articulaciones, corazón y peso para mayores de 7 años.",min:60,each:30,p:850},
+ {id:"lab",n:"Toma de muestras",d:"Análisis de sangre en casa; resultados por WhatsApp.",min:30,each:15,p:550}],
+qty:{label:"¿Cuántas mascotas?",max:4,txt:n=>n===1?"1 mascota":n+" mascotas"},
+zones:{label:"Tu zona",offTxt:"Sin ruta",offMsg:"Ese día la doctora no pasa por tu zona. Los días marcados con horarios son los de tu ruta.",list:[
+ {id:"cum",n:"Cumbres y Mitras",days:[1,4]},{id:"spgg",n:"San Pedro y Valle",days:[2,5]},{id:"cen",n:"Centro, Obispado y Contry",days:[3,6]},{id:"sur",n:"Carretera Nacional y Sur",days:[3,6]},{id:"snj",n:"San Jerónimo y Santa María",days:[1,4]},{id:"snn",n:"San Nicolás y Anáhuac",days:[2,5]}]},
+staff:[{id:"ang",n:"Dra. Ángela Gzz",role:"MVZ"}],showStaff:1,staffShort:"Atiende",
+hours:{1:[540,1140],2:[540,1140],3:[540,1140],4:[540,1140],5:[540,1140],6:[540,900]},step:30,lead:120,ahead:14,buffer:30,
+fields:[{id:"pets",label:"Nombre de sus mascotas",short:"Mascotas",ph:"Ej. Luna y Bruno",req:1,inAg:1},{id:"addr",label:"Calle, número y colonia",short:"Domicilio",ph:"Ej. Paseo de los Leones 123, Cumbres",req:1}],
+pickHead:"Mascotas, zona y horario",sumTitle:"Su visita",bookBtn:"Agendar visita",totalLabel:"Total",
+remind:"<b>Recordatorio un día antes</b> y aviso por WhatsApp cuando la doctora vaya en camino.",
+waTicket:"En el sistema real te llega esta confirmación por WhatsApp, un recordatorio un día antes y un aviso cuando la doctora vaya en camino a tu casa.",codeNote:"Su cartilla queda guardada",
+inBtn:"Llegué",inTxt:"En visita",doneBtn:"Terminar",doneToast:b=>`Se actualiza la cartilla de ${b.x.pets||"sus mascotas"} y se le manda a ${b.name} el resumen y la fecha del próximo refuerzo.`,
+manualSrc:"DM",manualKey:"dm",src3:"DM",gapBtn:"Ofrecer a la zona",fillToast:"Aviso enviado a clientes de esa zona: \"Mañana pasamos por tu colonia y hay un horario libre\".",
+kpi4:["Refuerzos por vencer","En los próximos 30 días",()=>23],
+loc:[["Healthy Dogs","<b>Monterrey, N.L. · solo servicio a domicilio</b><br>Citas por DM o WhatsApp 818 079 7337. Zonas y horario de ejemplo en esta demo."],["Un link en su bio","Junto a su WhatsApp: el cliente agenda en el día que pasan por su zona y su cartilla queda guardada."]],
+disclaimer:"Zonas, días, horarios, servicios fuera de los paquetes, precios de consulta, mascotas y cifras son de ejemplo; precios de vacunación tomados de su promoción del Buen Fin y modalidad a domicilio tomada de su Instagram.",
+labels:["Agenda","Dueña"],agendaTitle:"Visitas del día",ownerTitle:"Esta semana",
+seed:{names:["Sofía L.","Andrea M.","Valeria G.","Eugenio R.","Mariana T.","Adriana P.","Constanza D.","Verónica S.","Luis T.","Jorge L.","Paola G.","Daniela P."],fill:.3,pets:["Lola","Simba","Coco","Max y Rocky","Nala","Kira","Toby","Mía y Toby","Rocco","Canela"]},
+welcome:{title:"Citas a domicilio por zona, en un solo link",steps:["Elija servicio y cuántas mascotas, ponga su zona: verá solo los días en que la doctora pasa por ahí.","Baje a la <b>cartilla digital</b>: vacunas al día, por vencer y el botón para agendar refuerzos.","Abajo, toque <b>Agenda</b> para ver la ruta del día y <b>Dueña</b> para refuerzos por vencer."],note:"Zonas, nombres y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/citas.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
