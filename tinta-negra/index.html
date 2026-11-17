@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tinta Negra Tattoo Art Studio · Cotiza y agenda (demo)</title>
+<meta name="theme-color" content="#111111">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Tinta Negra · Demo de cotización y citas">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: cotizador de tatuaje por artista, zona y tamaño, citas con anticipo, cuidados por WhatsApp y retoque.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<link rel="stylesheet" href="../_engine/citas.css">
+<style>
+:root{--g:#2a2a2a;--g-d:#1c1c1c;--g-dd:#0d0d0d;--g-l:#ececec;--g-ll:#f7f7f7;--acc:#c0392b;--acc-d:#a22d21;--acc-l:#f6dcd8;
+--ink:#111;--ink-2:#3b3b3b;--muted:#7a7a7a;--line:#e6e6e6;--paper:#fafafa;--cream:#fff;--red:#c2493f;--sh:0 14px 34px -16px rgba(0,0,0,.5);
+--display:"Anton",Impact,sans-serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:400;--em-style:normal;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#ececec 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#f6dcd8 0%,transparent 60%),#fafafa;
+--dark:#0b0b0b;--dark-2:#161616;--dark-3:#2c2c2c;--dark-txt:#cfcfcf}
+.display,.hero h1{letter-spacing:.01em;text-transform:uppercase}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Tinta Negra",mark:"T",tag:"Tattoo Art Studio"},
+topBtn:"Mi cita",
+hero:{chip:"San Pedro · Monterrey",h1a:"Cotiza tu tatuaje",h1b:"sin esperar el DM.",lead:"Elige artista, zona y tamaño, sube tu referencia y ve un precio estimado al momento. Si te late, apartas tu cita con anticipo en el horario libre de tu artista.",cta1:["Cotizar ahora","#cotizador"],cta2:["Ver cuidados","#cuidados"],badge:["Ink","addicts"],alt:"Estación de tatuaje con máquina, tintas y bocetos sobre la mesa",old:"\"Agenda tu cita por DM\"",now:"Ahora: precio estimado y cita en un solo link."},
+ticker:["Fine line","Blackwork","Realismo","Tradicional","Cover up","Retoques"],
+svcHead:{kicker:"Tipo de sesión",title:"Tu <em>sesión</em>",note:"El cotizador elige la sesión según el tiempo estimado; también puedes escogerla aquí. Duraciones y precios de ejemplo."},
+services:[
+ {id:"chica",n:"Pieza chica",d:"Hasta 1 h y media: letras, símbolos, fine line pequeño.",min:90,durTxt:"1 h 30 min",p:1200,from:1},
+ {id:"media",n:"Pieza mediana",d:"De 2 a 3 h y media: antebrazo, pantorrilla, piezas con sombra.",min:210,durTxt:"3 h 30 min",p:3200,from:1,tag:"La más común"},
+ {id:"grande",n:"Sesión larga",d:"Día completo para mangas, espalda o piezas grandes.",min:330,durTxt:"5 h 30 min",p:5500,from:1},
+ {id:"cover",n:"Valoración de cover up",d:"Revisamos el tatuaje a cubrir y te proponemos diseño.",min:30,p:0,durTxt:"30 min"},
+ {id:"retoque",n:"Retoque",d:"Incluido a las 4 semanas de tu sesión.",min:30,p:0,durTxt:"30 min"}],
+staff:[{id:"fer",n:"Fer",role:"Fine line y florales",rate:1500,color:"#8e44ad"},{id:"die",n:"Diego",role:"Realismo y blackwork",rate:1800,color:"#1c1c1c"},{id:"sam",n:"Sam",role:"Tradicional y color",rate:1400,color:"#c0392b"}],
+staffLabel:"Artista",staffShort:"Artista",anyLabel:"Cualquier artista",
+hours:{2:[720,1260],3:[720,1260],4:[720,1260],5:[720,1320],6:[660,1320]},step:30,lead:240,ahead:21,
+deposit:{amount:500,label:"Anticipo para apartar (se descuenta)"},
+fields:[{id:"idea",label:"Tu idea en pocas palabras",short:"Idea",ph:"Ej. Rosa fine line en antebrazo, 10 cm",req:1,inAg:1}],
+pickHead:"Artista y horario",sumTitle:"Tu cita",bookBtn:"Apartar mi cita",totalLabel:"Desde",
+remind:"<b>Recordatorio un día antes</b> con cómo llegar a la sesión, y después tus <b>cuidados por WhatsApp</b> día 1, 3 y 7.",
+waTicket:"En el sistema real el anticipo se paga en línea, te llega esta confirmación por WhatsApp y un recordatorio con tips para la sesión (comer bien, ropa cómoda, sin alcohol).",codeNote:"El anticipo se descuenta del total",
+inBtn:"Llegó",inTxt:"En sesión",doneBtn:"Terminar",doneToast:b=>`Se le mandan a ${b.name} los cuidados del día 1 por WhatsApp y queda agendado el aviso de su retoque.`,
+manualSrc:"DM",manualKey:"dm",src3:"DM",gapBtn:"Ofrecer como flash",fillToast:"Aviso enviado a la lista de espera: \"Se liberó un espacio hoy, ideal para un flash\".",
+kpi4:["Anticipos cobrados","Menos citas que no llegan",()=>"$7,500"],
+loc:[["Tinta Negra Tattoo Art Studio","<b>San Pedro Garza García, N.L.</b><br>Agenda por DM. Horario, artistas y precios de ejemplo en esta demo."],["Un link en su bio","Junto a su ubicación: el cliente cotiza solo, sube su referencia y aparta con anticipo."]],
+disclaimer:"Artistas, estilos, tarifas, rangos de precio, horario, anticipo y cifras son de ejemplo; zona y forma de agendar tomadas de su Instagram.",
+labels:["Agenda","Dueño"],agendaTitle:"Citas del día",ownerTitle:"Esta semana",
+seed:{names:["Ana R.","Luis M.","Paola G.","Jorge L.","Fernanda V.","Carlos H.","Mariana C.","Rodrigo A.","Valeria O.","Hugo R.","Daniela P.","Iván S."],fill:.3,idea:["Rosa fine line","Lettering en costillas","Manga blackwork","Serpiente tradicional","Retrato realista","Golondrinas color","Cover up de tribal","Mandala en espalda"]},
+welcome:{title:"Cotización, cita con anticipo y cuidados en un solo link",steps:["En <b>Cotiza tu tatuaje</b> elija artista, zona y tamaño: verá el rango de precio y las sesiones.","Toque <b>Agendar con este estimado</b>, escoja horario del artista y aparte con anticipo.","Abajo, toque <b>Agenda</b> para citas y cotizaciones por responder, y <b>Dueño</b> para anticipos y retoques."],note:"Artistas, precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/citas.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

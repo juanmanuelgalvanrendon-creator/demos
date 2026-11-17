@@ -67,7 +67,7 @@ ${footer(D)}</main>
 wire();
 
 /* ---------- cliente ---------- */
-function renderSvcs(){const list=D.services.filter(s=>!D.cats||!S.cat||s.cat===S.cat);$("#svcs").innerHTML=list.map(s=>`<button class="svc ${S.svc===s.id?"on":""}" data-s="${s.id}">${s.tag?`<span class="tag">${s.tag}</span>`:""}<h3>${s.n}</h3><p>${s.d}</p><div class="meta"><b>${s.from?"desde ":""}${peso(s.p)}</b><span>${s.durTxt||durTxt(s.min)}</span></div></button>`).join("")}
+function renderSvcs(){const list=D.services.filter(s=>!D.cats||!S.cat||s.cat===S.cat);$("#svcs").innerHTML=list.map(s=>`<button class="svc ${S.svc===s.id?"on":""}" data-s="${s.id}">${s.tag?`<span class="tag">${s.tag}</span>`:""}<h3>${s.n}</h3><p>${s.d}</p><div class="meta"><b>${s.p===0?"Sin costo":(s.from?"desde ":"")+peso(s.p)}</b><span>${s.durTxt||durTxt(s.min)}</span></div></button>`).join("")}
 function renderWho(){if(!hasStaffPick)return;const ok=ST.filter(s=>canDo(s,S.svc));if(S.who!=="any"&&!canDo(STM[S.who],S.svc))S.who="any";
   $("#who").innerHTML=`<button class="${S.who==="any"?"on":""}" data-who="any"><i style="background:var(--ink)">✓</i><span>${D.anyLabel||"Quien esté libre"}<small>Más horarios</small></span></button>`+ST.map((s,i)=>`<button class="${S.who===s.id?"on":""} ${ok.includes(s)?"":"off"}" data-who="${s.id}"><i style="background:${s.color||COLORS[i%COLORS.length]}">${ini(s.n)}</i><span>${s.n}<small>${s.role||""}</small></span></button>`).join("")}
 function dayList(){const n=now();const out=[];for(let i=0;i<AHEAD;i++){const d=addDays(n.d,i);out.push(d)}return out}
@@ -80,7 +80,7 @@ function renderSlots(){const sl=slotsFor(S.date);if(S.slot!=null&&!sl.some(x=>x[
 function summary(){const s=SV[S.svc];const dur=durOf(S.svc,S.v,S.qty,S.add);const pr=priceOf(S.svc,S.v,S.qty,S.add);const who=S.slot!=null?(S.who==="any"?firstStaff(S.date,S.slot,S.svc,dur):S.who):null;
   const rows=[["Servicio",s.n+(S.qty>1?` × ${S.qty}`:"")]];if(VAR)rows.push([VAR.short||VAR.label,VM[S.v].n]);if(S.add.length)rows.push([D.addonsLabel||"Adicionales",S.add.map(x=>AD[x].n).join(", ")]);if(ZN)rows.push(["Zona",ZM[S.zone].n]);if(hasStaffPick)rows.push([D.staffShort||"Con",who?STM[who].n:(S.who==="any"?D.anyLabel||"Quien esté libre":STM[S.who].n)]);rows.push(["Duración",durTxt(dur)]);
   $("#sumBody").innerHTML=`<div class="big">${S.slot!=null?`${fmtL(S.date)}<br>${ampm(S.slot)} a ${ampm(S.slot+dur)}`:"Elige día y horario"}</div>${rows.map(r=>`<div class="sum-line"><span>${r[0]}</span><b>${r[1]}</b></div>`).join("")}`;
-  $("#tot").textContent=peso(pr);$("#depo").innerHTML=D.deposit&&pr>=(D.deposit.over||0)?`<div class="sum-line" style="border:0"><span>${D.deposit.label||"Anticipo para apartar"}</span><b>${peso(Math.round(pr*D.deposit.pct/100))}</b></div>`:"";
+  $("#tot").textContent=peso(pr);$("#depo").innerHTML=D.deposit&&pr>=(D.deposit.over||0)?`<div class="sum-line" style="border:0"><span>${D.deposit.label||"Anticipo para apartar"}</span><b>${peso(D.deposit.amount?Math.min(pr,D.deposit.amount):Math.round(pr*D.deposit.pct/100))}</b></div>`:"";
   if(D.qty){$("#qN").textContent=S.qty;$("#qTxt").textContent=D.qty.txt?D.qty.txt(S.qty):S.qty}
   if(ZN)$("#zNote").textContent=ZM[S.zone].note||`Visitamos tu zona: ${ZM[S.zone].days.map(x=>["dom","lun","mar","mié","jue","vie","sáb"][x]).join(", ")}.`;
   $("#topBadge").textContent=S.bk.filter(b=>b.mine).length;emit("summary",{dur,pr,who})}

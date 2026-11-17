@@ -32,3 +32,4 @@ foto-mascota galeria 6afb9b5b-1158-83e8-abfc-178471ded724
 anhy-eventos 6afb9d21-46dc-83e8-a5ee-eea240a8e2e5
 ivali-detailing hero 6afb9eba-0f74-83e8-84d5-9c8d868a3666
 ivali-detailing antes/despues 6afb9f42-b714-83e8-92a9-65322f2d2452
+tinta-negra 6afb9fe2-91e4-83e8-8291-e65213183be1
