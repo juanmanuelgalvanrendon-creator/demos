@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Espuma Lavandería · Máquinas libres y encargo (demo)</title>
+<meta name="theme-color" content="#1f5f8b">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Espuma Lavandería · Demo">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: lavadoras libres en vivo, encargo por kilo con recolección a domicilio, estado de la carga con aviso y membresía de kilos.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#2b7bb0;--g-d:#1f5f8b;--g-dd:#10324a;--g-l:#dcecf7;--g-ll:#f2f8fc;--acc:#ff8a5c;--acc-d:#e46d3f;--acc-l:#ffe3d6;
+--ink:#132230;--ink-2:#3d5163;--muted:#768797;--line:#e1eaf1;--paper:#f8fbfd;--cream:#fdfeff;--red:#c2493f;--sh:0 14px 34px -16px rgba(19,34,48,.42);
+--display:"Bricolage Grotesque",system-ui,sans-serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:700;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#dcecf7 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#ffe3d6 0%,transparent 60%),#f8fbfd;
+--dark:#0d1822;--dark-2:#152431;--dark-3:#28405a;--dark-txt:#cfdce7}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Espuma",mark:"E",tag:"Lavandería · Vista Hermosa"},
+hero:{chip:"Máquinas libres en vivo",h1a:"Lava a tu hora,",h1b:"o deja que pasemos por ella.",lead:"Mira desde tu casa cuántas lavadoras hay libres, o pide tu encargo por kilo con recolección a domicilio. Te avisamos cuando tu ropa está lista, y mientras, un café.",cta1:["Ver máquinas","#libres"],cta2:["Pedir recolección","#encargo"],badge:["QR","en cada máquina"],alt:"Lavandería moderna con lavadoras y secadoras en fila",old:"Llegar y que todas estén ocupadas",now:"Ahora: máquinas libres, encargo y aviso en un link."},
+ticker:["Autoservicio","Encargo por kilo","A domicilio","Edredones","Planchado","Café"],
+machines:[{n:"Lavadora 1",kind:"lav",cap:"9 kg"},{n:"Lavadora 2",kind:"lav",cap:"9 kg"},{n:"Lavadora 3",kind:"lav",cap:"9 kg"},{n:"Lavadora 4",kind:"lav",cap:"14 kg"},{n:"Lavadora 5",kind:"lav",cap:"14 kg"},{n:"Lavadora 6",kind:"lav",cap:"18 kg · edredones"},{n:"Secadora 1",kind:"sec",cap:"15 kg"},{n:"Secadora 2",kind:"sec",cap:"15 kg"},{n:"Secadora 3",kind:"sec",cap:"15 kg"},{n:"Secadora 4",kind:"sec",cap:"25 kg"}],
+services:[{id:"lav",n:"Lavado y secado",d:"doblado incluido",p:28,min:3},{id:"exp",n:"Express mismo día",d:"lista en 5 horas",p:40,min:3},{id:"del",n:"Delicado",d:"a baja temperatura",p:36,min:2}],
+extras:[{id:"plan",n:"Planchado de 5 prendas",p:90},{id:"edre",n:"Edredón matrimonial",p:160},{id:"hipo",n:"Jabón hipoalergénico",p:25},{id:"suav",n:"Suavizante premium",p:20}],
+zones:[{id:"vh",n:"Vista Hermosa",fee:0},{id:"cum",n:"Cumbres",fee:45},{id:"obi",n:"Obispado",fee:45},{id:"sj",n:"San Jerónimo",fee:45},{id:"cen",n:"Centro",fee:60}],
+slots:["9 a 11 am","11 am a 1 pm","4 a 6 pm","6 a 8 pm"],
+plans:[{id:"sol",n:"Solo",price:540,kg:20,perKg:27,inc:["Una recolección por semana","Lista en 24 horas"]},{id:"fam",n:"Familia",price:1150,kg:50,perKg:23,inc:["Recolecciones ilimitadas","Un edredón al mes","Prioridad en express"]},{id:"neg",n:"Negocio",price:2600,kg:130,perKg:20,inc:["Para hostales, spas y estéticas","Toallas y blancos","Factura mensual"]}],
+hourly:[["11",4],["12",6],["13",8],["14",5],["15",4],["16",7],["17",10],["18",12],["19",9]],
+loc:[["Espuma Lavandería","<b>Canadá 205-D, Vista Hermosa, Monterrey, N.L.</b><br>WhatsApp 81 3917 8167. Lunes a domingo, 11:30 am a 7:30 pm."],["Un link en su bio","Junto al QR de sus máquinas: el cliente ve cuáles están libres, pide recolección y sigue su carga sin escribirles."]],
+disclaimer:"Precios, máquinas, tiempos, colonias, planes, clientes y cifras son de ejemplo; dirección, horario, WhatsApp, servicios y activación por QR tomados de su Instagram.",
+welcome:{title:"Máquinas libres, encargo y aviso en un solo link",steps:["Vea las máquinas libres y cuánto le falta a cada una (toque <b>Simular 5 minutos</b>).","Pida un encargo: kilos, servicio, extras y horario de recolección, con precio al momento.","Abajo, toque <b>Mostrador</b> para avanzar cargas y máquinas, y <b>Dueño</b> para kilos, membresías y la ruta de mañana."],note:"Precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
