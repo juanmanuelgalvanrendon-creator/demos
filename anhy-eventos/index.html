@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Anhy Eventos · Cotiza y aparta tu mobiliario (demo)</title>
+<meta name="theme-color" content="#6b4a32">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Anhy Eventos · Demo de cotización y apartado">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: cotizador de mobiliario con inventario libre por fecha, paquete de boda, flete por zona, apartado con anticipo y hoja de carga para la bodega.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<link rel="stylesheet" href="../_engine/citas.css">
+<style>
+:root{--g:#7a5639;--g-d:#6b4a32;--g-dd:#2e1f15;--g-l:#f1e6dc;--g-ll:#faf5f0;--acc:#c98b8b;--acc-d:#a86868;--acc-l:#f6e3e1;
+--ink:#2a1f18;--ink-2:#4f4036;--muted:#8a7b70;--line:#eee3da;--paper:#fffbf8;--cream:#fffefc;--red:#c2493f;--sh:0 14px 34px -16px rgba(42,31,24,.42);
+--display:"Cormorant Garamond",Georgia,serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:600;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#f1e6dc 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#f6e3e1 0%,transparent 60%),#fffbf8;
+--dark:#1e1510;--dark-2:#2c2018;--dark-3:#4a3627;--dark-txt:#e3d3c6}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Anhy Eventos",mark:"A",tag:"Renta de mobiliario"},
+hero:{chip:"Agenda abierta 2026 y 2027",h1a:"Tu boda en casa,",h1b:"cotizada al momento.",lead:"Elige la fecha, cuántos invitados y tu zona: ves al instante qué mobiliario queda libre ese día, armas tu montaje con sillas Crossback, mesas, loza y copas, y apartas tu fecha con anticipo.",cta1:["Cotizar mi evento","#cotiza"],cta2:["Ver paquete de boda","#cotiza"],badge:["100","invitados"],alt:"Montaje de boda en jardín con sillas Crossback, mesas redondas y copas rosas",old:"\"Pide tu cotización por WhatsApp\"",now:"Ahora: cotización, inventario y apartado al momento."},
+ticker:["Sillas Crossback","Mesa principal","Loza y cristalería","Calentadores","Set civil","Bodas y XV"],
+inv:[
+ {id:"cross",n:"Sillas Crossback",kind:"chair",p:85,stock:300},
+ {id:"avant",n:"Sillas Avant Garden",kind:"chair",p:75,stock:200},
+ {id:"tiff",n:"Sillas Tiffany",kind:"chair",p:60,stock:150},
+ {id:"pleg",n:"Sillas plegables acojinadas",kind:"chair",p:25,stock:400},
+ {id:"red",n:"Mesas redondas",kind:"table",p:280,stock:40},
+ {id:"tab",n:"Tablones rectangulares",kind:"table",p:250,stock:30},
+ {id:"mantel",n:"Manteles",p:120,stock:80},
+ {id:"loza",n:"Loza (plato, cubiertos, servilleta)",p:32,stock:400},
+ {id:"copas",n:"Copas de color",p:14,stock:300},
+ {id:"mp",n:"Set de mesa principal",p:1800,stock:3},
+ {id:"civil",n:"Set civil",p:1500,stock:2},
+ {id:"cal",n:"Calentadores",p:350,stock:12},
+ {id:"mont",n:"Montaje y flete del equipo",p:2500,stock:99,hide:1}],
+cloths:["Blanco","Marfil","Rosa palo","Verde olivo","Negro"],
+pkg:{guests:100,price:12950,label:"Paquete boda 100 personas",sub:"Sillas Crossback, mesas, mantelería y montaje por $12,950, con set de mesa principal gratis (promo de su publicación).",short:"Precio de paquete de boda"},
+depPct:30,
+zones:[{id:"gpe",n:"Guadalupe",fee:0},{id:"apo",n:"Apodaca",fee:0},{id:"jua",n:"Juárez",fee:0},{id:"car",n:"Carretera Nacional",fee:0},{id:"mty",n:"Monterrey centro y norte",fee:600},{id:"snn",n:"San Nicolás y Escobedo",fee:600},{id:"spgg",n:"San Pedro y Santa Catarina",fee:900}],
+loc:[["Anhy Eventos","<b>Av. Adolfo López Mateos 309, Col. Los Ángeles, Guadalupe, N.L.</b><br>Cotiza al 81 1995 9014. Bodas, XV años y eventos en casa."],["Un link en su bio","La novia cotiza a cualquier hora, ve qué hay libre en su fecha y la aparta con anticipo, sin esperar respuesta."]],
+disclaimer:"Precios por pieza, inventario, costos de flete fuera de su zona, porcentaje de anticipo, eventos y cifras son de ejemplo; paquete de boda, servicios, zonas con promoción y dirección tomados de su Instagram.",
+welcome:{title:"Cotización, inventario por fecha y apartado en un solo link",steps:["Elija fecha, invitados y zona: verá cuánto mobiliario queda libre ese día. Pruebe un sábado lleno.","Arme su montaje o use el paquete de boda; la cotización y el anticipo se calculan solos.","Abajo, toque <b>Bodega</b> para la hoja de carga de cada evento y <b>Dueña</b> para ventas y anticipos."],note:"Precios, inventario y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
