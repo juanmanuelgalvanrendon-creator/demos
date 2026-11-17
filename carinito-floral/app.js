@@ -41,7 +41,7 @@ ${footer(D)}</main>
 <div class="card" style="grid-column:1/-1"><h3>Movimientos <small>en tiempo real</small></h3><div class="feed" id="feed"></div></div></div><div class="own-foot">Cifras de ejemplo para la demo.</div></div></main>${demobar(["Taller","Dueña"])}`;
 wire();
 const css=document.createElement("style");css.textContent=`
-.build{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;align-items:start}.og{margin-top:4px}.og+.og{margin-top:16px}.og>span{display:block;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.build{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;align-items:start}.build>*{min-width:0}.og{margin-top:4px}.og+.og{margin-top:16px}.og>span{display:block;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
 .ogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}.oc{background:#fff;border-radius:16px;padding:11px 12px;text-align:left;box-shadow:inset 0 0 0 1.5px var(--line);display:flex;flex-direction:column;gap:2px;font-size:14px;font-weight:700;color:var(--ink)}.oc small{font-weight:500;color:var(--muted);font-size:12px}.oc.on{box-shadow:inset 0 0 0 2px var(--g-dd);background:var(--g-ll)}
 .pal{display:flex;gap:4px;margin-bottom:4px}.pal i{width:18px;height:18px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
 .bsum{position:sticky;top:86px}.vase{height:150px;border-radius:18px;background:var(--g-ll);display:grid;place-items:end center;overflow:hidden;margin-bottom:12px}.vase svg{width:180px;height:150px}
