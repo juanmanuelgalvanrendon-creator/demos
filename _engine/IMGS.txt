@@ -27,3 +27,5 @@ mofu 6afb904d-dc44-83e8-b462-49f71a1b7cba
 barks-bubbles 6afb9561-1048-83e8-a315-42d4e65ff1b0
 healthy-dogs 6afb97de-58e8-83e8-a2d2-2652efce618f
 fisiovet 6afb9999-a614-83e8-adec-21e396e99b0d
+foto-mascota hero 6afb9a6f-b6d4-83e8-b1fc-4af74790ce0b
+foto-mascota galeria 6afb9b5b-1158-83e8-abfc-178471ded724

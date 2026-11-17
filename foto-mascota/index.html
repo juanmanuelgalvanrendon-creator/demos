@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Foto Mascota Monterrey · Sesiones y galería privada (demo)</title>
+<meta name="theme-color" content="#8a3b3b">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Foto Mascota Monterrey · Demo de sesiones">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: sesiones navideñas y de estudio con anticipo, galería privada para elegir fotos, extras e impresos, y control de entregas.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<link rel="stylesheet" href="../_engine/citas.css">
+<style>
+:root{--g:#9a4747;--g-d:#8a3b3b;--g-dd:#3b1818;--g-l:#f6e1de;--g-ll:#fcf5f3;--acc:#c79a4b;--acc-d:#a67c31;--acc-l:#f6ead2;
+--ink:#2a1a17;--ink-2:#4f3b36;--muted:#8a7570;--line:#f0e3df;--paper:#fffaf8;--cream:#fffefd;--red:#c2493f;--sh:0 14px 34px -16px rgba(42,26,23,.42);
+--display:"Fraunces",Georgia,serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:600;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#f6e1de 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#f6ead2 0%,transparent 60%),#fffaf8;
+--dark:#1d1211;--dark-2:#2c1c1a;--dark-3:#4a302c;--dark-txt:#e2cfca}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Foto Mascota",mark:"F",tag:"Monterrey"},
+topBtn:"Mi sesión",okChip:"Sesión apartada",
+hero:{chip:"Sesiones navideñas abiertas",h1a:"Su retrato navideño,",h1b:"apartado en un minuto.",lead:"Elige tu sesión, cuántas mascotas vienen y el horario libre en el set. Apartas con anticipo y, después, eliges tus fotos favoritas en tu galería privada, con extras y tarjetas navideñas impresas.",cta1:["Ver sesiones","#servicios"],cta2:["Ver galería","#galeria"],badge:["7.8k","seguidores"],alt:"Husky y border collie posando en un set navideño de estudio",old:"\"Escríbenos por DM o WhatsApp y agenda\"",now:"Ahora: sesión, anticipo y galería en un solo link."},
+ticker:["Sesión navideña","Estudio","Familia","Cumpleaños","Michis","Cumbres"],
+svcHead:{kicker:"Sesiones",title:"¿Qué sesión <em>quieren</em>?",note:"Tipos de sesión de sus destacadas (Navidad, familia, perritos, michis, cumpleaños); duraciones, fotos incluidas y precios de ejemplo."},
+services:[
+ {id:"nav",n:"Mini sesión navideña",d:"20 minutos en el set navideño. 5 fotos editadas para tu tarjeta o regalo.",min:30,durTxt:"20 min",p:1200,tag:"Temporada"},
+ {id:"est",n:"Sesión de estudio",d:"Retratos en estudio con fondos y luz profesional. 10 fotos editadas.",min:60,durTxt:"45 min",p:2200},
+ {id:"fam",n:"Sesión familia y mascota",d:"Toda la familia con su perrhijo. 15 fotos editadas.",min:90,durTxt:"1 h",p:3200,tag:"Favorita"},
+ {id:"cum",n:"Cumpleaños con pastel",d:"Decoración, pastel para perro y 12 fotos editadas.",min:90,durTxt:"1 h",p:2900},
+ {id:"mich",n:"Sesión de michis",d:"Con calma y a su ritmo. 10 fotos editadas.",min:60,durTxt:"45 min",p:2000}],
+variant:{label:"¿Cuántas mascotas vienen?",short:"Mascotas",def:0,opts:[{id:"1",n:"1 mascota",mult:1},{id:"2",n:"2 mascotas",sub:"+$300",mult:1,addP:300,add:15},{id:"3",n:"3 o más",sub:"+$500",mult:1,addP:500,add:30}]},
+staff:[{id:"set",n:"Set navideño",role:"Temporada",svcs:["nav"]},{id:"est",n:"Estudio principal",role:"Fondos y luz",svcs:["est","fam","cum","mich"]}],pickStaff:false,showStaff:1,staffShort:"Set",
+hours:{2:[600,1140],3:[600,1140],4:[600,1140],5:[600,1140],6:[540,1080],0:[600,900]},step:30,lead:180,ahead:21,buffer:10,
+deposit:{pct:50,label:"Anticipo para apartar (50%)"},
+fields:[{id:"pet",label:"Nombre de sus mascotas",short:"Mascotas",ph:"Ej. Kira y Thor",req:1,inAg:1},{id:"breed",label:"Raza o especie",short:"Raza",ph:"Ej. Husky siberiano",inAg:1}],
+pickHead:"Mascotas y horario",sumTitle:"Su sesión",bookBtn:"Apartar mi sesión",totalLabel:"Total de la sesión",
+remind:"<b>Recordatorio con tips</b> para el día de la sesión (premios, juguete favorito, cepillado) y aviso cuando tu galería esté lista.",
+waTicket:"En el sistema real el anticipo se paga en línea y te llega esta confirmación por WhatsApp con tips para la sesión. Después recibes el link de tu galería privada.",codeNote:"Tu galería usa este código",
+inBtn:"Llegaron",inTxt:"En sesión",doneBtn:"Terminar",doneToast:b=>`Sesión de ${b.x.pet||"la mascota"} terminada. Su galería privada se publica y le llega el link por WhatsApp para elegir fotos.`,
+manualSrc:"DM",manualKey:"dm",src3:"DM",gapBtn:"Ofrecer a lista de espera",fillToast:"Aviso enviado a la lista de espera navideña: \"Se liberó un horario en el set, ¿lo apartas?\"",
+kpi4:["Galerías por entregar","Elegir, editar y entregar",()=>6],
+loc:[["Foto Mascota Monterrey","<b>Cumbres 1er Sector, Monterrey, N.L.</b><br>Agenda por DM o WhatsApp. Horario y sets de ejemplo en esta demo."],["Un link en su bio","En lugar del link de WhatsApp: el cliente ve horarios, aparta con anticipo y luego elige sus fotos en su galería."]],
+disclaimer:"Sesiones, duraciones, fotos incluidas, precios, horario, sets, productos impresos, galerías y cifras son de ejemplo; ubicación y tipos de sesión tomados de su Instagram. Fotos ilustrativas.",
+labels:["Agenda","Dueño"],agendaTitle:"Sesiones del día",ownerTitle:"Esta semana",
+seed:{names:["Sofía L.","Andrés M.","Paola G.","Luis T.","Fernanda V.","Jorge L.","Mariana C.","Ricardo S.","Valeria O.","Daniel P.","Regina B.","Carlos H."],fill:.35,pet:["Luna","Duque","Pancho","Max y Kira","Nala","Toby","Canela","Bruno","Mía","Rocco"],breed:["Border collie","Boxer","Golden","Husky","Salchicha","Pug","Gato persa","Schnauzer"]},
+welcome:{title:"Sesiones con anticipo y galería para elegir fotos",steps:["Elija la sesión y cuántas mascotas vienen, escoja horario y aparte: verá el anticipo del 50%.","Baje a <b>Tu galería privada</b>: marque sus favoritas, agregue extras o tarjetas navideñas.","Abajo, toque <b>Agenda</b> para ver sesiones y galerías en proceso, y <b>Dueño</b> para entregas y ventas extra."],note:"Precios, nombres y cifras de ejemplo. Fotos ilustrativas."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/citas.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

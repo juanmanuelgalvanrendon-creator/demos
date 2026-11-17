@@ -24,7 +24,7 @@ const works=(s,d)=>!!hoursOf(s,d)&&!(s.off||[]).includes(wd(d));
 const canDo=(s,svc)=>!s.svcs||s.svcs.includes(svc);
 const zoneOk=(z,d)=>!ZN||!z||ZM[z].days.includes(wd(d));
 function durOf(svc,v,q){const s=SV[svc];let m=s.min+((v&&VM[v]&&VM[v].add)||0);if(q>1)m+=(q-1)*(s.each||Math.round(s.min*.6));return Math.ceil(m/STEP)*STEP}
-function priceOf(svc,v,q){const s=SV[svc];const one=Math.round(s.p*((v&&VM[v]&&VM[v].mult)||1));if(q>1&&s.p2)return Math.floor(q/2)*Math.round(s.p2*((v&&VM[v]&&VM[v].mult)||1))+(q%2)*one;return one*q}
+function priceOf(svc,v,q){const s=SV[svc];const one=Math.round(s.p*((v&&VM[v]&&VM[v].mult)||1)+((v&&VM[v]&&VM[v].addP)||0));if(q>1&&s.p2)return Math.floor(q/2)*Math.round(s.p2*((v&&VM[v]&&VM[v].mult)||1))+(q%2)*one;return one*q}
 const dayBk=(st,d)=>S.bk.filter(b=>b.staff===st&&b.date===d&&b.st!=="no"&&b.st!=="x");
 function freeAt(st,d,start,dur){const s=STM[st];const h=hoursOf(s,d);if(!h||!works(s,d))return false;if(start<h[0]||start+dur>h[1])return false;const n=now();if(d===n.d&&start<n.m+LEAD)return false;return !dayBk(st,d).some(b=>start<b.start+b.dur+BUF&&b.start<start+dur+BUF)}
 const eligible=(svc,d)=>ST.filter(s=>canDo(s,svc)&&works(s,d));
@@ -70,7 +70,7 @@ function renderWho(){if(!hasStaffPick)return;const ok=ST.filter(s=>canDo(s,S.svc
   $("#who").innerHTML=`<button class="${S.who==="any"?"on":""}" data-who="any"><i style="background:var(--ink)">✓</i><span>${D.anyLabel||"Quien esté libre"}<small>Más horarios</small></span></button>`+ST.map((s,i)=>`<button class="${S.who===s.id?"on":""} ${ok.includes(s)?"":"off"}" data-who="${s.id}"><i style="background:${s.color||COLORS[i%COLORS.length]}">${ini(s.n)}</i><span>${s.n}<small>${s.role||""}</small></span></button>`).join("")}
 function dayList(){const n=now();const out=[];for(let i=0;i<AHEAD;i++){const d=addDays(n.d,i);out.push(d)}return out}
 function renderDays(){const ds=dayList();if(!S.date||!ds.includes(S.date)||!slotsFor(S.date).length){S.date=ds.find(d=>slotsFor(d).length)||ds[0];S.slot=null}
-  $("#days").innerHTML=ds.map(d=>{const t=new Date(d+"T12:00:00");const n=slotsFor(d).length;const zOff=ZN&&!zoneOk(S.zone,d);const el=eligible(S.svc,d);const closed=!el.length;const nn=now();const shut=d===nn.d&&el.every(s=>hoursOf(s,d)[1]<=nn.m+LEAD+30);const lbl=zOff?(ZN.offTxt||"Sin ruta"):closed?"Cerrado":n?`${n} libres`:shut?"Ya cerró":"Lleno";return `<button class="${S.date===d?"on":""} ${n?"":"full"}" data-d="${d}"><span>${t.toLocaleDateString("es-MX",{weekday:"short"}).replace(".","")}</span><b>${t.getDate()}</b><small>${lbl}</small></button>`}).join("")}
+  $("#days").innerHTML=ds.map(d=>{const t=new Date(d+"T12:00:00");const n=slotsFor(d).length;const zOff=ZN&&!zoneOk(S.zone,d);const el=eligible(S.svc,d);const closed=!el.length;const nn=now();const shut=d===nn.d&&el.every(s=>hoursOf(s,d)[1]<=nn.m+LEAD+30);const lbl=zOff?(ZN.offTxt||"Sin ruta"):closed?"Cerrado":n?`${n} ${n===1?"libre":"libres"}`:shut?"Ya cerró":"Lleno";return `<button class="${S.date===d?"on":""} ${n?"":"full"}" data-d="${d}"><span>${t.toLocaleDateString("es-MX",{weekday:"short"}).replace(".","")}</span><b>${t.getDate()}</b><small>${lbl}</small></button>`}).join("")}
 function renderSlots(){const sl=slotsFor(S.date);if(S.slot!=null&&!sl.some(x=>x[0]===S.slot))S.slot=null;
   if(!sl.length){$("#slots").innerHTML=`<div class="nosl">${ZN&&!zoneOk(S.zone,S.date)?ZN.offMsg||"Ese día no hay ruta por tu zona.":"No quedan horarios este día. Elige otro día."}</div>`;return}
   const parts=[["Mañana",0,720],["Tarde",720,1080],["Noche",1080,1440]];
@@ -96,7 +96,7 @@ document.addEventListener("click",e=>{const t=e.target.closest("[data-s],[data-c
 if(ZN)$("#zone").onchange=e=>{S.zone=e.target.value;S.date=null;S.slot=null;renderClient()};
 $("#topBtn").onclick=()=>{const m=S.bk.filter(b=>b.mine);if(!m.length){$("#agendar").scrollIntoView({behavior:"smooth"});return}const b=m[m.length-1];showTicket(b)};
 function showTicket(b){const s=SV[b.svc];const rows=[[ "Servicio",s.n+(b.qty>1?` × ${b.qty}`:"")]];if(b.v)rows.push([VAR.short||VAR.label,VM[b.v].n]);if(b.zone)rows.push(["Zona",ZM[b.zone].n]);if(hasStaffPick||D.showStaff)rows.push([D.staffShort||"Con",STM[b.staff].n]);(D.fields||[]).forEach(f=>{if(b.x&&b.x[f.id])rows.push([f.short||f.label,esc(b.x[f.id])])});rows.push(["Total",peso(b.price)]);
-  modal(ticket({chip:"Cita confirmada",title:`${fmtL(b.date)}`,sub:`${ampm(b.start)} a ${ampm(b.start+b.dur)}`,rows,code:b.code,codeLabel:"Código de tu cita",codeNote:D.codeNote||"Muéstralo al llegar",wa:D.waTicket||"En el sistema real te llega esta confirmación por WhatsApp y un recordatorio un día antes para confirmar o reagendar.",go:"cocina",goLabel:`Ver cómo le llega al negocio →`}))}
+  modal(ticket({chip:D.okChip||"Cita confirmada",title:`${fmtL(b.date)}`,sub:`${ampm(b.start)} a ${ampm(b.start+b.dur)}`,rows,code:b.code,codeLabel:"Código de tu cita",codeNote:D.codeNote||"Muéstralo al llegar",wa:D.waTicket||"En el sistema real te llega esta confirmación por WhatsApp y un recordatorio un día antes para confirmar o reagendar.",go:"cocina",goLabel:`Ver cómo le llega al negocio →`}))}
 $("#book").onclick=()=>{const err=$("#err");err.textContent="";const nm=$("#fName").value.trim(),ph=$("#fPhone").value.replace(/\D/g,"");
   if(S.slot==null){err.textContent="Elige un horario.";return}if(nm.length<2){err.textContent="Escribe tu nombre.";return}if(ph.length<10){err.textContent="Escribe tu WhatsApp a 10 dígitos.";return}
   const x={};for(const f of D.fields||[]){const v=$("#x_"+f.id).value.trim();if(f.req&&!v){err.textContent=`Completa: ${f.label.toLowerCase()}.`;return}x[f.id]=v}
@@ -106,7 +106,7 @@ $("#book").onclick=()=>{const err=$("#err");err.textContent="";const nm=$("#fNam
 
 /* ---------- agenda ---------- */
 const stBadge={ok:["Confirmada","ok"],in:[D.inTxt||"Llegó","in"],done:["Terminada",""],no:["No asistió","no"]};
-function renderAg(){const n=now();const ds=[0,1,2,3,4,5,6].map(i=>addDays(n.d,i));if(!S.ag||!ds.includes(S.ag))S.ag=n.d;const d=S.ag;
+function renderAg(){const n=now();const ds=[0,1,2,3,4,5,6].map(i=>addDays(n.d,i));if(!S.ag||!ds.includes(S.ag))S.ag=ds.find(x=>ST.some(s=>works(s,x))&&S.bk.some(b=>b.date===x&&b.st!=="x"))||n.d;const d=S.ag;
   $("#agDays").innerHTML=ds.map(x=>{const t=new Date(x+"T12:00:00");const c=S.bk.filter(b=>b.date===x&&b.st!=="x").length;return `<button class="${x===d?"on":""}" data-ag="${x}"><span>${t.toLocaleDateString("es-MX",{weekday:"short"}).replace(".","")}</span><b>${t.getDate()}</b><small>${c} citas</small></button>`}).join("");
   const day=S.bk.filter(b=>b.date===d&&b.st!=="x").sort((a,b)=>a.start-b.start);const inc=day.filter(b=>b.st!=="no").reduce((s,b)=>s+b.price,0);
   const gaps=[];ST.forEach(s=>{if(!works(s,d))return;const h=hoursOf(s,d);let t=Math.max(h[0],d===n.d?Math.ceil((n.m+30)/STEP)*STEP:h[0]);const mine=dayBk(s.id,d).sort((a,b)=>a.start-b.start);for(const b of mine){if(b.start-t>=60)gaps.push([s.id,t,b.start]);t=Math.max(t,b.start+b.dur+BUF)}if(h[1]-t>=60)gaps.push([s.id,t,h[1]])});
