@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Higuera · Fila virtual (demo)</title>
+<meta name="theme-color" content="#2f3a2a">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Higuera · Demo de fila virtual">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: fila virtual para un restaurante walk ins only, con espera en vivo, aviso por WhatsApp, pedido desde la fila y mapa de mesas.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#4d5c42;--g-d:#3e4a35;--g-dd:#232a1e;--g-l:#e6eadf;--g-ll:#f6f7f2;--acc:#b8743f;--acc-d:#9a5b2a;--acc-l:#f3e3d2;
+--ink:#1f2219;--ink-2:#454a3d;--muted:#7f8475;--line:#e8e6dd;--paper:#faf8f3;--cream:#fffdf8;--red:#c2493f;--sh:0 14px 34px -16px rgba(31,34,25,.42);
+--display:"Instrument Serif",Georgia,serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:400;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#e6eadf 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#f3e3d2 0%,transparent 60%),#faf8f3;
+--dark:#171b14;--dark-2:#22281e;--dark-3:#38412f;--dark-txt:#d3d8ca}
+.hero h1,.display{text-transform:lowercase;letter-spacing:-.01em}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Higuera",mark:"H",tag:"Tampiquito · walk ins only"},
+hero:{chip:"// noviembre 2026",h1a:"walk ins only,",h1b:"sin hacer fila.",lead:"Te anotas desde tu celular, ves tu turno y la espera en vivo, y te avisamos por WhatsApp cuando tu mesa esté lista. Mientras, camina por el barrio, toma un café en la barra o deja tu pedido listo.",cta1:["Anotarme","#anotar"],cta2:["Ver la espera","#espera"],badge:["35k","seguidores"],alt:"Grilled cheese con sopa de tomate en una mesa dentro de un antiguo taller",old:"Esperar parado afuera sin saber cuánto falta",now:"Ahora: turno, espera y aviso en el celular."},
+ticker:["Grilled cheese","Sopa de tomate","Enfrijoladas","Chilaquiles","Buttermilk waffles","Shakshouka"],
+zones:[["any","Lo que se libere primero","menos espera"],["interior","Interior","en el taller"],["terraza","Terraza","al aire libre"],["barra","Barra","1 a 2 personas"]],
+tables:[{n:"B1",seats:2,zone:"barra"},{n:"B2",seats:2,zone:"barra"},{n:"B3",seats:2,zone:"barra"},{n:"1",seats:2,zone:"interior"},{n:"2",seats:2,zone:"interior"},{n:"3",seats:4,zone:"interior"},{n:"4",seats:4,zone:"interior"},{n:"5",seats:4,zone:"interior"},{n:"6",seats:6,zone:"interior"},{n:"7",seats:8,zone:"interior"},{n:"T1",seats:2,zone:"terraza"},{n:"T2",seats:4,zone:"terraza"},{n:"T3",seats:4,zone:"terraza"},{n:"T4",seats:6,zone:"terraza"}],
+turn:50,avgWait:22,close:{0:"5 pm",6:"5 pm"},
+menu:[
+ {id:"gc",n:"Grilled cheese y sopa de tomate",d:"El de siempre, desde que empezó Higuera.",p:265,tag:"Desde el día uno"},
+ {id:"enf",n:"Enfrijoladas",d:"Con opción vegana y salsa macha.",p:239},
+ {id:"chv",n:"Chilaquiles verdes",d:"Salsa verde, crema y queso.",p:309},
+ {id:"chd",n:"Chilaquiles divorciados",d:"Mitad rojos, mitad verdes.",p:299},
+ {id:"waf",n:"Buttermilk waffles",d:"Con mantequilla y miel de maple.",p:299},
+ {id:"tir",n:"Tiramisú waffle",d:"Edición especial de temporada.",p:289,tag:"Temporada"},
+ {id:"sha",n:"Shakshouka",d:"Huevos en salsa de jitomate especiado, pan para remojar.",p:275},
+ {id:"fla",n:"Flat white",d:"Para tomar en la barra mientras esperas.",p:85},
+ {id:"mat",n:"Matcha latte",d:"Con leche vegetal si prefieres.",p:95}],
+hourly:[["8",14],["9",26],["10",38],["11",41],["12",33],["1",29],["2",22],["3",12]],
+loc:[["Higuera","<b>Plutarco Elías Calles 419, Tampiquito, San Pedro Garza García, N.L.</b><br>Lun a vie 8:00 a 16:00 · Sáb y dom 8:00 a 17:00 · walk ins only."],["Cómo se usaría","Un QR en la puerta y el link en su bio. El cliente se anota en segundos, sin descargar nada. Sigue siendo sin reservaciones."]],
+disclaimer:"Tiempos de espera, mesas, grupos, clientes y cifras son de ejemplo. Precios de enfrijoladas, chilaquiles y buttermilk waffles tomados de su menú en Rappi; los demás precios son de ejemplo. Dirección, horario y platillos tomados de su sitio e Instagram.",
+welcome:{title:"Fila virtual para un lugar walk ins only",steps:["Arriba vea la espera en vivo y anótese en la fila con su WhatsApp: verá su turno avanzar solo.","En <b>Mientras esperas</b> deje su pedido listo; entra a cocina al sentarse.","Abajo, toque <b>Hostess</b> para la fila y el mapa de mesas (toque una mesa para liberarla) y <b>Dueño</b> para horas pico y base de clientes."],note:"Tiempos y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
