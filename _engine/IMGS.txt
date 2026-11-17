@@ -37,3 +37,4 @@ higuera 6afba28f-13bc-83e8-aef1-dc024bbd8ee4
 mr-performance hero: chatgpt 6afcc75e-3910-83e8-b25b-119479e2b0fa
 eucalipto-studio hero: chatgpt 6afcc9a8-479c-83e8-a782-c79108e74454
 fortissimo hero: chatgpt 6afccc08-8a7c-83e8-97d2-2dd48380e866
+carinito-floral hero/arreglo/entrega: chatgpt 6afccd09-4ac0-83e8-b8cf-6c7a74b45d19
