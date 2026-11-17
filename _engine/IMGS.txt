@@ -30,3 +30,5 @@ fisiovet 6afb9999-a614-83e8-adec-21e396e99b0d
 foto-mascota hero 6afb9a6f-b6d4-83e8-b1fc-4af74790ce0b
 foto-mascota galeria 6afb9b5b-1158-83e8-abfc-178471ded724
 anhy-eventos 6afb9d21-46dc-83e8-a5ee-eea240a8e2e5
+ivali-detailing hero 6afb9eba-0f74-83e8-84d5-9c8d868a3666
+ivali-detailing antes/despues 6afb9f42-b714-83e8-92a9-65322f2d2452

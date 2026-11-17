@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IVÁLI Detallado Automotriz · Agenda a domicilio (demo)</title>
+<meta name="theme-color" content="#121417">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="IVÁLI Detallado · Demo de agenda y reportes">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: cotización por tipo de vehículo y paquete, agenda a domicilio, reporte de antes y después y certificado de protección cerámica con mantenimientos.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<link rel="stylesheet" href="../_engine/citas.css">
+<style>
+:root{--g:#2d3640;--g-d:#1f262e;--g-dd:#0f1215;--g-l:#e6eaee;--g-ll:#f5f7f9;--acc:#2f9fd8;--acc-d:#1d82b8;--acc-l:#d8eef9;
+--ink:#111418;--ink-2:#3a424b;--muted:#77818b;--line:#e3e7eb;--paper:#f7f8fa;--cream:#fdfdfe;--red:#c2493f;--sh:0 14px 34px -16px rgba(17,20,24,.45);
+--display:"Archivo",system-ui,sans-serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:800;--em-style:normal;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#dfe6ec 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#d8eef9 0%,transparent 60%),#f7f8fa;
+--dark:#0c0f12;--dark-2:#151a1f;--dark-3:#28313a;--dark-txt:#c3ccd5}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"IVÁLI",mark:"I",tag:"Detallado a domicilio"},
+topBtn:"Mi cita",
+hero:{chip:"Detallado automotriz a domicilio",h1a:"Tu auto como nuevo,",h1b:"sin salir de casa.",lead:"Elige tu vehículo y el paquete, suma adicionales y ve el precio y la duración al momento. Apartas el horario, vamos a tu domicilio y al terminar te llega el reporte con fotos de antes y después.",cta1:["Cotizar y agendar","#servicios"],cta2:["Ver un reporte","#reporte"],badge:["5","años de cerámico"],alt:"Camioneta negra con acabado espejo en la cochera de una casa",old:"\"Agenda por llamada o WhatsApp\"",now:"Ahora: precio, horario y reporte en un solo link."},
+ticker:["Paquete interior","Paquete exterior","Paquete completo","Protección cerámica","Pulido de faros","Motor con vapor"],
+svcHead:{kicker:"Paquetes",title:"¿Qué le <em>hacemos</em>?",note:"Paquetes y adicionales de sus publicaciones; precios y duraciones de ejemplo. El precio se ajusta solo al tamaño del vehículo."},
+services:[
+ {id:"int",n:"Paquete interior",d:"Aspirado profundo, vestiduras con extracción, tablero, plásticos y vidrios.",min:180,p:1100,from:1},
+ {id:"ext",n:"Paquete exterior",d:"Lavado y descontaminado de pintura, rines, salpicaderas, emblemas y parrilla.",min:150,p:950,from:1},
+ {id:"comp",n:"Paquete completo",d:"Interior y exterior en un solo servicio.",min:300,p:1800,from:1,tag:"El más pedido"},
+ {id:"nano",n:"Exterior + nanocerámica 1 año",d:"Paquete exterior con pulido de corte y protección nanocerámica de 1 año.",min:360,p:3200,from:1,tag:"Con certificado"}],
+variant:{label:"Tu vehículo",short:"Vehículo",def:1,opts:[{id:"sed",n:"Compacto o sedán",mult:1},{id:"suv",n:"SUV o crossover",mult:1.2,add:30},{id:"pick",n:"Pickup",mult:1.35,add:45},{id:"van",n:"3 filas o van",mult:1.5,add:60}]},
+addons:[{id:"motor",n:"Motor con vapor",p:450,min:45},{id:"faros",n:"Pulido de faros",p:500,min:40,fixed:1},{id:"ozono",n:"Ozono antiolores",p:350,min:30,fixed:1},{id:"cer3",n:"Subir a cerámico 3 años",p:3500,min:60}],addonsLabel:"Adicionales",
+staff:[{id:"e1",n:"Equipo 1",role:"Detallado"},{id:"e2",n:"Equipo 2",role:"Detallado y cerámico"}],pickStaff:false,showStaff:1,staffShort:"Equipo",
+hours:{1:[480,1080],2:[480,1080],3:[480,1080],4:[480,1080],5:[480,1080],6:[480,960]},step:30,lead:180,ahead:14,buffer:30,
+fields:[{id:"car",label:"Marca, modelo y color",short:"Vehículo",ph:"Ej. Mazda CX-5 gris",req:1,inAg:1},{id:"addr",label:"Domicilio del servicio",short:"Domicilio",ph:"Calle, número y colonia",req:1}],
+pickHead:"Vehículo, adicionales y horario",sumTitle:"Tu servicio",bookBtn:"Agendar a domicilio",totalLabel:"Total",
+remind:"<b>Recordatorio un día antes</b>, aviso cuando el equipo vaya en camino y <b>reporte de antes y después</b> al terminar.",
+waTicket:"En el sistema real te llega esta confirmación por WhatsApp, un aviso cuando vayamos en camino y, al terminar, tu reporte con fotos y el certificado si aplica.",codeNote:"Pago con tarjeta al terminar",
+inBtn:"Llegamos",inTxt:"Trabajando",doneBtn:"Terminar",doneToast:b=>`Se le manda a ${b.name} su reporte con fotos de antes y después${b.svc==="nano"||(b.add||[]).includes("cer3")?" y su certificado de cerámico":""}.`,
+manualSrc:"llamada",manualKey:"tel",src3:"Llamada / DM",gapBtn:"Ofrecer espacio",fillToast:"Aviso enviado a clientes cercanos: \"Se liberó un espacio, ¿lo quieres?\"",
+kpi4:["Garantías de cerámico","Con mantenimiento al día",()=>37],
+loc:[["IVÁLI Detallado Automotriz","<b>A domicilio en Monterrey y área metropolitana</b><br>Agenda por llamada o WhatsApp 81 8112 5423. Aceptan tarjeta de crédito y débito."],["Un link en su bio","El cliente cotiza su vehículo, aparta su horario y recibe su reporte, sin ir y venir de mensajes."]],
+disclaimer:"Precios, duraciones, equipos, horario, garantías, vehículos y cifras son de ejemplo; paquetes, adicionales, modalidad a domicilio y teléfono tomados de su Instagram. Fotos ilustrativas.",
+labels:["Agenda","Dueño"],agendaTitle:"Servicios del día",ownerTitle:"Esta semana",
+seed:{names:["Paola G.","Jorge L.","Andrea M.","Ricardo S.","Daniela P.","Luis T.","Fernanda V.","Carlos H.","Mariana C.","Rodrigo A.","Valeria O.","Hugo R."],fill:.2,car:["Mazda CX-5 gris","Tacoma blanca","Jetta negro","Tahoe negra","Kia Seltos roja","Civic azul","RAV4 plata","Lobo blanca","Sentra gris","Suburban negra"]},
+welcome:{title:"Cotización, agenda a domicilio y reporte en un solo link",steps:["Elija paquete, vehículo y adicionales: el precio y la duración cambian solos. Agende su horario.","Baje a <b>antes y después</b>: deslice la foto, vea la inspección y el certificado de cerámico.","Abajo, toque <b>Agenda</b> para los servicios de cada equipo y <b>Dueño</b> para mantenimientos por vencer."],note:"Precios y cifras de ejemplo. Fotos ilustrativas."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/citas.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

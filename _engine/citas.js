@@ -18,17 +18,18 @@ const addDays=(d,n)=>{const t=new Date(d+"T12:00:00");t.setDate(t.getDate()+n);r
 const wd=d=>new Date(d+"T12:00:00").getDay();
 const ev={};const on=(k,f)=>(ev[k]=ev[k]||[]).push(f);const emit=(k,x)=>(ev[k]||[]).forEach(f=>f(x));
 
-const S={svc:D.services[0].id,v:VAR?VAR.opts[VAR.def||0].id:null,who:"any",zone:ZN?ZN.list[0].id:null,qty:1,date:null,slot:null,bk:[],seq:1000,ag:null,cat:D.cats?D.cats[0].id:null};
+const S={add:[],svc:D.services[0].id,v:VAR?VAR.opts[VAR.def||0].id:null,who:"any",zone:ZN?ZN.list[0].id:null,qty:1,date:null,slot:null,bk:[],seq:1000,ag:null,cat:D.cats?D.cats[0].id:null};
 const hoursOf=(s,d)=>{const h=(s.hours||D.hours)[wd(d)];return h||null};
 const works=(s,d)=>!!hoursOf(s,d)&&!(s.off||[]).includes(wd(d));
 const canDo=(s,svc)=>!s.svcs||s.svcs.includes(svc);
 const zoneOk=(z,d)=>!ZN||!z||ZM[z].days.includes(wd(d));
-function durOf(svc,v,q){const s=SV[svc];let m=s.min+((v&&VM[v]&&VM[v].add)||0);if(q>1)m+=(q-1)*(s.each||Math.round(s.min*.6));return Math.ceil(m/STEP)*STEP}
-function priceOf(svc,v,q){const s=SV[svc];const one=Math.round(s.p*((v&&VM[v]&&VM[v].mult)||1)+((v&&VM[v]&&VM[v].addP)||0));if(q>1&&s.p2)return Math.floor(q/2)*Math.round(s.p2*((v&&VM[v]&&VM[v].mult)||1))+(q%2)*one;return one*q}
+const AD=Object.fromEntries((D.addons||[]).map(a=>[a.id,a]));
+function durOf(svc,v,q,ad=[]){const s=SV[svc];let m=s.min+((v&&VM[v]&&VM[v].add)||0)+ad.reduce((a,x)=>a+(AD[x]?AD[x].min||0:0),0);if(q>1)m+=(q-1)*(s.each||Math.round(s.min*.6));return Math.ceil(m/STEP)*STEP}
+function priceOf(svc,v,q,ad=[]){const s=SV[svc];const extra=ad.reduce((a,x)=>a+(AD[x]?Math.round(AD[x].p*(AD[x].fixed?1:((v&&VM[v]&&VM[v].mult)||1))):0),0);const one=Math.round(s.p*((v&&VM[v]&&VM[v].mult)||1)+((v&&VM[v]&&VM[v].addP)||0));if(q>1&&s.p2)return Math.floor(q/2)*Math.round(s.p2*((v&&VM[v]&&VM[v].mult)||1))+(q%2)*one+extra;return one*q+extra}
 const dayBk=(st,d)=>S.bk.filter(b=>b.staff===st&&b.date===d&&b.st!=="no"&&b.st!=="x");
 function freeAt(st,d,start,dur){const s=STM[st];const h=hoursOf(s,d);if(!h||!works(s,d))return false;if(start<h[0]||start+dur>h[1])return false;const n=now();if(d===n.d&&start<n.m+LEAD)return false;return !dayBk(st,d).some(b=>start<b.start+b.dur+BUF&&b.start<start+dur+BUF)}
 const eligible=(svc,d)=>ST.filter(s=>canDo(s,svc)&&works(s,d));
-function slotsFor(d,svc=S.svc,who=S.who,v=S.v,q=S.qty,z=S.zone){if(!zoneOk(z,d))return [];const dur=durOf(svc,v,q);const pool=who==="any"?eligible(svc,d):[STM[who]].filter(s=>s&&canDo(s,svc)&&works(s,d));const set=new Map();pool.forEach(s=>{const h=hoursOf(s,d);for(let t=h[0];t+dur<=h[1];t+=STEP){if(!set.has(t)&&freeAt(s.id,d,t,dur))set.set(t,s.id)}});return [...set.entries()].sort((a,b)=>a[0]-b[0])}
+function slotsFor(d,svc=S.svc,who=S.who,v=S.v,q=S.qty,z=S.zone,ad=S.add){if(!zoneOk(z,d))return [];const dur=durOf(svc,v,q,ad);const pool=who==="any"?eligible(svc,d):[STM[who]].filter(s=>s&&canDo(s,svc)&&works(s,d));const set=new Map();pool.forEach(s=>{const h=hoursOf(s,d);for(let t=h[0];t+dur<=h[1];t+=STEP){if(!set.has(t)&&freeAt(s.id,d,t,dur))set.set(t,s.id)}});return [...set.entries()].sort((a,b)=>a[0]-b[0])}
 const firstStaff=(d,t,svc,dur,who)=>{const pool=who&&who!=="any"?[STM[who]]:eligible(svc,d);const f=pool.find(s=>freeAt(s.id,d,t,dur));return f?f.id:null};
 function addBk(o){const b={id:++S.seq,code:String(rnd(1000,9999)),st:"ok",src:"link",rem:false,x:{},...o};S.bk.push(b);emit("book",b);return b}
 
@@ -41,6 +42,7 @@ ${D.cats?`<div class="chips cats" id="cats">${D.cats.map((c,i)=>`<button class="
 <section class="section" style="padding-top:0" id="agendar"><div class="wrap two">
 <div class="panel"><span class="eyebrow"><span class="step-num">2</span>${D.pickHead||"Día y hora"}</span>
 ${VAR?`<div class="field"><label>${VAR.label}</label><div class="chips" id="vars">${VAR.opts.map(o=>`<button data-v="${o.id}">${o.n}${o.sub?`<small>${o.sub}</small>`:""}</button>`).join("")}</div></div>`:""}
+${D.addons?`<div class="field"><label>${D.addonsLabel||"Adicionales"}</label><div class="chips" id="adds">${D.addons.map(a=>`<button data-ad="${a.id}">${a.n}<small>+${peso(a.p)}${a.fixed?"":" aprox."}${a.min?" · "+durTxt(a.min):""}</small></button>`).join("")}</div></div>`:""}
 ${D.qty?`<div class="field"><label>${D.qty.label}</label><div class="ppl"><span id="qTxt"></span><div class="stepper"><button data-q="-1" aria-label="Menos">&minus;</button><span id="qN">1</span><button data-q="1" aria-label="Más">+</button></div></div></div>`:""}
 ${ZN?`<div class="field"><label for="zone">${ZN.label}</label><select id="zone">${ZN.list.map(z=>`<option value="${z.id}">${z.n}</option>`).join("")}</select><small id="zNote" style="color:var(--muted);font-size:12.5px;line-height:1.4"></small></div>`:""}
 ${hasStaffPick?`<div class="field"><label>${D.staffLabel||"¿Con quién?"}</label><div class="who-chips" id="who"></div></div>`:""}
@@ -75,33 +77,34 @@ function renderSlots(){const sl=slotsFor(S.date);if(S.slot!=null&&!sl.some(x=>x[
   if(!sl.length){$("#slots").innerHTML=`<div class="nosl">${ZN&&!zoneOk(S.zone,S.date)?ZN.offMsg||"Ese día no hay ruta por tu zona.":"No quedan horarios este día. Elige otro día."}</div>`;return}
   const parts=[["Mañana",0,720],["Tarde",720,1080],["Noche",1080,1440]];
   $("#slots").innerHTML=parts.map(([n,a,b])=>{const xs=sl.filter(x=>x[0]>=a&&x[0]<b);return xs.length?`<div class="slotlbl">${n}</div><div class="slotgrid">${xs.map(([t])=>`<button class="${S.slot===t?"on":""}" data-t="${t}">${ampm(t)}</button>`).join("")}</div>`:""}).join("")}
-function summary(){const s=SV[S.svc];const dur=durOf(S.svc,S.v,S.qty);const pr=priceOf(S.svc,S.v,S.qty);const who=S.slot!=null?(S.who==="any"?firstStaff(S.date,S.slot,S.svc,dur):S.who):null;
-  const rows=[["Servicio",s.n+(S.qty>1?` × ${S.qty}`:"")]];if(VAR)rows.push([VAR.short||VAR.label,VM[S.v].n]);if(ZN)rows.push(["Zona",ZM[S.zone].n]);if(hasStaffPick)rows.push([D.staffShort||"Con",who?STM[who].n:(S.who==="any"?D.anyLabel||"Quien esté libre":STM[S.who].n)]);rows.push(["Duración",durTxt(dur)]);
+function summary(){const s=SV[S.svc];const dur=durOf(S.svc,S.v,S.qty,S.add);const pr=priceOf(S.svc,S.v,S.qty,S.add);const who=S.slot!=null?(S.who==="any"?firstStaff(S.date,S.slot,S.svc,dur):S.who):null;
+  const rows=[["Servicio",s.n+(S.qty>1?` × ${S.qty}`:"")]];if(VAR)rows.push([VAR.short||VAR.label,VM[S.v].n]);if(S.add.length)rows.push([D.addonsLabel||"Adicionales",S.add.map(x=>AD[x].n).join(", ")]);if(ZN)rows.push(["Zona",ZM[S.zone].n]);if(hasStaffPick)rows.push([D.staffShort||"Con",who?STM[who].n:(S.who==="any"?D.anyLabel||"Quien esté libre":STM[S.who].n)]);rows.push(["Duración",durTxt(dur)]);
   $("#sumBody").innerHTML=`<div class="big">${S.slot!=null?`${fmtL(S.date)}<br>${ampm(S.slot)} a ${ampm(S.slot+dur)}`:"Elige día y horario"}</div>${rows.map(r=>`<div class="sum-line"><span>${r[0]}</span><b>${r[1]}</b></div>`).join("")}`;
   $("#tot").textContent=peso(pr);$("#depo").innerHTML=D.deposit&&pr>=(D.deposit.over||0)?`<div class="sum-line" style="border:0"><span>${D.deposit.label||"Anticipo para apartar"}</span><b>${peso(Math.round(pr*D.deposit.pct/100))}</b></div>`:"";
   if(D.qty){$("#qN").textContent=S.qty;$("#qTxt").textContent=D.qty.txt?D.qty.txt(S.qty):S.qty}
   if(ZN)$("#zNote").textContent=ZM[S.zone].note||`Visitamos tu zona: ${ZM[S.zone].days.map(x=>["dom","lun","mar","mié","jue","vie","sáb"][x]).join(", ")}.`;
   $("#topBadge").textContent=S.bk.filter(b=>b.mine).length;emit("summary",{dur,pr,who})}
-function renderVars(){if(VAR)document.querySelectorAll("#vars [data-v]").forEach(b=>b.classList.toggle("on",b.dataset.v===S.v))}
+function renderVars(){if(VAR)document.querySelectorAll("#vars [data-v]").forEach(b=>b.classList.toggle("on",b.dataset.v===S.v));document.querySelectorAll("#adds [data-ad]").forEach(b=>b.classList.toggle("on",S.add.includes(b.dataset.ad)))}
 function renderClient(){renderSvcs();renderVars();renderWho();renderDays();renderSlots();summary()}
 
-document.addEventListener("click",e=>{const t=e.target.closest("[data-s],[data-cat],[data-v],[data-who],[data-d],[data-t],[data-q]");if(!t||!t.closest("#v-cliente"))return;
+document.addEventListener("click",e=>{const t=e.target.closest("[data-s],[data-cat],[data-v],[data-who],[data-d],[data-t],[data-q],[data-ad]");if(!t||!t.closest("#v-cliente"))return;
   if(t.dataset.s){S.svc=t.dataset.s;S.slot=null;renderClient();if(innerWidth<980)$("#agendar").scrollIntoView({behavior:"smooth"})}
   else if(t.dataset.cat){S.cat=t.dataset.cat;document.querySelectorAll("#cats [data-cat]").forEach(b=>b.classList.toggle("on",b===t));renderSvcs()}
   else if(t.dataset.v){S.v=t.dataset.v;S.slot=null;renderClient()}
+  else if(t.dataset.ad){const a=t.dataset.ad;S.add=S.add.includes(a)?S.add.filter(x=>x!==a):[...S.add,a];S.slot=null;renderClient()}
   else if(t.dataset.who){S.who=t.dataset.who;S.slot=null;renderClient()}
   else if(t.dataset.d){S.date=t.dataset.d;S.slot=null;renderDays();renderSlots();summary()}
   else if(t.dataset.t){S.slot=+t.dataset.t;renderSlots();summary()}
   else if(t.dataset.q){S.qty=Math.max(1,Math.min(D.qty.max||4,S.qty+ +t.dataset.q));S.slot=null;renderClient()}});
 if(ZN)$("#zone").onchange=e=>{S.zone=e.target.value;S.date=null;S.slot=null;renderClient()};
 $("#topBtn").onclick=()=>{const m=S.bk.filter(b=>b.mine);if(!m.length){$("#agendar").scrollIntoView({behavior:"smooth"});return}const b=m[m.length-1];showTicket(b)};
-function showTicket(b){const s=SV[b.svc];const rows=[[ "Servicio",s.n+(b.qty>1?` × ${b.qty}`:"")]];if(b.v)rows.push([VAR.short||VAR.label,VM[b.v].n]);if(b.zone)rows.push(["Zona",ZM[b.zone].n]);if(hasStaffPick||D.showStaff)rows.push([D.staffShort||"Con",STM[b.staff].n]);(D.fields||[]).forEach(f=>{if(b.x&&b.x[f.id])rows.push([f.short||f.label,esc(b.x[f.id])])});rows.push(["Total",peso(b.price)]);
+function showTicket(b){const s=SV[b.svc];const rows=[[ "Servicio",s.n+(b.qty>1?` × ${b.qty}`:"")]];if(b.v)rows.push([VAR.short||VAR.label,VM[b.v].n]);if(b.add&&b.add.length)rows.push([D.addonsLabel||"Adicionales",b.add.map(x=>AD[x].n).join(", ")]);if(b.zone)rows.push(["Zona",ZM[b.zone].n]);if(hasStaffPick||D.showStaff)rows.push([D.staffShort||"Con",STM[b.staff].n]);(D.fields||[]).forEach(f=>{if(b.x&&b.x[f.id])rows.push([f.short||f.label,esc(b.x[f.id])])});rows.push(["Total",peso(b.price)]);
   modal(ticket({chip:D.okChip||"Cita confirmada",title:`${fmtL(b.date)}`,sub:`${ampm(b.start)} a ${ampm(b.start+b.dur)}`,rows,code:b.code,codeLabel:"Código de tu cita",codeNote:D.codeNote||"Muéstralo al llegar",wa:D.waTicket||"En el sistema real te llega esta confirmación por WhatsApp y un recordatorio un día antes para confirmar o reagendar.",go:"cocina",goLabel:`Ver cómo le llega al negocio →`}))}
 $("#book").onclick=()=>{const err=$("#err");err.textContent="";const nm=$("#fName").value.trim(),ph=$("#fPhone").value.replace(/\D/g,"");
   if(S.slot==null){err.textContent="Elige un horario.";return}if(nm.length<2){err.textContent="Escribe tu nombre.";return}if(ph.length<10){err.textContent="Escribe tu WhatsApp a 10 dígitos.";return}
   const x={};for(const f of D.fields||[]){const v=$("#x_"+f.id).value.trim();if(f.req&&!v){err.textContent=`Completa: ${f.label.toLowerCase()}.`;return}x[f.id]=v}
-  const dur=durOf(S.svc,S.v,S.qty);const st=S.who==="any"?firstStaff(S.date,S.slot,S.svc,dur):(freeAt(S.who,S.date,S.slot,dur)?S.who:null);if(!st){err.textContent="Ese horario se acaba de ocupar. Elige otro.";renderClient();return}
-  const b=addBk({svc:S.svc,v:S.v,qty:S.qty,zone:S.zone,staff:st,date:S.date,start:S.slot,dur,price:priceOf(S.svc,S.v,S.qty),name:nm,phone:ph,x,mine:true,src:"link",fresh:true});
+  const dur=durOf(S.svc,S.v,S.qty,S.add);const st=S.who==="any"?firstStaff(S.date,S.slot,S.svc,dur):(freeAt(S.who,S.date,S.slot,dur)?S.who:null);if(!st){err.textContent="Ese horario se acaba de ocupar. Elige otro.";renderClient();return}
+  const b=addBk({svc:S.svc,v:S.v,qty:S.qty,add:[...S.add],zone:S.zone,staff:st,date:S.date,start:S.slot,dur,price:priceOf(S.svc,S.v,S.qty,S.add),name:nm,phone:ph,x,mine:true,src:"link",fresh:true});
   feed(`<b>${ampm(b.start)}</b> ${esc(nm)} agendó ${SV[b.svc].n} · ${fmtD(b.date)}`);bump();S.ag=b.date;S.slot=null;renderClient();showTicket(b)};
 
 /* ---------- agenda ---------- */
@@ -116,7 +119,7 @@ function renderAg(){const n=now();const ds=[0,1,2,3,4,5,6].map(i=>addDays(n.d,i)
     return `<div class="col"><header><i style="background:${s.color||COLORS[ST.indexOf(s)%COLORS.length]}">${ini(s.n)}</i><div><b>${s.n}</b><span>${s.role?s.role+" · ":""}${works(s,d)?`${ampm(h[0])} a ${ampm(h[1])}`:"Descansa"}</span></div></header><div class="capbar"><i style="width:${Math.min(100,usedM/(h[1]-h[0])*100)}%"></i></div>${items.map(x=>x.h).join("")||`<p class="kempty" style="margin-top:8px">Sin citas.</p>`}</div>`}).join("")||`<div class="col"><p class="kempty">Día de descanso.</p></div>`;
   emit("agenda",d)}
 function lnBk(b){const s=SV[b.svc];const bd=stBadge[b.st];const src={link:["Link","wa"],wa:["WhatsApp","wa"],dm:["DM","dm"],tel:["Teléfono","p"]}[b.src]||["Link","wa"];
-  const det=[s.n+(b.qty>1?` × ${b.qty}`:""),b.v?VM[b.v].n:"",b.zone?ZM[b.zone].n:"",...(D.fields||[]).filter(f=>f.inAg&&b.x&&b.x[f.id]).map(f=>esc(b.x[f.id]))].filter(Boolean).join(" · ");
+  const det=[s.n+(b.qty>1?` × ${b.qty}`:""),b.v?VM[b.v].n:"",...(b.add||[]).map(x=>"+ "+AD[x].n),b.zone?ZM[b.zone].n:"",...(D.fields||[]).filter(f=>f.inAg&&b.x&&b.x[f.id]).map(f=>esc(b.x[f.id]))].filter(Boolean).join(" · ");
   const act=b.st==="ok"?`<button data-st="${b.id}|in">${D.inBtn||"Llegó"}</button><button class="alt" data-st="${b.id}|no">No vino</button>`:b.st==="in"?`<button data-st="${b.id}|done">${D.doneBtn||"Terminar"}</button>`:"";
   const fr=b.fresh;b.fresh=false;
   return `<div class="ln ${b.st==="done"||b.st==="no"?"done":""} ${fr?"fresh":""}"><div><div class="who"><span class="tm">${ampm(b.start)}</span>${esc(b.name)}${b.mine?` <span class="mine">(tu cita)</span>`:""}<span class="bdg ${bd[1]}">${bd[0]}</span><span class="bdg ${src[1]}">${src[0]}</span></div><div class="det">${det} · ${durTxt(b.dur)} · ${peso(b.price)}${b.rem?" · ✓ confirmó":""}${b.note?` · ${esc(b.note)}`:""}</div></div><div class="acts">${act}</div></div>`}
@@ -124,7 +127,7 @@ document.addEventListener("click",e=>{const a=e.target.closest("[data-ag]");if(a
   const s=e.target.closest("[data-st]");if(s){const [id,st]=s.dataset.st.split("|");const b=S.bk.find(x=>x.id==id);b.st=st;emit("status",b);if(st==="done")toast(D.doneToast?D.doneToast(b):`Listo: se le envía a ${esc(b.name)} su recibo y una encuesta por WhatsApp.`);if(st==="no")toast("Marcado como no asistió. Ese horario queda libre para la lista de espera.");feed(`<b>${ampm(b.start)}</b> ${esc(b.name)}: ${stBadge[st][0].toLowerCase()}`);renderAg();return}
   const f=e.target.closest("[data-fill]");if(f){const [st,t]=f.dataset.fill.split("|");toast(D.fillToast||`Aviso enviado a la lista de espera: "Se liberó un lugar ${ampm(+t)} con ${STM[st].n}". El primero en contestar lo aparta.`);f.disabled=true;f.textContent="Aviso enviado";return}});
 $("#agAdd").onclick=()=>{const d=S.ag;modal(`<div class="welcome"><span class="eyebrow">Registrar cita</span><h3 style="font-family:var(--display);text-transform:none;font-weight:var(--dw)">Cita que llegó por ${D.manualSrc||"WhatsApp"}</h3><p>Se guarda en la misma agenda, así ya no se empalma con las del link.</p><div class="qform"><select id="qS">${D.services.map(s=>`<option value="${s.id}">${s.n}</option>`).join("")}</select>${VAR?`<select id="qV">${VAR.opts.map(o=>`<option value="${o.id}">${o.n}</option>`).join("")}</select>`:""}${ZN?`<select id="qZ">${ZN.list.map(z=>`<option value="${z.id}">${z.n}</option>`).join("")}</select>`:""}<input id="qName" placeholder="Nombre del cliente"></div><button class="btn btn-g" id="qOk" style="margin-top:14px;background:var(--g-dd)">Buscar primer horario libre ${fmtD(d)}</button><div class="err" id="qErr"></div><button class="btn btn-w" data-close>Cancelar</button></div>`);
-  $("#qOk").onclick=()=>{const svc=$("#qS").value,v=VAR?$("#qV").value:null,z=ZN?$("#qZ").value:null,nm=$("#qName").value.trim()||"Cliente de "+(D.manualSrc||"WhatsApp");const sl=slotsFor(d,svc,"any",v,1,z);if(!sl.length){$("#qErr").textContent=ZN&&!zoneOk(z,d)?"Ese día no hay ruta por esa zona.":"Ya no hay horarios libres ese día.";return}const [t,st]=sl[0];const b=addBk({svc,v,qty:1,zone:z,staff:st,date:d,start:t,dur:durOf(svc,v,1),price:priceOf(svc,v,1),name:nm,src:D.manualKey||"wa",fresh:true});closeModal();feed(`<b>${ampm(t)}</b> ${esc(nm)} (${D.manualSrc||"WhatsApp"}) · ${SV[svc].n}`);toast(`Agendado ${ampm(t)} con ${STM[st].n}. Se le manda la confirmación por WhatsApp.`);renderAg()}};
+  $("#qOk").onclick=()=>{const svc=$("#qS").value,v=VAR?$("#qV").value:null,z=ZN?$("#qZ").value:null,nm=$("#qName").value.trim()||"Cliente de "+(D.manualSrc||"WhatsApp");const sl=slotsFor(d,svc,"any",v,1,z,[]);if(!sl.length){$("#qErr").textContent=ZN&&!zoneOk(z,d)?"Ese día no hay ruta por esa zona.":"Ya no hay horarios libres ese día.";return}const [t,st]=sl[0];const b=addBk({svc,v,qty:1,zone:z,staff:st,date:d,start:t,dur:durOf(svc,v,1),price:priceOf(svc,v,1),name:nm,src:D.manualKey||"wa",fresh:true});closeModal();feed(`<b>${ampm(t)}</b> ${esc(nm)} (${D.manualSrc||"WhatsApp"}) · ${SV[svc].n}`);toast(`Agendado ${ampm(t)} con ${STM[st].n}. Se le manda la confirmación por WhatsApp.`);renderAg()}};
 
 /* ---------- dueño ---------- */
 function renderOwn(){const n=now();const wk=[0,1,2,3,4,5,6].map(i=>addDays(n.d,i));const W=S.bk.filter(b=>wk.includes(b.date)&&b.st!=="no"&&b.st!=="x");
@@ -146,6 +149,6 @@ V.onView={cliente:renderClient,cocina:renderAg,dueno:renderOwn};
       S.bk.push({id:++S.seq,code:String(rnd(1000,9999)),svc:sv.id,v,qty:1,zone:z,staff:s.id,date:d,start:t,dur,price:priceOf(sv.id,v,1),name:names[(k++)%names.length],x,st:past?(Math.random()<.08?"no":"done"):cur?"in":"ok",src:pick(["link","link","wa","wa","dm"]),rem:i<=1&&Math.random()<.7});t+=dur+BUF;continue}}t+=STEP}})}
   emit("seed",S)})();
 
-window.CITAS={D,S,SV,STM,ZM,VM,on,emit,addBk,priceOf,durOf,slotsFor,ampm,durTxt,addDays,now,renderAll:()=>refresh()};
+window.CITAS={D,S,SV,STM,ZM,VM,AD,on,emit,addBk,priceOf,durOf,slotsFor,ampm,durTxt,addDays,now,renderAll:()=>refresh()};
 setTimeout(()=>{renderClient();welcome(D,D.welcome.steps)},0);
 })();
