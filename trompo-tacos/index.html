@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trompo Tacos Mty · Cotiza tu taquiza (demo)</title>
+<meta name="theme-color" content="#8a1f12">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Trompo Tacos Mty · Demo de cotizador de eventos">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: cotizador de taquiza, parrillada y banquete por invitados, fechas con cupo de cuadrillas para posadas, anticipo y producción con kilos por evento.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#a8281a;--g-d:#8a1f12;--g-dd:#4d0f08;--g-l:#f8e0d9;--g-ll:#fdf4f1;--acc:#f4a51c;--acc-d:#cf860b;--acc-l:#fdebc4;
+--ink:#22120e;--ink-2:#55392f;--muted:#8a6f66;--line:#f0e3de;--paper:#fffaf7;--cream:#fffdfb;--red:#c2493f;--sh:0 14px 34px -16px rgba(34,18,14,.42);
+--display:"Bebas Neue",Impact,sans-serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:400;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#f8e0d9 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#fdebc4 0%,transparent 60%),#fffaf7;
+--dark:#1a0d0a;--dark-2:#26130e;--dark-3:#4a2a20;--dark-txt:#ecd9d2}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Trompo Tacos Mty",mark:"T",tag:"Catering y eventos"},
+hero:{chip:"Posadas: aparta tu fecha",h1a:"Tú pones el evento,",h1b:"nosotros el sabor.",lead:"Elige taquiza, parrillada VIP o banquete, cuántos invitados y qué carnes. Ves el precio por persona al momento y apartas la fecha antes de que se llene diciembre.",cta1:["Cotizar mi evento","#cotiza"],cta2:["Ver fechas libres","#fecha"],badge:["20+","años"],alt:"Trompo de pastor girando en un evento con taquiza",old:"\"Mándanos DM o WhatsApp y aparta tu fecha\"",now:"Ahora: precio y fecha en un link."},
+ticker:["Taquizas","Parrilladas VIP","Banquetes","Food truck","Eventos corporativos","Monterrey y Saltillo"],
+pkgs:[{id:"taquiza",n:"Taquiza",d:"Trompo de pastor y guisos con tortillas hechas al momento",pp:185,min:9000,mn:40,kgpp:.22,tort:5},{id:"vip",n:"Parrillada VIP",d:"Cortes a la parrilla, guarniciones y salsas",pp:340,min:16000,mn:40,kgpp:.3,tort:4},{id:"banquete",n:"Banquete",d:"Tres tiempos servidos a la mesa",pp:420,min:25000,mn:80,kgpp:.25,tort:0}],
+meats:[{id:"pastor",n:"Pastor al trompo",d:"El clásico",pk:["taquiza"]},{id:"bistec",n:"Bistec",d:"A la plancha",pk:["taquiza"]},{id:"pollo",n:"Pollo",d:"Adobado",pk:["taquiza","banquete"]},{id:"chicharron",n:"Chicharrón en salsa",d:"Guiso",pk:["taquiza"]},{id:"arrachera",n:"Arrachera",d:"Marinada",pk:["taquiza","vip","banquete"],extra:45},{id:"picanha",n:"Picanha",d:"Corte premium",pk:["vip"],extra:70},{id:"chorizo",n:"Chorizo argentino",d:"A la parrilla",pk:["vip"]},{id:"costilla",n:"Costilla",d:"Ahumada",pk:["vip","banquete"],extra:55}],
+extras:[{id:"aguas",n:"Aguas frescas",d:"Horchata y jamaica",pp:25},{id:"postre",n:"Mesa de postres",d:"Pay, flan y galletas",pp:45},{id:"mesero",n:"Meseros",d:"1 por cada 25 invitados",pp:35},{id:"truck",n:"Food truck",d:"Para eventos al aire libre",p:4500},{id:"barra",n:"Barra de salsas y elotes",d:"Esquites y salsas de la casa",pp:30}],
+types:["Posada","Cumpleaños","Evento de empresa","Boda","XV años"],
+crews:4,depositPct:30,
+loc:[["Trompo Tacos Mty · S&M Catering","<b>Guayaquil 200-1, Alta Vista, Monterrey, N.L.</b><br>Monterrey y Saltillo. trompotacosmty.com"],["Un link en su bio","Junto a su WhatsApp: el cliente cotiza solo, aparta su fecha con anticipo y producción ve los kilos de cada evento."]],
+disclaimer:"Precios, mínimos, carnes por servicio, descuentos, cuadrillas, anticipo, clientes y cifras son de ejemplo; servicios, experiencia, dirección y cobertura tomados de su Instagram.",
+welcome:{title:"Cotiza, aparta y produce en un solo link",steps:["Elija servicio, invitados y carnes: el precio por persona y el total cambian solos.","Elija fecha: el calendario muestra cuántas cuadrillas quedan libres en las posadas.","Abajo, toque <b>Producción</b> para los kilos de cada evento y <b>Dueño</b> para el calendario de diciembre."],note:"Precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
