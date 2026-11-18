@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Optilex · Agenda tu examen de la vista (demo)</title>
+<meta name="theme-color" content="#1a3a5c">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Optilex · Demo de citas y lentes">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: examen de la vista por sucursal y optometrista, armazones apartados con segundo par a mitad de precio, seguimiento de tus lentes y recordatorio anual.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<link rel="stylesheet" href="../_engine/citas.css">
+<style>
+:root{--g:#245079;--g-d:#1a3a5c;--g-dd:#0e2238;--g-l:#dde7f1;--g-ll:#f3f7fb;--acc:#e0a32e;--acc-d:#c0861a;--acc-l:#f9e8c4;
+--ink:#111a24;--ink-2:#3c4a59;--muted:#768494;--line:#e2e8ef;--paper:#f9fbfc;--cream:#fdfeff;--red:#c2493f;--sh:0 14px 34px -16px rgba(17,26,36,.42);
+--display:"DM Serif Display",Georgia,serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:400;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#dde7f1 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#f9e8c4 0%,transparent 60%),#f9fbfc;
+--dark:#0b1520;--dark-2:#121f2e;--dark-3:#273b52;--dark-txt:#d0dbe6}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Optilex",mark:"O",tag:"Óptica · García y Lincoln"},
+topBtn:"Mi cita",
+hero:{chip:"Segundo par a mitad de precio",h1a:"Ve bien,",h1b:"y siéntete bien.",lead:"Agenda tu examen de la vista en la sucursal que te quede, mira armazones antes de llegar y aparta tus favoritos. Te avisamos cuando tus lentes estén listos.",cta1:["Agendar examen","#servicios"],cta2:["Ver armazones","#lentes"],badge:["$699","armazones desde"],alt:"Armazones de lentes en exhibición en una óptica",old:"\"Info por WhatsApp\"",now:"Ahora: cita, armazón y aviso en un link."},
+ticker:["Examen de la vista","Armazones","Micas antirreflejantes","Lentes de contacto","García","Lincoln"],
+svcHead:{kicker:"Servicios",title:"¿Qué <em>necesitas</em>?",note:"Promociones de su Instagram (armazones desde $699 y segundo par a mitad de precio); lo demás de ejemplo."},
+services:[
+ {id:"exam",n:"Examen de la vista",d:"Graduación computarizada y revisión con optometrista.",min:30,p:0,tag:"Sin costo"},
+ {id:"kids",n:"Examen para niños",d:"Con paciencia y pruebas adaptadas a su edad.",min:40,p:0},
+ {id:"lc",n:"Adaptación de lentes de contacto",d:"Prueba, adaptación y enseñarte a ponerlos.",min:45,p:350},
+ {id:"ajuste",n:"Ajuste o reparación",d:"Plaquetas, tornillos y ajuste de tus lentes.",min:15,p:0}],
+zones:{label:"Sucursal",offTxt:"Cerrado",offMsg:"Esa sucursal no abre ese día.",list:[{id:"lin",n:"Sucursal Lincoln",days:[1,2,3,4,5,6]},{id:"gar",n:"Sucursal García",days:[1,2,3,4,5,6]}]},
+staff:[{id:"o1",n:"Optometrista Karla",role:"Lincoln",color:"#1a3a5c"},{id:"o2",n:"Optometrista Daniel",role:"García",color:"#c0861a"}],
+staffLabel:"Optometrista",staffShort:"Optometrista",anyLabel:"Quien esté libre",
+hours:{1:[600,1200],2:[600,1200],3:[600,1200],4:[600,1200],5:[600,1200],6:[600,1080]},step:30,lead:60,ahead:14,
+fields:[{id:"uses",label:"¿Ya usas lentes?",short:"Usa lentes",ph:"Ej. Sí, desde hace 3 años",inAg:1}],
+pickHead:"Sucursal y horario",sumTitle:"Tu cita",bookBtn:"Agendar examen",totalLabel:"Costo",
+remind:"<b>Recordatorio un día antes</b> y tus armazones apartados te esperan en la sucursal.",
+waTicket:"En el sistema real te llega esta confirmación por WhatsApp, un recordatorio un día antes y, después, avisos de tus lentes hasta que estén listos.",codeNote:"Tu graduación queda guardada",
+inBtn:"Llegó",inTxt:"En examen",doneBtn:"Terminar",doneToast:b=>`Se guarda la graduación de ${b.name}, se manda la cotización de sus lentes y se programa el recordatorio de su examen en un año.`,
+manualSrc:"WhatsApp",manualKey:"wa",src3:"Mostrador",gapBtn:"Ofrecer a pacientes",fillToast:"Aviso a pacientes con examen vencido: \"Hoy hay horario libre en tu sucursal\".",
+kpi4:["Lentes sin recoger","Pedidos listos",()=>6],
+frames:[{n:"Clásico",d:"Acetato negro",s:"cuadrado",c:"#e9e9ee",p:699},{n:"Redondo",d:"Metal dorado",s:"redondo",c:"#e0a32e",p:899},{n:"Aviador",d:"Metal plata",s:"aviador",c:"#c9d4df",p:1099},{n:"Ojo de gato",d:"Carey",s:"gato",c:"#c47a3a",p:949},{n:"Deportivo",d:"TR90 azul",s:"cuadrado",c:"#5b9be0",p:799},{n:"Infantil",d:"Flexible rojo",s:"redondo",c:"#e05b5b",p:699}],
+promo:"Segundo par a mitad de precio",
+loc:[["Optilex","<b>Sucursales García y Lincoln, Monterrey, N.L.</b><br>Info por WhatsApp. Horario de ejemplo en esta demo."],["Un link en su bio","Junto a su WhatsApp: el paciente agenda su examen, aparta armazones y recibe el aviso cuando sus lentes estén listos."]],
+disclaimer:"Precios de servicios, modelos, horarios, optometristas, pacientes y cifras son de ejemplo; sucursales y promociones tomadas de su Instagram.",
+labels:["Agenda","Dueño"],agendaTitle:"Citas del día",ownerTitle:"Esta semana",
+seed:{names:["Mariana T.","Jorge R.","Paola V.","Luis G.","Sofía M.","Carlos A.","Ana P.","Diego L."],fill:.35,uses:["Sí","No","Solo para leer","Lentes de contacto"]},
+welcome:{title:"Examen, armazones y aviso en un solo link",steps:["Elija servicio y sucursal y aparte su examen con optometrista.","Baje a <b>Armazones</b>: elija dos y vea el segundo par a mitad de precio; siga el pedido de sus lentes.","Abajo, toque <b>Agenda</b> para citas y lentes por entregar, y <b>Dueño</b> para pacientes por avisar."],note:"Precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/citas.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
