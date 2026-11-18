@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Climas Jasso · Agenda tu servicio de aire acondicionado (demo)</title>
+<meta name="theme-color" content="#0d4a7a">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Climas Jasso · Demo de agenda y equipos">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: agenda de mantenimientos e instalaciones por número de equipos y zona, historial de cada minisplit con aviso antes del calor y pólizas para negocios.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<link rel="stylesheet" href="../_engine/citas.css">
+<style>
+:root{--g:#1565a6;--g-d:#0d4a7a;--g-dd:#082c4a;--g-l:#dcebf7;--g-ll:#f2f8fd;--acc:#f28c28;--acc-d:#d4711a;--acc-l:#fde3c8;
+--ink:#0f1f2c;--ink-2:#3c5163;--muted:#738696;--line:#e0e9f1;--paper:#f8fbfd;--cream:#fdfeff;--red:#c2493f;--sh:0 14px 34px -16px rgba(15,31,44,.42);
+--display:"Sora",system-ui,sans-serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:700;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#dcebf7 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#fde3c8 0%,transparent 60%),#f8fbfd;
+--dark:#0a1622;--dark-2:#112233;--dark-3:#22405c;--dark-txt:#cfdce8}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Climas Jasso",mark:"J",tag:"Aire acondicionado"},
+topBtn:"Mi servicio",
+hero:{chip:"Más de 20 años de experiencia",h1a:"Tu minisplit listo",h1b:"antes de que llegue el calor.",lead:"Elige el servicio y cuántos equipos, pon tu zona y aparta día y hora con técnico disponible. Cada equipo queda registrado y te avisamos cuando le toque su mantenimiento.",cta1:["Agendar servicio","#servicios"],cta2:["Ver mis equipos","#equipos"],badge:["20+","años"],alt:"Minisplit recién instalado en una sala moderna",old:"Mensaje, esperar respuesta y cuadrar horario",now:"Ahora: día, hora y técnico en un link."},
+ticker:["Mantenimiento preventivo","Instalación","Reparación","Recarga de gas","Sistemas centrales","Monterrey y Saltillo"],
+svcHead:{kicker:"Servicios",title:"¿Qué <em>necesitas</em>?",note:"La instalación básica usa el precio que publicaron en Instagram ($2,700 más IVA). Lo demás son precios y tiempos de ejemplo."},
+services:[
+ {id:"mant",n:"Mantenimiento preventivo",d:"Limpieza profunda de evaporador y condensador, revisión de presiones y drenaje.",min:60,each:45,p:850,tag:"El más pedido"},
+ {id:"inst",n:"Instalación básica de minisplit",d:"Hasta 3 m de tubería, base y conexión. Precio más IVA.",min:180,each:150,p:2700,tag:"Precio publicado"},
+ {id:"diag",n:"Diagnóstico y reparación",d:"El técnico revisa la falla y cotiza la reparación en sitio.",min:60,each:30,p:550},
+ {id:"gas",n:"Recarga de gas",d:"Búsqueda de fuga y carga de refrigerante R410 o R22.",min:75,each:45,p:1400},
+ {id:"central",n:"Mantenimiento a sistema central",d:"Manejadora, condensadora y revisión de ductos.",min:150,each:90,p:2400}],
+qty:{label:"¿Cuántos equipos?",max:8,txt:n=>n===1?"1 equipo":n+" equipos"},
+zones:{label:"Tu zona",offTxt:"Sin ruta",offMsg:"Ese día los técnicos no pasan por tu zona. Los días con horarios son los de tu ruta.",list:[
+ {id:"spgg",n:"San Pedro y Valle",days:[1,2,3,4,5,6]},{id:"mty",n:"Monterrey centro y sur",days:[1,2,3,4,5,6]},{id:"cum",n:"Cumbres y Mitras",days:[1,3,5]},{id:"apo",n:"San Nicolás, Apodaca y Escobedo",days:[2,4,6]},{id:"gpe",n:"Guadalupe",days:[2,4]},{id:"salt",n:"Saltillo",days:[3]}]},
+staff:[{id:"t1",n:"Técnico Ramiro",role:"Minisplit y central",color:"#0d4a7a"},{id:"t2",n:"Técnico Iván",role:"Minisplit",svcs:["mant","diag","gas","inst"],color:"#f28c28"},{id:"t3",n:"Cuadrilla de instalación",role:"Instalaciones y central",svcs:["inst","central"],color:"#5f8a6b"}],
+staffLabel:"Técnico",staffShort:"Técnico",anyLabel:"El primero disponible",
+hours:{1:[480,1080],2:[480,1080],3:[480,1080],4:[480,1080],5:[480,1080],6:[540,840]},step:60,lead:180,ahead:14,buffer:30,
+fields:[{id:"addr",label:"Calle, número y colonia",short:"Domicilio",ph:"Ej. Río Orinoco 210, Del Valle",req:1,inAg:1},{id:"tons",label:"Marca o tonelaje (si lo sabes)",short:"Equipos",ph:"Ej. 2 de 1 ton y 1 de 2 ton",inAg:1}],
+pickHead:"Equipos, zona y horario",sumTitle:"Tu servicio",bookBtn:"Agendar servicio",totalLabel:"Total aprox.",
+remind:"<b>Recordatorio un día antes</b> y aviso por WhatsApp cuando el técnico vaya en camino.",
+waTicket:"En el sistema real te llega esta confirmación por WhatsApp, un recordatorio un día antes, aviso cuando el técnico vaya en camino y el reporte de cada equipo al terminar.",codeNote:"Tus equipos quedan registrados",
+inBtn:"Llegó",inTxt:"En servicio",doneBtn:"Terminar",doneToast:b=>`Se manda a ${b.name} el reporte de cada equipo con fotos y queda programado el aviso de su próximo mantenimiento.`,
+manualSrc:"WhatsApp",manualKey:"wa",src3:"Llamada",gapBtn:"Ofrecer a la zona",fillToast:"Aviso enviado a clientes de esa zona con mantenimiento vencido: \"Mañana pasamos por tu colonia y hay un horario libre\".",
+kpi4:["Equipos por vencer","Antes de la temporada de calor",()=>86],
+polizas:[{n:"Básica",d:"2 visitas al año, hasta 4 equipos",p:"Por cotizar"},{n:"Negocio",d:"4 visitas al año y prioridad en urgencias",p:"Por cotizar"},{n:"Empresa",d:"Visitas mensuales, sistemas centrales y VRF",p:"Por cotizar"}],
+loc:[["Climas Jasso","<b>Monterrey y Saltillo.</b><br>Ventas, mantenimientos, instalaciones y proyectos de aire acondicionado. Horario y zonas de ejemplo en esta demo."],["Un link en su bio","Junto a climasjasso.com: el cliente agenda solo, registra sus equipos y ustedes le avisan cuando toca el mantenimiento."]],
+disclaimer:"Precios (salvo la instalación básica publicada en su Instagram), tiempos, técnicos, zonas, días, pólizas, clientes y cifras son de ejemplo; servicios, experiencia y cobertura tomados de su Instagram y su página.",
+labels:["Agenda","Dueño"],agendaTitle:"Servicios del día",ownerTitle:"Esta semana",
+seed:{names:["Fam. Garza","Consultorio Leal","Sofía R.","Carlos M.","Oficinas Valle","Mariana T.","Luis G.","Restaurante Huasteca","Ana P.","Jorge V."],fill:.3,addr:["Del Valle","Cumbres 3er sector","Contry","Anáhuac","Obispado","Linda Vista"],tons:["2 de 1 ton","1 de 2 ton","3 de 1.5 ton","Central 5 ton"]},
+welcome:{title:"Agenda, equipos y pólizas en un solo link",steps:["Elija servicio y cuántos equipos, ponga su zona y aparte día y hora con técnico.","Baje a <b>Sus equipos</b>: historial de cada minisplit y aviso de cuándo toca mantenimiento.","Abajo, toque <b>Agenda</b> para los servicios y el material del día, y <b>Dueño</b> para equipos por vencer."],note:"Precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/citas.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
