@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kanuby · Cotiza tu mudanza y tu minibodega (demo)</title>
+<meta name="theme-color" content="#e8641e">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Kanuby · Demo de cotizador de mudanzas y minibodegas">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: cotizador de mudanza por inventario con camión sugerido, fechas con disponibilidad, seguimiento del día de la mudanza y minibodegas por tamaño.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#3a3a46;--g-d:#26262f;--g-dd:#17171d;--g-l:#ececf1;--g-ll:#f7f7fa;--acc:#f07a2b;--acc-d:#d2611a;--acc-l:#ffe2cd;
+--ink:#16161c;--ink-2:#45454f;--muted:#7c7c88;--line:#e6e6ec;--paper:#fafafc;--cream:#fffdfb;--red:#c2493f;--sh:0 14px 34px -16px rgba(22,22,28,.42);
+--display:"Space Grotesk",system-ui,sans-serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:700;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#ffe2cd 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#ececf1 0%,transparent 60%),#fafafc;
+--dark:#121216;--dark-2:#1b1b21;--dark-3:#34343e;--dark-txt:#d6d6de}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Kanuby",mark:"K",tag:"Mudanzas y minibodegas · MTY"},
+hero:{chip:"Promo Buen Fin aplicada",h1a:"Cotiza tu mudanza",h1b:"en un minuto.",lead:"Dinos qué mueves y de dónde a dónde: te sugerimos camión y cuadrilla, ves el precio al momento y apartas tu fecha. Y si algo no cabe en tu nueva casa, va directo a tu minibodega.",cta1:["Cotizar mudanza","#cotiza"],cta2:["Ver minibodegas","#bodegas"],badge:["4.9","en Google"],alt:"Camión de mudanzas con cajas y muebles protegidos",old:"\"Cotiza ahora\" que te manda a WhatsApp",now:"Ahora: precio, fecha y seguimiento en un link."},
+ticker:["Mudanzas residenciales","Oficinas","Monterrey a CDMX","Empaque","Minibodegas","Seguro de carga"],
+types:[{id:"local",n:"Local en Monterrey"},{id:"cdmx",n:"Monterrey a CDMX"},{id:"neg",n:"Oficina o negocio"}],
+typeBase:{cdmx:14500,neg:6500},
+rooms:[{id:"rec",label:"Recámaras",n:"recámaras",n1:"recámara",d:"cama, buró y ropero",m3:4.5,def:2},{id:"sala",label:"Sala",n:"salas",n1:"sala",d:"sofás y mesa de centro",m3:4,def:1},{id:"com",label:"Comedor",n:"comedores",n1:"comedor",d:"mesa y sillas",m3:2.5,def:1},{id:"coc",label:"Cocina",n:"cocinas",n1:"cocina",d:"refri, estufa y trastes",m3:3,def:1},{id:"lav",label:"Lavadora y secadora",n:"juegos de lavado",n1:"juego de lavado",d:"línea blanca",m3:1.5,def:0},{id:"esc",label:"Escritorios",n:"escritorios",n1:"escritorio",d:"con silla",m3:1.2,def:0},{id:"piano",label:"Piano o caja fuerte",n:"piezas especiales",n1:"pieza especial",d:"maniobra especial",m3:2,def:0},{id:"pat",label:"Patio y cochera",n:"patios",n1:"patio",d:"bicis, herramienta, macetas",m3:2.5,def:0}],
+floors:["Planta baja","Piso 1","Piso 2","Piso 3","Piso 4 o más"],
+zones:["San Pedro","Valle Oriente","Cumbres","Centro","Mitras","Contry","Carretera Nacional","San Nicolás","Guadalupe","Apodaca","Escobedo","Santa Catarina"],
+zoneH:(a,b)=>a===b?.3:([a,b].includes("Carretera Nacional")||[a,b].includes("Apodaca")||[a,b].includes("Escobedo"))?1.2:.7,
+trucks:[{id:"s",n:"Camioneta 3.5 ton",m3:10,base:900,hr:350},{id:"m",n:"Camión mediano",m3:22,base:1400,hr:480},{id:"l",n:"Camión grande",m3:36,base:2000,hr:620},{id:"xl",n:"Camión grande + camioneta",m3:999,base:3200,hr:950}],
+perPerson:450,boxP:35,deposit:1000,
+shifts:[{id:"manana",n:"Mañana · 8 am"},{id:"tarde",n:"Tarde · 2 pm"}],
+promo:{pct:15,label:"Promo Buen Fin"},
+boxes:[{id:"s",n:"Chica",m:"1.5 × 1.5 m",p:1290,vis:34,fits:["Decoración de temporada","Unas 25 cajas","Bicicletas y maletas"]},{id:"m",n:"Mediana",m:"2 × 2.5 m",p:1990,vis:46,fits:["Departamento de 1 recámara","Inventario de tienda en línea","Muebles de oficina chica"]},{id:"l",n:"Grande",m:"3 × 3 m",p:2890,vis:58,fits:["Casa de 2 recámaras","Mobiliario para eventos","Archivo y mercancía"]},{id:"xl",n:"Extra grande",m:"3 × 5 m",p:3990,vis:70,fits:["Casa de 3 recámaras completa","Remodelación de casa","Bodega de negocio"]}],
+boxPromo:"20% al contratar 3 meses",
+loc:[["Kanuby","<b>Mudanzas residenciales en Monterrey y área metropolitana, y minibodegas.</b><br>WhatsApp 81 1028 7087."],["Un link en su bio","En lugar de \"Cotiza ahora\" que manda a WhatsApp: el cliente cotiza, aparta su fecha con anticipo y sigue su mudanza solo."]],
+disclaimer:"Precios, camiones, tiempos, turnos, tamaños y precios de bodegas, clientes y cifras son de ejemplo; servicios, calificación, promociones del Buen Fin y WhatsApp tomados de su Instagram y su página.",
+welcome:{title:"Cotiza, aparta y sigue tu mudanza en un solo link",steps:["Cambie cuartos, pisos y zonas: el camión, la cuadrilla y el precio cambian solos.","Elija día y turno: solo aparecen los turnos con un camión del tamaño que necesita.","Abajo, toque <b>Operación</b> para los camiones del día y <b>Dueño</b> para cotizaciones sin cerrar y bodegas."],note:"Precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

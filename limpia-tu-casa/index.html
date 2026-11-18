@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Limpia tu Casa · Cotiza y agenda tu lavado (demo)</title>
+<meta name="theme-color" content="#0f6b6b">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Limpia tu Casa · Demo de cotizador y agenda">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: cotizador al momento de salas, colchones, sillas y tapetes con foto, agenda por cuadrilla, fotos de antes y después y recordatorio del siguiente lavado.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#138585;--g-d:#0f6b6b;--g-dd:#0a3a3d;--g-l:#d6efee;--g-ll:#f0f9f8;--acc:#f2b33d;--acc-d:#d6971f;--acc-l:#fdecc8;
+--ink:#10272a;--ink-2:#3b5558;--muted:#738a8c;--line:#dfeceb;--paper:#f7fbfb;--cream:#fdfffe;--red:#c2493f;--sh:0 14px 34px -16px rgba(16,39,42,.42);
+--display:"Outfit",system-ui,sans-serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:700;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#d6efee 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#fdecc8 0%,transparent 60%),#f7fbfb;
+--dark:#0b1a1c;--dark-2:#122729;--dark-3:#244346;--dark-txt:#cfe0e0}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Limpia tu Casa",mark:"L",tag:"Lavado de muebles · MTY · QRO · CUN"},
+hero:{chip:"Cotiza en un minuto",h1a:"Tu sala como nueva,",h1b:"con precio al momento.",lead:"Elige qué lavamos, sube una foto y ve tu precio sin esperar respuesta. Aparta el día con la cuadrilla y recibe las fotos de antes y después al terminar.",cta1:["Cotizar ahora","#cotiza"],cta2:["Ver antes y después","#despues"],badge:["800+","reseñas"],alt:"Sala tapizada recién lavada en una casa luminosa",old:"WhatsApp, fotos, esperar cotización y elegir día",now:"Ahora: precio, día y fotos en un solo link."},
+ticker:["Salas","Colchones","Sillas","Tapetes","Alfombras","Monterrey · Querétaro · Cancún"],
+cities:[{id:"mty",n:"Monterrey",zones:["San Pedro","Monterrey","Guadalupe","San Nicolás","Apodaca","Santa Catarina"]},{id:"qro",n:"Querétaro",zones:["Juriquilla","Centro","El Refugio","Corregidora"]},{id:"cun",n:"Cancún",zones:["Zona Hotelera","Centro","Puerto Cancún","Playa del Carmen"]}],
+items:[{id:"sala3",n:"Sala 3 piezas",d:"3-2-1",p:1250,min:120,max:3},{id:"sala5",n:"Sala en L o modular",d:"hasta 6 plazas",p:1650,min:150,max:2},{id:"sillas",n:"Sillas de comedor",d:"asiento y respaldo",p:120,min:10,max:20},{id:"colchonM",n:"Colchón individual o matrimonial",d:"ambos lados",p:650,min:45,max:6},{id:"colchonK",n:"Colchón queen o king",d:"ambos lados",p:850,min:60,max:6},{id:"tapete",n:"Tapete o alfombra",d:"por metro cuadrado",p:95,min:6,max:60,unit:"m²",step:2}],
+conds:[{id:"manchas",n:"Manchas difíciles",pct:15},{id:"mascota",n:"Pelo u olor de mascota",pct:10},{id:"orina",n:"Orina",pct:20},{id:"claro",n:"Tela muy clara",pct:10}],
+slots:["8 a 11 am","11 am a 2 pm","2 a 5 pm","5 a 7 pm"],
+crews:["Cuadrilla 1","Cuadrilla 2","Cuadrilla 3"],
+loc:[["Limpia tu Casa","<b>Monterrey y área metropolitana, Querétaro y Cancún.</b><br>WhatsApp Monterrey 81 3639 5018."],["Un link en su bio","Junto a su WhatsApp: el cliente cotiza y aparta solo, y sus asesores solo confirman fotos y cierran."]],
+disclaimer:"Precios, tiempos, recargos, bloques, cuadrillas, clientes y cifras son de ejemplo; ciudades, servicios, reseñas y WhatsApp tomados de su Instagram y su página.",
+welcome:{title:"Cotiza, agenda y entrega con fotos en un solo link",steps:["Elija ciudad, piezas y cómo están, y toque la foto: el precio se fija al momento.","Elija día y bloque: el sistema descarta los bloques donde no alcanza el tiempo.","Abajo, toque <b>Cuadrillas</b> para la ruta de hoy y <b>Dueño</b> para cotizaciones sin agendar."],note:"Precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
