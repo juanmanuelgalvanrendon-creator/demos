@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fumigaciones Ranger · Agenda tu servicio (demo)</title>
+<meta name="theme-color" content="#1f4d2e">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Fumigaciones Ranger · Demo de agenda y certificados">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: agenda por plaga y tipo de espacio con precio al momento, foto de la plaga para el técnico, garantía con revisita y certificado para negocios.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<link rel="stylesheet" href="../_engine/citas.css">
+<style>
+:root{--g:#2c6b40;--g-d:#1f4d2e;--g-dd:#12301c;--g-l:#dcefe2;--g-ll:#f2f9f4;--acc:#e8b723;--acc-d:#c79a0f;--acc-l:#fbefc4;
+--ink:#121c15;--ink-2:#3c4c41;--muted:#748479;--line:#e1ebe4;--paper:#f8fbf9;--cream:#fdfffd;--red:#c2493f;--sh:0 14px 34px -16px rgba(18,28,21,.42);
+--display:"Archivo",system-ui,sans-serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:800;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#dcefe2 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#fbefc4 0%,transparent 60%),#f8fbf9;
+--dark:#0d1610;--dark-2:#142219;--dark-3:#28402f;--dark-txt:#d0e0d5}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Fumigaciones Ranger",mark:"R",tag:"Control de plagas"},
+topBtn:"Mi servicio",
+hero:{chip:"Casas, oficinas y negocios",h1a:"Si ya viste una,",h1b:"agéndalo hoy.",lead:"Elige la plaga y tu tipo de espacio, ve el precio al momento y aparta día y hora con técnico. Manda foto de lo que viste y te queda la garantía con revisita.",cta1:["Agendar servicio","#servicios"],cta2:["Ver garantía","#garantia"],badge:["21k","seguidores"],alt:"Técnico de control de plagas con equipo de aspersión en una cocina limpia",old:"\"Mándanos foto o video y te cotizamos\"",now:"Ahora: precio, horario y garantía en un link."},
+ticker:["Cucaracha alemana","Termitas","Palomas","Roedores","Chinches","Monterrey"],
+svcHead:{kicker:"Servicios",title:"¿Qué <em>plaga</em> tienes?",note:"Servicios de sus publicaciones; precios, tiempos y recargos de ejemplo."},
+services:[
+ {id:"cuca",n:"Cucaracha alemana",d:"Gel y aspersión focalizada en cocina y baños.",min:60,p:950,tag:"Lo más pedido"},
+ {id:"gral",n:"Fumigación general",d:"Rastreros y voladores en interior y exterior.",min:75,p:1100},
+ {id:"term",n:"Termitas",d:"Inyección del producto en madera, jardineras y troncos.",min:150,p:2800},
+ {id:"pal",n:"Control de palomas",d:"Picos, mallas o repelente según el caso.",min:120,p:2200,from:1},
+ {id:"roe",n:"Roedores",d:"Estaciones de cebo y sellado de accesos.",min:60,p:1200},
+ {id:"chin",n:"Chinches de cama",d:"Tratamiento de colchones, muebles y recámaras.",min:120,p:2400}],
+variant:{label:"Tipo de espacio",short:"Espacio",def:0,opts:[{id:"casa",n:"Casa",sub:"hasta 150 m²",mult:1},{id:"depto",n:"Departamento",sub:"hasta 90 m²",mult:.85},{id:"casag",n:"Casa grande",sub:"más de 150 m²",mult:1.35,add:30},{id:"neg",n:"Oficina o local",sub:"con certificado",mult:1.5,add:30},{id:"bod",n:"Bodega o restaurante",sub:"con certificado",mult:2.1,add:60}]},
+zones:{label:"Tu zona",offTxt:"Sin ruta",offMsg:"Ese día no hay técnico en tu zona.",list:[{id:"mty",n:"Monterrey",days:[1,2,3,4,5,6]},{id:"spgg",n:"San Pedro",days:[1,2,3,4,5,6]},{id:"gpe",n:"Guadalupe",days:[1,3,5]},{id:"snn",n:"San Nicolás y Apodaca",days:[2,4,6]},{id:"esc",n:"Escobedo y García",days:[2,5]},{id:"sta",n:"Santa Catarina",days:[3,6]}]},
+staff:[{id:"t1",n:"Técnico Ranger 1",role:"Rastreros y termitas",color:"#1f4d2e"},{id:"t2",n:"Técnico Ranger 2",role:"Rastreros, roedores y palomas",color:"#c79a0f"}],
+staffLabel:"Técnico",staffShort:"Técnico",anyLabel:"El primero disponible",
+hours:{0:[540,840],1:[480,1140],2:[480,1140],3:[480,1140],4:[480,1140],5:[480,1140],6:[480,1080]},step:60,lead:120,ahead:14,buffer:30,
+fields:[{id:"addr",label:"Calle, número y colonia",short:"Domicilio",ph:"Ej. Av. Lincoln 1200, Mitras",req:1,inAg:1},{id:"pets",label:"¿Hay mascotas o bebés?",short:"Cuidado",ph:"Ej. Un perro y un bebé",inAg:1}],
+pickHead:"Espacio, zona y horario",sumTitle:"Tu servicio",bookBtn:"Agendar servicio",totalLabel:"Total",
+remind:"<b>Indicaciones un día antes</b> (qué guardar y cuánto tiempo salir) y aviso cuando el técnico vaya en camino.",
+waTicket:"En el sistema real te llega esta confirmación por WhatsApp, las indicaciones para preparar tu casa un día antes y la garantía al terminar.",codeNote:"Garantía de 30 días con revisita",
+inBtn:"Llegó",inTxt:"Aplicando",doneBtn:"Terminar",doneToast:b=>`Se manda a ${b.name} su garantía, el tiempo para volver a entrar y la fecha de su siguiente aplicación${b.v==="neg"||b.v==="bod"?", más el certificado para su negocio":""}.`,
+manualSrc:"DM",manualKey:"dm",src3:"WhatsApp",gapBtn:"Ofrecer a la zona",fillToast:"Aviso a clientes de esa zona con aplicación por vencer: \"Mañana pasamos por tu colonia\".",
+kpi4:["Revisitas y contratos","Por atender esta semana",()=>11],
+loc:[["Fumigaciones Ranger","<b>Monterrey, N.L.</b><br>Casas, oficinas, locales, negocios, jardines y bodegas. Horario y zonas de ejemplo en esta demo."],["Un link en su bio","Junto a sus testimonios: el cliente agenda solo, manda la foto de la plaga y recibe su garantía y certificado."]],
+disclaimer:"Precios, tiempos, recargos por espacio, zonas, técnicos, garantía, clientes y cifras son de ejemplo; servicios y tipos de espacio tomados de su Instagram.",
+labels:["Agenda","Dueño"],agendaTitle:"Servicios del día",ownerTitle:"Esta semana",
+seed:{names:["Fam. Garza","Restaurante El Fogón","Sofía R.","Gimnasio Power","Carlos M.","Mariana T.","Oficinas Torre Sur","Luis G.","Ana P.","Taquería Don Pepe"],fill:.3,addr:["Mitras","Cumbres","Del Valle","Anáhuac","Contry","Linda Vista"],pets:["Un perro","Bebé de 1 año","Gato","Sin mascotas"]},
+welcome:{title:"Agenda, foto y garantía en un solo link",steps:["Elija plaga y tipo de espacio: el precio y el tiempo cambian solos. Aparte día y hora en su zona.","Baje a <b>Foto, garantía y certificado</b>: suba la foto de la plaga y vea el certificado para negocios.","Abajo, toque <b>Agenda</b> para la ruta y los avisos del día y <b>Dueño</b> para contratos y revisitas."],note:"Precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/citas.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
