@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mon Minou · Reserva tu visita y adopta (demo)</title>
+<meta name="theme-color" content="#7a3e56">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Mon Minou · Demo de visitas y adopciones">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: reserva de visita con cupo, ficha de cada michi en adopción y solicitud en línea paso a paso.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<link rel="stylesheet" href="../_engine/citas.css">
+<style>
+:root{--g:#94506d;--g-d:#7a3e56;--g-dd:#401e2d;--g-l:#f3e2e9;--g-ll:#fbf5f7;--acc:#e8a55d;--acc-d:#c98739;--acc-l:#f9e5cc;
+--ink:#26161d;--ink-2:#54404a;--muted:#8a7680;--line:#efe3e8;--paper:#fffafb;--cream:#fffdfd;--red:#c2493f;--sh:0 14px 34px -16px rgba(38,22,29,.42);
+--display:"Playfair Display",Georgia,serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:600;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#f3e2e9 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#f9e5cc 0%,transparent 60%),#fffafb;
+--dark:#1d1015;--dark-2:#2a1820;--dark-3:#4d2f3b;--dark-txt:#ecd9e1}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Mon Minou",mark:"M",tag:"Cat café · Valle Oriente"},
+topBtn:"Mi visita",
+hero:{chip:"Todos los michis están en adopción",h1a:"Café francés,",h1b:"michis y una buena causa.",lead:"Aparta tu mesa para que no te toque esperar, conoce a los michis antes de llegar y, si te enamoras de uno, inicia tu adopción desde aquí.",cta1:["Reservar visita","#servicios"],cta2:["Conocer a los michis","#michis"],badge:["28k","seguidores"],alt:"Gato descansando en una cafetería acogedora",old:"Llegar y esperar mesa",now:"Ahora: mesa apartada y adopción en línea."},
+ticker:["Café","Postres franceses","Michis en adopción","Valle Oriente","San Pedro"],
+svcHead:{kicker:"Tu visita",title:"¿Cómo <em>vienes</em>?",note:"Horario tomado de su Instagram; precios, cupos y duración de ejemplo."},
+services:[
+ {id:"visita",n:"Visita al cat café",d:"Una hora con los michis. Incluye bebida de la casa.",min:60,p:150,tag:"La más pedida"},
+ {id:"brunch",n:"Visita con crepa",d:"Una hora con los michis, bebida y crepa francesa.",min:75,p:260},
+ {id:"adop",n:"Cita para conocer a un michi",d:"Para quien ya inició su solicitud de adopción.",min:45,p:0}],
+qty:{label:"¿Cuántas personas?",max:6,txt:n=>n===1?"1 persona":n+" personas"},
+staff:[{id:"m1",n:"Mesa ventana",role:"2 a 4 personas"},{id:"m2",n:"Mesa sala",role:"2 a 6 personas"},{id:"m3",n:"Mesa jardín",role:"2 a 4 personas"},{id:"m4",n:"Barra",role:"1 a 2 personas"}],
+staffLabel:"Mesa",staffShort:"Mesa",anyLabel:"La que esté libre",
+hours:{0:[660,1020],2:[720,1200],3:[720,1200],4:[720,1200],5:[720,1200],6:[660,1140]},step:30,lead:60,ahead:14,
+fields:[{id:"occ",label:"¿Celebras algo?",short:"Ocasión",ph:"Ej. Cumpleaños",inAg:1}],
+pickHead:"Personas y horario",sumTitle:"Tu visita",bookBtn:"Reservar visita",totalLabel:"Total",
+remind:"<b>Recordatorio un día antes</b> y las reglas de la casa para convivir con los michis.",
+waTicket:"En el sistema real te llega esta confirmación por WhatsApp, un recordatorio un día antes y las reglas para convivir con los michis.",codeNote:"Muéstralo al llegar",
+inBtn:"Llegaron",inTxt:"Con los michis",doneBtn:"Terminar",doneToast:b=>`Se le manda a ${b.name} el agradecimiento y la ficha de los michis que conoció, por si quiere adoptar.`,
+manualSrc:"DM",manualKey:"dm",src3:"Llegó sin reserva",gapBtn:"Ofrecer en historias",fillToast:"Se publica en historias: \"Hoy hay mesas libres a las 5:00 pm\".",
+kpi4:["Solicitudes de adopción","Por revisar",()=>3],
+cats:[{n:"Flor",a:"1 año",s:"hembra",d:"Tranquila y cariñosa, le encanta dormir cerca de la ventana.",t:["Tranquila","Con otros gatos","Departamento"]},{n:"Giyu",a:"8 meses",s:"macho",d:"Juguetón y curioso, siempre es el primero en saludar.",t:["Juguetón","Activo","Familia"]},{n:"Tigra",a:"2 años",s:"hembra",d:"Independiente, pero cuando te elige ya no te suelta.",t:["Independiente","Casa con patio"]},{n:"Sophie",a:"10 meses",s:"hembra",d:"Dulce y platicadora, perfecta para su primera adopción.",t:["Dulce","Primera adopción"]},{n:"Bruno",a:"3 años",s:"macho",d:"Grandote y apapachador. Ejemplo para la demo.",t:["Apapachador","Tranquilo"]},{n:"Canela",a:"6 meses",s:"hembra",d:"Pequeña exploradora. Ejemplo para la demo.",t:["Juguetona","Familia"]}],
+loc:[["Mon Minou","<b>Av. Lázaro Cárdenas 2264, Valle Oriente, San Pedro Garza García, N.L.</b><br>Mar a vie 12 a 8 pm · Sáb 11 am a 7 pm · Dom 11 am a 5 pm."],["Un link en su bio","En lugar de solo la página informativa: el cliente aparta su visita, conoce a los michis e inicia su adopción en línea."]],
+disclaimer:"Precios, servicios, mesas, cupos, fichas de los michis (salvo los nombres Flor, Giyu, Tigra y Sophie de sus publicaciones), solicitudes y cifras son de ejemplo; dirección, horario y adopción tomados de su Instagram.",
+labels:["Agenda","Dueña"],agendaTitle:"Visitas del día",ownerTitle:"Esta semana",
+seed:{names:["Sofía R.","Andrea M.","Valeria G.","Luis T.","Mariana T.","Paola G.","Diego P.","Regina S."],fill:.4,occ:["Cumpleaños","Cita","Con amigas",""]},
+welcome:{title:"Visitas y adopciones en un solo link",steps:["Elija cómo viene y cuántas personas y aparte su mesa.","Baje a <b>Conoce a los michis</b>: vea su ficha e inicie su solicitud de adopción paso a paso.","Abajo, toque <b>Agenda</b> para visitas y citas de adopción, y <b>Dueña</b> para solicitudes por revisar."],note:"Precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/citas.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
