@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Centro Acuático Arrecifes · Horarios con lugar (demo)</title>
+<meta name="theme-color" content="#0a6c8a">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Centro Acuático Arrecifes · Demo de horarios e inscripciones">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: grupos de natación por edad y nivel con lugares en vivo, clase muestra o inscripción, reposición de faltas y niveles para papás.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@600;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#0e86a8;--g-d:#0a6c8a;--g-dd:#063f52;--g-l:#d6eff6;--g-ll:#f0f9fc;--acc:#ff8a3d;--acc-d:#e26d1f;--acc-l:#ffe2cf;
+--ink:#0d2129;--ink-2:#3a535c;--muted:#728990;--line:#ddeaee;--paper:#f7fbfc;--cream:#fdffff;--red:#c2493f;--sh:0 14px 34px -16px rgba(13,33,41,.42);
+--display:"Lexend",system-ui,sans-serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:700;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#d6eff6 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#ffe2cf 0%,transparent 60%),#f7fbfc;
+--dark:#08171d;--dark-2:#0f252e;--dark-3:#1f4552;--dark-txt:#cde2e8}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Arrecifes",mark:"A",tag:"Centro Acuático · Escobedo"},
+hero:{chip:"Bebés, niños y adultos",h1a:"Su lugar en el agua,",h1b:"apartado en un minuto.",lead:"Ve los grupos por edad y nivel con los lugares que quedan, aparta una clase muestra o inscríbete al momento. Si falta, repone en otro horario con lugar, sin llamar.",cta1:["Ver horarios","#horarios"],cta2:["Ver niveles","#niveles"],badge:["15k","en Facebook"],alt:"Alberca techada con carriles y luz natural",old:"Preguntar horarios y lugares por mensaje",now:"Ahora: grupos con lugar y reposiciones en un link."},
+ticker:["Bebés","Niños","Adultos","Nado libre","Escobedo","Clases muestra"],
+progs:[{id:"bebes",n:"Bebés",age:"6 a 36 meses con papá o mamá",d:"Familiarización con el agua, juego y confianza.",cap:6,m:850},{id:"ninos1",n:"Niños nivel 1",age:"4 a 7 años",d:"Flotar, patada y perderle el miedo al agua.",cap:8,m:950},{id:"ninos2",n:"Niños nivel 2",age:"6 a 12 años",d:"Crol y dorso con respiración.",cap:8,m:950},{id:"adultos",n:"Adultos",age:"Desde 15 años",d:"Desde cero o para mejorar técnica.",cap:10,m:1050}],
+slots:[{p:"bebes",days:[2,4],t:"9:00 am",lane:1},{p:"bebes",days:[6],t:"10:00 am",lane:1},{p:"ninos1",days:[1,3],t:"4:00 pm",lane:2},{p:"ninos1",days:[1,3],t:"5:00 pm",lane:2},{p:"ninos1",days:[2,4],t:"5:00 pm",lane:3},{p:"ninos2",days:[1,3],t:"6:00 pm",lane:3},{p:"ninos2",days:[2,4],t:"6:00 pm",lane:4},{p:"ninos2",days:[6],t:"11:00 am",lane:3},{p:"adultos",days:[1,3,5],t:"7:00 am",lane:5},{p:"adultos",days:[2,4],t:"7:00 pm",lane:5},{p:"adultos",days:[1,3],t:"8:00 pm",lane:6}],
+levels:[{n:"Burbuja",i:"🫧"},{n:"Pececito",i:"🐟"},{n:"Tortuga",i:"🐢"},{n:"Delfín",i:"🐬"},{n:"Tiburón",i:"🦈"}],
+insc:500,muestra:150,
+loc:[["Centro Acuático Arrecifes","<b>Av. Raúl Salinas Lozano 287, General Escobedo, N.L.</b><br>Horarios, programas y precios de ejemplo en esta demo."],["Un link en su página","Los papás ven horarios con lugar, se inscriben y reponen faltas solos; recepción solo pasa lista."]],
+disclaimer:"Programas, horarios, carriles, cupos, niveles, precios, alumnos y cifras son de ejemplo; nombre, dirección y clases de natación tomados de su Facebook e Instagram.",
+welcome:{title:"Grupos con lugar, inscripción y reposiciones en un solo link",steps:["Filtre por programa y elija un grupo: ve cuántos lugares quedan en cada horario.","Aparte clase muestra o inscríbase; abajo vea cómo se repone una falta y el nivel del alumno.","Abajo, toque <b>Recepción</b> para pasar lista de los grupos de hoy y <b>Dueño</b> para ocupación y listas de espera."],note:"Horarios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
