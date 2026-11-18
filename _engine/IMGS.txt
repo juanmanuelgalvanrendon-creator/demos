@@ -49,3 +49,4 @@ trompo-tacos hero: chatgpt 6afe1f48-4338-83e8-9b47-50794a316187
 optilex hero: chatgpt 6afe2043-d1d0-83e8-86df-627665a577ae
 arrecifes hero: chatgpt 6afe214f-5890-83e8-bedd-4125d52ab4ee
 ola-creativa hero: chatgpt 6afe224d-4fac-83e8-827d-502228d6287a
+mon-minou hero/michis: chatgpt 6afe2325-6e38-83e8-be17-1981a56f8641

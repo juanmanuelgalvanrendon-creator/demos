@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kawaii Cafe MTY · Eventos de fandom (demo)</title>
+<meta name="theme-color" content="#d4588f">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Kawaii Cafe MTY · Demo de eventos y pedidos">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: calendario de eventos de fandom con registro y cupo, solicitud para organizadores con paquete y menú para pedir desde la mesa.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#e06a9e;--g-d:#d4588f;--g-dd:#6b2a49;--g-l:#fbe3ee;--g-ll:#fff5f9;--acc:#8b7bd8;--acc-d:#6f5ec2;--acc-l:#e6e1fb;
+--ink:#2a1622;--ink-2:#5a4251;--muted:#927d89;--line:#f3e3ea;--paper:#fffafc;--cream:#fffdfe;--red:#c2493f;--sh:0 14px 34px -16px rgba(42,22,34,.42);
+--display:"Fredoka",system-ui,sans-serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:700;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#fbe3ee 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#e6e1fb 0%,transparent 60%),#fffafc;
+--dark:#1c1019;--dark-2:#2a1825;--dark-3:#4d2e45;--dark-txt:#ecd9e4}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Kawaii Cafe",mark:"K",tag:"Crepería · Barrio Antiguo"},
+hero:{chip:"Cupsleeves y birthday cafés",h1a:"Celebra a tu idol",h1b:"con tu fandom.",lead:"Regístrate a los eventos de tu fandom y aparta tu lugar con código. ¿Organizas uno? Aparta el café con tu paquete en un minuto. Y en el café, pide crepas desde tu mesa.",cta1:["Ver eventos","#eventos"],cta2:["Organizar evento","#organiza"],badge:["Crepas","y bubble tea"],alt:"Cafetería kawaii decorada en tonos pastel con crepas",old:"Registros por DM y filas para pedir",now:"Ahora: registro, apartado y pedidos en un link."},
+ticker:["Cupsleeves","Birthday cafés","Crepas","Bubble tea","Barrio Antiguo"],
+events:[{n:"Birthday café de ejemplo",fd:"STAY",org:"@cuenta_de_fans",in:3,t:"4:00 pm",cap:60,left:7,gift:"Cupsleeve, photocard y sticker",c:"#e06a9e"},{n:"Cupsleeve de aniversario",fd:"CARAT",org:"@cuenta_de_fans",in:10,t:"3:00 pm",cap:50,left:0,gift:"Cupsleeve y llavero",c:"#8b7bd8"},{n:"Fan meeting de ejemplo",fd:"MOA",org:"@cuenta_de_fans",in:17,t:"5:00 pm",cap:40,left:22,gift:"Photocard y pulsera",c:"#5bb8c9"}],
+pkgs:[{id:"basico",n:"Básico",d:"El café para tu fandom 3 horas",p:1500,inc:["Mesa de regalitos","Música de tu fandom"]},{id:"cups",n:"Cupsleeve",d:"Con vasos y menú temático",p:2500,pp:35,inc:["Bebida temática por persona","Mesa de regalitos","Pantalla con videos"]},{id:"full",n:"Birthday café",d:"Decoración, pastel y todo",p:4200,pp:60,inc:["Decoración con su color","Pastel para la foto","Bebida y crepa por persona"]}],
+dep:1000,
+menu:[{n:"Crepa de Nutella y fresa",d:"La favorita",p:95},{n:"Crepa de cajeta y nuez",d:"Dulce de la casa",p:90},{n:"Crepa de jamón y queso",d:"Salada",p:85},{n:"Bubble tea de taro",d:"Con tapioca",p:75},{n:"Frappé de fresa",d:"Con crema",p:70},{n:"Matcha latte",d:"Frío o caliente",p:65}],
+loc:[["Kawaii Cafe MTY","<b>José María Morelos 1078, Barrio Antiguo, Monterrey, N.L.</b><br>Horario, paquetes y precios de ejemplo en esta demo."],["Un link en su bio","Los fans se registran solos, los organizadores apartan su fecha y en el café se pide desde la mesa."]],
+disclaimer:"Eventos, organizadores, cupos, regalitos, paquetes, menú, precios y cifras son de ejemplo; dirección y concepto tomados de su Instagram y de las cuentas de fans que los etiquetan.",
+welcome:{title:"Eventos, organizadores y pedidos en un solo link",steps:["Regístrese a un evento y reciba su código; vea cómo se llena el cupo.","Como organizador, elija paquete, fecha y personas, y aparte; abajo pida crepas desde la mesa.","Abajo, toque <b>Recepción</b> para validar códigos y <b>Dueño</b> para solicitudes de organizadores."],note:"Eventos y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
