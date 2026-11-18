@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ola Creativa · Cotiza tus personalizados (demo)</title>
+<meta name="theme-color" content="#2b3a8f">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Ola Creativa · Demo de cotizador de personalizados">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: cotizador de artículos personalizados por técnica y volumen, vista previa con tu logo, fecha de entrega antes de Navidad, aprobación de diseño y producción por etapas.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#3a4bb0;--g-d:#2b3a8f;--g-dd:#18225a;--g-l:#e0e4f7;--g-ll:#f4f5fd;--acc:#ff6b5a;--acc-d:#e04f3e;--acc-l:#ffe0dc;
+--ink:#141833;--ink-2:#434a6b;--muted:#7a809c;--line:#e4e6f2;--paper:#fafaff;--cream:#fefeff;--red:#c2493f;--sh:0 14px 34px -16px rgba(20,24,51,.42);
+--display:"Unbounded",system-ui,sans-serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:700;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#e0e4f7 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#ffe0dc 0%,transparent 60%),#fafaff;
+--dark:#0f1228;--dark-2:#171b3a;--dark-3:#2e3566;--dark-txt:#d3d6ec}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Ola Creativa",mark:"O",tag:"Imprenta y personalizados"},
+hero:{chip:"Regalos navideños para empresas",h1a:"Tu logo en lo que sea,",h1b:"cotizado al momento.",lead:"Elige artículo, técnica y cantidad: el precio por pieza baja solo y ves cuándo te lo entregamos. Sube tu logo, aprueba tu prueba digital desde el celular y sigue tu pedido.",cta1:["Cotizar ahora","#cotiza"],cta2:["Barrita Creativa","#barrita"],badge:["DTF UV","y más"],alt:"Tazas, termos y playeras personalizadas en un taller de impresión",old:"\"Cotiza el artículo que deseen\" por mensaje",now:"Ahora: precio, fecha y aprobación en un link."},
+ticker:["Playeras","Tazas","Termos","Totes","Vasitos","Coroplast","Promocionales"],
+items:[{id:"play",n:"Playera",e:"👕",s:"play",p:75,ly:70,techs:["dtf","seri"]},{id:"taza",n:"Taza",e:"☕",s:"taza",p:55,ly:85,techs:["sub","dtfuv"]},{id:"termo",n:"Termo",e:"🥤",s:"termo",p:140,ly:95,techs:["laser","dtfuv"]},{id:"tote",n:"Tote bag",e:"👜",s:"tote",p:45,ly:100,techs:["seri","dtf"]},{id:"vaso",n:"Vasito",e:"🥛",s:"vaso",p:35,ly:90,techs:["dtfuv"]},{id:"coro",n:"Coroplast",e:"🪧",s:"coro",p:260,ly:85,techs:["gran"]}],
+techs:[{id:"dtf",n:"DTF",d:"Full color, ideal desde 1 pieza",p:45,dd:3},{id:"seri",n:"Serigrafía",d:"La más económica en volumen",p:20,setup:450,dd:5},{id:"sub",n:"Sublimación",d:"Full color en tazas blancas",p:25,dd:3},{id:"dtfuv",n:"DTF UV",d:"Brillante, en vidrio y metal",p:40,dd:3},{id:"laser",n:"Grabado láser",d:"Elegante, no se borra",p:55,dd:4},{id:"gran",n:"Gran formato",d:"Impresión directa en coroplast",p:0,dd:2}],
+tiers:[{min:300,f:.7,l:"300+ · 30% menos"},{min:100,f:.8,l:"100+ · 20% menos"},{min:50,f:.88,l:"50+ · 12% menos"},{min:12,f:.95,l:"12+ · 5% menos"},{min:1,f:1,l:"1 a 11"}],
+colors:["#ffffff","#1d1d1f","#2b3a8f","#e94d3d","#f6c445","#7fb59a"],
+xmas:"2026-12-19",
+bar:[{n:"Boda o XV",d:"Totes o vasitos con el nombre de cada invitado",p:"Por cotizar"},{n:"Baby shower",d:"Bodies, baberos y tazas con los personajes que elijas",p:"Por cotizar"},{n:"Evento de empresa",d:"Termos o playeras con su logo, hechos en el momento",p:"Por cotizar"}],
+loc:[["Ola Creativa","<b>Imprenta y artículos personalizados en Monterrey.</b><br>Merch para negocios, regalos y Barrita Creativa para eventos."],["Un link en su bio","El cliente cotiza, sube su logo y aprueba su prueba digital solo; producción ve cada pedido por etapa."]],
+disclaimer:"Precios, técnicas por artículo, tiempos, descuentos por volumen, fecha límite de Navidad, clientes y cifras son de ejemplo; artículos, DTF UV, coroplast y Barrita Creativa tomados de su Instagram.",
+welcome:{title:"Cotiza, aprueba y sigue tu pedido en un solo link",steps:["Elija artículo, técnica, cantidad y color: el precio por pieza y la fecha de entrega cambian solos.","Suba su logo (toque para simular) y haga el pedido; luego apruebe la prueba digital.","Abajo, toque <b>Producción</b> para los pedidos por etapa y <b>Dueño</b> para empresas que repiten."],note:"Precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

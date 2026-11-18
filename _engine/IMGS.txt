@@ -47,3 +47,4 @@ fumigaciones-ranger hero: chatgpt 6afe1d4f-ecb0-83e8-a541-db393cf6777b
 escuela-manejo hero: chatgpt 6afe1e59-5e0c-83e8-a6b5-62cb1b5e1fe9
 trompo-tacos hero: chatgpt 6afe1f48-4338-83e8-9b47-50794a316187
 optilex hero: chatgpt 6afe2043-d1d0-83e8-86df-627665a577ae
+arrecifes hero: chatgpt 6afe214f-5890-83e8-bedd-4125d52ab4ee
