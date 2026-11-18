@@ -40,3 +40,4 @@ fortissimo hero: chatgpt 6afccc08-8a7c-83e8-97d2-2dd48380e866
 carinito-floral hero/arreglo/entrega: chatgpt 6afccd09-4ac0-83e8-b8cf-6c7a74b45d19
 espuma-lavanderia hero: chatgpt 6afccde5-9620-83e8-a53d-717f85444c45
 limpia-tu-casa hero/sala: chatgpt 6afe1648-332c-83e8-8eb3-0a4d7eedfae6
+kanuby hero: chatgpt 6afe1797-6f30-83e8-b976-e6ce2a53a8ab
