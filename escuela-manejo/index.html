@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Escuela de Manejo Monterrey · Agenda tu clase (demo)</title>
+<meta name="theme-color" content="#1b4f9c">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Escuela de Manejo Monterrey · Demo">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: clases por paquete, transmisión e instructor con recogida a domicilio, avance del alumno, certificado y tarjetas de regalo de Navidad.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<link rel="stylesheet" href="../_engine/citas.css">
+<style>
+:root{--g:#2563b8;--g-d:#1b4f9c;--g-dd:#0f2f61;--g-l:#dde8f8;--g-ll:#f2f6fd;--acc:#f5b400;--acc-d:#d19900;--acc-l:#fff0c2;
+--ink:#101b30;--ink-2:#3c4b66;--muted:#74839c;--line:#e0e7f2;--paper:#f8faff;--cream:#fdfeff;--red:#c2493f;--sh:0 14px 34px -16px rgba(16,27,48,.42);
+--display:"Poppins",system-ui,sans-serif;--body:"Manrope",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:800;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#dde8f8 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#fff0c2 0%,transparent 60%),#f8faff;
+--dark:#0b1424;--dark-2:#121f37;--dark-3:#263b62;--dark-txt:#cfdaee}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Escuela de Manejo",mark:"M",tag:"Monterrey · certificada"},
+topBtn:"Mi clase",
+hero:{chip:"Ideal si tienes nervios o empiezas de cero",h1a:"Aprende a manejar",h1b:"con paciencia y práctica real.",lead:"Elige tu paquete, automático o estándar, y aparta tus clases en los horarios libres de los instructores. Pasamos por ti a domicilio y ves tu avance clase por clase hasta tu certificado.",cta1:["Agendar clase","#servicios"],cta2:["Regalar clases","#gift"],badge:["173k","likes en un reel"],alt:"Auto de escuela de manejo en una calle tranquila de Monterrey",old:"\"Envía un mensaje por WhatsApp\"",now:"Ahora: horario del instructor y avance en un link."},
+ticker:["Automático","Estándar","Desde cero","A domicilio","Certificado para licencia","Monterrey"],
+svcHead:{kicker:"Paquetes",title:"¿Cómo quieres <em>empezar</em>?",note:"Servicios de sus publicaciones; precios, duración y paquetes de ejemplo."},
+services:[
+ {id:"muestra",n:"Primera clase",d:"Para conocer al instructor y quitar los nervios.",min:60,p:450,tag:"Empieza aquí"},
+ {id:"p5",n:"Paquete de 5 clases",d:"Lo básico para moverte por la ciudad. Agendas la primera hoy.",min:60,p:2000},
+ {id:"p10",n:"Paquete de 10 clases",d:"De cero a manejar en avenida, con simulacro de examen.",min:60,p:3700,tag:"El más completo"},
+ {id:"cert",n:"Simulacro y certificado",d:"Para quien ya maneja y solo necesita el certificado para su licencia.",min:90,p:1200}],
+variant:{label:"Transmisión",short:"Auto",def:0,opts:[{id:"auto",n:"Automático",sub:"Más fácil para empezar",mult:1},{id:"std",n:"Estándar",sub:"Aprende clutch y cambios",mult:1.1}]},
+zones:{label:"¿Dónde pasamos por ti?",offTxt:"Sin ruta",offMsg:"Ese día no hay instructor en tu zona.",list:[{id:"esc",n:"En la escuela (Antonio I. Villarreal)",days:[1,2,3,4,5,6]},{id:"mty",n:"A domicilio · Monterrey",days:[1,2,3,4,5,6]},{id:"spgg",n:"A domicilio · San Pedro",days:[2,4,6]},{id:"snn",n:"A domicilio · San Nicolás y Escobedo",days:[1,3,5]},{id:"gpe",n:"A domicilio · Guadalupe",days:[2,5]}]},
+staff:[{id:"i1",n:"Instructora Paty",role:"Automático y estándar",color:"#1b4f9c"},{id:"i2",n:"Instructor Toño",role:"Estándar",color:"#d19900"},{id:"i3",n:"Instructora Lupita",role:"Automático, ideal para nervios",color:"#5f8a6b"}],
+staffLabel:"Instructor",staffShort:"Instructor",anyLabel:"El primero disponible",
+hours:{0:[540,840],1:[420,1200],2:[420,1200],3:[420,1200],4:[420,1200],5:[420,1200],6:[480,1080]},step:60,lead:180,ahead:14,buffer:30,
+fields:[{id:"lvl",label:"¿Has manejado antes?",short:"Nivel",ph:"Ej. Nunca, me da nervio",inAg:1},{id:"addr",label:"Dónde pasamos por ti (si es a domicilio)",short:"Recoger en",ph:"Ej. Av. Lincoln 2200, Mitras",inAg:1}],
+pickHead:"Auto, lugar y horario",sumTitle:"Tu clase",bookBtn:"Agendar clase",totalLabel:"Total",
+remind:"<b>Recordatorio un día antes</b> y aviso cuando el instructor vaya en camino.",
+waTicket:"En el sistema real te llega esta confirmación por WhatsApp, un recordatorio un día antes y, después de cada clase, lo que ya dominas y cuántas clases te quedan.",codeNote:"Tu avance queda guardado",
+inBtn:"Llegó",inTxt:"En clase",doneBtn:"Terminar",doneToast:b=>`Se le manda a ${b.name} lo que practicó hoy, lo que sigue y el botón para agendar su próxima clase.`,
+manualSrc:"WhatsApp",manualKey:"wa",src3:"Facebook",gapBtn:"Ofrecer a alumnos",fillToast:"Aviso a alumnos con clases pendientes: \"Hay un horario libre hoy con tu instructor\".",
+kpi4:["Clases pendientes de agendar","De paquetes ya pagados",()=>37],
+gifts:[{n:"1 clase de regalo",p:450},{n:"5 clases de regalo",p:2000},{n:"10 clases de regalo",p:3700}],
+loc:[["Escuela de Manejo Monterrey","<b>Veteranos de la Revolución 430 B, Antonio I. Villarreal, Monterrey, N.L.</b><br>WhatsApp 81 2877 0869. Horario y zonas de ejemplo en esta demo."],["Un link en su bio","En lugar del link de WhatsApp: el alumno agenda solo, ve su avance y regala clases en Navidad."]],
+disclaimer:"Precios, paquetes, duración, instructores, zonas, horario, alumnos y cifras son de ejemplo; servicios, dirección, WhatsApp, certificado y servicio a domicilio tomados de su Instagram.",
+labels:["Agenda","Dueño"],agendaTitle:"Clases del día",ownerTitle:"Esta semana",
+seed:{names:["Valeria G.","Diego R.","Ana Sofía M.","Carlos T.","Mariana L.","Jorge P.","Fernanda C.","Luis A.","Regina S.","Paola V."],fill:.35,lvl:["Nunca","Un poco","Sé en automático","Me da nervio"],addr:["Mitras","Cumbres","Anáhuac","Del Valle","Contry"]},
+welcome:{title:"Clases, avance y regalos en un solo link",steps:["Elija paquete, automático o estándar y dónde pasamos por usted; aparte con el instructor disponible.","Baje a <b>Tu avance</b>: clases restantes, lo que ya domina y la tarjeta de regalo de Navidad.","Abajo, toque <b>Agenda</b> para las clases y autos del día y <b>Dueño</b> para alumnos con clases pendientes."],note:"Precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/citas.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -43,3 +43,4 @@ limpia-tu-casa hero/sala: chatgpt 6afe1648-332c-83e8-8eb3-0a4d7eedfae6
 kanuby hero: chatgpt 6afe1797-6f30-83e8-b976-e6ce2a53a8ab
 climas-jasso hero: chatgpt 6afe1bbb-8d44-83e8-becf-2dcda7579121
 petstars hero/diario: chatgpt 6afe1c89-1020-83e8-8ea9-46514ab07c91
+fumigaciones-ranger hero: chatgpt 6afe1d4f-ecb0-83e8-a541-db393cf6777b
