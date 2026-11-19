@@ -51,3 +51,9 @@ arrecifes hero: chatgpt 6afe214f-5890-83e8-bedd-4125d52ab4ee
 ola-creativa hero: chatgpt 6afe224d-4fac-83e8-827d-502228d6287a
 mon-minou hero/michis: chatgpt 6afe2325-6e38-83e8-be17-1981a56f8641
 kawaii-cafe hero: chatgpt 6afe2414-51d0-83e8-9030-2be17481cd1a
+globos-eventos hero: chatgpt 6afe51a5-3398-83e8-98fa-0150cadd481c
+mawi-fiesta hero: chatgpt 6afe51cd-5ecc-83e8-b399-953ee90cab00
+intuition-dance hero: chatgpt 6afe51d8-c764-83e8-b7b0-fa18891fd5f2
+cabina360 hero: chatgpt 6afe51e4-736c-83e8-8b00-8030d22192c3
+quinta-griega hero: chatgpt 6afe51f6-23ac-83e8-8ac6-bf597b6c96b3
+lakshmi-spa hero: chatgpt 6afe5201-2ea8-83e8-92f0-d03b62c2b8e4

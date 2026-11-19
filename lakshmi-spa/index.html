@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lakshmi Spa · Agenda tu masaje (demo)</title>
+<meta name="theme-color" content="#5d4a3a">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Lakshmi Spa · Demo de citas y tarjetas de regalo">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: agenda tu masaje por terapeuta y horario libre, masaje en pareja en su cabina, tarjetas de regalo navideñas con código y agenda del spa.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Nunito+Sans:wght@400;600;700;800&family=Great+Vibes&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<link rel="stylesheet" href="../_engine/citas.css">
+<style>
+:root{--g:#7b6450;--g-d:#5d4a3a;--g-dd:#33271e;--g-l:#ece2d6;--g-ll:#f8f4ef;--acc:#b08d57;--acc-d:#8c6c3c;--acc-l:#f1e6d2;
+--ink:#2a221c;--ink-2:#55493f;--muted:#8a7d72;--line:#ece4da;--paper:#fcfaf7;--cream:#fffdfa;--red:#c2493f;--sh:0 14px 34px -16px rgba(42,34,28,.38);
+--display:"Marcellus",Georgia,serif;--body:"Nunito Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:400;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#ece2d6 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#f1e6d2 0%,transparent 60%),#fcfaf7;
+--dark:#1c1611;--dark-2:#271f18;--dark-3:#4a3c30;--dark-txt:#e3d8cc}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Lakshmi Spa",mark:"L",tag:"Masajes y bienestar"},
+topBtn:"Mi cita",
+hero:{chip:"Tarjetas de regalo para Navidad",h1a:"Tu bienestar",h1b:"empieza aquí.",lead:"Elige tu masaje, tu terapeuta y un horario libre, y aparta en un minuto. Para pareja, la cabina doble se agenda sola. Y si es para regalar, diseñas la tarjeta y le llega con su código.",cta1:["Agendar mi masaje","#servicios"],cta2:["Regalar un masaje","#regalo"],badge:["9 mil","seguidores"],alt:"Cabina de spa para masaje en pareja con dos camillas y velas",old:"\"Agenda al 81 8799 2344 o al 81 2906 4622\"",now:"Ahora: horario libre y cita en un link."},
+ticker:["Masaje relajante","Descontracturante","Piedras calientes","Facial","Drenaje linfático","Masaje en pareja"],
+svcHead:{kicker:"Masajes y tratamientos",title:"¿Qué <em>necesitas</em> hoy?",note:"Servicios, precios y duraciones de ejemplo."},
+services:[
+ {id:"rel60",n:"Masaje relajante",d:"Presión suave con aceites aromáticos para soltar el estrés.",min:60,p:650},
+ {id:"rel90",n:"Masaje relajante largo",d:"La versión de 90 minutos, con pies y cuero cabelludo.",min:90,p:890,tag:"El más pedido"},
+ {id:"desc",n:"Masaje descontracturante",d:"Presión firme en espalda, cuello y hombros.",min:60,p:750},
+ {id:"piedras",n:"Piedras calientes",d:"Basalto caliente para relajar músculos a fondo.",min:75,p:890},
+ {id:"facial",n:"Facial hidratante",d:"Limpieza, exfoliación, mascarilla e hidratación.",min:60,p:700},
+ {id:"pareja",n:"Masaje en pareja",d:"Dos camillas en la misma cabina, al mismo tiempo.",min:60,p:1400,tag:"Para regalar"}],
+addons:[{id:"aroma",n:"Aromaterapia a elegir",p:120,min:0,fixed:1},{id:"pies",n:"Reflexología de pies",p:250,min:20},{id:"te",n:"Té y fruta al terminar",p:90,min:15,fixed:1}],addonsLabel:"Agrega",
+staff:[{id:"t1",n:"Ana",role:"Masajes y piedras",color:"#5d4a3a",svcs:["rel60","rel90","desc","piedras"]},{id:"t2",n:"Lucía",role:"Masajes y faciales",color:"#b08d57",svcs:["rel60","rel90","facial"]},{id:"t3",n:"Karen",role:"Descontracturante",color:"#6b8a6a",svcs:["rel60","desc","piedras"],off:[1]},{id:"dp",n:"Cabina para pareja",role:"Dos terapeutas",color:"#8a5a6a",svcs:["pareja"]}],
+staffLabel:"Terapeuta",staffShort:"Terapeuta",anyLabel:"Quien esté libre",
+hours:{1:[600,1200],2:[600,1200],3:[600,1200],4:[600,1200],5:[600,1260],6:[600,1260],0:[600,960]},step:30,lead:90,ahead:14,buffer:15,
+fields:[{id:"nota",label:"¿Alguna zona de tensión o algo que debamos saber?",short:"Nota",ph:"Ej. Dolor de cuello, embarazo, alergia a aceites",inAg:1}],
+pickHead:"Terapeuta y horario",sumTitle:"Tu cita",bookBtn:"Apartar mi cita",totalLabel:"Total",
+remind:"<b>Recordatorio un día antes</b> y, al llegar, tu cabina ya preparada con el aroma que elegiste.",
+waTicket:"En el sistema real le llega esta confirmación por WhatsApp con la ubicación y un recordatorio un día antes. Puede cambiar su horario desde el mismo mensaje.",codeNote:"Pagas al terminar tu sesión",
+inBtn:"Llegó",inTxt:"En cabina",doneBtn:"Terminar",doneToast:b=>`Se le manda a ${b.name} su recibo y, en 3 semanas, un recordatorio para su siguiente masaje.`,
+manualSrc:"llamada",manualKey:"tel",src3:"Teléfono",gapBtn:"Ofrecer horario",fillToast:"Aviso a clientas frecuentes: \"Se liberó un horario hoy, ¿lo quieres?\"",
+kpi4:["Tarjetas de regalo","Vendidas este mes",()=>(window.GIFTS||0)+23],
+loc:[["Lakshmi Spa","<b>Av. Lázaro Cárdenas 1601, Jardín de las Torres, Río Nazas, Monterrey, N.L.</b><br>Citas al 81 8799 2344 y 81 2906 4622. Horario de ejemplo en esta demo."],["Un link en su bio","Junto a sus teléfonos: la clienta ve horarios libres por terapeuta, aparta sola y compra tarjetas de regalo con código."]],
+disclaimer:"Servicios, precios, duraciones, terapeutas, horario, tarjetas, clientas y cifras son de ejemplo; dirección y teléfonos tomados de su Instagram. Fotos ilustrativas.",
+labels:["Agenda","Dueño"],agendaTitle:"Citas del día",ownerTitle:"Esta semana",
+seed:{names:["Mariana T.","Paola G.","Sofía R.","Andrea L.","Daniela M.","Karla V.","Fernanda C.","Luisa P.","Valeria O.","Gabriela H."],fill:.3,nota:["Dolor de cuello","Primera vez","","Presión suave","","Tarjeta de regalo"]},
+welcome:{title:"Masaje, terapeuta y regalo en un solo link",steps:["Elija masaje y terapeuta: solo aparecen los horarios realmente libres. El masaje en pareja usa su cabina doble.","Baje a <b>Regala un masaje</b>: escriba para quién y el mensaje, y vea la tarjeta al momento.","Abajo, toque <b>Agenda</b> para las cabinas del día y canjear tarjetas, y <b>Dueño</b> para la semana."],note:"Precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="../_engine/citas.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

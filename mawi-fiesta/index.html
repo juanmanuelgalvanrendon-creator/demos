@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mawi Fiesta · Renta de inflables (demo)</title>
+<meta name="theme-color" content="#e2412f">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Mawi Fiesta · Demo de renta de inflables">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: revisa si el inflable cabe en tu patio, ve cuáles están libres en tu fecha, agrega mesas y sillas y aparta; rutas de entrega y recolección del día.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito+Sans:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#e2412f;--g-d:#c53322;--g-dd:#6b1a11;--g-l:#fde0dc;--g-ll:#fff4f2;--acc:#f2b705;--acc-d:#b88a00;--acc-l:#fff1c2;--blu:#1f6fd1;
+--ink:#1d1a2b;--ink-2:#4a4560;--muted:#7d7891;--line:#ece9f2;--paper:#fffdf9;--cream:#fffefb;--red:#c2493f;--sh:0 14px 34px -16px rgba(29,26,43,.4);
+--display:"Baloo 2",system-ui,sans-serif;--body:"Nunito Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:800;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#fde0dc 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#fff1c2 0%,transparent 60%),#fffdf9;
+--dark:#15131f;--dark-2:#1f1c2d;--dark-3:#3a3552;--dark-txt:#dcd8ea}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Mawi Fiesta",mark:"M",tag:"Inflables · Mesas y sillas"},
+hero:{chip:"Fines de semana de diciembre: aparta ya",h1a:"¿Cabe en tu patio?",h1b:"Revísalo aquí.",lead:"Pon las medidas de tu patio y la fecha de tu fiesta: te mostramos qué inflables caben y cuáles están libres ese día. Agregas mesas y sillas, ves el total con entrega incluida y apartas.",cta1:["Medir mi patio","#patio"],cta2:["Ver catálogo","#catalogo"],badge:["9 mil","seguidores"],alt:"Inflable tipo castillo en el jardín de una casa con mesas infantiles",old:"\"Mándanos mensaje para ver disponibilidad\"",now:"Ahora: disponibilidad y precio en un link."},
+ticker:["Castillos","Toboganes","Inflables acuáticos","Para bebés","Mesas y sillas","Monterrey y área metropolitana"],
+inf:[{id:"castillo",n:"Castillo clásico",age:"3 a 10 años",l:4,w:4,h:3.5,p:950,units:2,col:"#e2412f"},{id:"tobogan",n:"Tobogán tropical",age:"5 a 12 años",l:7,w:4,h:5,p:1650,units:1,col:"#1f6fd1"},{id:"combo",n:"Combo brinco + resbaladilla",age:"3 a 12 años",l:5.5,w:4.5,h:4,p:1350,units:2,col:"#f2b705"},{id:"baby",n:"Área para bebés",age:"1 a 4 años",l:3,w:3,h:1.6,p:700,units:2,col:"#ff8fb1"},{id:"obst",n:"Pista de obstáculos",age:"6 a 14 años",l:9,w:3,h:3.2,p:1900,units:1,col:"#33a36b"},{id:"acua",n:"Acuático con alberca",age:"4 a 12 años",l:6,w:4,h:3.8,p:1750,units:1,col:"#14a3c7"}],
+furn:[{id:"mesa",n:"Mesa infantil",d:"Para 6 niños",p:60},{id:"silla",n:"Silla infantil",d:"Plástico",p:12},{id:"mesaad",n:"Mesa adulto",d:"Para 10 personas",p:90},{id:"sillaad",n:"Silla adulto",d:"Plegable",p:15},{id:"mantel",n:"Mantel",d:"Por mesa",p:35}],
+zones:[["Monterrey",0],["San Nicolás",0],["Guadalupe",0],["Apodaca",150],["San Pedro",150],["Escobedo",150],["Santa Catarina",250],["Juárez",250]],
+margin:1,depositPct:30,
+loc:[["Mawi Fiesta","<b>Monterrey, N.L.</b><br>Renta de inflables para todas las edades, mesas y sillas, con entrega en el área metropolitana."],["Un link en su bio","Junto a su linktree: el cliente revisa si cabe y si hay disponibilidad, aparta con anticipo y su equipo ve la ruta de entregas del día."]],
+disclaimer:"Precios, medidas, inventario, zonas, anticipo, clientes y cifras son de ejemplo; giro y servicios tomados de su Instagram.",
+welcome:{title:"Medidas, disponibilidad y apartado en un link",steps:["Ponga las medidas del patio y la fecha: los inflables que no caben o ya están rentados se marcan solos.","Elija inflable, mesas y sillas: el total con entrega se calcula al momento y aparta con anticipo.","Abajo, toque <b>Rutas</b> para las entregas y recolecciones del día y <b>Dueño</b> para ver qué inflable se renta más."],note:"Precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quinta Griega · Separa tu fecha (demo)</title>
+<meta name="theme-color" content="#1f4e8c">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Quinta Griega · Demo de reservaciones">
+<meta property="og:description" content="Demo concepto preparada por Code Nova: separa tu fecha por horario, promo de estancia gratis aplicada sola, mobiliario, respuestas al momento, contrato y depósito; entrega y recepción de la quinta.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Mulish:wght@400;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_engine/base.css">
+<link rel="stylesheet" href="../_engine/common.css">
+<style>
+:root{--g:#2c66b0;--g-d:#1f4e8c;--g-dd:#10294a;--g-l:#dbe7f6;--g-ll:#f2f7fd;--acc:#d9a441;--acc-d:#a87a22;--acc-l:#f7ebcf;
+--ink:#14213a;--ink-2:#3f4d66;--muted:#74809a;--line:#e3e9f2;--paper:#fbfcfe;--cream:#ffffff;--red:#c2493f;--sh:0 14px 34px -16px rgba(20,33,58,.4);
+--display:"Cormorant Garamond",Georgia,serif;--body:"Mulish",system-ui,sans-serif;--mono:"IBM Plex Mono",monospace;--dw:700;
+--hero-bg:radial-gradient(900px 480px at 88% 0%,#dbe7f6 0%,transparent 60%),radial-gradient(700px 420px at 0% 100%,#f7ebcf 0%,transparent 60%),#fbfcfe;
+--dark:#0d1a2e;--dark-2:#13243d;--dark-3:#2c4263;--dark-txt:#d3ddeb}
+</style>
+</head>
+<body>
+<script>
+window.DEMO={
+brand:{name:"Quinta Griega",mark:"Q",tag:"Eventos y estancias"},
+hero:{chip:"Recién remodelada: separa tu fecha",h1a:"Tu fiesta, tu horario,",h1b:"tu fecha separada.",lead:"Elige el día y el horario de tu evento: ves si está libre, cuánto cuesta y la promo de estancia gratis aplicada. Agregas mobiliario, resuelves tus dudas al momento y separas con anticipo.",cta1:["Separar mi fecha","#fecha"],cta2:["Preguntas frecuentes","#dudas"],badge:["5 min","del estadio"],alt:"Quinta estilo griego con muros blancos, detalles azules y alberca iluminada",old:"\"Envíanos DM con la palabra INFORMACIÓN\"",now:"Ahora: fecha, precio y dudas en un link."},
+ticker:["Cumpleaños","Bodas íntimas","Posadas","Bautizos","Reuniones de empresa","Estancias"],
+slots:[{id:"dia",n:"De día",h:"10:00 a 18:00",wk:4200,we:5600},{id:"noche",n:"Tarde y noche",h:"17:00 a 02:00",wk:4800,we:6800},{id:"completo",n:"Evento + estancia",h:"14:00 a 12:00 del día siguiente",wk:7400,we:9800,promo:true}],
+people:[[40,0],[80,600],[120,1200],[150,1800]],
+furn:[{id:"mesas",n:"Mesas redondas con mantel",d:"Para 10 personas",p:110,q:8},{id:"sillas",n:"Sillas Tiffany",d:"Blancas",p:25,q:80},{id:"lounge",n:"Sala lounge",d:"Blanca con cojines",p:950,q:0},{id:"pista",n:"Pista iluminada",d:"4 × 4 m",p:2400,q:0}],
+deposit:2000,depositPct:30,
+faq:[["¿Hasta qué hora puede ser la fiesta?","En horario tarde y noche hasta las 2:00 a.m. Con la estancia, pueden quedarse a dormir y entregar a las 12:00 del día siguiente."],["¿Puedo llevar mi propio DJ, comida y bebida?","Sí. Puedes traer tu DJ, banquete y bebida. Solo pedimos que el equipo de sonido se instale en la palapa."],["¿La alberca está incluida?","Sí, alberca, palapa, asador y baños están incluidos en todos los horarios. Para niños, siempre con un adulto."],["¿Hay depósito en garantía?","Sí, un depósito reembolsable que se devuelve al entregar la quinta en buen estado, el mismo día o al siguiente."],["¿Cuántas personas caben?","Hasta 150 personas sentadas. El precio cambia según el número de invitados."],["¿Dónde está?","A 5 minutos del estadio de Rayados. Al separar tu fecha te llega la ubicación exacta."]],
+loc:[["Quinta Griega","<b>Recién remodelada, a 5 minutos del estadio de Rayados.</b><br>Eventos de día, de tarde y noche, y estancias."],["Un link en su bio","Junto a su DM de INFORMACIÓN: el cliente ve fechas libres, precio, promos y respuestas, separa con anticipo y ustedes hacen la entrega con checklist."]],
+disclaimer:"Precios, horarios, capacidad, mobiliario, depósito, respuestas, clientes y cifras son de ejemplo; ubicación, remodelación, promo de estancia y secciones tomadas de su Instagram.",
+welcome:{title:"Fecha, precio y dudas en un link",steps:["Elija el horario y toque un día del calendario: se ve si está libre y el precio de ese día. En <b>Evento + estancia</b> la promo se aplica sola.","Ajuste invitados y mobiliario: el total con depósito reembolsable se calcula al momento.","Abajo, toque <b>Entregas</b> para la entrega y recepción de la quinta y <b>Dueño</b> para la ocupación del mes."],note:"Precios y cifras de ejemplo."}
+};
+</script>
+<script src="../_engine/core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
