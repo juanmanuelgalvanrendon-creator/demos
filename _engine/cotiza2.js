@@ -64,7 +64,7 @@ h1{font:500 clamp(38px,5.2vw,60px)/1.03 var(--disp);letter-spacing:-.02em;margin
 .mosaic figure{border-radius:${ARCH};overflow:hidden;background:var(--soft);box-shadow:0 22px 40px -28px rgba(0,0,0,.55);aspect-ratio:4/5}
 .mosaic figure:nth-child(even){transform:translateY(34px)}.mosaic img{width:100%;height:100%;object-fit:cover}
 .mosaic.m2 figure:nth-child(2){transform:translateY(48px)}
-.mosaic.m1{grid-template-columns:1fr}.mosaic.m1 figure{aspect-ratio:5/4;border-radius:28px}
+.mosaic.m3 figure:first-child{grid-row:span 2;aspect-ratio:auto}.mosaic.m3 figure:nth-child(even){transform:none}.mosaic.m3 figure:nth-child(3){transform:translateY(0)}.mosaic.m1{grid-template-columns:1fr}.mosaic.m1 figure{aspect-ratio:5/4;border-radius:28px}
 .tagc{position:absolute;left:-18px;bottom:20px;background:var(--paper);border-radius:16px;padding:12px 14px;box-shadow:0 18px 34px -20px rgba(0,0,0,.5);display:flex;gap:10px;align-items:center;font-size:13px;max-width:250px;z-index:2}
 .tagc span{width:34px;height:34px;flex:none;border-radius:50%;background:var(--soft);color:var(--softInk);display:grid;place-items:center}.tagc b{display:block;font-size:13.5px}
 .sec{padding:52px 0 0}.sh{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap}
