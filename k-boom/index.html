@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>K-BOOM · Aparta tu clase gratis</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#16131f">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head><body>
+<script>
+window.Q={
+ brand:{name:"K-BOOM",short:"K-BOOM",sub:"Dance Academy · K-pop",ig:"k_boomdance",city:"Av. Juan José Hinojosa 4301-G, Los Cedros, Monterrey"},
+ waLink:"https://ig.me/m/k_boomdance",note:"Copiamos tu solicitud y abrimos el chat de K-BOOM en Instagram: solo pégala y envía.",pill:"Primera clase gratis",
+ theme:{bg:"#f7f5fb",paper:"#ffffff",ink:"#17121f",accent:"#e2346e",soft:"#ece8ff",softInk:"#5b45d6",line:"#e7e2f0",mut:"#7a7287",radius:"round",
+  display:'"Bebas Neue",Impact,sans-serif',body:'"DM Sans",system-ui,sans-serif',fonts:"family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700"},
+ hero:{eyebrow:"Clases de K-pop en Monterrey",title:"Aparta tu primera clase <em>gratis</em>",
+  lead:"Elige el grupo por edad, el horario y el día. Te armamos el mensaje con todo y solo lo pegas en el chat de K-BOOM. Sin preguntar horarios por DM.",
+  imgs:[],cta1:"Elegir mi clase",card:{kicker:"Horarios de clase",title:"Encuentra tu grupo",rows:[["Kids","Lun y mié 5:30 a 6:30 pm","6 a 9 años"],["Teen","Mar y jue 4:30 a 5:30 pm","10 a 13 años"],["Urbano","Mar y jue 5:30 a 6:30 pm",""],["Intermedio","Sáb 2:30 a 4 pm",""],["Open","Sáb 1 a 2:30 pm",""],["Adultos","Sáb 5:30 a 7 pm",""]],foot:"Primera clase gratis · Cupo limitado"},
+  trust:[["Kids","6 a 9 años"],["Teen","10 a 13 años"],["Open","y adultos"]],
+  badge:["Clase apartada","Grupo, horario y día en un mensaje"]},
+ tabs:[{id:"clase",label:"Clase de prueba",icon:"music",title:"Clase de prueba gratis",
+  hint:"Elige el grupo y te mostramos sus horarios disponibles.",head:"Hola, K-BOOM 🫰 Quiero apartar mi clase de prueba gratis:",
+  fields:[{id:"gr",label:"Grupo",type:"chips",req:1,options:["Kids (6 a 9)","Teen (10 a 13)","Urbano","Intermedio","Open","Adultos"],out:"Grupo"},
+   {id:"hk",label:"Horario Kids",type:"chips",req:1,options:["Lun y mié 5:30 a 6:30 pm","Sáb 11:30 am a 1 pm","Urbano Kids sáb 10:30 a 11:30 am"],when:{gr:"Kids (6 a 9)"},out:"Horario"},
+   {id:"ht",label:"Horario Teen",type:"chips",req:1,options:["Lun y mié 6:30 a 7:30 pm","Mar y jue 4:30 a 5:30 pm","Mar y jue 6:30 a 7:30 pm"],when:{gr:"Teen (10 a 13)"},out:"Horario"},
+   {id:"hu",label:"Horario Urbano",type:"chips",req:1,options:["Mar y jue 5:30 a 6:30 pm"],when:{gr:"Urbano"},out:"Horario"},
+   {id:"hi",label:"Horario Intermedio",type:"chips",req:1,options:["Sáb 2:30 a 4 pm"],when:{gr:"Intermedio"},out:"Horario"},
+   {id:"ho",label:"Horario Open",type:"chips",req:1,options:["Sáb 1 a 2:30 pm"],when:{gr:"Open"},out:"Horario"},
+   {id:"ha",label:"Horario Adultos",type:"chips",req:1,options:["Sáb 5:30 a 7 pm"],when:{gr:"Adultos"},out:"Horario"},
+   {id:"al",label:"Nombre de quien toma la clase",type:"text",req:1,ph:"Nombre y apellido",out:"Alumno(a)"},
+   {id:"ed",label:"Edad",type:"num",min:5,max:60,step:1,def:12,unit:"años",out:"Edad"},
+   {id:"ex",label:"¿Ha bailado antes?",type:"chips",options:["Nunca","Un poco","Sí, ya bailo"],out:"Experiencia"},
+   {id:"tel",label:"WhatsApp de contacto",type:"tel",ph:"81 1234 5678",out:"WhatsApp"}],
+  aside:{icon:"music",title:"Primera clase gratis",text:"Cupo limitado por grupo. Al apartar, K-BOOM te confirma tu lugar en el chat."}}],
+ date:{title:"¿Qué día vienes?",label:"Día de tu clase",hint:"Elige un día que coincida con tu horario.",minDays:0,days:21},
+ contact:{nameLabel:"Tu nombre (mamá, papá o alumno)",nameOut:"Contacto",noteLabel:"Comentarios",notePh:"Ej. ¿qué ropa debe llevar?"},
+ steps:["Elige tu clase","¿Qué día?","Revisa y envía"],
+ closing:"¡Gracias! Quedo pendiente de la confirmación.",sendLabel:"Copiar y abrir el chat"};
+</script>
+<script src="../_engine/cotiza2.js"></script>
+</body></html>

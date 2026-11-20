@@ -64,7 +64,7 @@ h1{font:500 clamp(38px,5.2vw,60px)/1.03 var(--disp);letter-spacing:-.02em;margin
 .mosaic figure{border-radius:${ARCH};overflow:hidden;background:var(--soft);box-shadow:0 22px 40px -28px rgba(0,0,0,.55);aspect-ratio:4/5}
 .mosaic figure:nth-child(even){transform:translateY(34px)}.mosaic img{width:100%;height:100%;object-fit:cover}
 .mosaic.m2 figure:nth-child(2){transform:translateY(48px)}
-.mosaic.m3 figure:first-child{grid-row:span 2;aspect-ratio:auto}.mosaic.m3 figure:nth-child(even){transform:none}.mosaic.m3 figure:nth-child(3){transform:translateY(0)}.mosaic.m1{grid-template-columns:1fr}.mosaic.m1 figure{aspect-ratio:5/4;border-radius:28px}
+.mosaic.m3 figure:first-child{grid-row:span 2;aspect-ratio:auto}.mosaic.m3 figure:nth-child(even){transform:none}.mosaic.m3 figure:nth-child(3){transform:translateY(0)}.hero.noimg .wrap{grid-template-columns:1fr;max-width:760px}.hero.noimg .mosaic{display:none}.hcard{background:linear-gradient(150deg,var(--ink),color-mix(in srgb,var(--softInk) 70%,var(--ink)));color:#fff;border-radius:30px;padding:28px;box-shadow:0 30px 60px -30px rgba(0,0,0,.6)}.hcard small{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;opacity:.7;font-weight:700}.hcard h3{font:500 34px/1.05 var(--disp);margin:6px 0 16px}.hrow{display:grid;grid-template-columns:96px 1fr auto;gap:10px;align-items:center;padding:11px 0;border-top:1px solid rgba(255,255,255,.14);font-size:14.5px}.hrow b{font-weight:700;color:color-mix(in srgb,var(--ac) 60%,#fff)}.hrow i{font-style:normal;font-size:12px;opacity:.65}.hcard p{margin-top:14px;font-size:13px;background:rgba(255,255,255,.12);border-radius:14px;padding:10px 12px}.hcard~.mosaic{display:none}.mosaic.m1{grid-template-columns:1fr}.mosaic.m1 figure{aspect-ratio:5/4;border-radius:28px}
 .tagc{position:absolute;left:-18px;bottom:20px;background:var(--paper);border-radius:16px;padding:12px 14px;box-shadow:0 18px 34px -20px rgba(0,0,0,.5);display:flex;gap:10px;align-items:center;font-size:13px;max-width:250px;z-index:2}
 .tagc span{width:34px;height:34px;flex:none;border-radius:50%;background:var(--soft);color:var(--softInk);display:grid;place-items:center}.tagc b{display:block;font-size:13.5px}
 .sec{padding:52px 0 0}.sh{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap}
@@ -115,9 +115,9 @@ input:focus,textarea:focus{box-shadow:inset 0 0 0 2px var(--softInk)}textarea{mi
 .bub{background:#dcf7d0;color:#1d2a1d;border-radius:14px 14px 4px 14px;padding:10px 12px;font-size:13px;white-space:pre-wrap;line-height:1.45;box-shadow:0 1px 1px rgba(0,0,0,.08);max-height:280px;overflow:auto}
 .err-ring{animation:shake .4s;box-shadow:0 0 0 2px #c2413b!important;border-radius:16px}@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 .dock{display:none}footer{padding:60px 0 40px;text-align:center;color:var(--mut);font-size:13px}footer .logo{align-items:center;margin-bottom:10px;color:var(--ink)}footer a{color:var(--ac);font-weight:600;text-decoration:none}footer .cn{display:block;margin-top:14px;font-size:11.5px;opacity:.75}
-@media(max-width:900px){.hero{padding-top:18px}.hero .wrap{grid-template-columns:1fr;gap:26px}.hero .wrap>div:first-child{order:2}
+@media(max-width:900px){.hero{padding-top:18px}.hero .wrap{grid-template-columns:1fr;gap:26px}.hero:not(.noimg) .wrap>div:first-child{order:2}
  .mosaic{order:1;max-width:300px;margin:0 auto 14px;width:100%;gap:9px}.mosaic figure{aspect-ratio:4/4.4}.mosaic figure:nth-child(even){transform:translateY(18px)}
- .mosaic.m1{max-width:none}.mosaic.m2{max-width:330px}.tagc{display:none}
+ .mosaic.m1{max-width:none}.mosaic.m2{max-width:330px}.tagc{display:none}.hcard{order:1;padding:22px}.hcard h3{font-size:28px}.hrow{grid-template-columns:80px 1fr;font-size:13.5px}.hrow i{display:none}
  h1{font-size:37px;margin:10px 0 14px}.lead{font-size:16px}.cta{margin-top:20px}.cta .btn{flex:1;height:50px;padding:0 14px;font-size:14.5px}
  .trust{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:24px}.trust div{font-size:12px}.trust b{font-size:19px}
  .grid,.grid.g3{grid-template-columns:1fr 1fr;gap:12px}.two,.order{grid-template-columns:1fr}.ticket{position:static}.panel{padding:20px}
@@ -140,11 +140,11 @@ document.title=`${B.name} · ${Q.tabTitle||"Haz tu pedido"}`;
 
 document.body.innerHTML=`
 <header class="bar"><div class="wrap"><a class="logo" href="#top"><b>${esc(B.name)}</b>${B.sub?`<small>${esc(B.sub)}</small>`:""}</a><span class="pill"><i></i>${esc(Q.pill||"Pedidos abiertos")}</span></div></header>
-<section class="hero" id="top"><div class="wrap">
+<section class="hero${imgs.length||Q.hero.card?"":" noimg"}" id="top"><div class="wrap">
  <div><span class="eyebrow">${esc(Q.hero.eyebrow||"")}</span><h1>${Q.hero.title}</h1><p class="lead">${esc(Q.hero.lead)}</p>
   <div class="cta"><a class="btn btn-dark" href="#elige">${esc(Q.hero.cta1||"Empezar mi pedido")}</a>${Q.hero.cta2?`<a class="btn btn-ghost" href="#elige" data-go="${Q.hero.cta2.tab}">${esc(Q.hero.cta2.label)}</a>`:""}</div>
   ${Q.hero.trust?`<div class="trust">${Q.hero.trust.map(([a,b])=>`<div><b>${esc(a)}</b>${esc(b)}</div>`).join("")}</div>`:""}</div>
- <div class="mosaic m${imgs.length>=4?4:imgs.length}">${imgs.map((s,i)=>`<figure><img src="${s}" alt="${esc(B.name)} ${i+1}" ${i>1?'loading="lazy"':""}></figure>`).join("")}
+ ${Q.hero.card?`<div class="hcard"><small>${esc(Q.hero.card.kicker||"")}</small><h3>${esc(Q.hero.card.title)}</h3>${Q.hero.card.rows.map(([a,b2,c])=>`<div class="hrow"><b>${esc(a)}</b><span>${esc(b2)}</span><i>${esc(c||"")}</i></div>`).join("")}${Q.hero.card.foot?`<p>${esc(Q.hero.card.foot)}</p>`:""}</div>`:""} <div class="mosaic m${imgs.length>=4?4:imgs.length}">${imgs.map((s,i)=>`<figure><img src="${s}" alt="${esc(B.name)} ${i+1}" ${i>1?'loading="lazy"':""}></figure>`).join("")}
   <div class="tagc"><span>${ico("check",18)}</span><div><b>${esc((Q.hero.badge||[])[0]||"Sin esperar respuesta")}</b>${esc((Q.hero.badge||[])[1]||"Tu pedido llega completo a su WhatsApp")}</div></div></div>
 </div></section>
 <section class="sec" id="elige"><div class="wrap"><div class="sh"><div><span class="num">Paso 1</span><h2>${esc(ST[0])}</h2></div><p id="tabHint"></p></div>
