@@ -1,24 +1,400 @@
 <!DOCTYPE html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Pedido</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#c8755a">
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Monchis Inc · Aparta tu pedido</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#f7efe9">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;1,700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-</head><body>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#fbf6f1;--paper:#fffdfb;--blush:#f3dfe0;--rose:#c4687f;--rose-d:#a9536a;--sage:#a4b394;--sage-l:#e6ebdf;--sage-d:#66775a;--ink:#3a2e2c;--mut:#8b7d78;--line:#eadfd8;--gold:#b8955a;--serif:"Playfair Display",Georgia,serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font:16px/1.55 "DM Sans",system-ui,sans-serif;color:var(--ink);background:var(--cream);overflow-x:hidden}
+button,input,textarea{font:inherit;color:inherit}button{cursor:pointer;border:0;background:none}
+img{display:block;max-width:100%}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* barra */
+.bar{position:sticky;top:0;z-index:20;background:rgba(251,246,241,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;flex-direction:column;line-height:1}
+.logo b{font:600 25px var(--serif);letter-spacing:-.01em}
+.logo small{font-size:9.5px;letter-spacing:.42em;text-transform:uppercase;color:var(--mut);margin-top:4px;padding-left:2px}
+.pill{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:var(--sage-d);background:var(--sage-l);padding:7px 12px;border-radius:999px}
+.pill i{width:7px;height:7px;border-radius:50%;background:#58a55c;box-shadow:0 0 0 3px rgba(88,165,92,.18)}
+
+/* hero */
+.hero{padding:44px 0 26px;position:relative}
+.hero .wrap{display:grid;grid-template-columns:1.02fr 1fr;gap:46px;align-items:center}
+.eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--rose)}
+h1{font:500 clamp(38px,5.4vw,62px)/1.02 var(--serif);letter-spacing:-.02em;margin:14px 0 18px}
+h1 em{font-style:italic;color:var(--rose)}
+.lead{font-size:17px;color:#5d514d;max-width:480px}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.btn{white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:9px;height:52px;padding:0 24px;border-radius:999px;font-weight:700;font-size:15.5px;transition:transform .15s,box-shadow .15s}
+.btn:active{transform:scale(.98)}
+.btn-dark{background:var(--ink);color:#fff;box-shadow:0 12px 26px -14px rgba(58,46,44,.7)}
+.btn-ghost{background:transparent;box-shadow:inset 0 0 0 1.5px var(--line);color:var(--ink)}
+.trust{display:flex;gap:22px;margin-top:30px;flex-wrap:wrap}
+.trust div{font-size:13px;color:var(--mut);line-height:1.35}
+.trust b{display:block;font:600 22px var(--serif);color:var(--ink)}
+.mosaic{display:grid;grid-template-columns:1fr 1fr;gap:14px;position:relative}
+.mosaic figure{border-radius:200px 200px 22px 22px;overflow:hidden;background:var(--blush);box-shadow:0 22px 40px -28px rgba(58,46,44,.6);aspect-ratio:4/5}
+.mosaic figure:nth-child(2){transform:translateY(34px)}
+.mosaic figure:nth-child(4){transform:translateY(34px)}
+.mosaic img{width:100%;height:100%;object-fit:cover}
+.tag{position:absolute;left:-18px;bottom:20px;background:var(--paper);border-radius:16px;padding:12px 14px;box-shadow:0 18px 34px -20px rgba(58,46,44,.55);display:flex;gap:10px;align-items:center;font-size:13px;max-width:240px;z-index:2}
+.tag span{width:34px;height:34px;flex:none;border-radius:50%;background:var(--sage-l);display:grid;place-items:center}
+.tag b{display:block;font-size:13.5px}
+
+/* pasos */
+.sec{padding:52px 0 0}
+.sh{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.num{font:italic 500 15px var(--serif);color:var(--rose)}
+h2{font:500 clamp(28px,3.6vw,38px)/1.1 var(--serif);letter-spacing:-.015em;margin-top:4px}
+.sh p{color:var(--mut);font-size:14.5px;max-width:420px}
+
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none;margin-bottom:22px}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:none;display:flex;align-items:center;gap:9px;padding:10px 16px 10px 10px;border-radius:999px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line);font-weight:600;font-size:14.5px;white-space:nowrap;transition:background .2s,color .2s}
+.tabs button img{width:32px;height:32px;border-radius:50%;object-fit:cover}
+.tabs button .ic{width:32px;height:32px;border-radius:50%;background:var(--sage-l);display:grid;place-items:center;color:var(--sage-d)}
+.tabs button.on{background:var(--ink);color:#fff;box-shadow:none}
+.tabs button.on .ic{background:rgba(255,255,255,.14);color:#fff}
+
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.card{background:var(--paper);border-radius:26px;padding:10px 10px 14px;box-shadow:0 1px 0 var(--line),0 20px 36px -30px rgba(58,46,44,.55);position:relative;transition:box-shadow .2s,transform .2s}
+.card.sel{box-shadow:0 0 0 2px var(--rose),0 22px 40px -28px rgba(196,104,127,.7)}
+.card .ph{border-radius:160px 160px 16px 16px;overflow:hidden;aspect-ratio:4/5;background:var(--blush)}
+.card .ph img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.card:hover .ph img{transform:scale(1.04)}
+.card h3{font:500 21px var(--serif);margin:12px 6px 2px}
+.card p{font-size:13px;color:var(--mut);margin:0 6px 12px;min-height:38px;line-height:1.45}
+.badge{position:absolute;top:16px;right:16px;min-width:30px;height:30px;padding:0 9px;border-radius:999px;background:var(--rose);color:#fff;font-weight:700;font-size:14px;display:grid;place-items:center;transform:scale(0);transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+.card.sel .badge{transform:scale(1)}
+.step{display:flex;align-items:center;justify-content:space-between;background:var(--cream);border-radius:999px;padding:4px;margin:0 4px}
+.step button{width:40px;height:40px;border-radius:50%;background:var(--paper);box-shadow:0 1px 2px rgba(0,0,0,.08);font-size:20px;font-weight:600;color:var(--ink);display:grid;place-items:center}
+.step button.plus{background:var(--ink);color:#fff}
+.step button:disabled{opacity:.35;cursor:default}
+.step>div{flex:1;text-align:center}.step b{display:block;font:600 19px/1.1 var(--serif);text-align:center}
+.step small{font-size:11.5px;color:var(--mut);display:block;text-align:center;line-height:1;margin-top:2px;font-weight:600}
+
+.panel{background:var(--paper);border-radius:28px;padding:26px;box-shadow:0 1px 0 var(--line),0 20px 36px -30px rgba(58,46,44,.55)}
+.two{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:start}
+.fld+.fld{margin-top:22px}
+.lab{display:block;font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--mut);margin-bottom:10px}
+.lab em{color:var(--rose);font-style:normal}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{padding:10px 16px;border-radius:999px;background:var(--cream);box-shadow:inset 0 0 0 1px var(--line);font-weight:600;font-size:14.5px;transition:all .18s}
+.chips button.on{background:var(--sage-d);color:#fff;box-shadow:none}
+.cnt{display:flex;align-items:center;gap:14px}
+.cnt .step{margin:0;width:190px}
+.cnt span{font-size:13.5px;color:var(--mut)}
+input[type=text],input[type=tel],input[type=date],textarea{width:100%;border:0;border-radius:16px;background:var(--cream);box-shadow:inset 0 0 0 1px var(--line);padding:14px 16px;font-size:15.5px;outline:none;transition:box-shadow .15s}
+input:focus,textarea:focus{box-shadow:inset 0 0 0 2px var(--sage-d)}
+textarea{min-height:96px;resize:vertical}
+.hint{font-size:12.5px;color:var(--mut);margin-top:7px}
+.insp{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.insp button{text-align:left;border-radius:20px;overflow:hidden;background:var(--cream);box-shadow:inset 0 0 0 1px var(--line);transition:box-shadow .2s}
+.insp button.on{box-shadow:0 0 0 2px var(--rose)}
+.insp img{width:100%;aspect-ratio:1/1;object-fit:cover}
+.insp span{display:block;padding:9px 12px 11px;font-size:13px;font-weight:600}
+.insp span small{display:block;font-weight:500;color:var(--mut);font-size:12px}
+.mini-ill{border-radius:20px;background:linear-gradient(160deg,var(--sage-l),var(--blush));padding:22px;min-height:100%;display:flex;flex-direction:column;justify-content:flex-end;gap:8px}
+.mini-ill svg{width:100%;max-width:280px;height:auto;margin:0 auto 6px}
+.mini-ill b{font:500 21px/1.15 var(--serif)}
+.mini-ill p{font-size:13.5px;color:#6a5e59}
+
+/* fechas */
+.days{display:flex;gap:9px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:thin;scroll-snap-type:x mandatory}
+.days button{flex:none;width:76px;padding:12px 0 11px;border-radius:20px;background:var(--cream);box-shadow:inset 0 0 0 1px var(--line);text-align:center;scroll-snap-align:start;transition:all .18s}
+.days button small{display:block;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.days button b{display:block;font:600 26px/1.15 var(--serif)}
+.days button span{display:block;font-size:12px;color:var(--mut)}
+.days button.on{background:var(--ink);box-shadow:none;color:#fff}
+.days button.on small,.days button.on span{color:rgba(255,255,255,.7)}
+.other{display:flex;align-items:center;gap:10px;margin-top:6px;font-size:13.5px;color:var(--mut)}
+.other input{width:auto;padding:9px 12px;font-size:14px}
+
+/* resumen */
+.order{display:grid;grid-template-columns:1fr 400px;gap:28px;align-items:start}
+.ticket{position:sticky;top:84px;background:var(--paper);border-radius:28px;overflow:hidden;box-shadow:0 1px 0 var(--line),0 28px 50px -34px rgba(58,46,44,.7)}
+.ticket header{padding:22px 24px 16px;background:var(--ink);color:#fff}
+.ticket header small{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;opacity:.65;font-weight:700}
+.ticket header h3{font:500 26px var(--serif);margin-top:3px}
+.tbody{padding:18px 24px 6px;position:relative}
+.tbody::before{content:"";position:absolute;left:0;right:0;top:-9px;height:18px;background:radial-gradient(circle at 9px -2px,transparent 9px,var(--paper) 9.5px) 0 0/18px 18px repeat-x}
+.line{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px}
+.line img{width:42px;height:42px;border-radius:12px;object-fit:cover;flex:none}
+.line .q{margin-left:auto;font:600 17px var(--serif);white-space:nowrap}
+.kv{display:flex;justify-content:space-between;gap:16px;padding:8px 0;font-size:14px;border-bottom:1px dashed var(--line)}
+.kv span{color:var(--mut)}.kv b{font-weight:600;text-align:right}
+.empty{padding:14px 0 16px;color:var(--mut);font-size:14px;text-align:center}
+.tfoot{padding:16px 24px 22px}
+.wa{width:100%;height:58px;border-radius:999px;background:#1faa59;color:#fff;font-weight:700;font-size:16.5px;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 14px 26px -14px rgba(31,170,89,.9);transition:transform .15s}
+.wa:active{transform:scale(.98)}
+.note{font-size:12.5px;color:var(--mut);text-align:center;margin-top:10px}
+.note.bad{color:#c2413b;font-weight:600}
+.peek{margin-top:14px;border-radius:18px;background:#efe6dc;padding:12px}
+.peek small{display:block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-bottom:7px}
+.bub{background:#dcf7d0;border-radius:14px 14px 4px 14px;padding:10px 12px;font-size:13px;white-space:pre-wrap;line-height:1.45;box-shadow:0 1px 1px rgba(0,0,0,.08);max-height:280px;overflow:auto}
+.err-ring{animation:shake .4s;box-shadow:0 0 0 2px #c2413b !important;border-radius:16px}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* barra inferior móvil */
+.dock{display:none}
+footer{padding:60px 0 40px;text-align:center;color:var(--mut);font-size:13px}
+footer .logo{align-items:center;margin-bottom:10px;color:var(--ink)}
+footer a{color:var(--rose);font-weight:600;text-decoration:none}
+footer .cn{display:block;margin-top:14px;font-size:11.5px;opacity:.75}
+
+@media (max-width:900px){
+  .hero{padding-top:18px}
+  .hero .wrap{grid-template-columns:1fr;gap:34px}
+  .hero .wrap>div:first-child{order:2}
+  .mosaic{order:1;max-width:290px;margin:0 auto 14px;width:100%;gap:9px}
+  .mosaic figure{aspect-ratio:4/4.4}
+  .mosaic figure:nth-child(2),.mosaic figure:nth-child(4){transform:translateY(18px)}
+  .tag{display:none}
+  h1{font-size:37px;margin:10px 0 14px}
+  .lead{font-size:16px}
+  .cta{margin-top:20px}.cta .btn{flex:1;height:50px;padding:0 14px;font-size:14.5px}
+  .trust{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:24px}
+  .trust div{font-size:12px}.trust b{font-size:19px}
+  .grid4{grid-template-columns:1fr 1fr;gap:12px}
+  .two,.order{grid-template-columns:1fr}
+  .ticket{position:static}
+  .panel{padding:20px}
+  .mini-ill{padding:18px}.mini-ill svg{max-width:200px}
+  .dock{display:flex;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:30;background:var(--ink);color:#fff;border-radius:999px;padding:7px 7px 7px 20px;align-items:center;gap:10px;box-shadow:0 18px 36px -14px rgba(0,0,0,.55);transform:translateY(140%);transition:transform .35s cubic-bezier(.2,.9,.3,1)}
+  .dock.show{transform:none}
+  .dock div{flex:1;min-width:0;line-height:1.2}
+  .dock small{display:block;font-size:11.5px;opacity:.7}
+  .dock b{display:block;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .dock button{height:46px;padding:0 18px;border-radius:999px;background:#1faa59;color:#fff;font-weight:700;font-size:14.5px;display:flex;align-items:center;gap:7px;flex:none}
+  body{padding-bottom:90px}
+}
+@media (max-width:420px){
+  .card h3{font-size:18px}.card p{font-size:12.5px;min-height:38px}
+  .step button{width:36px;height:36px}
+  .trust{gap:16px}
+}
+</style>
+</head>
+<body>
+
+<header class="bar"><div class="wrap">
+  <a class="logo" href="#top" style="color:inherit;text-decoration:none"><b>Monchis Inc</b><small>Pastelería creativa</small></a>
+  <span class="pill"><i></i>Pedidos abiertos</span>
+</div></header>
+
+<section class="hero" id="top"><div class="wrap">
+  <div>
+    <span class="eyebrow">Catálogo navideño 2026</span>
+    <h1>Aparta tus minicakes <em>navideños</em> en un minuto</h1>
+    <p class="lead">Elige diseño y cantidad, dinos para cuándo y te abrimos WhatsApp con tu pedido completo. Monchis te confirma ahí mismo.</p>
+    <div class="cta">
+      <a class="btn btn-dark" href="#elige" style="text-decoration:none">Elegir minicakes</a>
+      <a class="btn btn-ghost" href="#elige" data-go="pastel" style="text-decoration:none">Cotizar un pastel</a>
+    </div>
+    <div class="trust">
+      <div><b>4 diseños</b>de temporada</div>
+      <div><b>7 mil</b>seguidores en Instagram</div>
+      <div><b>Posadas</b>para hasta 14 personas</div>
+    </div>
+  </div>
+  <div class="mosaic">
+    <figure><img src="img/arbolito.webp" alt="Minicake Arbolito de Monchis" width="788" height="1000"></figure>
+    <figure><img src="img/santa.webp" alt="Minicake Santa de Monchis" width="788" height="1000"></figure>
+    <figure><img src="img/campana.webp" alt="Minicake Campanita de Monchis" width="788" height="1000"></figure>
+    <figure><img src="img/galleta.webp" alt="Minicake Galletita de Monchis" width="788" height="1000"></figure>
+    <div class="tag"><span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#66775a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>Sin esperar respuesta</b>Tu pedido llega completo a su WhatsApp</div></div>
+  </div>
+</div></section>
+
+<section class="sec" id="elige"><div class="wrap">
+  <div class="sh"><div><span class="num">Paso 1</span><h2>¿Qué se te antoja?</h2></div><p id="tabHint">Toca + en cada diseño. Puedes combinar varios en el mismo pedido.</p></div>
+  <div class="tabs" id="tabs" role="tablist"></div>
+  <div id="pane"></div>
+</div></section>
+
+<section class="sec"><div class="wrap">
+  <div class="sh"><div><span class="num">Paso 2</span><h2>¿Para cuándo?</h2></div><p>Elige el día. Monchis te confirma disponibilidad por WhatsApp.</p></div>
+  <div class="panel">
+    <div class="fld" id="fFecha"><span class="lab">Fecha <em>*</em></span><div class="days" id="days"></div>
+      <label class="other">¿Otra fecha? <input type="date" id="otherDate"></label></div>
+    <div class="fld" id="fEntrega"><span class="lab">Entrega</span><div class="chips" id="entrega"></div>
+      <div id="colWrap" style="display:none;margin-top:12px"><input type="text" id="col" maxlength="80" placeholder="Colonia y municipio"><p class="hint">El costo de envío te lo confirman por WhatsApp.</p></div></div>
+  </div>
+</div></section>
+
+<section class="sec"><div class="wrap">
+  <div class="sh"><div><span class="num">Paso 3</span><h2>Revisa y envía</h2></div><p>Así le llega tu pedido a Monchis.</p></div>
+  <div class="order">
+    <div class="panel">
+      <div class="fld" id="fNombre"><label class="lab" for="nombre">Tu nombre <em>*</em></label><input type="text" id="nombre" maxlength="60" placeholder="Nombre y apellido" autocomplete="name"></div>
+      <div class="fld"><label class="lab" for="nota">Nota o dedicatoria</label><textarea id="nota" maxlength="300" placeholder="Ej. Son para regalo, ¿los pueden entregar en cajita? / Nombre para el pastel…"></textarea><p class="hint">Si tienes foto de referencia, la mandas en el mismo chat.</p></div>
+    </div>
+    <aside class="ticket">
+      <header><small>Tu pedido</small><h3 id="tTitle">Minicakes navideños</h3></header>
+      <div class="tbody" id="tbody"></div>
+      <div class="tfoot">
+        <button class="wa" id="send" type="button"><svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.3.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.1.1.6-.1 1.2z"/></svg>Enviar pedido por WhatsApp</button>
+        <p class="note" id="note">Se abre WhatsApp con tu pedido ya escrito. Solo das enviar.</p>
+        <div class="peek"><small>Vista previa del mensaje</small><div class="bub" id="bub"></div></div>
+      </div>
+    </aside>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <div class="logo"><b>Monchis Inc</b><small>Pastelería creativa</small></div>
+  Monterrey, N.L. · <a href="https://www.instagram.com/monchisinc/" target="_blank" rel="noopener">@monchisinc</a>
+  <span class="cn">Formulario de muestra preparado por Code Nova para Monchis Inc.</span>
+</div></footer>
+
+<div class="dock" id="dock"><div><small id="dSmall">Tu pedido</small><b id="dBig">Elige tus minicakes</b></div><button type="button" id="dSend"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></svg>Enviar</button></div>
+
 <script>
-window.Q={name:"Monchis Inc",short:"Monchis",mark:"M",tag:"Pasteles, cupcakes y mesas de postres",color:"#c8755a",bg:"#fffaf6",display:'"Fraunces",Georgia,serif',
-kicker:"Haz tu pedido en 1 minuto",title:"Tu pedido dulce, <em>listo para cotizar</em>",sub:"Elige qué quieres, para cuándo y cuéntanos tu idea. Te abrimos WhatsApp con tu pedido completo, sin esperar a que te pregunten cada detalle por DM.",
-facts:["Minicakes navideños: 4 diseños","Pasteles y cupcakes","Mesas de postres"],
-greet:"Hola, Monchis 🧁 Quiero hacer un pedido:",closing:"¡Gracias! Quedo pendiente.",
-fields:[{id:"ti",label:"¿Qué quieres?",type:"chips",req:1,def:"Minicakes navideños",options:["Minicakes navideños","Pastel","Cupcakes","Mesa de postres"],out:"Pedido"},
-{id:"dn",label:"Diseño de minicake",type:"multi",req:1,options:["Diseño 1","Diseño 2","Diseño 3","Diseño 4"],when:{ti:"Minicakes navideños"},out:"Diseños",help:"Los 4 diseños de su publicación del 18 de noviembre."},
-{id:"cm",label:"¿Cuántos minicakes?",type:"num",min:1,max:60,def:4,unit:"piezas",when:{ti:"Minicakes navideños"},out:"Cantidad"},
-{id:"oc",label:"Estilo",type:"chips",req:1,options:["Infantil","Mujer","Hombre","Boda","Sacramentos"],when:{ti:["Pastel","Cupcakes"]},out:"Estilo"},
-{id:"pz",label:"Porciones o piezas",type:"num",min:6,max:200,step:2,def:20,unit:"personas",when:{ti:["Pastel","Cupcakes"]},out:"Porciones"},
-{id:"iv",label:"Invitados",type:"num",min:20,max:300,step:10,def:60,unit:"personas",when:{ti:"Mesa de postres"},out:"Invitados"},
-{id:"di",label:"Tu idea",type:"area",ph:"Temática, colores, nombre, frase…",help:"Si tienes foto de referencia, la mandas en el mismo chat.",out:"Idea"},
-{id:"fe",label:"Fecha",type:"date",req:1,out:"Fecha"},
-{id:"no",label:"Tu nombre",type:"text",req:1,ph:"Nombre y apellido",out:"Nombre"}],
-foot:"Monterrey, N.L. · WhatsApp 81 1740 5923",minDays:1,wa:"5218117405923"};
+(()=>{
+const WA="5218117405923";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const MINIS=[
+  {id:"arbolito",name:"Arbolito",d:"Pino verde con esferas y moño de Monchis",img:"img/arbolito.webp"},
+  {id:"santa",name:"Santa",d:"Barba de betún, gorro rojo y botitas",img:"img/santa.webp"},
+  {id:"campana",name:"Campanita",d:"Campana sonriente con moño rojo",img:"img/campana.webp"},
+  {id:"galleta",name:"Galletita",d:"Galleta de jengibre con orejeras",img:"img/galleta.webp"}];
+const ICON={
+  pastel:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16M5 21v-7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v7M5 16c1.5 1 3 1 4.5 0s3-1 4.5 0 3 1 5 0M12 12V8M12 5.5c.8 0 1.2-.9.6-1.5L12 3l-.6 1c-.6.6-.2 1.5.6 1.5z"/></svg>',
+  mesa:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18M5 11v9M19 11v9M7 11V8a2 2 0 0 1 4 0v3M13 11V6.5a2.5 2.5 0 0 1 5 0V11"/></svg>',
+  posada:'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 4l9 6.5M5 9v11h14V9M10 20v-5h4v5"/></svg>'};
+const TABS=[
+  {id:"minis",label:"Minicakes navideños",img:"img/arbolito.webp",title:"Minicakes navideños",hint:"Toca + en cada diseño. Puedes combinar varios en el mismo pedido."},
+  {id:"pastel",label:"Pastel personalizado",icon:"pastel",title:"Pastel personalizado",hint:"Cuéntanos el estilo y para cuántas personas. Monchis te cotiza por WhatsApp."},
+  {id:"mesa",label:"Mesa de postres",icon:"mesa",title:"Mesa de postres",hint:"Para tu evento: dinos cuántos invitados y qué te gustaría en la mesa."},
+  {id:"posada",label:"Posada en Monchis",icon:"posada",title:"Posada en Monchis",hint:"Aparta el espacio de Monchis para tu posada, para hasta 14 personas."}];
+const S={tab:"minis",q:{arbolito:0,santa:0,campana:0,galleta:0},
+  pastel:{estilo:"",porc:20,ref:"",idea:""},
+  mesa:{inv:60,inc:new Set(["Pastel","Cupcakes"]),tema:""},
+  posada:{pers:10,hora:"",extra:""},
+  fecha:"",entrega:"Recojo en Monchis",col:""};
+
+/* ---------- Paso 1 ---------- */
+function tabs(){$("#tabs").innerHTML=TABS.map(t=>`<button type="button" role="tab" aria-selected="${S.tab===t.id}" class="${S.tab===t.id?"on":""}" data-tab="${t.id}">${t.img?`<img src="${t.img}" alt="">`:`<span class="ic">${ICON[t.icon]}</span>`}${t.label}</button>`).join("");$("#tabHint").textContent=TABS.find(t=>t.id===S.tab).hint}
+const stepper=(key,val,min,max,unit)=>`<div class="step"><button type="button" data-st="${key}" data-d="-1" ${val<=min?"disabled":""} aria-label="Menos">−</button><div><b>${val}</b>${unit?`<small>${unit}</small>`:""}</div><button type="button" class="plus" data-st="${key}" data-d="1" ${val>=max?"disabled":""} aria-label="Más">+</button></div>`;
+const chips=(key,opts,sel,multi)=>`<div class="chips">${opts.map(o=>`<button type="button" class="${(multi?sel.has(o):sel===o)?"on":""}" data-ch="${key}" data-o="${esc(o)}">${esc(o)}</button>`).join("")}</div>`;
+function pane(){
+  const P=$("#pane");
+  if(S.tab==="minis"){P.innerHTML=`<div class="grid4">${MINIS.map(m=>{const q=S.q[m.id];return `<article class="card ${q?"sel":""}"><span class="badge">${q}</span><div class="ph"><img src="${m.img}" alt="Minicake ${m.name}" loading="lazy" width="788" height="1000"></div><h3>${m.name}</h3><p>${m.d}</p>${stepper("q."+m.id,q,0,30,q===1?"pieza":"piezas")}</article>`}).join("")}</div>`;return}
+  if(S.tab==="pastel"){const p=S.pastel;P.innerHTML=`<div class="panel two"><div>
+      <div class="fld" id="fEstilo"><span class="lab">Estilo <em>*</em></span>${chips("pastel.estilo",["Infantil","Mujer","Hombre","Boda","Sacramentos","Otro"],p.estilo)}</div>
+      <div class="fld"><span class="lab">¿Para cuántas personas?</span><div class="cnt">${stepper("pastel.porc",p.porc,6,200,"personas")}</div></div>
+      <div class="fld"><label class="lab" for="idea">Tu idea</label><textarea id="idea" data-in="pastel.idea" maxlength="300" placeholder="Temática, colores, sabor, nombre o frase…">${esc(p.idea)}</textarea></div>
+    </div><div>
+      <span class="lab">¿Algo como estos?</span>
+      <div class="insp">
+        <button type="button" class="${p.ref==="Vintage de corazón"?"on":""}" data-ref="Vintage de corazón"><img src="img/corazon.webp" alt="Pastel vintage de corazón de Monchis"><span>Vintage de corazón<small>Flores y perlas</small></span></button>
+        <button type="button" class="${p.ref==="Temática vaquera"?"on":""}" data-ref="Temática vaquera"><img src="img/vaquero.webp" alt="Pastel de temática vaquera de Monchis"><span>Temática vaquera<small>Degradado y cactus</small></span></button>
+      </div><p class="hint">Opcional. Son trabajos reales de Monchis; toca uno para usarlo de referencia.</p>
+    </div></div>`;return}
+  if(S.tab==="mesa"){const m=S.mesa;P.innerHTML=`<div class="panel two"><div>
+      <div class="fld"><span class="lab">Invitados</span><div class="cnt">${stepper("mesa.inv",m.inv,20,400,"invitados")}</div></div>
+      <div class="fld" id="fInc"><span class="lab">¿Qué quieres en la mesa? <em>*</em></span>${chips("mesa.inc",["Pastel","Cupcakes","Minicakes","Galletas decoradas","Postres individuales","Candy bar"],m.inc,true)}</div>
+      <div class="fld"><label class="lab" for="tema">Temática y colores</label><textarea id="tema" data-in="mesa.tema" maxlength="300" placeholder="Ej. Bautizo en tonos verde salvia y blanco…">${esc(m.tema)}</textarea></div>
+    </div><div class="mini-ill">${MESA_SVG}<b>Mesa de postres al estilo Monchis</b><p>Montaje en tu evento. Te mandan propuesta y cotización por WhatsApp.</p></div></div>`;return}
+  const o=S.posada;P.innerHTML=`<div class="panel two"><div>
+      <div class="fld"><span class="lab">¿Cuántas personas?</span><div class="cnt">${stepper("posada.pers",o.pers,2,14,"personas")}<span>Máximo 14</span></div></div>
+      <div class="fld" id="fHora"><span class="lab">Horario <em>*</em></span>${chips("posada.hora",["Mañana","Tarde","Noche"],o.hora)}</div>
+      <div class="fld"><label class="lab" for="extra">¿Qué celebran?</label><textarea id="extra" data-in="posada.extra" maxlength="300" placeholder="Ej. Posada de la oficina, intercambio de regalos, pastel incluido…">${esc(o.extra)}</textarea></div>
+    </div><div class="mini-ill">${CASA_SVG}<b>Tu posada en Monchis</b><p>Un espacio especial para compartir con hasta 14 personas, con café y postres de la casa.</p></div></div>`;
+}
+const MESA_SVG=`<svg viewBox="0 0 280 150" fill="none" stroke="#66775a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 120h240M40 120v22M240 120v22"/><path d="M60 120V92h44v28M64 92c0-10 36-10 36 0"/><path d="M82 82c0-6 4-8 0-14"/><path d="M122 120v-14h10v14M118 106h18M127 106v-8M118 98c0-9 18-9 18 0"/><path d="M150 120l6-22h24l6 22M156 98c0-8 24-8 24 0M168 90v-6"/><path d="M200 120v-36h40v36M200 96h40M208 84c0-6 24-6 24 0"/><circle cx="212" cy="108" r="4"/><circle cx="228" cy="108" r="4"/></svg>`;
+const CASA_SVG=`<svg viewBox="0 0 280 150" fill="none" stroke="#66775a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M30 130h220"/><path d="M60 130V70l80-44 80 44v60"/><path d="M118 130V96h44v34"/><path d="M78 92h26v20H78zM176 92h26v20h-26z"/><circle cx="140" cy="62" r="9"/><path d="M136 70l-3 6M144 70l3 6"/><path d="M66 74c12 8 22 8 34 0s22-8 34 0 22 8 34 0 22-8 34 0 14 8 20 4"/></svg>`;
+
+/* ---------- Paso 2 ---------- */
+const DN=["dom","lun","mar","mié","jue","vie","sáb"],MN=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+function days(){const t=new Date();const out=[];for(let i=1;i<=21;i++){const d=new Date(t.getFullYear(),t.getMonth(),t.getDate()+i);out.push(d)}
+  $("#days").innerHTML=out.map(d=>{const v=iso(d);return `<button type="button" class="${S.fecha===v?"on":""}" data-day="${v}"><small>${i1(d)}</small><b>${d.getDate()}</b><span>${MN[d.getMonth()]}</span></button>`}).join("");
+  const od=$("#otherDate");od.min=iso(new Date(t.getFullYear(),t.getMonth(),t.getDate()+1));if(S.fecha&&!out.some(d=>iso(d)===S.fecha))od.value=S.fecha;else if(!S.fecha)od.value=""}
+const i1=d=>{const t=new Date();const tm=new Date(t.getFullYear(),t.getMonth(),t.getDate()+1);return iso(d)===iso(tm)?"mañana":DN[d.getDay()]};
+function entrega(){const show=S.tab!=="posada";$("#fEntrega").style.display=show?"":"none";
+  $("#entrega").innerHTML=["Recojo en Monchis","Envío a domicilio"].map(o=>`<button type="button" class="${S.entrega===o?"on":""}" data-ent="${o}">${o}</button>`).join("");
+  $("#colWrap").style.display=show&&S.entrega==="Envío a domicilio"?"":"none"}
+const fmtDate=v=>{if(!v)return "";const d=new Date(v+"T12:00");return d.toLocaleDateString("es-MX",{weekday:"long",day:"numeric",month:"long"})};
+
+/* ---------- Resumen y mensaje ---------- */
+const totalMinis=()=>Object.values(S.q).reduce((a,b)=>a+b,0);
+function rows(){const R=[];
+  if(S.tab==="minis")MINIS.filter(m=>S.q[m.id]).forEach(m=>R.push({img:m.img,k:m.name,q:S.q[m.id]}));
+  return R}
+function kvs(){const K=[];const t=S.tab;
+  if(t==="pastel"){const p=S.pastel;if(p.estilo)K.push(["Estilo",p.estilo]);K.push(["Personas",p.porc]);if(p.ref)K.push(["Referencia",p.ref]);if(p.idea.trim())K.push(["Idea",p.idea.trim()])}
+  if(t==="mesa"){const m=S.mesa;K.push(["Invitados",m.inv]);if(m.inc.size)K.push(["Incluye",[...m.inc].join(", ")]);if(m.tema.trim())K.push(["Temática",m.tema.trim()])}
+  if(t==="posada"){const o=S.posada;K.push(["Personas",o.pers]);if(o.hora)K.push(["Horario",o.hora]);if(o.extra.trim())K.push(["Celebración",o.extra.trim()])}
+  if(S.fecha)K.push(["Fecha",fmtDate(S.fecha)]);
+  if(t!=="posada"){K.push(["Entrega",S.entrega+(S.entrega==="Envío a domicilio"&&S.col.trim()?` (${S.col.trim()})`:"")])}
+  const n=$("#nombre").value.trim();if(n)K.push(["Nombre",n]);
+  const no=$("#nota").value.trim();if(no)K.push(["Nota",no]);
+  return K}
+function text(){const t=S.tab;const L=[];
+  const head={minis:"Hola, Monchis 🤍 Quiero apartar minicakes navideños:",pastel:"Hola, Monchis 🤍 Quiero cotizar un pastel personalizado:",mesa:"Hola, Monchis 🤍 Quiero cotizar una mesa de postres:",posada:"Hola, Monchis 🤍 Quiero apartar el espacio para una posada:"}[t];
+  L.push(head,"");
+  if(t==="minis"){const r=rows();if(r.length)r.forEach(x=>L.push(`• ${x.q} × ${x.k}`));else L.push("• (sin diseños elegidos)");L.push("")}
+  kvs().forEach(([k,v])=>L.push(`${k}: ${v}`));
+  L.push("","¡Gracias! Quedo pendiente de su confirmación.");
+  return L.join("\n")}
+function ticket(){const t=TABS.find(x=>x.id===S.tab);$("#tTitle").textContent=t.title;
+  let h="";if(S.tab==="minis"){const r=rows();h+=r.length?r.map(x=>`<div class="line"><img src="${x.img}" alt=""><span>${esc(x.k)}</span><span class="q">× ${x.q}</span></div>`).join(""):`<div class="empty">Aún no eliges diseños. Toca + en tus favoritos.</div>`}
+  h+=kvs().map(([k,v])=>`<div class="kv"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("");
+  $("#tbody").innerHTML=h;$("#bub").textContent=text();dock()}
+function dock(){const D=$("#dock");let big,small="Tu pedido";
+  if(S.tab==="minis"){const n=totalMinis();big=n?`${n} minicake${n>1?"s":""}${S.fecha?" · "+fmtDate(S.fecha).split(",")[0]:""}`:"Elige tus minicakes"}
+  else{big=TABS.find(t=>t.id===S.tab).title;small=S.fecha?fmtDate(S.fecha):"Falta elegir fecha"}
+  $("#dBig").textContent=big;$("#dSmall").textContent=small;
+  D.classList.toggle("show",scrollY>window.innerHeight*.6)}
+
+/* ---------- Validar y enviar ---------- */
+function missing(){const M=[];
+  if(S.tab==="minis"&&!totalMinis())M.push(["#pane","al menos un minicake"]);
+  if(S.tab==="pastel"&&!S.pastel.estilo)M.push(["#fEstilo","el estilo del pastel"]);
+  if(S.tab==="mesa"&&!S.mesa.inc.size)M.push(["#fInc","qué quieres en la mesa"]);
+  if(S.tab==="posada"&&!S.posada.hora)M.push(["#fHora","el horario"]);
+  if(!S.fecha)M.push(["#fFecha","la fecha"]);
+  if(!$("#nombre").value.trim())M.push(["#fNombre","tu nombre"]);
+  return M}
+function send(){const M=missing();const note=$("#note");
+  if(M.length){note.textContent="Falta: "+M.map(m=>m[1]).join(", ")+".";note.className="note bad";
+    const el=$(M[0][0]);el.scrollIntoView({behavior:"smooth",block:"center"});el.classList.remove("err-ring");void el.offsetWidth;el.classList.add("err-ring");setTimeout(()=>el.classList.remove("err-ring"),1600);return}
+  note.textContent="Se abre WhatsApp con tu pedido ya escrito. Solo das enviar.";note.className="note";
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(text())}`,"_blank","noopener")}
+
+/* ---------- Eventos ---------- */
+function all(){tabs();pane();days();entrega();ticket()}
+document.addEventListener("click",e=>{
+  const go=e.target.closest("[data-go]");if(go){S.tab=go.dataset.go;all()}
+  const tb=e.target.closest("[data-tab]");if(tb){S.tab=tb.dataset.tab;tabs();pane();entrega();ticket();return}
+  const st=e.target.closest("[data-st]");if(st&&!st.disabled){const[a,b]=st.dataset.st.split(".");const lim={q:[0,30],porc:[6,200],inv:[20,400],pers:[2,14]}[b==="porc"||b==="inv"||b==="pers"?b:a];const stp=b==="porc"?2:b==="inv"?10:1;
+    const obj=a==="q"?S.q:S[a];obj[b]=Math.max(lim[0],Math.min(lim[1],obj[b]+(+st.dataset.d)*stp));pane();ticket();return}
+  const ch=e.target.closest("[data-ch]");if(ch){const[a,b]=ch.dataset.ch.split(".");const o=ch.dataset.o;const cur=S[a][b];
+    if(cur instanceof Set){cur.has(o)?cur.delete(o):cur.add(o)}else S[a][b]=o;pane();ticket();return}
+  const rf=e.target.closest("[data-ref]");if(rf){S.pastel.ref=S.pastel.ref===rf.dataset.ref?"":rf.dataset.ref;pane();ticket();return}
+  const dy=e.target.closest("[data-day]");if(dy){S.fecha=dy.dataset.day;days();ticket();return}
+  const en=e.target.closest("[data-ent]");if(en){S.entrega=en.dataset.ent;entrega();ticket();return}
+  if(e.target.closest("#send")||e.target.closest("#dSend")){send()}
+});
+document.addEventListener("input",e=>{const i=e.target;
+  if(i.dataset.in){const[a,b]=i.dataset.in.split(".");S[a][b]=i.value}
+  if(i.id==="otherDate"){S.fecha=i.value;days()}
+  if(i.id==="col")S.col=i.value;
+  ticket()});
+addEventListener("scroll",dock,{passive:true});
+all();
+})();
 </script>
-<script src="../_engine/cotiza.js"></script>
-</body></html>
+</body>
+</html>
