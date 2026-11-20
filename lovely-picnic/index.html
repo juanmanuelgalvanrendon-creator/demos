@@ -1,22 +1,36 @@
 <!DOCTYPE html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Pedido</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#7a8f5e">
+<title>Lovely Picnic MTY · Cotiza tu evento</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#f8f6f0">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head><body>
 <script>
-window.Q={name:"Lovely Picnic MTY",short:"Lovely Picnic",mark:"L",tag:"Renta de mobiliario · Loza y mesas",color:"#7a8f5e",bg:"#fbfaf5",display:'"Cormorant Garamond",Georgia,serif',
-kicker:"Cotiza tu evento en 1 minuto",title:"Tu mesa bonita, <em>cotizada a la primera</em>",sub:"Elige tu evento, cuántos invitados y qué necesitas. Te abrimos WhatsApp con todo listo para que Lovely Picnic te mande tu cotización sin preguntas de ida y vuelta.",
-facts:["Mesas y sillas","Loza","Decoración de mesa","Mampara para fotos"],
-greet:"Hola, Lovely Picnic 🌿 Quiero cotizar mi evento:",closing:"¡Gracias! Quedo pendiente de la cotización.",
-fields:[{id:"ev",label:"Evento",type:"chips",req:1,options:["Cumpleaños","Bautizo","Civil","Baby shower","Bridal shower","Otro"]},
-{id:"in",label:"Invitados",type:"num",min:10,max:250,step:10,def:50,unit:"personas"},
-{id:"re",label:"¿Qué necesitas?",type:"multi",req:1,def:["Mesas y sillas","Loza"],options:["Mesas y sillas","Loza","Decoración de mesa","Mampara para fotos"],out:"Renta"},
-{id:"es",label:"Estilo o colores",type:"text",ph:"Ej. verde salvia y blanco, estilo boho",out:"Estilo"},
-{id:"fe",label:"Fecha del evento",type:"date",req:1,out:"Fecha"},
-{id:"mu",label:"Municipio",type:"chips",req:1,options:["Monterrey","San Pedro","San Nicolás","Guadalupe","Apodaca","Escobedo","Santa Catarina","Otro"]},
-{id:"no",label:"Tu nombre",type:"text",req:1,ph:"Nombre y apellido",out:"Nombre"}],
-foot:"Monterrey, N.L. · WhatsApp 81 2428 2730",minDays:1,wa:"528124282730"};
+window.Q={
+ brand:{name:"Lovely Picnic",short:"Lovely Picnic",sub:"Mobiliario y mesas · MTY",ig:"lovelypicnic_mty",city:"Monterrey, N.L."},
+ wa:"528124282730",pill:"Fechas disponibles",
+ theme:{bg:"#f8f6f0",paper:"#fffefb",ink:"#2f3527",accent:"#c25b7a",soft:"#e5ead9",softInk:"#5f7347",line:"#e7e3d6",mut:"#7f8173",
+  display:'"Cormorant Garamond",Georgia,serif',body:'"DM Sans",system-ui,sans-serif',fonts:"family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700"},
+ hero:{eyebrow:"Renta de mobiliario para eventos",title:"Tu mesa bonita, <em>cotizada a la primera</em>",
+  lead:"Elige el estilo que te gusta, cuántos invitados y qué necesitas. Te abrimos WhatsApp con todo listo para que Lovely Picnic te mande tu cotización sin preguntas de ida y vuelta.",
+  imgs:["img/toldo.webp","img/magenta.webp","img/baby.webp","img/azul.webp"],cta1:"Cotizar mi evento",
+  trust:[["15+","invitados por evento"],["Loza","y decoración de mesa"],["En casa","o en jardín"]],
+  badge:["Cotización a la primera","Tu evento llega completo a su WhatsApp"]},
+ tabs:[{id:"evento",label:"Mi evento",title:"Cotización de evento",single:true,itemsReq:false,itemsOut:"Estilo que me gusta",
+  hint:"Son mesas reales que ha montado Lovely Picnic. Toca la que más se parezca a lo que imaginas (opcional).",
+  head:"Hola, Lovely Picnic 🌿 Quiero cotizar mi evento:",dockEmpty:"Elige un estilo",emptyMsg:"Sin estilo elegido (lo describo en colores).",
+  items:[{id:"rosa",name:"Rosa y dorado",d:"Camino fucsia, platos dorados y flores de color",img:"img/magenta.webp"},
+   {id:"azul",name:"Azul cielo",d:"Hortensias azules, servilletas y mantel blanco",img:"img/azul.webp"},
+   {id:"madera",name:"Madera y blanco",d:"Mesa de madera, flores blancas y cristalería verde",img:"img/madera.webp"},
+   {id:"marfil",name:"Marfil elegante",d:"Mantel blanco, platos dorados y alcatraces",img:"img/marfil.webp"}],
+  fields:[{id:"ev",label:"Evento",type:"chips",req:1,options:["Cumpleaños","Bautizo","Boda civil","Baby shower","Bridal shower","Brunch","Otro"]},
+   {id:"in",label:"Invitados",type:"num",min:15,max:250,step:5,def:40,unit:"personas",side:"Mínimo 15"},
+   {id:"re",label:"¿Qué necesitas?",type:"multi",req:1,def:["Mesas y sillas","Loza"],options:["Mesas y sillas","Loza","Decoración de mesa","Mampara para fotos"],out:"Renta"},
+   {id:"co",label:"Colores o idea",type:"text",ph:"Ej. verde salvia y blanco, flores de colores…",out:"Colores"},
+   {id:"mu",label:"Municipio del evento",type:"chips",req:1,options:["Monterrey","San Pedro","San Nicolás","Guadalupe","Apodaca","Escobedo","Santa Catarina","Otro"],out:"Municipio"}],
+  aside:{img:"img/toldo.webp",title:"En casa o en jardín",text:"Un evento en casa puede lucir igual de bonito que en un salón con la decoración correcta."}}],
+ date:{title:"¿Cuándo es tu evento?",label:"Fecha del evento",hint:"Elige el día. Lovely Picnic te confirma disponibilidad por WhatsApp.",minDays:1,days:28},
+ contact:{noteLabel:"Algo más",notePh:"Ej. horario del evento, si es en jardín o en interior…"},
+ steps:["Arma tu evento","¿Para cuándo?","Revisa y envía"],
+ closing:"¡Gracias! Quedo pendiente de la cotización.",sendLabel:"Pedir cotización por WhatsApp"};
 </script>
-<script src="../_engine/cotiza.js"></script>
+<script src="../_engine/cotiza2.js"></script>
 </body></html>

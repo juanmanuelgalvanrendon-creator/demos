@@ -48,7 +48,7 @@ button,input,textarea{font:inherit;color:inherit}button{cursor:pointer;border:0;
 .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
 .bar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:64px}
-.logo{display:flex;flex-direction:column;line-height:1;text-decoration:none;min-width:0}.logo b{font:600 24px var(--disp);letter-spacing:-.01em;white-space:nowrap}
+.logo{display:flex;flex-direction:column;line-height:1;text-decoration:none;min-width:0;overflow:hidden}.logo b{font:600 24px var(--disp);letter-spacing:-.01em;white-space:nowrap}
 .logo small{font-size:9.5px;letter-spacing:.38em;text-transform:uppercase;color:var(--mut);margin-top:5px;padding-left:2px;white-space:nowrap}
 .pill{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:var(--softInk);background:var(--soft);padding:7px 12px;border-radius:999px;white-space:nowrap}
 .pill i{width:7px;height:7px;border-radius:50%;background:#4caf50;box-shadow:0 0 0 3px rgba(76,175,80,.2)}
@@ -124,7 +124,7 @@ input:focus,textarea:focus{box-shadow:inset 0 0 0 2px var(--softInk)}textarea{mi
  .dock{display:flex;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:30;background:var(--ink);color:var(--paper);border-radius:999px;padding:7px 7px 7px 20px;align-items:center;gap:10px;box-shadow:0 18px 36px -14px rgba(0,0,0,.55);transform:translateY(140%);transition:transform .35s cubic-bezier(.2,.9,.3,1)}
  .dock.show{transform:none}.dock div{flex:1;min-width:0;line-height:1.2}.dock small{display:block;font-size:11.5px;opacity:.7}.dock b{display:block;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
  .dock button{height:46px;padding:0 18px;border-radius:999px;background:#1faa59;color:#fff;font-weight:700;font-size:14.5px;display:flex;align-items:center;gap:7px;flex:none}body{padding-bottom:90px}}
-@media(max-width:420px){.card h3{font-size:18px}.card p{font-size:12.5px}.step button{width:36px;height:36px}.logo b{font-size:21px}.pill{font-size:11.5px;padding:6px 10px}}`;
+@media(max-width:420px){.card h3{font-size:18px}.card p{font-size:12.5px}.step button{width:36px;height:36px}.logo b{font-size:21px}.pill{font-size:11.5px;padding:6px 10px}.logo small{letter-spacing:.22em}}`;
 document.head.append(css);
 
 /* ---------- estado ---------- */
@@ -174,8 +174,8 @@ function field(t,f){const k=t.id+"."+f.id,v=S.v[k],req=f.req?" <em>*</em>":"",h=
 const shown=(t,f)=>!f.when||Object.entries(f.when).every(([id,val])=>{const v=S.v[t.id+"."+id];return Array.isArray(val)?val.includes(v):v===val});
 function tabsUI(){const el=$("#tabs");if(el)el.innerHTML=TABS.map(t=>`<button type="button" role="tab" aria-selected="${S.tab===t.id}" class="${S.tab===t.id?"on":""}" data-tab="${t.id}">${t.img?`<img src="${t.img}" alt="">`:`<span class="ic">${ico(t.icon)}</span>`}${esc(t.label)}</button>`).join("");$("#tabHint").textContent=tab().hint||""}
 function pane(){const t=tab();let h="";
-  if(t.items){const n=t.items.length,cls=n%3===0&&n<=6?"g3":n===2?"g2":"";const single=t.single;
-    h+=`<div class="grid ${cls}">${t.items.map(i=>{const k=t.id+"."+i.id,q=S.q[k];return `<article class="card ${q?"sel":""}"><span class="badge">${single?ico("check",15):q}</span><div class="ph"><img src="${i.img}" alt="${esc(i.name)}" loading="lazy"></div><h3>${esc(i.name)}</h3><p>${esc(i.d||"")}</p>${single?`<button type="button" class="pick" data-pick="${k}">${q?"Elegido":"Elegir"}</button>`:stepper("q."+k,q,0,t.max||30,unitOf(t,q))}</article>`}).join("")}</div>`}
+  if(t.items){const n=t.items.length,cls=n%3===0&&n<=6?"g3":n===2?"g2":"";const single=t.single||t.multiPick;
+    h+=`<div class="grid ${cls}">${t.items.map(i=>{const k=t.id+"."+i.id,q=S.q[k];return `<article class="card ${q?"sel":""}"><span class="badge">${single?ico("check",15):q}</span><div class="ph"><img src="${i.img}" alt="${esc(i.name)}" loading="lazy"></div><h3>${esc(i.name)}</h3><p>${esc(i.d||"")}</p>${single?`<button type="button" class="pick" data-pick="${k}">${q?(t.multiPick?"Agregado":"Elegido"):(t.multiPick?"Agregar":"Elegir")}</button>`:stepper("q."+k,q,0,t.max||30,unitOf(t,q))}</article>`}).join("")}</div>`}
   const fs=(t.fields||[]).filter(f=>shown(t,f));
   if(fs.length){const body=fs.map(f=>field(t,f)).join("");
     const side=t.aside?`<div class="aside">${t.aside.img?`<img src="${t.aside.img}" alt="" loading="lazy">`:`<div class="ai">${ico(t.aside.icon||"tag",64)}</div>`}<div class="tx"><b>${esc(t.aside.title)}</b><p>${esc(t.aside.text)}</p></div></div>`:"";
@@ -205,14 +205,15 @@ function kvs(){const t=tab(),K=[];(t.fields||[]).filter(f=>shown(t,f)).forEach(f
   if(useDelivery())K.push([DL.out||"Entrega",S.entrega+(DL.zone&&S.entrega===DL.zone&&S.col.trim()?` (${S.col.trim()})`:"")]);
   const n=$("#nombre").value.trim();if(n)K.push([C.nameOut||"Nombre",n]);const no=$("#nota").value.trim();if(no)K.push([C.noteOut||"Nota",no]);return K}
 function text(){const t=tab(),L=[t.head||`Hola, ${B.short||B.name}. Quiero hacer un pedido:`,""];
-  if(t.items&&!t.single){const r=rows();if(r.length)r.forEach(x=>L.push(`• ${x.q} × ${x.k}`));else L.push("• (sin elegir)");L.push("")}
+  if(t.items&&!t.single){const r=rows();if(r.length)r.forEach(x=>L.push(t.multiPick?`• ${x.k}`:`• ${x.q} × ${x.k}`));else L.push("• (sin elegir)");L.push("")}
   if(t.items&&t.single){const r=rows();if(r.length)L.push(`${t.itemsOut||"Estilo"}: ${r[0].k}`)}
   kvs().forEach(([k,v])=>L.push(`${k}: ${v}`));L.push("",Q.closing||"¡Gracias! Quedo pendiente.");return L.join("\n")}
 function ticket(){const t=tab();$("#tTitle").textContent=t.title||t.label;let h="";
-  if(t.items){const r=rows();h+=r.length?r.map(x=>`<div class="line"><img src="${x.img}" alt=""><span>${esc(x.k)}</span>${t.single?"":`<span class="q">× ${x.q}</span>`}</div>`).join(""):`<div class="empty">${esc(t.emptyMsg||"Aún no eliges nada. Toca + en tus favoritos.")}</div>`}
+  if(t.items){const r=rows();h+=r.length?r.map(x=>`<div class="line"><img src="${x.img}" alt=""><span>${esc(x.k)}</span>${t.single||t.multiPick?"":`<span class="q">× ${x.q}</span>`}</div>`).join(""):`<div class="empty">${esc(t.emptyMsg||"Aún no eliges nada. Toca + en tus favoritos.")}</div>`}
   h+=kvs().map(([k,v])=>`<div class="kv"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join("");$("#tbody").innerHTML=h;$("#bub").textContent=text();dock()}
 function dock(){const t=tab();let big,small="Tu pedido";
-  if(t.items&&!t.single){const n=total();big=n?`${n} ${unitOf(t,n)}${S.fecha?" · "+fmtDate(S.fecha).split(",")[0]:""}`:(t.dockEmpty||"Elige tu pedido")}
+  if(t.items&&t.multiPick){const r=rows();big=r.length?r.map(x=>x.k).join(", "):(t.dockEmpty||"Elige qué necesitas");small=S.fecha?fmtDate(S.fecha):"Tu pedido"}
+  else if(t.items&&!t.single){const n=total();big=n?`${n} ${unitOf(t,n)}${S.fecha?" · "+fmtDate(S.fecha).split(",")[0]:""}`:(t.dockEmpty||"Elige tu pedido")}
   else if(t.items&&t.single){const r=rows();big=r.length?r[0].k:(t.dockEmpty||"Elige una opción");small=S.fecha?fmtDate(S.fecha):"Tu pedido"}
   else{big=t.title||t.label;small=S.fecha?fmtDate(S.fecha):"Falta elegir fecha"}
   $("#dBig").textContent=big;$("#dSmall").textContent=small;$("#dock").classList.toggle("show",scrollY>innerHeight*.6)}
@@ -237,7 +238,7 @@ document.addEventListener("click",e=>{
   const tb=e.target.closest("[data-tab]");if(tb){S.tab=tb.dataset.tab;tabsUI();pane();entrega();ticket();return}
   const st=e.target.closest("[data-st]");if(st&&!st.disabled){const[kind,...rest]=st.dataset.st.split(".");const k=rest.join("."),d=+st.dataset.d,t=tab();
     if(kind==="q"){S.q[k]=Math.max(0,Math.min(t.max||30,S.q[k]+d))}else{const f=t.fields.find(x=>t.id+"."+x.id===k);S.v[k]=Math.max(f.min??1,Math.min(f.max??999,S.v[k]+d*(f.step||1)))}pane();ticket();return}
-  const pk=e.target.closest("[data-pick]");if(pk){const t=tab(),k=pk.dataset.pick,on=!S.q[k];(t.items||[]).forEach(i=>S.q[t.id+"."+i.id]=0);S.q[k]=on?1:0;pane();ticket();return}
+  const pk=e.target.closest("[data-pick]");if(pk){const t=tab(),k=pk.dataset.pick,on=!S.q[k];if(!t.multiPick)(t.items||[]).forEach(i=>S.q[t.id+"."+i.id]=0);S.q[k]=on?1:0;pane();ticket();return}
   const ch=e.target.closest("[data-ch]");if(ch){const k=ch.dataset.ch,o=ch.dataset.o,v=S.v[k];const t=tab(),f=t.fields.find(x=>t.id+"."+x.id===k);
     if(v instanceof Set){v.has(o)?v.delete(o):(!f.maxSel||v.size<f.maxSel)&&v.add(o)}else S.v[k]=v===o&&!f.req?"":o;pane();ticket();return}
   const rf=e.target.closest("[data-ref]");if(rf){const k=rf.dataset.ref;S.v[k]=S.v[k]===rf.dataset.o?"":rf.dataset.o;pane();ticket();return}
