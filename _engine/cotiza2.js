@@ -117,7 +117,7 @@ input:focus,textarea:focus{box-shadow:inset 0 0 0 2px var(--softInk)}textarea{mi
 .dock{display:none}footer{padding:60px 0 40px;text-align:center;color:var(--mut);font-size:13px}footer .logo{align-items:center;margin-bottom:10px;color:var(--ink)}footer a{color:var(--ac);font-weight:600;text-decoration:none}footer .cn{display:block;margin-top:14px;font-size:11.5px;opacity:.75}
 @media(max-width:900px){.hero{padding-top:18px}.hero .wrap{grid-template-columns:1fr;gap:26px}.hero:not(.noimg) .wrap>div:first-child{order:2}
  .mosaic{order:1;max-width:300px;margin:0 auto 14px;width:100%;gap:9px}.mosaic figure{aspect-ratio:4/4.4}.mosaic figure:nth-child(even){transform:translateY(18px)}
- .mosaic.m1{max-width:none}.mosaic.m2{max-width:330px}.tagc{display:none}.hcard{order:1;padding:22px}.hcard h3{font-size:28px}.hrow{grid-template-columns:80px 1fr;font-size:13.5px}.hrow i{display:none}
+ .mosaic.m1{max-width:none}.mosaic.m2{max-width:330px;margin-bottom:34px}.mosaic.m2 figure:nth-child(2){transform:translateY(20px)}.mosaic.m4{margin-bottom:30px}.tagc{display:none}.hcard{order:1;padding:22px}.hcard h3{font-size:28px}.hrow{grid-template-columns:80px 1fr;font-size:13.5px}.hrow i{display:none}
  h1{font-size:37px;margin:10px 0 14px}.lead{font-size:16px}.cta{margin-top:20px}.cta .btn{flex:1;height:50px;padding:0 14px;font-size:14.5px}
  .trust{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:24px}.trust div{font-size:12px}.trust b{font-size:19px}
  .grid,.grid.g3{grid-template-columns:1fr 1fr;gap:12px}.two,.order{grid-template-columns:1fr}.ticket{position:static}.panel{padding:20px}
