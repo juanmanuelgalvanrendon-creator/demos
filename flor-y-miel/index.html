@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Flor y Miel · Aparta tus roles</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#fff7f3">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head><body>
+<script>
+window.Q={
+ brand:{name:"Flor y Miel",short:"Flor y Miel",sub:"Cafetería y panadería",ig:"florymielmty",city:"Santa Catarina, N.L."},
+ waLink:"https://wa.link/h9odsu",pill:"Roles martes y viernes",
+ theme:{bg:"#fff7f3",paper:"#fffdfb",ink:"#3b2a26",accent:"#e2588b",soft:"#e4f0fa",softInk:"#3d7fb5",line:"#f3e4dc",mut:"#8f7a72",radius:"round",
+  display:'"Fraunces",Georgia,serif',body:'"DM Sans",system-ui,sans-serif',fonts:"family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700"},
+ hero:{eyebrow:"Roles de canela y pasteles",title:"Aparta tus roles <em>antes de que se acaben</em>",
+  lead:"Elige sabores, cuántos y el día que pasas. Te armamos el mensaje y solo lo pegas en el WhatsApp de Flor y Miel. También cotizas tu pastel aquí mismo.",
+  imgs:["img/rol.webp","img/personaje.webp","img/tematico.webp","img/bebidas.webp"],cta1:"Apartar roles",cta2:{label:"Cotizar un pastel",tab:"pastel"},
+  trust:[["Martes","y viernes de roles"],["18 mil","seguidores"],["L-V 12 a 7","S 11 a 4"]],
+  badge:["Tus roles apartados","Sabores y cantidad en un solo mensaje"]},
+ tabs:[{id:"roles",label:"Roles de canela",img:"img/rol.webp",title:"Roles de canela",
+   hint:"Los roles salen martes y viernes. Elige tus sabores y cuántos quieres.",head:"Hola, Flor y Miel 🌸 Quiero apartar roles:",
+   fields:[{id:"sa",label:"Sabores",type:"multi",req:1,options:["Clásico de canela","Biscoff","Frutos rojos","Pistache","Nutella con brownie","Sorpréndanme"],out:"Sabores"},
+    {id:"ca",label:"¿Cuántos?",type:"num",min:1,max:48,step:1,def:4,unit:"roles",out:"Cantidad"},
+    {id:"ho",label:"¿A qué hora pasas?",type:"chips",options:["12 a 2","2 a 4","4 a 7"],out:"Hora"}],
+   aside:{img:"img/rol.webp",title:"Martes y viernes de roles",text:"Apártalos y pasas por ellos a Flor y Miel, sin quedarte con las ganas."}},
+  {id:"pastel",label:"Pastel personalizado",icon:"cake",title:"Pastel personalizado",single:true,itemsReq:false,
+   hint:"Son pasteles reales de Flor y Miel. Toca el estilo que te gusta (opcional) y cuéntanos tu idea.",head:"Hola, Flor y Miel 🌸 Quiero cotizar un pastel:",dockEmpty:"Elige tu estilo",emptyMsg:"Sin estilo elegido (lo describo en la idea).",
+   items:[{id:"personaje",name:"De personaje",d:"Con la forma de tu personaje favorito",img:"img/personaje.webp"},
+    {id:"tematico",name:"Temático vintage",d:"Betún de colores y figuras de temporada",img:"img/tematico.webp"}],
+   fields:[{id:"oc",label:"Ocasión",type:"chips",req:1,options:["Cumpleaños","Aniversario","Baby shower","Otro"]},
+    {id:"pz",label:"¿Para cuántas personas?",type:"num",min:6,max:80,step:2,def:12,unit:"personas",out:"Porciones"},
+    {id:"di",label:"Tu idea",type:"area",req:1,ph:"Personaje, colores, frase…",out:"Idea"}]}],
+ date:{title:"¿Qué día pasas?",label:"Fecha",hint:"Roles: martes y viernes. Domingo cerrado.",minDays:0,days:21},
+ contact:{noteLabel:"Comentarios",notePh:"Ej. para llevar, es regalo…"},
+ steps:["¿Qué se te antoja?","¿Qué día?","Revisa y envía"],
+ closing:"¡Gracias! Quedo pendiente.",sendLabel:"Copiar y abrir WhatsApp"};
+</script>
+<script src="../_engine/cotiza2.js"></script>
+</body></html>
