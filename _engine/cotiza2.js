@@ -160,7 +160,7 @@ document.body.innerHTML=`
 <footer><div class="wrap"><div class="logo"><b>${esc(B.name)}</b>${B.sub?`<small>${esc(B.sub)}</small>`:""}</div>${esc(B.city||"Monterrey, N.L.")}${B.ig?` · <a href="https://www.instagram.com/${B.ig}/" target="_blank" rel="noopener">@${esc(B.ig)}</a>`:""}
  <span class="cn">Formulario de muestra preparado por Code Nova para ${esc(B.name)}.</span></div></footer>
 <div class="dock" id="dock"><div><small id="dSmall"></small><b id="dBig"></b></div><button type="button" id="dSend"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></svg>Enviar</button></div>`;
-const NOTE_OK=Q.wa?"Se abre WhatsApp con tu pedido ya escrito. Solo das enviar.":"Copiamos tu pedido y abrimos su WhatsApp: solo pégalo y envía.";
+const NOTE_OK=Q.note||(Q.wa?"Se abre WhatsApp con tu pedido ya escrito. Solo das enviar.":"Copiamos tu pedido y abrimos su WhatsApp: solo pégalo y envía.");
 
 /* ---------- Paso 1 ---------- */
 const stepper=(key,val,min,max,unit)=>`<div class="step"><button type="button" data-st="${key}" data-d="-1" ${val<=min?"disabled":""} aria-label="Menos">−</button><div><b>${val}</b>${unit?`<small>${esc(unit)}</small>`:""}</div><button type="button" class="plus" data-st="${key}" data-d="1" ${val>=max?"disabled":""} aria-label="Más">+</button></div>`;
