@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Blooming · Cotiza la decoración de tu evento</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#faf6f2">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head><body>
+<script>
+window.Q={
+ brand:{name:"Blooming",short:"Blooming",sub:"Decoración de eventos",ig:"blooming_mty",city:"Monterrey, N.L."},
+ waLink:"https://ig.me/m/blooming_mty",note:"Copiamos tu cotización y abrimos el chat de Blooming en Instagram: solo pégala y envía.",pill:"Agenda abierta",
+ theme:{bg:"#faf6f2",paper:"#fffefc",ink:"#33272a",accent:"#b85a72",soft:"#eef0e4",softInk:"#6b7a4f",line:"#ece3dc",mut:"#867a77",
+  display:'"Cormorant Garamond",Georgia,serif',body:'"DM Sans",system-ui,sans-serif',fonts:"family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700"},
+ hero:{eyebrow:"Where parties bloom",title:"La decoración de tu evento, <em>cotizada a la primera</em>",
+  lead:"Elige el estilo de montaje, el evento, cuántos invitados y la fecha. Te armamos el mensaje completo y solo lo pegas en el chat de Blooming.",
+  imgs:["img/baby.webp","img/bautizo.webp","img/globos.webp","img/pumpkin.webp"],cta1:"Cotizar mi decoración",
+  trust:[["Globos","y letras gigantes"],["Flores","y arreglos"],["Montajes","temáticos"]],
+  badge:["Cotización sin ir y venir","Estilo, evento y fecha en un mensaje"]},
+ tabs:[{id:"deco",label:"Decoración",title:"Decoración de evento",single:true,itemsReq:false,itemsOut:"Estilo de montaje",
+  hint:"Son montajes reales de Blooming. Toca el que más se parezca a lo que imaginas (opcional).",head:"Hola, Blooming 🌸 Quiero cotizar la decoración de mi evento:",dockEmpty:"Elige un estilo",emptyMsg:"Sin estilo elegido (lo describo abajo).",
+  items:[{id:"arco",name:"Arco con globos",d:"Mampara con nombre, globos y flores",img:"img/baby.webp"},
+   {id:"set",name:"Set temático",d:"Escenografía completa con repisas y pedestal",img:"img/bautizo.webp"},
+   {id:"letras",name:"Letras gigantes",d:"Letras iluminadas con nube de globos",img:"img/globos.webp"},
+   {id:"jardin",name:"Montaje en jardín",d:"Paneles, letras y arreglos al aire libre",img:"img/jardin.webp"}],
+  fields:[{id:"ev",label:"Evento",type:"chips",req:1,options:["Cumpleaños","Baby shower","Bautizo","Comunión","Graduación","Boda","Despedida","Otro"],out:"Evento"},
+   {id:"in",label:"Invitados",type:"num",min:10,max:400,step:10,def:60,unit:"invitados",out:"Invitados"},
+   {id:"inc",label:"¿Qué te gustaría?",type:"multi",options:["Globos","Mampara con nombre","Letras gigantes","Arreglos florales","Piñata","Mesa de postres"],def:["Globos","Mampara con nombre"],out:"Incluir"},
+   {id:"te",label:"Temática y colores",type:"text",ph:"Ej. Little pumpkin, rosa y blanco…",out:"Temática"},
+   {id:"lu",label:"Lugar del evento",type:"text",ph:"Salón, casa o jardín y municipio",out:"Lugar"}],
+  aside:{img:"img/pumpkin.webp",title:"Cada detalle cuenta",text:"Mampara, globos, flores y piezas temáticas armadas para tu fecha."}}],
+ date:{title:"¿Cuándo es tu evento?",label:"Fecha del evento",hint:"Elige el día. Blooming te confirma disponibilidad en el chat.",minDays:1,days:45},
+ contact:{noteLabel:"Comentarios",notePh:"Ej. presupuesto aproximado, hora del montaje…",noteHint:"Si tienes foto de referencia, la mandas en el mismo chat."},
+ steps:["¿Qué estilo te gusta?","¿Para cuándo?","Revisa y envía"],
+ closing:"¡Gracias! Quedo pendiente de la cotización.",sendLabel:"Copiar y abrir el chat"};
+</script>
+<script src="../_engine/cotiza2.js"></script>
+</body></html>
