@@ -1,22 +1,32 @@
 <!DOCTYPE html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Pedido</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#b88a5a">
+<title>Le Fest Eventos · Cotiza tu evento</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#f7f4f0">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head><body>
 <script>
-window.Q={name:"Le Fest Eventos",short:"Le Fest",mark:"L",tag:"Salón de eventos · Monterrey",color:"#a07448",bg:"#fcf9f5",display:'"Cormorant Garamond",Georgia,serif',
-kicker:"Cotiza tu evento en 1 minuto",title:"Tu festejo en Le Fest, <em>cotizado a la primera</em>",sub:"Elige el tipo de evento, la fecha, cuántos invitados y qué te gustaría incluir. Te abrimos WhatsApp con todo listo para que Le Fest te diga disponibilidad y paquete.",
-facts:["Río Pánuco 2605, Monterrey","Paquetes de eventos","Flower Bar"],
-greet:"Hola, Le Fest ✨ Quiero cotizar un evento:",closing:"¡Gracias! Quedo pendiente de disponibilidad y paquetes.",
-fields:[{id:"ev",label:"Tipo de evento",type:"chips",req:1,options:["Cumpleaños","Posada","Brunch con amigas","Baby shower","Graduación","Evento de empresa","Otro"]},
-{id:"fe",label:"Fecha",type:"date",req:1,out:"Fecha"},
-{id:"ho",label:"Horario",type:"chips",options:["Mañana / brunch","Tarde","Noche"],out:"Horario"},
-{id:"in",label:"Invitados",type:"num",min:10,max:200,step:5,def:40,unit:"personas"},
-{id:"ex",label:"Me interesa incluir",type:"multi",options:["Comida","Pastel y postres","Decoración","Flower Bar","Música / DJ"],out:"Incluir"},
-{id:"de",label:"Algo más",type:"area",ph:"Temática, colores o cualquier detalle",out:"Detalles"},
-{id:"no",label:"Tu nombre",type:"text",req:1,ph:"Nombre y apellido",out:"Nombre"}],
-foot:"Río Pánuco 2605, Monterrey · WhatsApp 81 2421 6225",minDays:1,wa:"528124216225"};
+window.Q={
+ brand:{name:"Le Fest",short:"Le Fest",sub:"Eventos · Monterrey",ig:"lefest.eventos",city:"Río Pánuco 2605, Monterrey"},
+ wa:"528124216225",pill:"Agenda abierta",
+ theme:{bg:"#f7f4f0",paper:"#fffdfa",ink:"#1f1b24",accent:"#9b6a3c",soft:"#ece4f3",softInk:"#6a4f8a",line:"#e8e1d8",mut:"#80777f",
+  display:'"Cormorant Garamond",Georgia,serif',body:'"DM Sans",system-ui,sans-serif',fonts:"family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700"},
+ hero:{eyebrow:"Salón de eventos en Monterrey",title:"Tu festejo en Le Fest, <em>cotizado a la primera</em>",
+  lead:"Elige el tipo de evento, la fecha, cuántos invitados y qué te gustaría incluir. Te abrimos WhatsApp con todo listo para que Le Fest te diga disponibilidad y paquete.",
+  imgs:["img/salon.webp"],cta1:"Cotizar mi evento",
+  trust:[["70","invitados máximo"],["Cabina DJ","barra y meseros"],["Terraza","y área climatizada"]],
+  badge:["Cotización sin ir y venir","Tu evento llega completo a su WhatsApp"]},
+ tabs:[{id:"evento",label:"Mi evento",title:"Cotización de evento",
+  hint:"Cuéntanos qué quieres celebrar y qué te gustaría incluir.",
+  head:"Hola, Le Fest 🥂 Quiero cotizar un evento:",
+  fields:[{id:"ev",label:"Tipo de evento",type:"chips",req:1,options:["Cumpleaños","Posada","Brunch con amigas","Despedida de soltera","XV años petit","Graduación","Evento de empresa","Otro"],out:"Evento"},
+   {id:"ho",label:"Horario",type:"chips",options:["Mañana / brunch","Tarde","Noche"],out:"Horario"},
+   {id:"in",label:"Invitados",type:"num",min:10,max:70,step:5,def:40,unit:"personas",side:"Hasta 70"},
+   {id:"ex",label:"Me interesa incluir",type:"multi",options:["Banquete","Barra y meseros","Cabina DJ","Decoración","Pantallas","Terraza"],out:"Incluir"},
+   {id:"de",label:"Temática o detalles",type:"area",ph:"Colores, temática o cualquier detalle",out:"Detalles"}],
+  aside:{img:"img/dieciocho.webp",title:"Un espacio listo para celebrar",text:"Zona tec, cabina DJ, barra y meseros, pantallas, terraza, área climatizada y banquete."}}],
+ date:{title:"¿Qué día es tu evento?",label:"Fecha del evento",hint:"Elige el día. Le Fest te confirma disponibilidad por WhatsApp.",minDays:1,days:35},
+ contact:{noteLabel:"Algo más",notePh:"Ej. es sorpresa, necesito factura, presupuesto aproximado…",noteHint:"Le Fest te responde con paquetes y disponibilidad."},
+ steps:["Arma tu evento","¿Para cuándo?","Revisa y envía"],
+ closing:"¡Gracias! Quedo pendiente de disponibilidad y paquetes.",sendLabel:"Cotizar por WhatsApp"};
 </script>
-<script src="../_engine/cotiza.js"></script>
+<script src="../_engine/cotiza2.js"></script>
 </body></html>
