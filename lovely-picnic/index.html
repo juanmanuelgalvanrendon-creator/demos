@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pedido</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#7a8f5e">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head><body>
+<script>
+window.Q={name:"Lovely Picnic MTY",short:"Lovely Picnic",mark:"L",tag:"Renta de mobiliario · Loza y mesas",color:"#7a8f5e",bg:"#fbfaf5",display:'"Cormorant Garamond",Georgia,serif',
+kicker:"Cotiza tu evento en 1 minuto",title:"Tu mesa bonita, <em>cotizada a la primera</em>",sub:"Elige tu evento, cuántos invitados y qué necesitas. Te abrimos WhatsApp con todo listo para que Lovely Picnic te mande tu cotización sin preguntas de ida y vuelta.",
+facts:["Mesas y sillas","Loza","Decoración de mesa","Mampara para fotos"],
+greet:"Hola, Lovely Picnic 🌿 Quiero cotizar mi evento:",closing:"¡Gracias! Quedo pendiente de la cotización.",
+fields:[{id:"ev",label:"Evento",type:"chips",req:1,options:["Cumpleaños","Bautizo","Civil","Baby shower","Bridal shower","Otro"]},
+{id:"in",label:"Invitados",type:"num",min:10,max:250,step:10,def:50,unit:"personas"},
+{id:"re",label:"¿Qué necesitas?",type:"multi",req:1,def:["Mesas y sillas","Loza"],options:["Mesas y sillas","Loza","Decoración de mesa","Mampara para fotos"],out:"Renta"},
+{id:"es",label:"Estilo o colores",type:"text",ph:"Ej. verde salvia y blanco, estilo boho",out:"Estilo"},
+{id:"fe",label:"Fecha del evento",type:"date",req:1,out:"Fecha"},
+{id:"mu",label:"Municipio",type:"chips",req:1,options:["Monterrey","San Pedro","San Nicolás","Guadalupe","Apodaca","Escobedo","Santa Catarina","Otro"]},
+{id:"no",label:"Tu nombre",type:"text",req:1,ph:"Nombre y apellido",out:"Nombre"}],
+foot:"Monterrey, N.L. · WhatsApp 81 2428 2730",minDays:1,wa:"528124282730"};
+</script>
+<script src="../_engine/cotiza.js"></script>
+</body></html>

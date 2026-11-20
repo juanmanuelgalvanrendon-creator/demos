@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pedido</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#b0233a">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head><body>
+<script>
+window.Q={name:"Dissy Florería",short:"Dissy",mark:"D",tag:"Arreglos florales · Monterrey",color:"#b0233a",bg:"#fdf8f7",display:'"Playfair Display",Georgia,serif',
+kicker:"Pide tus flores en 1 minuto",title:"Tus flores, <em>pedidas a la primera</em>",sub:"Elige el arreglo, el color, para quién es y escribe el mensaje de la tarjeta. Te abrimos WhatsApp con el pedido completo para que Dissy lo confirme rápido.",
+facts:["Pedidos por WhatsApp","L-V 9 a 7 · S-D 10 a 5","Bouquets, arreglos y canastas"],
+greet:"Hola, Dissy 🌷 Quiero hacer un pedido:",closing:"¡Gracias!",
+fields:[{id:"ar",label:"Arreglo",type:"chips",req:1,options:["Bouquet","Arreglo floral","Canasta","Ramo de 100 rosas","Con personaje o peluche","Otro"],out:"Arreglo"},
+{id:"to",label:"Tono",type:"chips",options:["Rojo","Rosa / blush","Blanco","Mixto de colores"],out:"Tono"},
+{id:"de",label:"Detalles",type:"text",ph:"Ej. con tulipanes, con Hello Kitty, flor favorita…",out:"Detalles"},
+{id:"en",label:"Entrega",type:"chips",req:1,options:["Envío a domicilio","Paso a recoger"],out:"Entrega"},
+{id:"co",label:"Colonia y municipio",type:"text",req:1,ph:"Ej. Cumbres, Monterrey",when:{en:"Envío a domicilio"},out:"Dirección"},
+{id:"fe",label:"Fecha",type:"date",req:1,out:"Fecha"},
+{id:"ho",label:"Horario",type:"chips",options:["Mañana","Tarde"],out:"Horario"},
+{id:"pa",label:"¿Para quién es?",type:"text",ph:"Nombre de quien recibe",out:"Para"},
+{id:"ta",label:"Mensaje de la tarjeta",type:"area",max:200,ph:"Lo que quieres que diga la tarjeta",out:"Tarjeta"},
+{id:"no",label:"Tu nombre",type:"text",req:1,ph:"Nombre y apellido",out:"De"}],
+foot:"Monterrey, N.L. · WhatsApp 81 2009 3776",minDays:0,wa:"528120093776"};
+</script>
+<script src="../_engine/cotiza.js"></script>
+</body></html>

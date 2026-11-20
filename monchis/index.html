@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pedido</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#c8755a">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;1,700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head><body>
+<script>
+window.Q={name:"Monchis Inc",short:"Monchis",mark:"M",tag:"Pasteles, cupcakes y mesas de postres",color:"#c8755a",bg:"#fffaf6",display:'"Fraunces",Georgia,serif',
+kicker:"Haz tu pedido en 1 minuto",title:"Tu pedido dulce, <em>listo para cotizar</em>",sub:"Elige qué quieres, para cuándo y cuéntanos tu idea. Te abrimos WhatsApp con tu pedido completo, sin esperar a que te pregunten cada detalle por DM.",
+facts:["Minicakes navideños: 4 diseños","Pasteles y cupcakes","Mesas de postres"],
+greet:"Hola, Monchis 🧁 Quiero hacer un pedido:",closing:"¡Gracias! Quedo pendiente.",
+fields:[{id:"ti",label:"¿Qué quieres?",type:"chips",req:1,def:"Minicakes navideños",options:["Minicakes navideños","Pastel","Cupcakes","Mesa de postres"],out:"Pedido"},
+{id:"dn",label:"Diseño de minicake",type:"multi",req:1,options:["Diseño 1","Diseño 2","Diseño 3","Diseño 4"],when:{ti:"Minicakes navideños"},out:"Diseños",help:"Los 4 diseños de su publicación del 18 de noviembre."},
+{id:"cm",label:"¿Cuántos minicakes?",type:"num",min:1,max:60,def:4,unit:"piezas",when:{ti:"Minicakes navideños"},out:"Cantidad"},
+{id:"oc",label:"Estilo",type:"chips",req:1,options:["Infantil","Mujer","Hombre","Boda","Sacramentos"],when:{ti:["Pastel","Cupcakes"]},out:"Estilo"},
+{id:"pz",label:"Porciones o piezas",type:"num",min:6,max:200,step:2,def:20,unit:"personas",when:{ti:["Pastel","Cupcakes"]},out:"Porciones"},
+{id:"iv",label:"Invitados",type:"num",min:20,max:300,step:10,def:60,unit:"personas",when:{ti:"Mesa de postres"},out:"Invitados"},
+{id:"di",label:"Tu idea",type:"area",ph:"Temática, colores, nombre, frase…",help:"Si tienes foto de referencia, la mandas en el mismo chat.",out:"Idea"},
+{id:"fe",label:"Fecha",type:"date",req:1,out:"Fecha"},
+{id:"no",label:"Tu nombre",type:"text",req:1,ph:"Nombre y apellido",out:"Nombre"}],
+foot:"Monterrey, N.L. · WhatsApp 81 1740 5923",minDays:1,wa:"5218117405923"};
+</script>
+<script src="../_engine/cotiza.js"></script>
+</body></html>
