@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pedido</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#b88a5a">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head><body>
+<script>
+window.Q={name:"Le Fest Eventos",short:"Le Fest",mark:"L",tag:"Salón de eventos · Monterrey",color:"#a07448",bg:"#fcf9f5",display:'"Cormorant Garamond",Georgia,serif',
+kicker:"Cotiza tu evento en 1 minuto",title:"Tu festejo en Le Fest, <em>cotizado a la primera</em>",sub:"Elige el tipo de evento, la fecha, cuántos invitados y qué te gustaría incluir. Te abrimos WhatsApp con todo listo para que Le Fest te diga disponibilidad y paquete.",
+facts:["Río Pánuco 2605, Monterrey","Paquetes de eventos","Flower Bar"],
+greet:"Hola, Le Fest ✨ Quiero cotizar un evento:",closing:"¡Gracias! Quedo pendiente de disponibilidad y paquetes.",
+fields:[{id:"ev",label:"Tipo de evento",type:"chips",req:1,options:["Cumpleaños","Posada","Brunch con amigas","Baby shower","Graduación","Evento de empresa","Otro"]},
+{id:"fe",label:"Fecha",type:"date",req:1,out:"Fecha"},
+{id:"ho",label:"Horario",type:"chips",options:["Mañana / brunch","Tarde","Noche"],out:"Horario"},
+{id:"in",label:"Invitados",type:"num",min:10,max:200,step:5,def:40,unit:"personas"},
+{id:"ex",label:"Me interesa incluir",type:"multi",options:["Comida","Pastel y postres","Decoración","Flower Bar","Música / DJ"],out:"Incluir"},
+{id:"de",label:"Algo más",type:"area",ph:"Temática, colores o cualquier detalle",out:"Detalles"},
+{id:"no",label:"Tu nombre",type:"text",req:1,ph:"Nombre y apellido",out:"Nombre"}],
+foot:"Río Pánuco 2605, Monterrey · WhatsApp 81 2421 6225",minDays:1,wa:"528124216225"};
+</script>
+<script src="../_engine/cotiza.js"></script>
+</body></html>
