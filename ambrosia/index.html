@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ambrosía Repostería · Cotiza tu pastel</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#f8f5ef">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head><body>
+<script>
+window.Q={
+ brand:{name:"Ambrosía",short:"Ambrosía",sub:"Repostería · Monterrey",ig:"ambrosiarepost.eria",city:"Monterrey, N.L."},
+ waLink:"https://wa.me/message/UWKBPZWABWDLN1",pill:"Pasteles express hoy",
+ theme:{bg:"#f8f5ef",paper:"#fffefb",ink:"#2f2a24",accent:"#8a6a3f",soft:"#e6ecdf",softInk:"#5d7550",line:"#e9e2d6",mut:"#857c70",
+  display:'"Cormorant Garamond",Georgia,serif',body:'"DM Sans",system-ui,sans-serif',fonts:"family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700"},
+ hero:{eyebrow:"Pasteles, cupcakes y postres",title:"Tu pastel Ambrosía, <em>cotizado a la primera</em>",
+  lead:"Elige el estilo, para cuántas personas y la fecha. Te armamos el mensaje completo y solo lo pegas en el WhatsApp de Ambrosía. Si es para hoy, pide un pastel express.",
+  imgs:["img/vintage.webp","img/pintado.webp","img/texturas.webp","img/tiramisu.webp"],cta1:"Cotizar mi pastel",cta2:{label:"Pastel express",tab:"express"},
+  trust:[["Express","todos los días"],["Bodas","y eventos"],["Talleres","de repostería"]],
+  badge:["Cotización completa","Estilo, porciones y fecha en un mensaje"]},
+ tabs:[{id:"pastel",label:"Pastel personalizado",icon:"cake",title:"Pastel personalizado",single:true,itemsReq:false,
+   hint:"Son pasteles reales de Ambrosía. Toca el estilo que te gusta (opcional) y cuéntanos tu idea.",head:"Hola, Ambrosía 🤍 Quiero cotizar un pastel:",dockEmpty:"Elige tu estilo",emptyMsg:"Sin estilo elegido (lo describo en la idea).",
+   items:[{id:"vintage",name:"Vintage bordado",d:"Betún blanco con flores pintadas",img:"img/vintage.webp"},
+    {id:"pintado",name:"Pintado con espátula",d:"Inspirado en una obra o paisaje",img:"img/pintado.webp"},
+    {id:"texturas",name:"Texturas y hoja de oro",d:"Tonos verdes, perlas y dorado",img:"img/texturas.webp"},
+    {id:"boda",name:"De dos pisos",d:"Para boda o evento, con flores naturales",img:"img/boda.webp"}],
+   fields:[{id:"oc",label:"Ocasión",type:"chips",req:1,options:["Cumpleaños","Boda","Bautizo","Baby shower","Aniversario","Otro"]},
+    {id:"pz",label:"¿Para cuántas personas?",type:"num",min:6,max:250,step:2,def:20,unit:"personas",out:"Porciones"},
+    {id:"di",label:"Tu idea",type:"area",req:1,ph:"Colores, frase, sabor, referencia…",help:"Si tienes foto de referencia, la mandas en el mismo chat.",out:"Idea"}]},
+  {id:"express",label:"Pastel express",img:"img/tiramisu.webp",title:"Pastel express",
+   hint:"Diseño sencillo, disponible todos los días. Ideal si lo necesitas pronto.",head:"Hola, Ambrosía 🤍 Quiero un pastel express:",
+   fields:[{id:"ta",label:"Tamaño",type:"chips",req:1,options:["Chico","Mediano","Grande","Recomiéndenme"],out:"Tamaño"},
+    {id:"fr",label:"Frase",type:"text",ph:"Ej. Feliz cumpleaños, Ana",out:"Frase"},
+    {id:"ex",label:"¿Agregar algo?",type:"multi",options:["Cupcakes","Crookies","Roles de canela"],out:"Extras"}],
+   aside:{img:"img/tiramisu.webp",title:"Express todos los días",text:"Diseño simple y bonito, listo para el mismo día o el siguiente."}}],
+ date:{title:"¿Para cuándo?",label:"Fecha",hint:"Elige el día. Ambrosía te confirma por WhatsApp.",minDays:0,days:28},
+ delivery:{options:["Paso a recoger","Envío"],zone:"Envío",zoneReq:true,zonePh:"Colonia y municipio",out:"Entrega"},
+ contact:{noteLabel:"Comentarios",notePh:"Ej. sabor de pan y relleno, alergias, hora…"},
+ steps:["¿Qué pastel quieres?","¿Para cuándo?","Revisa y envía"],
+ closing:"¡Gracias! Quedo pendiente.",sendLabel:"Copiar y abrir WhatsApp"};
+</script>
+<script src="../_engine/cotiza2.js"></script>
+</body></html>
