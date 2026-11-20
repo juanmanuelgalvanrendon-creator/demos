@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sukuki Bakery · Galletas y pasteles</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#fbf6ff">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head><body>
+<script>
+window.Q={
+ brand:{name:"Sukuki",short:"Sukuki",sub:"Repostería creativa",ig:"sukuki_bakery",city:"Apodaca / Rinconada, N.L."},
+ waLink:"https://ig.me/m/sukuki_bakery",note:"Copiamos tu pedido y abrimos el chat de Sukuki en Instagram: solo pégalo y envía.",pill:"L-V 12 a 9 pm",
+ theme:{bg:"#fbf6ff",paper:"#fffdff",ink:"#2f2440",accent:"#8b4fd6",soft:"#ffe7f1",softInk:"#c2457f",line:"#ece3f5",mut:"#857a93",radius:"round",
+  display:'"Baloo 2",system-ui,sans-serif',body:'"Nunito",system-ui,sans-serif',fonts:"family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700;800"},
+ hero:{eyebrow:"Galletas decoradas, pasteles y cupcakes",title:"Tus galletas personalizadas, <em>cotizadas en un minuto</em>",
+  lead:"Elige el estilo, cuántas piezas, colores y la frase. Te armamos el mensaje completo y solo lo pegas en el chat de Sukuki.",
+  imgs:["img/caja.webp","img/boda.webp","img/pastel.webp","img/temporada.webp"],cta1:"Cotizar mi pedido",
+  trust:[["Desde cero","hecho en casa"],["Facturamos","para empresas"],["Apodaca","Rinconada"]],
+  badge:["Cotización completa","Piezas, colores y frase en un mensaje"]},
+ tabs:[{id:"pedido",label:"Pedido",title:"Pedido Sukuki",single:true,itemsOut:"Producto",missMsg:"elegir un producto",
+  hint:"Son pedidos reales de Sukuki. Elige el que más se parezca a lo que quieres.",head:"Hola, Sukuki 💜 Quiero cotizar:",dockEmpty:"Elige tu pedido",emptyMsg:"Aún no eliges producto.",
+  items:[{id:"caja",name:"Caja de galletas",d:"Galletas decoradas con nombre o dibujo",img:"img/caja.webp"},
+   {id:"boda",name:"Galletas para evento",d:"Recuerdos con frase para boda o fiesta",img:"img/boda.webp"},
+   {id:"pastel",name:"Pastel temático",d:"Forma de corazón con imagen y betún",img:"img/pastel.webp"},
+   {id:"temporada",name:"Cajita de temporada",d:"Galletas con chispas y figura decorada",img:"img/temporada.webp"}],
+  fields:[{id:"oc",label:"Ocasión",type:"chips",options:["Cumpleaños","Boda","Baby shower","Empresa","Navidad","Otro"],out:"Ocasión"},
+   {id:"pz",label:"¿Cuántas piezas o porciones?",type:"num",min:1,max:300,step:1,def:12,unit:"piezas",out:"Cantidad"},
+   {id:"co",label:"Colores o personaje",type:"text",ph:"Ej. azul con glitter, Mario Bros…",out:"Diseño"},
+   {id:"fr",label:"Frase o nombre",type:"text",ph:"Ej. Just married, HBD Fer",out:"Frase"},
+   {id:"fa",label:"¿Necesitas factura?",type:"chips",options:["No","Sí"],def:"No",out:"Factura"}]}],
+ date:{title:"¿Para cuándo?",label:"Fecha",hint:"Elige el día. Sukuki te confirma disponibilidad en el chat.",minDays:1,days:30},
+ contact:{noteLabel:"Comentarios",notePh:"Ej. sabor de galleta, alergias, empaque individual…",noteHint:"Si tienes imagen de referencia, la mandas en el mismo chat."},
+ steps:["¿Qué quieres pedir?","¿Para cuándo?","Revisa y envía"],
+ closing:"¡Gracias! Quedo pendiente de la cotización.",sendLabel:"Copiar y abrir el chat"};
+</script>
+<script src="../_engine/cotiza2.js"></script>
+</body></html>
