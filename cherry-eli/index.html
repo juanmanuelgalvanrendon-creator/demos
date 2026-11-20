@@ -1,21 +1,35 @@
 <!DOCTYPE html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Pedido</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#d6487c">
+<title>Pastelería Cherry Eli · Cotiza tu pastel</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#fff5f7">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head><body>
 <script>
-window.Q={name:"Pastelería Cherry Eli",short:"Cherry Eli",mark:"C",tag:"Repostería personalizada · Monterrey",color:"#d6487c",bg:"#fff8fa",display:'"Playfair Display",Georgia,serif',
-kicker:"Cotiza tu pastel en 1 minuto",title:"Tu pastel soñado, <em>sin ir y venir</em>",sub:"Elige ocasión, porciones, fecha y cuéntanos tu idea. Te abrimos WhatsApp con tu pedido completo para que Cherry Eli te cotice a la primera.",
-facts:["Cotización por WhatsApp","Solo pick-up en su taller de Céntrika","Pasteles, cake pops y mini pastelitos"],
-greet:"Hola, Cherry Eli 🩷 Quiero cotizar un pedido:",closing:"Si tengo foto de referencia, se las mando aquí. ¡Gracias!",
-fields:[{id:"oc",label:"Ocasión",type:"chips",req:1,options:["Cumpleaños","Baby shower","Bautizo","XV años","Boda","Aniversario","Otro"]},
-{id:"pz",label:"Porciones",type:"num",min:6,max:150,step:2,def:20,unit:"personas",out:"Porciones"},
-{id:"pr",label:"¿Qué te gustaría?",type:"multi",req:1,def:["Pastel personalizado"],options:["Pastel personalizado","Cake pops","Mini pastelitos","Cupcakes"],out:"Pedido"},
-{id:"di",label:"Tu idea",type:"area",req:1,ph:"Temática, colores, personaje, frase… (ej. gatitos 3D, estilo vintage con glitter)",help:"Si tienes foto de referencia, la mandas después en el mismo chat.",out:"Idea"},
-{id:"fe",label:"Fecha de recolección",type:"date",req:1,out:"Fecha",help:"Entre más anticipación, más fácil apartar tu fecha."},
-{id:"no",label:"Tu nombre",type:"text",req:1,ph:"Nombre y apellido",out:"Nombre"}],
-foot:"Céntrika Crisoles, Monterrey · WhatsApp 81 3240 4617",minDays:1,wa:"528132404617"};
+window.Q={
+ brand:{name:"Cherry Eli",short:"Cherry Eli",sub:"Repostería personalizada",ig:"pasteleriacherryelimty",city:"Céntrika Crisoles, Monterrey"},
+ wa:"528132404617",pill:"Cotizaciones abiertas",
+ theme:{bg:"#fff6f7",paper:"#fffdfd",ink:"#3b1f2b",accent:"#d23a6a",soft:"#fde3ea",softInk:"#b02c58",line:"#f4dde3",mut:"#93727d",
+  display:'"Fraunces",Georgia,serif',body:'"DM Sans",system-ui,sans-serif',fonts:"family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700"},
+ hero:{eyebrow:"Pasteles personalizados",title:"Tu pastel soñado, <em>cotizado a la primera</em>",
+  lead:"Elige el estilo que te gusta, para cuántas personas y la fecha. Te abrimos WhatsApp con tu pedido completo para que Cherry Eli te cotice sin ir y venir.",
+  imgs:["img/gatitos.webp","img/corazon-rojo.webp","img/kirby.webp","img/corazon-neon.webp"],cta1:"Cotizar mi pastel",
+  trust:[["Vintage","corazones y glitter"],["3D","personajes de cake pop"],["Pick-up","en Céntrika Crisoles"]],
+  badge:["Cotización sin ir y venir","Tu idea llega completa a su WhatsApp"]},
+ tabs:[{id:"pastel",label:"Pastel personalizado",title:"Pastel personalizado",single:true,itemsReq:false,
+  hint:"Toca el estilo que más se parezca a lo que quieres. Es opcional: también puedes contarlo con tus palabras.",
+  head:"Hola, Cherry Eli 🩷 Quiero cotizar un pastel:",dockEmpty:"Elige tu estilo",emptyMsg:"Sin estilo de referencia (lo describo en la idea).",
+  items:[{id:"gatitos",name:"Con personajes 3D",d:"Gatitos o figuras modeladas encima",img:"img/gatitos.webp"},
+   {id:"corazon",name:"Vintage de corazón",d:"Betún rizado, cerezas y glitter",img:"img/corazon-rojo.webp"},
+   {id:"kawaii",name:"Kawaii / caricatura",d:"Tu personaje favorito dibujado",img:"img/kirby.webp"},
+   {id:"neon",name:"Colores intensos",d:"Corazón en tonos neón con frase",img:"img/corazon-neon.webp"}],
+  fields:[{id:"oc",label:"Ocasión",type:"chips",req:1,options:["Cumpleaños","Aniversario","Baby shower","Bautizo","XV años","Boda","Otro"]},
+   {id:"pz",label:"¿Para cuántas personas?",type:"num",min:6,max:150,step:2,def:20,unit:"personas",out:"Porciones"},
+   {id:"ex",label:"¿Agregar algo más?",type:"multi",options:["Cake pops","Mini pastelitos","Cupcakes"],out:"Extras"},
+   {id:"di",label:"Tu idea",type:"area",req:1,ph:"Temática, colores, personaje, frase… (ej. gatito alien 3D, corazón rojo con el número 20)",help:"Si tienes foto de referencia, la mandas después en el mismo chat.",out:"Idea"}],
+  aside:{img:"img/alien.webp",title:"Hecho a tu medida",text:"Cada pastel se diseña desde cero con la idea que mandes: personaje, colores, frase y glitter."}}],
+ date:{title:"¿Para cuándo lo recoges?",label:"Fecha de recolección",hint:"Entre más anticipación, más fácil apartar tu fecha. Solo pick-up en su taller.",out:"Recolección",minDays:1},
+ contact:{noteLabel:"Comentarios",notePh:"Ej. sabor de pan o relleno que te gustaría, alergias…"},
+ steps:["¿Qué estilo te gusta?","¿Para cuándo?","Revisa y envía"],
+ closing:"Si tengo foto de referencia, se las mando aquí. ¡Gracias!",sendLabel:"Enviar cotización por WhatsApp"};
 </script>
-<script src="../_engine/cotiza.js"></script>
+<script src="../_engine/cotiza2.js"></script>
 </body></html>
