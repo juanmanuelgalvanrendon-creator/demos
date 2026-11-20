@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Candybar San José · Cotiza tu evento</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#f5f7f8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head><body>
+<script>
+window.Q={
+ brand:{name:"Candybar San José",short:"Candybar San José",sub:"Mesas de postres y ambientación",ig:"candybarsanjose",city:"Av. Ruiz Cortines 4802, Valle Verde, Monterrey"},
+ wa:"528116009857",pill:"Cotizaciones abiertas",
+ theme:{bg:"#f5f7f8",paper:"#ffffff",ink:"#1c2630",accent:"#c69a3c",soft:"#dff3f1",softInk:"#16857c",line:"#e2e8ec",mut:"#6f7c86",
+  display:'"Playfair Display",Georgia,serif',body:'"DM Sans",system-ui,sans-serif',fonts:"family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700"},
+ hero:{eyebrow:"Mesa de postres, dulce y salado",title:"Tu evento ambientado, <em>cotizado a la primera</em>",
+  lead:"Elige qué necesitas, cuántos invitados, la temática y la fecha. Te abrimos WhatsApp con todo listo para que Candybar San José te cotice sin ir y venir.",
+  imgs:["img/neon.webp","img/graduacion.webp"],cta1:"Cotizar mi evento",
+  trust:[["Dulce","y salado"],["Sets","de ambientación"],["Temáticas","para todo evento"]],
+  badge:["Cotización completa","Temática, invitados y fecha en un mensaje"]},
+ tabs:[{id:"evento",label:"Mi evento",title:"Cotización de evento",single:true,itemsReq:false,itemsOut:"Estilo",
+  hint:"Son montajes reales de Candybar San José. Toca el estilo que buscas (opcional).",head:"Hola, Candybar San José 🍭 Quiero cotizar mi evento:",dockEmpty:"Arma tu evento",emptyMsg:"Sin estilo elegido (lo describo abajo).",
+  items:[{id:"neon",name:"Set con neón",d:"Mampara, letrero de neón y arco de globos",img:"img/neon.webp"},
+   {id:"graduacion",name:"Arco para graduación",d:"Globos metálicos y backdrop con generación",img:"img/graduacion.webp"}],
+  fields:[{id:"ev",label:"Evento",type:"chips",req:1,options:["Cumpleaños","Graduación","Bautizo","Baby shower","XV años","Empresa","Otro"],out:"Evento"},
+   {id:"inc",label:"¿Qué necesitas?",type:"multi",req:1,options:["Mesa de postres","Mesa de dulces","Mesa salada","Set de ambientación","Globos"],def:["Mesa de postres","Set de ambientación"],out:"Necesito"},
+   {id:"in",label:"Invitados",type:"num",min:20,max:500,step:10,def:80,unit:"invitados",out:"Invitados"},
+   {id:"te",label:"Temática y colores",type:"text",ph:"Ej. astronautas, coquette, Willy Wonka…",out:"Temática"},
+   {id:"lu",label:"Lugar del evento",type:"text",ph:"Salón o colonia y municipio",out:"Lugar"}]}],
+ date:{title:"¿Cuándo es tu evento?",label:"Fecha del evento",hint:"Elige el día. Te confirman disponibilidad por WhatsApp.",minDays:1,days:60},
+ contact:{noteLabel:"Comentarios",notePh:"Ej. horario, presupuesto aproximado…",noteHint:"Si tienes foto de referencia, la mandas en el mismo chat."},
+ steps:["Arma tu evento","¿Para cuándo?","Revisa y envía"],
+ closing:"¡Gracias! Quedo pendiente de la cotización.",sendLabel:"Cotizar por WhatsApp"};
+</script>
+<script src="../_engine/cotiza2.js"></script>
+</body></html>
