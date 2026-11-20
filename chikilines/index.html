@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chikilines · Cotiza tu fiesta</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#fff7fb">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head><body>
+<script>
+window.Q={
+ brand:{name:"Chikilines",short:"Chikilines",sub:"Fiestas infantiles temáticas",ig:"chikilinesdulceria",city:"San Pedro Garza García y Monterrey"},
+ wa:"528113883598",pill:"Tú eliges el tema",
+ theme:{bg:"#fff7fb",paper:"#ffffff",ink:"#2b2240",accent:"#e2508d",soft:"#e2f4ff",softInk:"#2b7fc0",line:"#f3e4ee",mut:"#84778f",radius:"round",
+  display:'"Baloo 2",system-ui,sans-serif',body:'"Nunito",system-ui,sans-serif',fonts:"family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700;800"},
+ hero:{eyebrow:"Fiestas infantiles con la temática que quieras",title:"La fiesta de tus hijos, <em>cotizada a la primera</em>",
+  lead:"Elige la temática, cuántos niños, qué quieres incluir y la fecha. Te abrimos WhatsApp con todo listo para que Chikilines te cotice sin ir y venir.",
+  imgs:["img/carrusel.webp","img/pinatas.webp"],cta1:"Cotizar mi fiesta",cta2:{label:"Piñatas navideñas",tab:"pinatas"},
+  trust:[["Cualquier","temática"],["Montaje","completo"],["Piñatas","de temporada"]],
+  badge:["Cotización sin ir y venir","Tema, niños y fecha en un mensaje"]},
+ tabs:[{id:"fiesta",label:"Fiesta temática",icon:"party",title:"Fiesta temática",
+   hint:"Cuéntanos el tema y lo que te gustaría; Chikilines se encarga del resto.",head:"Hola, Chikilines 🎉 Quiero cotizar una fiesta:",
+   fields:[{id:"te",label:"Temática",type:"text",req:1,ph:"Ej. carrusel, princesas, espacio, fútbol…",out:"Temática"},
+    {id:"ed",label:"Nombre y edad",type:"text",ph:"Ej. María Victoria · 1 año",out:"Festejado"},
+    {id:"ni",label:"Niños invitados",type:"num",min:5,max:150,step:5,def:30,unit:"niños",out:"Niños"},
+    {id:"inc",label:"¿Qué quieres incluir?",type:"multi",req:1,options:["Mampara y globos","Mesa de dulces","Pastel","Piñata","Mobiliario infantil","Recuerdos"],def:["Mampara y globos","Mesa de dulces"],out:"Incluir"},
+    {id:"lu",label:"Lugar",type:"text",ph:"Salón, casa o colonia y municipio",out:"Lugar"}],
+   aside:{img:"img/carrusel.webp",title:"Tú eliges el tema",text:"Mampara con nombre, globos, mesa de dulces y piezas temáticas para la foto."}},
+  {id:"pinatas",label:"Piñatas navideñas",img:"img/pinatas.webp",title:"Piñatas navideñas",
+   hint:"Galleta de jengibre, Santa, reno y árbol. Dinos cuáles y cuántas.",head:"Hola, Chikilines 🎄 Quiero pedir piñatas navideñas:",
+   fields:[{id:"mo",label:"Modelos",type:"multi",req:1,options:["Galleta de jengibre","Santa","Reno","Árbol de Navidad"],out:"Modelos"},
+    {id:"ca",label:"¿Cuántas?",type:"num",min:1,max:30,step:1,def:1,unit:"piñatas",out:"Cantidad"}],
+   aside:{img:"img/pinatas.webp",title:"Para tu posada",text:"Piñatas de temporada listas para romper."}}],
+ date:{title:"¿Para cuándo?",label:"Fecha",hint:"Elige el día. Chikilines te confirma disponibilidad por WhatsApp.",minDays:1,days:45},
+ contact:{noteLabel:"Comentarios",notePh:"Ej. horario de la fiesta, presupuesto aproximado…",noteHint:"Si tienes foto de referencia, la mandas en el mismo chat."},
+ steps:["¿Qué quieres celebrar?","¿Para cuándo?","Revisa y envía"],
+ closing:"¡Gracias! Quedo pendiente de la cotización.",sendLabel:"Cotizar por WhatsApp"};
+</script>
+<script src="../_engine/cotiza2.js"></script>
+</body></html>
