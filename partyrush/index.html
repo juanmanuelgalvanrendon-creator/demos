@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Partyrush · Cotiza tus globos</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#f6f8ff">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head><body>
+<script>
+window.Q={
+ brand:{name:"Partyrush",short:"Partyrush",sub:"Globos y decoración · MTY",ig:"partyrush_mty",city:"Monterrey, N.L."},
+ wa:"528140106546",pill:"Envíos a domicilio",
+ theme:{bg:"#f6f8ff",paper:"#ffffff",ink:"#1d2340",accent:"#e5466e",soft:"#e4f6ec",softInk:"#1f8a55",line:"#e3e7f5",mut:"#737a99",radius:"round",
+  display:'"Baloo 2",system-ui,sans-serif',body:'"Nunito",system-ui,sans-serif',fonts:"family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700;800"},
+ hero:{eyebrow:"Arreglos de globos y decoración",title:"Tu decoración con globos, <em>cotizada a la primera</em>",
+  lead:"Elige el tipo de set, la temática, la fecha y a dónde te lo llevan. Te abrimos WhatsApp con todo listo para que Partyrush te cotice sin ir y venir.",
+  imgs:["img/western.webp","img/baby.webp","img/soccer.webp","img/navidad.webp"],cta1:"Cotizar mi decoración",
+  trust:[["Envíos","a domicilio"],["Facturamos","eventos de empresa"],["Sets","para cada temática"]],
+  badge:["Cotización sin ir y venir","Set, temática y fecha en un mensaje"]},
+ tabs:[{id:"set",label:"Decoración",title:"Decoración con globos",single:true,itemsOut:"Set",missMsg:"elegir un tipo de set",
+  hint:"Son montajes reales de Partyrush. Elige el que más se parezca a lo que buscas.",head:"Hola, Partyrush 🎈 Quiero cotizar una decoración:",dockEmpty:"Elige tu set",emptyMsg:"Aún no eliges set.",
+  items:[{id:"tematico",name:"Set temático",d:"Mampara, globos y piezas de tu temática",img:"img/western.webp"},
+   {id:"baby",name:"Baby shower o revelación",d:"Tonos suaves, moño y figuras",img:"img/baby.webp"},
+   {id:"numero",name:"Con número y nombre",d:"Mampara personalizada con globos",img:"img/soccer.webp"},
+   {id:"shimmer",name:"Set Shimmer",d:"Pared brillante, neón y globos",img:"img/shimmer.webp"}],
+  fields:[{id:"ev",label:"Evento",type:"chips",req:1,options:["Cumpleaños","Baby shower","Bautizo","Graduación","Empresa","Navidad","Otro"],out:"Evento"},
+   {id:"te",label:"Temática y colores",type:"text",req:1,ph:"Ej. vaquera en café y negro, fútbol, Navidad…",out:"Temática"},
+   {id:"no",label:"Nombre y edad para la mampara",type:"text",ph:"Ej. Yalen · 6",out:"Nombre"},
+   {id:"fa",label:"¿Necesitas factura?",type:"chips",options:["No","Sí"],def:"No",out:"Factura"}]}],
+ date:{title:"¿Cuándo es tu evento?",label:"Fecha del evento",hint:"Elige el día. Partyrush te confirma disponibilidad por WhatsApp.",minDays:1,days:45},
+ delivery:{label:"Entrega",options:["Envío e instalación","Paso a recoger"],zone:"Envío e instalación",zoneReq:true,zonePh:"Colonia y municipio del evento",zoneHint:"El costo de envío te lo confirman por WhatsApp.",out:"Entrega"},
+ contact:{noteLabel:"Comentarios",notePh:"Ej. hora del evento, si es en jardín o salón…",noteHint:"Si tienes foto de referencia, la mandas en el mismo chat."},
+ steps:["¿Qué decoración quieres?","¿Para cuándo?","Revisa y envía"],
+ closing:"¡Gracias! Quedo pendiente de la cotización.",sendLabel:"Cotizar por WhatsApp"};
+</script>
+<script src="../_engine/cotiza2.js"></script>
+</body></html>
