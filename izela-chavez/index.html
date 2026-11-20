@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Izela Chávez Desserts · Pedidos y eventos</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#fbf6f5">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head><body>
+<script>
+window.Q={
+ brand:{name:"Izela Chávez",short:"Izela Chávez",sub:"Desserts · Monterrey",ig:"izelachavezdesserts",city:"Monterrey, N.L."},
+ waLink:"https://ig.me/m/izelachavezdesserts",note:"Copiamos tu pedido y abrimos el chat de Izela Chávez en Instagram: solo pégalo y envía.",pill:"Agenda de posadas abierta",
+ theme:{bg:"#fbf6f5",paper:"#fffdfd",ink:"#36262a",accent:"#b9566d",soft:"#f4ebe0",softInk:"#9a7340",line:"#efe2df",mut:"#8a7a7c",
+  display:'"Playfair Display",Georgia,serif',body:'"DM Sans",system-ui,sans-serif',fonts:"family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700"},
+ hero:{eyebrow:"Endulzando momentos especiales",title:"Pasteles, conchas y <em>mesas para tu evento</em>",
+  lead:"Pide tu pastel, aparta tus conchas o cotiza la mesa de postres de tu posada. Te armamos el mensaje completo y solo lo pegas en el chat de Izela.",
+  imgs:["img/cerezas.webp","img/rosa.webp","img/conchas.webp","img/frutos.webp"],cta1:"Hacer mi pedido",cta2:{label:"Cotizar mi evento",tab:"evento"},
+  trust:[["Posadas","2026 abiertas"],["Coffee","& conchas"],["Bodas","y eventos"]],
+  badge:["Pedido completo","Sin ir y venir por mensajes"]},
+ tabs:[{id:"pedido",label:"Pasteles y conchas",icon:"cake",title:"Pedido",multiPick:true,missMsg:"elegir al menos un producto",
+   hint:"Son postres reales de Izela. Agrega lo que se te antoje.",head:"Hola, Izela 🍒 Quiero hacer un pedido:",dockEmpty:"Elige tus postres",emptyMsg:"Aún no eliges postres.",
+   items:[{id:"cerezas",name:"Pastel clásico",d:"Betún batido con cerezas",img:"img/cerezas.webp"},
+    {id:"rosa",name:"Pastel de cumpleaños",d:"Betún rosa, perlas y topper",img:"img/rosa.webp"},
+    {id:"frutos",name:"Pastel con frutos rojos",d:"Fresas y moras frescas",img:"img/frutos.webp"},
+    {id:"conchas",name:"Conchas",d:"Vainilla y chocolate",img:"img/conchas.webp"}],
+   fields:[{id:"ca",label:"¿Cuánto necesitas?",type:"text",req:1,ph:"Ej. pastel para 15 y una docena de conchas",out:"Cantidad"},
+    {id:"fr",label:"Frase o detalles",type:"text",ph:"Ej. Happy birthday, Sofi",out:"Detalles"}]},
+  {id:"evento",label:"Mesa de postres o coffee",img:"img/coffee.webp",title:"Evento",
+   hint:"Para posadas, bodas y eventos de empresa.",head:"Hola, Izela 🍒 Quiero cotizar para mi evento:",
+   fields:[{id:"se",label:"Servicio",type:"chips",req:1,options:["Mesa de postres","Coffee & conchas","Postres al centro","Catering de postres"],out:"Servicio"},
+    {id:"ev",label:"Evento",type:"chips",req:1,options:["Posada","Boda","Empresa","Cumpleaños","Otro"],out:"Evento"},
+    {id:"in",label:"Invitados",type:"num",min:15,max:500,step:5,def:60,unit:"invitados",out:"Invitados"},
+    {id:"lu",label:"Lugar",type:"text",ph:"Salón o colonia y municipio",out:"Lugar"}],
+   aside:{img:"img/coffee.webp",title:"Coffee & conchas",text:"Barra de café con conchas recién hechas para tu evento o posada."}}],
+ date:{title:"¿Para cuándo?",label:"Fecha",hint:"Elige el día. Izela te confirma disponibilidad en el chat.",minDays:1,days:45},
+ contact:{noteLabel:"Comentarios",notePh:"Ej. sabor de pan, alergias, horario…"},
+ steps:["¿Qué se te antoja?","¿Para cuándo?","Revisa y envía"],
+ closing:"¡Gracias! Quedo pendiente.",sendLabel:"Copiar y abrir el chat"};
+</script>
+<script src="../_engine/cotiza2.js"></script>
+</body></html>
