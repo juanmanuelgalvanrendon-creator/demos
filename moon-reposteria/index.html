@@ -1,22 +1,39 @@
 <!DOCTYPE html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Pedido</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#4b5a9b">
+<title>Moon Repostería · Cotiza tu pastel</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#f6f6fa">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;1,700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head><body>
 <script>
-window.Q={name:"Moon Repostería",short:"Moon",mark:"M",tag:"Pasteles personalizados · Monterrey",color:"#4b5a9b",bg:"#f8f8fd",display:'"Fraunces",Georgia,serif',
-kicker:"Cotiza tu pastel en 1 minuto",title:"Tu pastel personalizado, <em>cotizado a la primera</em>",sub:"Elige ocasión, tamaño, fecha y cuéntanos tu idea. Te armamos el mensaje completo para Moon y solo lo pegas en su chat de WhatsApp.",
-facts:["Pedidos con 1 semana de anticipación","Solo pick-up","Cumpleaños, aniversarios y más"],
-greet:"Hola, Moon 🌙 Quiero cotizar un pastel:",closing:"Si tengo imagen de referencia, se las mando aquí. ¡Gracias!",
-fields:[{id:"oc",label:"Ocasión",type:"chips",req:1,options:["Cumpleaños","Aniversario","Baby shower","Graduación","Otro"]},
-{id:"pz",label:"Porciones",type:"num",min:6,max:100,step:2,def:15,unit:"personas"},
-{id:"te",label:"Temática o personaje",type:"text",req:1,ph:"Ej. Pokémon, Stranger Things, minimalista…",out:"Temática"},
-{id:"di",label:"Colores, frase o detalles",type:"area",ph:"Lo que quieras que lleve",help:"La imagen de referencia la mandas en el mismo chat.",out:"Detalles"},
-{id:"fe",label:"Fecha de recolección",type:"date",req:1,help:"Mínimo una semana de anticipación.",out:"Fecha"},
-{id:"no",label:"Tu nombre",type:"text",req:1,ph:"Nombre y apellido",out:"Nombre"}],
-note:"Copiamos tu pedido y abrimos el WhatsApp de Moon: solo pégalo y envía.",
-foot:"Monterrey, N.L. · Solo pick-up",minDays:7,waLink:"https://wa.me/message/JOEOUKZWBZYML1"};
+window.Q={
+ brand:{name:"Moon",short:"Moon",sub:"Repostería · Monterrey",ig:"moon.reposteriiamx",city:"Monterrey, N.L. · Solo pick-up"},
+ waLink:"https://wa.me/message/JOEOUKZWBZYML1",pill:"Pedidos con 1 semana",
+ theme:{bg:"#f6f6fa",paper:"#fefeff",ink:"#22253a",accent:"#5a63b8",soft:"#e8eaf7",softInk:"#4a52a0",line:"#e3e4ee",mut:"#7c7f93",radius:"round",
+  display:'"Fraunces",Georgia,serif',body:'"DM Sans",system-ui,sans-serif',fonts:"family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700"},
+ hero:{eyebrow:"Pasteles personalizados",title:"Tu pastel personalizado, <em>cotizado a la primera</em>",
+  lead:"Elige el estilo, para cuántas personas y la fecha. Te armamos el mensaje completo para Moon y solo lo pegas en su chat de WhatsApp.",
+  imgs:["img/flores.webp","img/rosa.webp","img/tematico.webp","img/imagen.webp"],cta1:"Cotizar mi pastel",cta2:{label:"Galletas y postres",tab:"postres"},
+  trust:[["1 semana","de anticipación"],["Pick-up","en Monterrey"],["A mano","flores y temáticas"]],
+  badge:["Tu pedido ya escrito","Solo lo pegas en el chat de Moon"]},
+ tabs:[{id:"pastel",label:"Pastel personalizado",icon:"cake",title:"Pastel personalizado",single:true,itemsReq:false,
+   hint:"Son pasteles reales de Moon. Toca el estilo que te gusta (opcional) y cuéntanos tu idea.",
+   head:"Hola, Moon 🌙 Quiero cotizar un pastel:",dockEmpty:"Elige tu estilo",emptyMsg:"Sin estilo elegido (lo describo en la idea).",
+   items:[{id:"flores",name:"Flores pintadas",d:"Betún con flores de colores y frase",img:"img/flores.webp"},
+    {id:"rosa",name:"Pintado a mano",d:"Trazos de betún y perlas doradas",img:"img/rosa.webp"},
+    {id:"tematico",name:"Temático",d:"Tu serie o personaje con nombre",img:"img/tematico.webp"},
+    {id:"imagen",name:"Con imagen",d:"Imagen al centro y borde de betún",img:"img/imagen.webp"}],
+   fields:[{id:"oc",label:"Ocasión",type:"chips",req:1,options:["Cumpleaños","Aniversario","Baby shower","Graduación","Otro"]},
+    {id:"pz",label:"¿Para cuántas personas?",type:"num",min:6,max:100,step:2,def:15,unit:"personas",out:"Porciones"},
+    {id:"te",label:"Temática o personaje",type:"text",req:1,ph:"Ej. Pokémon, flores amarillas, minimalista…",out:"Temática"},
+    {id:"di",label:"Colores, frase o detalles",type:"area",ph:"Lo que quieras que lleve",help:"La imagen de referencia la mandas en el mismo chat.",out:"Detalles"}]},
+  {id:"postres",label:"Galletas y postres",img:"img/galletas.webp",title:"Galletas y postres",multiPick:true,missMsg:"elegir al menos un postre",
+   hint:"Agrega lo que se te antoje y dinos cuánto necesitas.",head:"Hola, Moon 🌙 Quiero pedir:",dockEmpty:"Elige tus postres",emptyMsg:"Aún no eliges postres.",
+   items:[{id:"galletas",name:"Caja de galletas",d:"Surtido de galletas de sabores",img:"img/galletas.webp"},
+    {id:"fresas",name:"Pastel con fresas",d:"Betún batido con fresas y moras",img:"img/fresas.webp"}],
+   fields:[{id:"ca",label:"¿Cuánto necesitas?",type:"text",ph:"Ej. 2 cajas de galletas, pastel para 10",out:"Cantidad"}]}],
+ date:{title:"¿Para cuándo lo recoges?",label:"Fecha de recolección",hint:"Mínimo una semana de anticipación. Solo pick-up.",out:"Recolección",minDays:7,days:28},
+ contact:{noteLabel:"Comentarios",notePh:"Ej. sabor de pan o relleno, alergias…"},
+ steps:["¿Qué se te antoja?","¿Para cuándo?","Revisa y envía"],
+ closing:"Si tengo imagen de referencia, se las mando aquí. ¡Gracias!",sendLabel:"Copiar y abrir WhatsApp"};
 </script>
-<script src="../_engine/cotiza.js"></script>
+<script src="../_engine/cotiza2.js"></script>
 </body></html>
