@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Toldos y Mobiliario de Monterrey · Cotiza tu renta</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#f4f6f3">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head><body>
+<script>
+window.Q={
+ brand:{name:"Toldos y Mobiliario",short:"Toldos y Mobiliario",sub:"de Monterrey · Renta para eventos",ig:"toldosymobi",city:"Monterrey, N.L."},
+ waLink:"https://ig.me/m/toldosymobi",note:"Copiamos tu cotización y abrimos el chat en Instagram: solo pégala y envía.",pill:"Renta para eventos",
+ theme:{bg:"#f4f6f3",paper:"#ffffff",ink:"#1f2a22",accent:"#c0392b",soft:"#e5eee3",softInk:"#3e6b45",line:"#e1e7df",mut:"#6f7a70",
+  display:'"Fraunces",Georgia,serif',body:'"DM Sans",system-ui,sans-serif',fonts:"family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700"},
+ hero:{eyebrow:"Toldos, mesas, sillas y salas lounge",title:"Arma tu renta <em>y cotiza en un minuto</em>",
+  lead:"Elige qué necesitas y cuántas piezas, la fecha y el lugar del evento. Te armamos el mensaje completo y solo lo pegas en el chat de Toldos y Mobiliario.",
+  imgs:["img/toldo.webp","img/tiffany.webp","img/periqueras.webp","img/lounge.webp"],cta1:"Armar mi renta",
+  trust:[["Toldos","para jardín o calle"],["Mobiliario","para cada ocasión"],["Montaje","en tu evento"]],
+  badge:["Cotización con cantidades","Todo lo que necesitas en un mensaje"]},
+ tabs:[{id:"renta",label:"Renta",title:"Renta para evento",unit:["pieza","piezas"],max:300,missMsg:"elegir al menos un artículo",
+  hint:"Son piezas reales de su inventario. Toca + para agregar cantidades.",head:"Hola, Toldos y Mobiliario 👋 Quiero cotizar una renta:",dockEmpty:"Arma tu renta",emptyMsg:"Aún no agregas artículos.",
+  items:[{id:"toldo",name:"Toldo",d:"Para jardín, cochera o calle",img:"img/toldo.webp"},
+   {id:"tiffany",name:"Sillas tiffany",d:"Blancas con cojín",img:"img/tiffany.webp"},
+   {id:"madera",name:"Mesa de madera",d:"Rectangular para 8 a 10 personas",img:"img/tiffany.webp"},
+   {id:"periquera",name:"Periqueras",d:"Con funda y moño",img:"img/periqueras.webp"},
+   {id:"altas",name:"Mesas altas con bancos",d:"Mesa con mantel y bancos de madera",img:"img/altas.webp"},
+   {id:"lounge",name:"Sala lounge",d:"Sillones y mesas de centro",img:"img/lounge.webp"}],
+  fields:[{id:"ev",label:"Evento",type:"chips",req:1,options:["Cumpleaños","Boda","Bautizo","Posada","Empresa","Otro"],out:"Evento"},
+   {id:"in",label:"Invitados",type:"num",min:10,max:600,step:10,def:60,unit:"invitados",out:"Invitados"},
+   {id:"mo",label:"¿Necesitas montaje?",type:"chips",options:["Sí, con montaje","Solo entrega"],def:"Sí, con montaje",out:"Montaje"},
+   {id:"lu",label:"Lugar del evento",type:"text",req:1,ph:"Colonia y municipio · jardín, salón o calle",out:"Lugar"}]}],
+ date:{title:"¿Cuándo es tu evento?",label:"Fecha del evento",hint:"Elige el día. Te confirman disponibilidad en el chat.",minDays:1,days:60},
+ contact:{noteLabel:"Comentarios",notePh:"Ej. horario de entrega, medidas del espacio…"},
+ steps:["¿Qué necesitas?","¿Para cuándo?","Revisa y envía"],
+ closing:"¡Gracias! Quedo pendiente de la cotización.",sendLabel:"Copiar y abrir el chat"};
+</script>
+<script src="../_engine/cotiza2.js"></script>
+</body></html>
