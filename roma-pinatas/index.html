@@ -1,22 +1,37 @@
 <!DOCTYPE html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Pedido</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#e0457b">
+<title>Roma Piñatas · Pide tu piñata</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#fff6fa">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head><body>
 <script>
-window.Q={name:"Roma Piñatas",short:"Roma Piñatas",mark:"R",tag:"Piñatas personalizadas · Monterrey",color:"#e0457b",bg:"#fff8fb",display:'"Baloo 2",system-ui,sans-serif',
-kicker:"Pide tu piñata en 1 minuto",title:"Tu piñata personalizada, <em>pedida a la primera</em>",sub:"Dinos el personaje, el tamaño, la fecha y el punto de entrega. Te abrimos WhatsApp con tu pedido completo para que Roma Piñatas te confirme sin ir y venir.",
-facts:["Hechas a mano y pintadas a detalle","Entregas en puntos","Pedidos por WhatsApp"],
-greet:"Hola, Roma Piñatas 🪅 Quiero pedir una piñata:",closing:"Si tengo imagen de referencia, se las mando aquí. ¡Gracias!",
-fields:[{id:"pe",label:"Personaje o tema",type:"text",req:1,ph:"Ej. Rey Mysterio, Stitch, número 5, unicornio…",out:"Personaje"},
-{id:"ta",label:"Tamaño",type:"chips",req:1,options:["Chica","Mediana","Grande (como la de 80 cm)","Extra grande","No sé, recomiéndenme"],out:"Tamaño"},
-{id:"ti",label:"Tipo",type:"chips",options:["Tradicional para romper","Decorativa","Con alas o detalles extra"],out:"Tipo"},
-{id:"co",label:"Colores o detalles",type:"text",ph:"Ej. con nombre, colores del equipo…",out:"Detalles"},
-{id:"fe",label:"¿Para cuándo?",type:"date",req:1,out:"Fecha"},
-{id:"pu",label:"Punto de entrega",type:"text",req:1,ph:"Colonia o punto que te quede bien",out:"Entrega"},
-{id:"no",label:"Tu nombre",type:"text",req:1,ph:"Nombre y apellido",out:"Nombre"}],
-foot:"Monterrey, N.L. · WhatsApp 81 1018 9468",minDays:1,wa:"528110189468"};
+window.Q={
+ brand:{name:"Roma Piñatas",short:"Roma Piñatas",sub:"By Aneth Padrón",ig:"pinatas_roma",city:"Monterrey, N.L."},
+ wa:"528110189468",pill:"Pedidos abiertos",
+ theme:{bg:"#fff6fa",paper:"#fffdfe",ink:"#33203a",accent:"#e0457b",soft:"#e3f1fb",softInk:"#2f7bbf",line:"#f3e1ea",mut:"#8c7389",radius:"round",
+  display:'"Baloo 2",system-ui,sans-serif',body:'"Nunito",system-ui,sans-serif',fonts:"family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700;800"},
+ hero:{eyebrow:"Piñatas personalizadas hechas a mano",title:"Tu piñata soñada, <em>pedida a la primera</em>",
+  lead:"Dinos el personaje, el tamaño, la fecha y dónde te queda bien recibirla. Te abrimos WhatsApp con tu pedido completo para que Roma te confirme sin ir y venir.",
+  imgs:["img/luchador.webp","img/numero.webp","img/mike.webp","img/minnie.webp"],cta1:"Pedir mi piñata",
+  trust:[["A mano","pintadas a detalle"],["Cualquier","personaje o número"],["Entregas","en puntos acordados"]],
+  badge:["Pedido sin ir y venir","Personaje, tamaño y fecha en un mensaje"]},
+ tabs:[{id:"pinata",label:"Piñatas",title:"Piñata personalizada",single:true,itemsReq:false,itemsOut:"Estilo",
+  hint:"Son piñatas reales de Roma. Toca el estilo que buscas (opcional) y cuéntanos tu personaje.",
+  head:"Hola, Roma Piñatas 🪅 Quiero pedir una piñata:",dockEmpty:"Elige tu estilo",emptyMsg:"Sin estilo elegido (lo describo abajo).",
+  items:[{id:"real",name:"Personaje de tamaño real",d:"Figura grande pintada a detalle",img:"img/luchador.webp"},
+   {id:"numero",name:"Número temático",d:"Número con nombre y decoración",img:"img/numero.webp"},
+   {id:"3d",name:"Personaje en 3D",d:"Volumen, ropa y accesorios",img:"img/mike.webp"},
+   {id:"silueta",name:"Silueta con detalles",d:"Personaje plano con relieve y moños",img:"img/minnie.webp"}],
+  fields:[{id:"pe",label:"Personaje o tema",type:"text",req:1,ph:"Ej. Stitch, número 5, unicornio, tu luchador favorito…",out:"Personaje"},
+   {id:"ta",label:"Tamaño",type:"chips",req:1,options:["Chica","Mediana","Grande","Extra grande","Recomiéndenme"],out:"Tamaño"},
+   {id:"ti",label:"Tipo",type:"chips",options:["Para romper","Decorativa"],out:"Tipo"},
+   {id:"no",label:"Nombre o edad en la piñata",type:"text",ph:"Ej. DAMIÁN · Mi primera vuelta al sol",out:"Texto"},
+   {id:"co",label:"Colores o detalles",type:"area",ph:"Colores, accesorios, equipo favorito…",out:"Detalles"}],
+  aside:{img:"img/numero.webp",title:"Con nombre y fecha",text:"Agrega el nombre, la edad o una frase y la piñata queda lista para la foto."}}],
+ date:{title:"¿Para cuándo?",label:"Fecha de entrega",hint:"Entre más anticipación, más fácil apartar tu fecha.",minDays:1,days:28},
+ delivery:{label:"Entrega",options:["Entrega en punto acordado","Paso a recoger"],zone:"Entrega en punto acordado",zoneReq:true,zonePh:"Colonia o punto que te quede bien",zoneHint:"Roma te confirma el punto y el horario por WhatsApp.",missLabel:"el punto de entrega",out:"Entrega"},
+ contact:{noteLabel:"Comentarios",notePh:"Ej. la quiero con dulces, es sorpresa…",noteHint:"Si tienes imagen de referencia, la mandas en el mismo chat."},
+ steps:["¿Qué piñata quieres?","¿Para cuándo?","Revisa y envía"],
+ closing:"Si tengo imagen de referencia, se las mando aquí. ¡Gracias!",sendLabel:"Pedir por WhatsApp"};
 </script>
-<script src="../_engine/cotiza.js"></script>
+<script src="../_engine/cotiza2.js"></script>
 </body></html>

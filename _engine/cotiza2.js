@@ -223,7 +223,7 @@ function missing(){const t=tab(),M=[];
   if(t.items&&!total()&&t.itemsReq!==false)M.push(["#pane",t.missMsg||"elegir al menos una opción"]);
   (t.fields||[]).filter(f=>f.req&&shown(t,f)&&!valOf(t,f)).forEach(f=>M.push(["#f_"+f.id,f.label.toLowerCase().replace(/[¿?]/g,"")]));
   if(t.date!==false&&D.req!==false&&!S.fecha)M.push(["#fFecha","la fecha"]);
-  if(useDelivery()&&DL.zone&&DL.zoneReq&&S.entrega===DL.zone&&!S.col.trim())M.push(["#fEntrega","la colonia"]);
+  if(useDelivery()&&DL.zone&&DL.zoneReq&&S.entrega===DL.zone&&!S.col.trim())M.push(["#fEntrega",DL.missLabel||"la colonia"]);
   if(!$("#nombre").value.trim())M.push(["#fNombre","tu nombre"]);return M}
 function send(){const M=missing(),note=$("#note");
   if(M.length){note.textContent="Falta: "+M.map(m=>m[1]).join(", ")+".";note.className="note bad";const el=$(M[0][0]);el.scrollIntoView({behavior:"smooth",block:"center"});el.classList.remove("err-ring");void el.offsetWidth;el.classList.add("err-ring");setTimeout(()=>el.classList.remove("err-ring"),1600);return}

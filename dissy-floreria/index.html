@@ -1,25 +1,37 @@
 <!DOCTYPE html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Pedido</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#b0233a">
+<title>Dissy Florería · Pide tus flores</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#fbf5f4">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head><body>
 <script>
-window.Q={name:"Dissy Florería",short:"Dissy",mark:"D",tag:"Arreglos florales · Monterrey",color:"#b0233a",bg:"#fdf8f7",display:'"Playfair Display",Georgia,serif',
-kicker:"Pide tus flores en 1 minuto",title:"Tus flores, <em>pedidas a la primera</em>",sub:"Elige el arreglo, el color, para quién es y escribe el mensaje de la tarjeta. Te abrimos WhatsApp con el pedido completo para que Dissy lo confirme rápido.",
-facts:["Pedidos por WhatsApp","L-V 9 a 7 · S-D 10 a 5","Bouquets, arreglos y canastas"],
-greet:"Hola, Dissy 🌷 Quiero hacer un pedido:",closing:"¡Gracias!",
-fields:[{id:"ar",label:"Arreglo",type:"chips",req:1,options:["Bouquet","Arreglo floral","Canasta","Ramo de 100 rosas","Con personaje o peluche","Otro"],out:"Arreglo"},
-{id:"to",label:"Tono",type:"chips",options:["Rojo","Rosa / blush","Blanco","Mixto de colores"],out:"Tono"},
-{id:"de",label:"Detalles",type:"text",ph:"Ej. con tulipanes, con Hello Kitty, flor favorita…",out:"Detalles"},
-{id:"en",label:"Entrega",type:"chips",req:1,options:["Envío a domicilio","Paso a recoger"],out:"Entrega"},
-{id:"co",label:"Colonia y municipio",type:"text",req:1,ph:"Ej. Cumbres, Monterrey",when:{en:"Envío a domicilio"},out:"Dirección"},
-{id:"fe",label:"Fecha",type:"date",req:1,out:"Fecha"},
-{id:"ho",label:"Horario",type:"chips",options:["Mañana","Tarde"],out:"Horario"},
-{id:"pa",label:"¿Para quién es?",type:"text",ph:"Nombre de quien recibe",out:"Para"},
-{id:"ta",label:"Mensaje de la tarjeta",type:"area",max:200,ph:"Lo que quieres que diga la tarjeta",out:"Tarjeta"},
-{id:"no",label:"Tu nombre",type:"text",req:1,ph:"Nombre y apellido",out:"De"}],
-foot:"Monterrey, N.L. · WhatsApp 81 2009 3776",minDays:0,wa:"528120093776"};
+window.Q={
+ brand:{name:"Dissy",short:"Dissy",sub:"Florería · Monterrey",ig:"dissyfloreria",city:"Monterrey, N.L."},
+ wa:"528120093776",pill:"Pedidos abiertos",
+ theme:{bg:"#fbf5f4",paper:"#fffdfc",ink:"#3a2226",accent:"#c0395a",soft:"#f8e1e4",softInk:"#a8324f",line:"#f0dfdf",mut:"#8e7477",
+  display:'"Playfair Display",Georgia,serif',body:'"DM Sans",system-ui,sans-serif',fonts:"family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700"},
+ hero:{eyebrow:"Ramos y arreglos a domicilio",title:"Tus flores, <em>pedidas a la primera</em>",
+  lead:"Elige el ramo, para cuándo y escribe el mensaje de la tarjeta. Te abrimos WhatsApp con el pedido completo para que Dissy lo confirme rápido.",
+  imgs:["img/rosas-rojas.webp","img/hortensias.webp","img/snoopy.webp","img/girasoles.webp"],cta1:"Elegir mi ramo",
+  trust:[["Envío","a domicilio o recoges"],["L-V","9 a 7 · S-D 10 a 5"],["Tarjeta","con tu mensaje"]],
+  badge:["Pedido completo","Ramo, entrega y tarjeta en un solo mensaje"]},
+ tabs:[{id:"ramo",label:"Ramos",title:"Pedido de flores",single:true,itemsOut:"Ramo",missMsg:"elegir un ramo",
+  hint:"Son ramos reales de Dissy. Elige el que más te guste; los detalles los ajustas abajo.",
+  head:"Hola, Dissy 🌷 Quiero hacer un pedido:",dockEmpty:"Elige tu ramo",emptyMsg:"Aún no eliges ramo.",
+  items:[{id:"rojas",name:"Rosas rojas y rosas",d:"Rosas en dos tonos con eucalipto",img:"img/rosas-rojas.webp"},
+   {id:"hortensias",name:"Hortensias y claveles",d:"Hortensias, claveles y mini rosas",img:"img/hortensias.webp"},
+   {id:"lilis",name:"Lilis y rosas",d:"Lilis rosas con rosas blancas y rosa",img:"img/lilis.webp"},
+   {id:"girasoles",name:"Girasoles",d:"Girasoles con claveles rosas",img:"img/girasoles.webp"},
+   {id:"novia",name:"¿Quieres ser mi novia?",d:"Rosas y hortensias con listón personalizado",img:"img/novia.webp"},
+   {id:"snoopy",name:"Con Snoopy",d:"Ramo con peluche de Snoopy",img:"img/snoopy.webp"}],
+  fields:[{id:"to",label:"Tono preferido",type:"chips",options:["Como en la foto","Rojo","Rosa / blush","Blanco","Mixto de colores"],def:"Como en la foto",out:"Tono"},
+   {id:"de",label:"Algún cambio",type:"text",ph:"Ej. agregar tulipanes, otro listón, sin peluche…",out:"Cambios"},
+   {id:"pa",label:"¿Para quién es?",type:"text",ph:"Nombre de quien recibe",out:"Para"},
+   {id:"ta",label:"Mensaje de la tarjeta",type:"area",max:200,ph:"Lo que quieres que diga la tarjeta",out:"Tarjeta"}]}],
+ date:{title:"¿Para cuándo?",label:"Fecha de entrega",hint:"Elige el día. Dissy te confirma horario y costo de envío por WhatsApp.",minDays:0,days:21},
+ delivery:{options:["Envío a domicilio","Paso a recoger"],zone:"Envío a domicilio",zoneReq:true,zonePh:"Colonia y municipio de entrega",out:"Entrega"},
+ contact:{nameLabel:"Tu nombre",nameOut:"De",noteLabel:"Horario o indicaciones",notePh:"Ej. entregar en la tarde, preguntar por la recepción…",noteOut:"Indicaciones",noteHint:"La dirección exacta se la pasas a Dissy en el mismo chat."},
+ steps:["Elige tu ramo","¿Para cuándo?","Revisa y envía"],
+ closing:"¡Gracias!",sendLabel:"Pedir por WhatsApp"};
 </script>
-<script src="../_engine/cotiza.js"></script>
+<script src="../_engine/cotiza2.js"></script>
 </body></html>
