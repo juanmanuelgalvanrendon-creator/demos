@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Doña Concha · Aparta tus conchas</title><meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#fff6ef">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head><body>
+<script>
+window.Q={
+ brand:{name:"Doña Concha",short:"Doña Concha",sub:"Conchas recién hechas · Plaza Monarka",ig:"donaconcha_",city:"San Pedro Garza García, N.L."},
+ waLink:"https://ig.me/m/donaconcha_",note:"Copiamos tu pedido y abrimos el chat de Doña Concha en Instagram: solo pégalo y envía.",pill:"Aparta antes de que se acaben",
+ theme:{bg:"#fff6ef",paper:"#fffdfb",ink:"#3a1f1a",accent:"#d22f32",soft:"#fde3d6",softInk:"#a3401f",line:"#f4dfd3",mut:"#93766c",
+  display:'"Fraunces",Georgia,serif',body:'"DM Sans",system-ui,sans-serif',fonts:"family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700"},
+ hero:{eyebrow:"Conchas tradicionales y rellenas",title:"Tus conchas apartadas, <em>listas a la hora que pasas</em>",
+  lead:"Elige tus conchas, el relleno y la hora en que pasas a Plaza Monarka. Te armamos el pedido completo para que no te quedes sin las de temporada.",
+  imgs:["img/churro.webp","img/roles.webp","img/naranja.webp","img/calabaza.webp"],cta1:"Apartar mis conchas",cta2:{label:"Pedido para oficina o evento",tab:"evento"},
+  trust:[["55 mil","seguidores"],["Desde 2020","recién hechas"],["Rellenas","como tú quieras"]],
+  badge:["Pedido completo","Conchas, relleno y hora en un mensaje"]},
+ tabs:[{id:"apartar",label:"Apartar conchas",title:"Aparta tus conchas",unit:["pieza","piezas"],max:48,missMsg:"elegir al menos una concha",
+  hint:"Son conchas reales de Doña Concha. Toca + en las que quieras.",head:"Hola, Doña Concha 🤍 Quiero apartar:",dockEmpty:"Elige tus conchas",emptyMsg:"Aún no eliges conchas.",
+  items:[{id:"churro",name:"Concha churro",d:"Rellena de cajeta, con churritos encima",img:"img/churro.webp"},
+   {id:"temporada",name:"Conchas de temporada",d:"La edición del mes, mientras haya",img:"img/naranja.webp"},
+   {id:"rellena",name:"Concha rellena",d:"Tú eliges el relleno abajo",img:"img/calabaza.webp"},
+   {id:"rol",name:"Rol de canela",d:"Recién horneado, con glaseado",img:"img/roles.webp"}],
+  fields:[{id:"re",label:"Relleno para las conchas rellenas",type:"chips",options:["Cajeta","Dulce de leche","Nutella","Biscoff","Pistache","Sin relleno"],out:"Relleno"},
+   {id:"pr",label:"¿Cómo te las damos?",type:"chips",options:["Caja para regalo","Bolsa","Me da igual"],def:"Me da igual",out:"Presentación"},
+   {id:"hr",label:"¿A qué hora pasas?",type:"chips",req:1,options:["9 a 10 am","10 a 11 am","11 a 12 pm","12 a 1 pm","1 a 2 pm","2 a 3 pm","3 a 4 pm","4 a 5 pm"],out:"Hora de recolección"}]},
+  {id:"evento",label:"Oficina o evento",title:"Conchas para oficina o evento",single:true,itemsReq:false,
+  hint:"Para juntas, posadas, cumpleaños o regalos de empresa. Elige una base (opcional) y completa los detalles.",
+  head:"Hola, Doña Concha 🤍 Quiero cotizar conchas para un evento:",dockEmpty:"Cuéntanos de tu evento",emptyMsg:"Sin base elegida (lo describo abajo).",
+  items:[{id:"surtido",name:"Surtido de la casa",d:"Tradicionales y rellenas",img:"img/churro2.webp"},
+   {id:"roles",name:"Roles de canela",d:"Para desayunos de oficina",img:"img/roles.webp"},
+   {id:"temp",name:"Sabores de temporada",d:"Lo que esté saliendo ese mes",img:"img/naranja.webp"}],
+  fields:[{id:"ev",label:"¿Para qué es?",type:"chips",req:1,options:["Junta de oficina","Posada","Cumpleaños","Regalo de empresa","Otro"],out:"Evento"},
+   {id:"pz",label:"¿Cuántas piezas?",type:"num",min:12,max:400,step:6,def:24,unit:"piezas",out:"Piezas"},
+   {id:"fa",label:"¿Necesitas factura?",type:"chips",options:["Sí","No"],def:"No",out:"Factura"},
+   {id:"tx",label:"Detalles",type:"area",ph:"Ej. mitad tradicionales y mitad rellenas, hora de entrega, si va con tarjeta…",out:"Detalles"}]}],
+ date:{title:"¿Qué día pasas?",label:"Fecha",hint:"Elige el día. Doña Concha te confirma en el chat.",minDays:1,days:21},
+ delivery:{options:["Recojo en Plaza Monarka","Envío"],zone:"Envío",zoneReq:true,zonePh:"Colonia y municipio",out:"Entrega"},
+ contact:{noteLabel:"Comentarios",notePh:"Ej. es para regalo, una vela, alergias…"},
+ steps:["Elige tus conchas","¿Qué día pasas?","Revisa y envía"],
+ closing:"¡Gracias! Quedo pendiente de la confirmación.",sendLabel:"Copiar y abrir el chat"};
+</script>
+<script src="../_engine/cotiza2.js"></script>
+</body></html>
