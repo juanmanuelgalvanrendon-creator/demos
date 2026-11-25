@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Higuera · Panel del host</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1c1b17">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../hg.css">
+<style>
+body{min-height:100vh;min-height:100dvh;padding-bottom:40px}
+.bar{position:sticky;top:0;z-index:20;background:var(--ink);color:var(--bg);padding:12px 18px calc(12px);display:flex;align-items:center;gap:14px}
+.bar .logo{height:26px}
+.bar .t{font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;opacity:.6;line-height:1.2}
+.bar .sp{flex:1}
+.conn{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;opacity:.85}
+.sw{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:700;background:rgba(244,241,234,.1);padding:6px 6px 6px 12px;border-radius:999px}
+.sw i{width:44px;height:26px;border-radius:99px;background:#5a5a50;position:relative;transition:background .2s}
+.sw i::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s}
+.sw.on i{background:var(--ok)}.sw.on i::after{transform:translateX(18px)}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0 14px}
+.kpi{background:var(--paper);border-radius:18px;padding:13px 14px;box-shadow:var(--sh)}
+.kpi .n{font:400 36px/1 var(--serif)}
+.kpi .l{font-size:12px;color:var(--mut);margin-top:3px;line-height:1.3;font-weight:600}
+.tabs{display:flex;gap:6px;background:var(--paper);padding:5px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line);width:max-content;margin-bottom:14px}
+.tabs button{padding:9px 16px;border-radius:999px;font-weight:700;font-size:14px;color:var(--ink2)}
+.tabs button.on{background:var(--ink);color:var(--paper)}
+.head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.head h2{font:400 28px/1 var(--serif);text-transform:lowercase}
+.add{background:var(--paper);border-radius:20px;padding:16px;box-shadow:var(--sh);margin-bottom:12px;display:none;gap:12px;grid-template-columns:1.3fr auto 1fr auto;align-items:end}
+.add.on{display:grid}
+.list{display:grid;gap:10px}
+.card{background:var(--paper);border-radius:20px;padding:14px 14px 14px 16px;box-shadow:var(--sh);display:grid;grid-template-columns:auto 1fr auto;gap:6px 14px;align-items:center;position:relative;transition:box-shadow .3s}
+.card.new{box-shadow:0 0 0 2px var(--terra),var(--sh);animation:flash 1.2s 2}
+@keyframes flash{50%{background:var(--terra-l)}}
+.card.called{background:#fbf3ea;box-shadow:inset 4px 0 0 var(--terra),var(--sh)}
+.card .pos{font:400 34px/1 var(--serif);color:var(--mut);width:34px;text-align:center}
+.card .nm{font-weight:800;font-size:17px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card .nm .code{font:600 12.5px var(--mono);color:var(--mut);background:var(--bg);padding:2px 7px;border-radius:7px}
+.card .meta{font-size:13px;color:var(--ink2);display:flex;gap:12px;flex-wrap:wrap;margin-top:3px}
+.card .meta b{font-weight:700}
+.card .acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.card .acts .btn{height:44px;padding:0 16px;font-size:14px}
+.card .more{grid-column:2/-1;display:flex;gap:14px;font-size:12.5px;font-weight:700;color:var(--mut)}
+.card .more button{text-decoration:underline;text-underline-offset:3px;color:var(--mut);font-weight:700}
+.tag{font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:99px;background:var(--ok-l);color:var(--ok)}
+.tag.w{background:var(--terra-l);color:var(--terra-d)}
+.tag.g{background:var(--sage);color:var(--olive)}
+.empty{background:var(--paper);border-radius:20px;padding:30px 20px;text-align:center;color:var(--mut);box-shadow:var(--sh)}
+.empty b{display:block;font:400 26px var(--serif);color:var(--ink);text-transform:lowercase;margin-bottom:4px}
+.done{margin-top:20px}
+.done h3{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin-bottom:8px}
+.drow{display:flex;justify-content:space-between;gap:10px;font-size:13.5px;padding:9px 2px;border-bottom:1px dashed var(--line)}
+.drow span:last-child{color:var(--mut)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.panel{background:var(--paper);border-radius:22px;padding:18px;box-shadow:var(--sh)}
+.panel h3{font:400 24px/1.1 var(--serif);text-transform:lowercase;margin-bottom:12px}
+.big4{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.big4 div{background:var(--bg);border-radius:16px;padding:14px}
+.big4 .n{font:400 40px/1 var(--serif)}
+.big4 .l{font-size:12.5px;color:var(--mut);font-weight:600;margin-top:3px}
+.bars{display:flex;align-items:flex-end;gap:8px;height:150px;padding-top:10px}
+.bars div{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.bars i{display:block;width:100%;border-radius:8px 8px 3px 3px;background:var(--olive2);min-height:3px;transition:height .6s}
+.bars i.pk{background:var(--terra)}
+.bars span{font-size:11.5px;color:var(--mut);font-weight:700}
+.bars b{font-size:12px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);padding:8px 6px;border-bottom:1px solid var(--line)}
+td{padding:9px 6px;border-bottom:1px dashed var(--line)}
+.qr{width:170px;margin:0 auto;border-radius:14px;overflow:hidden;box-shadow:0 0 0 1px var(--line)}
+.set{display:grid;gap:16px}
+.rowb{display:flex;gap:10px;flex-wrap:wrap}
+.gate{position:fixed;inset:0;background:var(--ink);z-index:60;display:flex;align-items:center;justify-content:center;padding:24px}
+.gate .box{background:var(--bg);border-radius:26px;padding:28px 24px;width:100%;max-width:380px;text-align:center}
+.gate h1{font:400 34px/1.05 var(--serif);text-transform:lowercase;margin:14px 0 6px}
+.gate p{color:var(--ink2);font-size:14.5px}
+.gate .in{text-align:center;font:600 28px var(--mono);letter-spacing:.4em;margin-top:18px}
+.gate .err{color:var(--red);font-weight:700;font-size:14px;min-height:22px;margin-top:10px}
+.hide{display:none!important}
+@media (max-width:760px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .card{grid-template-columns:auto 1fr}
+  .card .acts{grid-column:1/-1;justify-content:stretch}
+  .card .acts .btn{flex:1}
+  .card .more{grid-column:1/-1}
+  .add.on{grid-template-columns:1fr}
+  .grid2{grid-template-columns:1fr}
+  .bar .t{display:none}
+}
+@media (max-width:400px){.sw span{display:none}.big4{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="gate" id="gate">
+  <form class="box" id="gf">
+    <img src="../img/logo-dark.png" alt="Higuera" style="height:40px;margin:0 auto">
+    <h1 id="gt">panel del host</h1>
+    <p id="gp">Escribe el PIN del equipo.</p>
+    <input class="in" id="pin" inputmode="numeric" autocomplete="off" maxlength="6" placeholder="····">
+    <p class="err" id="gerr"></p>
+    <button class="btn btn-ink btn-block" type="submit" id="gbtn">Entrar</button>
+  </form>
+</div>
+
+<header class="bar">
+  <img class="logo" src="../img/logo-light.png" alt="Higuera" width="72" height="26">
+  <div class="t">panel<br>del host</div>
+  <div class="sp"></div>
+  <div class="conn"><span class="dot off" id="cdot"></span><span id="ctxt">…</span></div>
+  <button class="sw on" id="openSw" type="button" aria-label="Abrir o pausar la lista"><span id="openTxt">Lista abierta</span><i></i></button>
+</header>
+
+<div class="wrap">
+  <section class="kpis">
+    <div class="kpi"><div class="n" id="kW">0</div><div class="l">grupos en la lista</div></div>
+    <div class="kpi"><div class="n" id="kE">0</div><div class="l">min de espera estimada</div></div>
+    <div class="kpi"><div class="n" id="kS">0</div><div class="l">mesas sentadas hoy</div></div>
+    <div class="kpi"><div class="n" id="kL">0</div><div class="l">se fueron sin sentarse</div></div>
+  </section>
+
+  <nav class="tabs" id="tabs"><button class="on" data-t="lista">Lista</button><button data-t="resumen">Resumen del día</button><button data-t="ajustes">Ajustes</button></nav>
+
+  <section id="v-lista">
+    <div class="head"><h2>en espera</h2><button class="btn btn-ink" id="addBtn" type="button" style="height:44px;font-size:14px">+ Anotar en la entrada</button></div>
+    <form class="add" id="addF">
+      <div><label class="lab" for="aN">Nombre</label><input class="in" id="aN" maxlength="40" placeholder="Nombre"></div>
+      <div><span class="lab">Personas</span><div class="step"><button type="button" data-as="-1">−</button><b id="aS">2</b><button type="button" class="plus" data-as="1">+</button></div></div>
+      <div><label class="lab" for="aP">WhatsApp (opcional)</label><input class="in" id="aP" inputmode="tel" maxlength="14" placeholder="10 dígitos"></div>
+      <button class="btn btn-terra" type="submit">Agregar</button>
+    </form>
+    <div class="list" id="list"></div>
+    <div class="done" id="done"></div>
+  </section>
+
+  <section id="v-resumen" class="hide">
+    <div class="grid2">
+      <div class="panel"><h3>hoy en números</h3><div class="big4" id="today"></div></div>
+      <div class="panel"><h3>a qué hora se llenó</h3><div class="bars" id="bars"></div></div>
+    </div>
+    <div class="grid2" style="margin-top:12px">
+      <div class="panel"><h3>clientes que dejaron su whatsapp</h3><p style="color:var(--ink2);font-size:14px" id="optTxt"></p><div class="rowb" style="margin-top:12px"><button class="btn btn-ghost" id="csv" type="button" style="height:44px;font-size:14px">Descargar lista (CSV)</button></div></div>
+      <div class="panel"><h3>días anteriores</h3><div id="hist"></div></div>
+    </div>
+  </section>
+
+  <section id="v-ajustes" class="hide">
+    <div class="grid2">
+      <div class="panel set">
+        <h3>espera</h3>
+        <div><span class="lab">Minutos por grupo (para calcular la espera)</span><div class="step"><button type="button" data-mp="-1">−</button><b id="mp">6 min</b><button type="button" class="plus" data-mp="1">+</button></div><p style="font-size:12.5px;color:var(--mut);margin-top:8px">Cuando ya hay mesas sentadas, la espera se ajusta sola con lo que realmente tardan.</p></div>
+        <div class="rowb"><button class="btn btn-ghost" id="demo" type="button" style="height:44px;font-size:14px">Cargar grupos de ejemplo</button><button class="btn btn-ghost" id="reset" type="button" style="height:44px;font-size:14px">Vaciar la lista</button></div>
+        <div class="rowb hide" id="resetC"><span style="font-size:14px;font-weight:700;align-self:center">¿Seguro? Se borra la lista de hoy.</span><button class="btn btn-ink" id="resetY" type="button" style="height:44px;font-size:14px">Sí, vaciar</button></div>
+        <button class="btn btn-ghost" id="logout" type="button" style="height:44px;font-size:14px;width:max-content">Salir del panel</button>
+      </div>
+      <div class="panel" style="text-align:center">
+        <h3>el qr de la entrada</h3>
+        <div class="qr" id="qr"></div>
+        <p style="font-size:13px;color:var(--mut);margin:10px 0 14px" id="qrUrl"></p>
+        <a class="btn btn-ink" href="../letrero/" target="_blank" rel="noopener" style="height:44px;font-size:14px">Ver letrero para imprimir</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="../../_engine/qrcode.js"></script>
+<script src="../fila.js"></script>
+<script>
+(() => {
+const { api, live, store, esc, ago, mmss, ZONES, toast, beep, unlockAudio, qrSvg } = HG;
+const $ = (s) => document.querySelector(s);
+let pin = store.get("pin") || "", H = null, conn = null, known = new Set(), first = true, addSize = 2, view = "lista";
+
+/* ---------- acceso ---------- */
+async function gate() {
+  try {
+    const info = await api("/host/info");
+    if (!info.hasPin) { $("#gt").textContent = "crea el pin del equipo"; $("#gp").textContent = "Elige de 4 a 6 números. Lo usará quien maneje la entrada."; $("#gbtn").textContent = "Crear PIN y entrar"; }
+  } catch (e) {}
+  if (pin) await login(pin, true);
+}
+async function login(p, silent) {
+  try {
+    const r = await api("/host/claim", { body: { pin: p } });
+    pin = p; store.set("pin", p); $("#gate").classList.add("hide");
+    H = r.state; first = true; paint(); start();
+    if (r.created) toast("PIN creado. Ya puedes usar el panel.");
+  } catch (e) { if (!silent) $("#gerr").textContent = e.message; store.set("pin", null); }
+}
+$("#gf").addEventListener("submit", (e) => { e.preventDefault(); unlockAudio(); const p = $("#pin").value.replace(/\D/g, ""); if (p.length < 4) { $("#gerr").textContent = "Escribe al menos 4 números."; return; } login(p); });
+
+function start() {
+  conn && conn.stop();
+  conn = live({ role: "host", pin, onData(d) { if (d.authError) { store.set("pin", null); location.reload(); return; } H = d; paint(); }, onStatus(s) {
+    $("#cdot").className = "dot" + (s === "off" ? " off" : ""); $("#ctxt").textContent = s === "live" ? "En vivo" : s === "poll" ? "En línea" : "Reconectando";
+  } });
+}
+
+async function act(id, action) {
+  try { H = await api("/host/action", { pin, body: { id, action } }); paint(); } catch (e) { toast(e.message); }
+}
+
+/* ---------- pintar ---------- */
+function waLink(e) {
+  const msg = `Hola ${e.name}, tu mesa en Higuera ya está lista. Te esperamos en la entrada en los próximos 10 minutos. Tu turno: ${e.code}.`;
+  return "https://wa.me/52" + e.phone + "?text=" + encodeURIComponent(msg);
+}
+function card(e, i) {
+  const called = e.status === "called";
+  const isNew = !first && !known.has(e.id);
+  const tags = [];
+  if (e.otw) tags.push(`<span class="tag">va en camino</span>`);
+  if (e.src === "qr") tags.push(`<span class="tag g">QR</span>`);
+  if (e.src === "host") tags.push(`<span class="tag g">en la entrada</span>`);
+  const acts = called
+    ? `<button class="btn btn-ok" data-a="seat" data-id="${e.id}">Sentar</button>${e.phone ? `<a class="btn btn-wa" href="${waLink(e)}" target="_blank" rel="noopener">WhatsApp</a>` : ""}<button class="btn btn-ghost" data-a="noshow" data-id="${e.id}">No llegó</button>`
+    : `<button class="btn btn-terra" data-a="call" data-id="${e.id}">Llamar mesa</button>`;
+  return `<article class="card ${called ? "called" : ""} ${isNew ? "new" : ""}" data-card="${e.id}">
+    <div class="pos">${i + 1}</div>
+    <div>
+      <div class="nm">${esc(e.name)} <span class="code">${esc(e.code)}</span> ${tags.join("")}</div>
+      <div class="meta"><span><b>${e.size}</b> ${e.size === 1 ? "persona" : "personas"}</span><span>${esc(ZONES[e.zone] || "")}</span><span data-ago="${e.t0}">espera ${ago(e.t0, H.now)}</span>${called ? `<span class="tag w" data-called="${e.tCalled}">llamado hace ${mmss(Date.now() - e.tCalled)}</span>` : ""}${e.phone ? `<span>${e.phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3")}</span>` : `<span style="color:var(--mut)">sin WhatsApp</span>`}</div>
+    </div>
+    <div class="acts">${acts}</div>
+    <div class="more">${called ? `<button data-a="back" data-id="${e.id}">Regresar a la lista</button>` : ""}<button data-a="remove" data-id="${e.id}">Quitar</button></div>
+  </article>`;
+}
+function paint() {
+  if (!H) return;
+  const q = (H.queue || []).slice().sort((a, b) => (a.status === "called" ? 0 : 1) - (b.status === "called" ? 0 : 1) || (a.status === "called" ? a.tCalled - b.tCalled : a.t0 - b.t0));
+  const waiting = q.filter((e) => e.status === "waiting").length;
+  $("#kW").textContent = q.length;
+  $("#kE").textContent = waiting ? Math.max(5, Math.round((waiting + 1) * H.per)) : 0;
+  $("#kS").textContent = H.today.seated;
+  $("#kL").textContent = H.today.lost;
+  const sw = $("#openSw"); sw.classList.toggle("on", H.open); $("#openTxt").textContent = H.open ? "Lista abierta" : "Lista en pausa";
+  $("#mp").textContent = H.minsPerGroup + " min";
+
+  // nuevos
+  const fresh = q.filter((e) => !known.has(e.id) && e.src === "qr");
+  if (!first && fresh.length) { beep(1); toast("Nuevo en la lista: " + fresh.map((e) => e.name + " · " + e.size).join(", ")); try { navigator.vibrate && navigator.vibrate(120); } catch (x) {} }
+  $("#list").innerHTML = q.length ? q.map(card).join("") : `<div class="empty"><b>sin espera</b>Cuando alguien escanee el QR aparecerá aquí al instante.</div>`;
+  known = new Set(q.map((e) => e.id)); first = false;
+
+  const st = { seated: "se sentó", noshow: "no llegó", cancelled: "salió de la lista" };
+  $("#done").innerHTML = H.done.length ? `<h3>Hace rato</h3>` + H.done.slice(0, 8).map((e) => `<div class="drow"><span>${esc(e.code)} · ${esc(e.name)} · ${e.size}p</span><span>${st[e.status] || e.status}${e.status === "seated" ? " tras " + Math.max(1, Math.round((e.tDone - e.t0) / 60000)) + " min" : ""}</span></div>`).join("") : "";
+
+  // resumen
+  const t = H.today;
+  $("#today").innerHTML = [[t.joined, "grupos se anotaron"], [t.people, "personas sentadas"], [t.avgWait ? t.avgWait + "′" : "–", "espera promedio"], [t.seated, "mesas sentadas"], [t.lost, "se fueron"], [t.optin, "WhatsApp nuevos"]].map(([n, l]) => `<div><div class="n">${n}</div><div class="l">${l}</div></div>`).join("");
+  const hrs = [8, 9, 10, 11, 12, 13, 14, 15, 16];
+  const mx = Math.max(1, ...hrs.map((h) => t.byHour[h] || 0));
+  const pk = hrs.reduce((a, h) => ((t.byHour[h] || 0) > (t.byHour[a] || 0) ? h : a), 8);
+  $("#bars").innerHTML = hrs.map((h) => { const v = t.byHour[h] || 0; return `<div><b>${v || ""}</b><i class="${h === pk && v ? "pk" : ""}" style="height:${Math.round((v / mx) * 100)}%"></i><span>${h > 12 ? h - 12 : h}${h < 12 ? "am" : "pm"}</span></div>`; }).join("");
+  const opt = [...q, ...H.done].filter((e) => e.optin && e.phone);
+  $("#optTxt").textContent = opt.length ? `${opt.length} ${opt.length === 1 ? "cliente aceptó" : "clientes aceptaron"} recibir novedades. Es la base para avisar de temporadas o del menú nuevo.` : "Aún nadie hoy. Los que acepten al anotarse aparecerán aquí para que les puedas avisar de temporadas y menú nuevo.";
+  $("#hist").innerHTML = H.history.length ? `<table><tr><th>Día</th><th>Grupos</th><th>Espera</th><th>Se fueron</th></tr>${H.history.slice().reverse().map((h) => `<tr><td>${h.day.slice(5).split("-").reverse().join("/")}</td><td>${h.joined}</td><td>${h.avgWait ? h.avgWait + " min" : "–"}</td><td>${h.lost}</td></tr>`).join("")}</table>` : `<p style="color:var(--mut);font-size:14px">Aquí se guarda el resumen de cada día que se use la lista.</p>`;
+}
+setInterval(() => {
+  document.querySelectorAll("[data-ago]").forEach((el) => (el.textContent = "espera " + ago(+el.dataset.ago)));
+  document.querySelectorAll("[data-called]").forEach((el) => (el.textContent = "llamado hace " + mmss(Date.now() - +el.dataset.called)));
+}, 1000);
+
+/* ---------- eventos ---------- */
+document.addEventListener("click", async (e) => {
+  const b = e.target.closest("[data-a]"); if (b) { b.disabled = true; await act(b.dataset.id, b.dataset.a); return; }
+  const t = e.target.closest("[data-t]"); if (t) { view = t.dataset.t; document.querySelectorAll("[data-t]").forEach((x) => x.classList.toggle("on", x === t)); ["lista", "resumen", "ajustes"].forEach((v) => $("#v-" + v).classList.toggle("hide", v !== view)); return; }
+  if (e.target.closest("#openSw")) { try { H = await api("/host/settings", { pin, body: { open: !H.open } }); paint(); toast(H.open ? "Lista abierta" : "Lista en pausa: nadie nuevo puede anotarse"); } catch (x) { toast(x.message); } return; }
+  if (e.target.closest("#addBtn")) { $("#addF").classList.toggle("on"); $("#aN").focus(); return; }
+  const as = e.target.closest("[data-as]"); if (as) { addSize = Math.max(1, Math.min(20, addSize + +as.dataset.as)); $("#aS").textContent = addSize; return; }
+  const mp = e.target.closest("[data-mp]"); if (mp) { try { H = await api("/host/settings", { pin, body: { minsPerGroup: H.minsPerGroup + +mp.dataset.mp } }); paint(); } catch (x) { toast(x.message); } return; }
+  if (e.target.closest("#demo")) { try { H = await api("/host/demo", { pin, body: {} }); first = true; paint(); toast("Listo: grupos de ejemplo cargados"); } catch (x) { toast(x.message); } return; }
+  if (e.target.closest("#reset")) { $("#resetC").classList.remove("hide"); return; }
+  if (e.target.closest("#resetY")) { try { H = await api("/host/reset", { pin, body: {} }); $("#resetC").classList.add("hide"); paint(); toast("Lista vacía"); } catch (x) { toast(x.message); } return; }
+  if (e.target.closest("#logout")) { store.set("pin", null); location.reload(); return; }
+  if (e.target.closest("#csv")) {
+    const rows = [...H.queue, ...H.done].filter((x) => x.optin && x.phone);
+    const csv = "nombre,whatsapp,personas,dia\n" + rows.map((x) => `"${x.name.replace(/"/g, "'")}",${x.phone},${x.size},${H.today.day}`).join("\n");
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" })); a.download = "higuera-clientes-" + H.today.day + ".csv"; a.click();
+    return;
+  }
+});
+$("#addF").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const name = $("#aN").value.trim(); if (!name) { $("#aN").focus(); return; }
+  try { H = await api("/host/add", { pin, body: { name, size: addSize, phone: $("#aP").value } }); known.add("x"); paint(); $("#aN").value = ""; $("#aP").value = ""; addSize = 2; $("#aS").textContent = 2; $("#addF").classList.remove("on"); toast(name + " agregado a la lista"); } catch (x) { toast(x.message); }
+});
+
+const fila = location.origin + "/higuera/fila/";
+$("#qr").innerHTML = qrSvg(fila); $("#qrUrl").textContent = fila.replace(/^https?:\/\//, "");
+gate();
+})();
+</script>
+</body>
+</html>

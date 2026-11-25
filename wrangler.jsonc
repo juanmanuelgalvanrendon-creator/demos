@@ -1,7 +1,13 @@
 {
   "name": "codenova",
+  "main": "worker.js",
   "compatibility_date": "2026-11-01",
   "assets": {
-    "directory": "./"
-  }
+    "directory": "./",
+    "binding": "ASSETS"
+  },
+  "durable_objects": {
+    "bindings": [{ "name": "FILA", "class_name": "Fila" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Fila"] }]
 }

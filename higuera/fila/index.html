@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Higuera · Lista de espera</title>
+<meta name="description" content="Anótate en la lista de espera de Higuera desde tu celular y te avisamos cuando tu mesa esté lista.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#f4f1ea">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../hg.css">
+<style>
+body{min-height:100vh;min-height:100dvh}
+.wrap{max-width:520px;margin:0 auto;padding:0 18px 40px}
+.top{display:flex;align-items:center;justify-content:space-between;padding:16px 0 14px}
+.top small{display:block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin-top:4px}
+.conn{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--mut)}
+.photo{height:150px;border-radius:var(--r);margin-bottom:-38px;position:relative;z-index:0}
+.photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(28,27,23,0) 30%,rgba(28,27,23,.55))}
+.live{position:relative;z-index:1;margin:0 12px;background:var(--paper);border-radius:20px;padding:16px 18px;box-shadow:var(--sh);display:flex;align-items:center;gap:14px}
+.live .big{font:400 44px/1 var(--serif)}
+.live .lbl{font-size:13px;color:var(--mut);line-height:1.35}
+.live .lbl b{display:block;color:var(--ink);font-size:15px}
+.live .sep{width:1px;align-self:stretch;background:var(--line)}
+h1{font:400 40px/1.02 var(--serif);text-transform:lowercase;margin:28px 0 8px;letter-spacing:-.01em}
+h1 em{font-style:italic;color:var(--terra)}
+.lead{color:var(--ink2);font-size:15.5px}
+.form{margin-top:22px;display:grid;gap:20px}
+.hint{font-size:12.5px;color:var(--mut);margin-top:7px}
+.check{display:flex;gap:11px;align-items:flex-start;font-size:13.5px;color:var(--ink2);cursor:pointer}
+.check input{width:20px;height:20px;accent-color:var(--ink);margin-top:1px;flex:none}
+.err{color:var(--red);font-weight:700;font-size:14px;min-height:20px}
+.foot{text-align:center;font-size:11.5px;color:var(--mut);margin-top:34px;line-height:1.5}
+/* ticket */
+.ticket{background:var(--olive);color:#f4f1ea;border-radius:26px;padding:22px 22px 20px;position:relative;overflow:hidden;margin-top:6px}
+.ticket::after{content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(242,226,211,.16),transparent 70%)}
+.ticket .k{font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;opacity:.65}
+.ticket .code{font:600 46px/1 var(--mono);letter-spacing:.02em;margin:6px 0 4px}
+.ticket .who{font-size:15px;opacity:.9}
+.ticket .row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.ticket .chip{background:rgba(244,241,234,.12);color:#f4f1ea}
+.pos{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.box{background:var(--paper);border-radius:20px;padding:16px 18px;box-shadow:var(--sh)}
+.box .n{font:400 48px/1 var(--serif)}
+.box .t{font-size:13px;color:var(--mut);margin-top:4px;line-height:1.35}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:14px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--olive2),var(--terra));border-radius:99px;transition:width .8s cubic-bezier(.2,.9,.3,1)}
+.line{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.line span{width:30px;height:30px;border-radius:50%;background:var(--sage);color:var(--olive);font-size:12px;font-weight:800;display:grid;place-items:center}
+.line span.me{background:var(--terra);color:#fff;width:36px;height:36px;box-shadow:0 0 0 4px var(--terra-l)}
+.line span.called{background:var(--ok-l);color:var(--ok)}
+.line em{font-style:normal;font-size:12px;color:var(--mut);margin-left:4px}
+.note{display:flex;gap:12px;align-items:flex-start;background:var(--terra-l);border-radius:18px;padding:14px 16px;margin-top:14px;font-size:14px;color:#5b3a1f}
+.note svg{flex:none;margin-top:2px}
+.menu{margin-top:26px}
+.menu h2{font:400 26px/1.1 var(--serif);text-transform:lowercase;margin-bottom:12px}
+.strip{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;margin:0 -18px;padding-left:18px;padding-right:18px;scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.dish{flex:none;width:150px;scroll-snap-align:start}
+.dish .film{height:188px;border-radius:16px}
+.dish b{display:block;font-size:13.5px;margin-top:8px;line-height:1.3}
+.leave{margin-top:22px;text-align:center}
+.leave button{font-size:14px;font-weight:700;color:var(--mut);text-decoration:underline;text-underline-offset:3px;padding:8px}
+.confirm{display:none;margin-top:10px;gap:8px;justify-content:center}
+.confirm.on{display:flex}
+/* llamado */
+.called-v{position:fixed;inset:0;background:var(--terra);color:#fff;z-index:50;display:flex;flex-direction:column;justify-content:center;padding:28px 24px calc(28px + env(safe-area-inset-bottom));text-align:center;animation:pop .45s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes pop{from{transform:scale(1.06);opacity:0}to{transform:none;opacity:1}}
+.called-v .k{font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;opacity:.8}
+.called-v h2{font:400 58px/.95 var(--serif);text-transform:lowercase;margin:14px 0 12px}
+.called-v .code{font:600 30px var(--mono);background:rgba(255,255,255,.16);border-radius:16px;padding:10px 18px;display:inline-block;margin:6px auto 0}
+.called-v .cd{font:400 64px/1 var(--serif);margin-top:26px}
+.called-v .cdl{font-size:14px;opacity:.85;margin-top:6px}
+.called-v .btn{margin-top:28px;background:#fff;color:var(--terra-d);height:58px;font-size:16.5px}
+.called-v .ok{margin-top:22px;font-size:15px;opacity:.95;line-height:1.5}
+.called-v .ring{width:84px;height:84px;border-radius:50%;margin:0 auto;display:grid;place-items:center;background:rgba(255,255,255,.18);animation:ring 1.4s infinite}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(255,255,255,.45)}80%{box-shadow:0 0 0 26px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
+.end{text-align:center;padding:40px 6px 10px}
+.end h2{font:400 46px/1 var(--serif);text-transform:lowercase;margin:18px 0 10px}
+.end p{color:var(--ink2)}
+.end .btn{margin-top:22px}
+.paused{background:var(--paper);border-radius:20px;padding:20px;box-shadow:var(--sh);margin-top:22px;text-align:center}
+.paused b{display:block;font:400 28px var(--serif);text-transform:lowercase}
+.skel{opacity:.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div><img class="logo" src="../img/logo-dark.png" alt="Higuera" width="83" height="30"><small>Tampiquito · walk ins only</small></div>
+    <div class="conn" id="conn"><span class="dot off" id="cdot"></span><span id="ctxt">Conectando</span></div>
+  </header>
+  <main id="app"></main>
+  <p class="foot">Lista de espera de Higuera · Plutarco Elías Calles 419, Tampiquito<br>Tus datos solo los ve el equipo de Higuera.</p>
+</div>
+<div id="calledLayer"></div>
+
+<script src="../fila.js"></script>
+<script>
+(() => {
+const { api, live, store, esc, ZONES, toast, beep, unlockAudio, mmss } = HG;
+const $ = (s) => document.querySelector(s);
+const DISHES = [
+  ["chilaquiles.webp", "Chilaquiles verdes"],
+  ["sopa.webp", "Grilled cheese y sopa de tomate"],
+  ["shakshouka.webp", "Huevos en salsa de jitomate con pan"],
+  ["enfrijoladas.webp", "Enfrijoladas"],
+  ["postre.webp", "Algo dulce de temporada"],
+  ["barra.webp", "Café de barra"],
+];
+let S = null, mine = store.get("mine"), form = { name: "", size: 2, zone: "any", phone: "", optin: false }, sending = false;
+let lastStatus = null, ackCalled = store.get("ack") || "", vibT = null;
+
+function setConn(s) {
+  $("#cdot").className = "dot" + (s === "live" || s === "poll" ? "" : " off");
+  $("#ctxt").textContent = s === "live" ? "En vivo" : s === "poll" ? "En línea" : "Reconectando";
+}
+
+function render() {
+  const app = $("#app");
+  const m = S && S.mine;
+  if (mine && m && !m.gone) {
+    if (m.status === "waiting" || m.status === "called") return renderTicket(app, m);
+    return renderEnd(app, m);
+  }
+  if (mine && m && m.gone) { mine = null; store.set("mine", null); }
+  renderJoin(app);
+}
+
+function liveCard() {
+  if (!S) return `<div class="live skel"><div><div class="big">·</div></div><div class="lbl">Cargando la espera…</div></div>`;
+  if (!S.waiting) return `<div class="live"><div class="big">0</div><div class="lbl"><b>Sin espera ahorita</b>Anótate y te sentamos en cuanto llegues.</div></div>`;
+  return `<div class="live"><div><div class="big">${S.waiting}</div></div><div class="lbl"><b>${S.waiting === 1 ? "grupo esperando" : "grupos esperando"}</b>antes que tú</div><div class="sep"></div><div><div class="big">~${S.estWait}</div></div><div class="lbl"><b>minutos</b>de espera aprox.</div></div>`;
+}
+
+function renderJoin(app) {
+  if (S && !S.open) {
+    app.innerHTML = `<div class="photo film"><img src="../img/sopa-h.webp" alt="Grilled cheese y sopa de tomate de Higuera"></div>${liveCard()}<div class="paused"><b>la lista está en pausa</b><p class="lead" style="margin-top:6px">El equipo la vuelve a abrir en unos minutos. Puedes preguntar en la entrada.</p></div>`;
+    return;
+  }
+  const z = Object.entries(ZONES).map(([k, v]) => `<button type="button" class="${form.zone === k ? "on" : ""}" data-zone="${k}">${v}</button>`).join("");
+  app.innerHTML = `
+    <div class="photo film"><img src="../img/sopa-h.webp" alt="Grilled cheese y sopa de tomate de Higuera"></div>
+    ${liveCard()}
+    <h1>espera donde quieras, <em>no en la banqueta</em></h1>
+    <p class="lead">Anótate, da una vuelta por Tampiquito y te avisamos cuando tu mesa esté lista.</p>
+    <form class="form" id="f" novalidate>
+      <div><label class="lab" for="name">Tu nombre</label><input class="in" id="name" maxlength="40" autocomplete="given-name" placeholder="Como te llamamos" value="${esc(form.name)}"></div>
+      <div><span class="lab">¿Cuántos son?</span><div class="step"><button type="button" data-size="-1" aria-label="Menos">−</button><b id="sz">${form.size} ${form.size === 1 ? "persona" : "personas"}</b><button type="button" class="plus" data-size="1" aria-label="Más">+</button></div></div>
+      <div><span class="lab">¿Dónde prefieren?</span><div class="seg">${z}</div></div>
+      <div><label class="lab" for="phone">WhatsApp</label><input class="in" id="phone" inputmode="tel" autocomplete="tel" maxlength="14" placeholder="10 dígitos" value="${esc(form.phone)}"><p class="hint">Para avisarte aunque cierres esta página.</p></div>
+      <label class="check"><input type="checkbox" id="optin" ${form.optin ? "checked" : ""}><span>Quiero enterarme de temporadas y novedades de Higuera por WhatsApp.</span></label>
+      <p class="err" id="err"></p>
+      <button class="btn btn-ink btn-block" id="go" type="submit">Anotarme en la lista</button>
+    </form>`;
+}
+
+function queueLine(m) {
+  const q = (S.queue || []);
+  const idx = q.findIndex((x) => x.code === m.code);
+  const shown = q.slice(0, Math.max(idx + 1, 1)).slice(-9);
+  return shown.map((x) => `<span class="${x.code === m.code ? "me" : x.status === "called" ? "called" : ""}" title="${x.code}">${x.code === m.code ? "tú" : esc(x.initial || "·")}</span>`).join("") + (q.length > idx + 1 ? `<em>+${q.length - idx - 1} después de ti</em>` : "");
+}
+
+function renderTicket(app, m) {
+  const ahead = m.ahead, eta = m.eta;
+  const waited = Math.max(1, Math.round((Date.now() - m.t0) / 60000));
+  const pct = Math.min(96, Math.max(6, Math.round((waited / Math.max(1, waited + eta)) * 100)));
+  app.innerHTML = `
+    <section class="ticket">
+      <div class="k">tu turno</div>
+      <div class="code">${esc(m.code)}</div>
+      <div class="who">Hola, ${esc(m.name)}. Ya estás en la lista.</div>
+      <div class="row"><span class="chip">${m.size} ${m.size === 1 ? "persona" : "personas"}</span><span class="chip">${esc(ZONES[m.zone] || "")}</span></div>
+    </section>
+    <div class="pos">
+      <div class="box"><div class="n">${ahead}</div><div class="t">${ahead === 1 ? "grupo antes que tú" : "grupos antes que tú"}</div></div>
+      <div class="box"><div class="n">~${eta}</div><div class="t">minutos aprox. para tu mesa</div></div>
+    </div>
+    <div class="box" style="margin-top:12px"><span class="lab" style="margin:0">La lista ahora</span><div class="line">${queueLine(m)}</div><div class="bar"><i style="width:${pct}%"></i></div><p class="hint">Llevas ${waited} min esperando.</p></div>
+    <div class="note"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#97501f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-6.2 8-12a8 8 0 1 0-16 0c0 5.8 8 12 8 12z"/><circle cx="12" cy="10" r="2.6"/></svg><span>Puedes dar una vuelta por el barrio. Cuando tu mesa esté lista, esta pantalla te avisa${m.hasPhone ? " y el equipo te escribe por WhatsApp" : ""}. Si cierras la página, vuelve a abrir el mismo link.</span></div>
+    <section class="menu"><h2>mientras esperas</h2><div class="strip">${DISHES.map(([f, n]) => `<div class="dish"><div class="film"><img src="../img/${f}" alt="${esc(n)}" loading="lazy"></div><b>${esc(n)}</b></div>`).join("")}</div></section>
+    <div class="leave"><button type="button" id="leave">Ya no podemos esperar, salir de la lista</button><div class="confirm" id="conf"><button class="btn btn-ghost" type="button" id="no" style="height:44px">Seguir esperando</button><button class="btn btn-ink" type="button" id="yes" style="height:44px">Sí, salir</button></div></div>`;
+  calledLayer(m);
+}
+
+function calledLayer(m) {
+  const L = $("#calledLayer");
+  if (m.status !== "called") { L.innerHTML = ""; stopAlert(); return; }
+  const left = 10 * 60000 - (Date.now() - (m.tCalled || Date.now()));
+  L.innerHTML = `<div class="called-v" role="alertdialog" aria-live="assertive">
+    <div class="ring"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18h20M4 18a8 8 0 0 1 16 0M12 10V7M10 7h4"/></svg></div>
+    <div class="k" style="margin-top:22px">Higuera · Tampiquito</div>
+    <h2>tu mesa está lista</h2>
+    <div><span class="code">${esc(m.code)}</span></div>
+    <div class="cd" id="cd">${mmss(left)}</div><div class="cdl">para llegar a la entrada</div>
+    ${m.otw ? `<p class="ok">Listo, ${esc(m.name)}. Le avisamos al equipo que vas en camino. Dile tu código en la entrada.</p>` : `<button class="btn btn-block" id="otw" type="button">Voy en camino</button>`}
+  </div>`;
+  if (ackCalled !== m.code + m.tCalled && !m.otw) startAlert();
+}
+function startAlert() {
+  stopAlert();
+  const go = () => { beep(2); try { navigator.vibrate && navigator.vibrate([400, 160, 400, 160, 700]); } catch (e) {} };
+  go(); vibT = setInterval(go, 4500);
+  let f = 0; document._t = setInterval(() => { document.title = (f++ % 2) ? "Higuera · Lista de espera" : "Tu mesa está lista"; }, 1000);
+}
+function stopAlert() { clearInterval(vibT); clearInterval(document._t); document.title = "Higuera · Lista de espera"; try { navigator.vibrate && navigator.vibrate(0); } catch (e) {} }
+
+function renderEnd(app, m) {
+  $("#calledLayer").innerHTML = ""; stopAlert();
+  const seated = m.status === "seated";
+  app.innerHTML = `<section class="end">
+    <img src="../img/logo-dark.png" alt="Higuera" style="height:44px;margin:0 auto">
+    <h2>${seated ? "buen provecho, <span style=\"text-transform:none\">" + esc(m.name) + "</span>" : "tu turno ya no está activo"}</h2>
+    <p>${seated ? "Gracias por esperar con la lista de Higuera." : m.status === "cancelled" ? "Saliste de la lista. Ojalá te veamos pronto." : "Te llamamos, pero no te encontramos en la entrada."}</p>
+    <button class="btn btn-ghost" id="again" type="button">Anotarme otra vez</button>
+  </section>`;
+}
+
+/* ---------- eventos ---------- */
+document.addEventListener("click", async (e) => {
+  const z = e.target.closest("[data-zone]"); if (z) { form.zone = z.dataset.zone; document.querySelectorAll("[data-zone]").forEach((b) => b.classList.toggle("on", b === z)); return; }
+  const s = e.target.closest("[data-size]"); if (s) { form.size = Math.max(1, Math.min(12, form.size + +s.dataset.size)); $("#sz").textContent = form.size + (form.size === 1 ? " persona" : " personas"); return; }
+  if (e.target.closest("#leave")) { $("#conf").classList.add("on"); e.target.closest("#leave").style.display = "none"; return; }
+  if (e.target.closest("#no")) { render(); return; }
+  if (e.target.closest("#yes")) { try { await api("/me/" + mine, { body: { action: "cancel" } }); conn.refresh(); } catch (err) { toast(err.message); } return; }
+  if (e.target.closest("#otw")) { ackCalled = S.mine.code + S.mine.tCalled; store.set("ack", ackCalled); stopAlert(); try { await api("/me/" + mine, { body: { action: "otw" } }); conn.refresh(); } catch (err) { toast(err.message); } return; }
+  if (e.target.closest("#again")) { mine = null; store.set("mine", null); conn.setMine(null); render(); return; }
+});
+document.addEventListener("input", (e) => {
+  if (e.target.id === "name") form.name = e.target.value;
+  if (e.target.id === "phone") form.phone = e.target.value;
+  if (e.target.id === "optin") form.optin = e.target.checked;
+});
+document.addEventListener("submit", async (e) => {
+  if (e.target.id !== "f") return;
+  e.preventDefault(); unlockAudio();
+  const err = $("#err");
+  const name = form.name.trim(), phone = form.phone.replace(/\D/g, "");
+  if (!name) { err.textContent = "Escribe tu nombre para llamarte."; $("#name").focus(); return; }
+  if (phone && phone.length < 10) { err.textContent = "El WhatsApp debe tener 10 dígitos."; $("#phone").focus(); return; }
+  if (sending) return; sending = true; $("#go").disabled = true; $("#go").textContent = "Anotando…";
+  try {
+    const r = await api("/join", { body: { name, size: form.size, zone: form.zone, phone, optin: form.optin && !!phone } });
+    mine = r.id; store.set("mine", mine); conn.setMine(mine); conn.refresh();
+    toast("Listo, tu turno es " + r.code.replace("-", "\u2011"));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } catch (x) { err.textContent = x.message; }
+  sending = false; const g = $("#go"); if (g) { g.disabled = false; g.textContent = "Anotarme en la lista"; }
+});
+
+setInterval(() => {
+  const cd = $("#cd"); if (cd && S && S.mine && S.mine.tCalled) cd.textContent = mmss(10 * 60000 - (Date.now() - S.mine.tCalled));
+}, 1000);
+
+const conn = live({
+  role: "guest", mine,
+  onData(d) {
+    if (!d || d.authError) return;
+    const prev = S && S.mine && S.mine.status;
+    S = d;
+    const typing = document.activeElement && ["name", "phone"].includes(document.activeElement.id) && !(S.mine && !S.mine.gone);
+    if (typing) { const c = document.querySelector(".live"); if (c) c.outerHTML = liveCard(); return; }
+    render();
+    if (S.mine && prev && prev !== S.mine.status && S.mine.status === "seated") toast("¡Buen provecho!");
+  },
+  onStatus: setConn,
+});
+render();
+})();
+</script>
+</body>
+</html>

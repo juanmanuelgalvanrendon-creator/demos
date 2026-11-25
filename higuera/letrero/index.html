@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Higuera · Letrero de la lista de espera</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../hg.css">
+<style>
+@page{size:letter portrait;margin:0}
+body{background:#d9d4c8;display:flex;flex-direction:column;align-items:center;padding:28px 12px 40px;gap:16px}
+.tools{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.sheet{width:8.5in;height:11in;background:#f4f1ea;box-shadow:0 30px 60px -30px rgba(0,0,0,.5);position:relative;display:flex;flex-direction:column;align-items:center;padding:.75in .7in .6in;text-align:center;overflow:hidden}
+.sheet .logo{height:.95in;width:auto}
+.sheet .k{font-size:13px;font-weight:800;letter-spacing:.3em;text-transform:uppercase;color:#8a8478;margin-top:16px}
+.sheet h1{font:400 92px/.92 var(--serif);text-transform:lowercase;margin:.32in 0 .14in;letter-spacing:-.01em}
+.sheet h1 em{font-style:italic;color:var(--terra)}
+.sheet p.l{font-size:21px;color:#4a463d;max-width:5.6in;line-height:1.4}
+.qrw{margin-top:.38in;background:#fff;border-radius:28px;padding:22px;box-shadow:0 0 0 2px #e3ddd0}
+.qrw .q{width:3.1in;height:3.1in}
+.qrw .q svg{width:100%;height:100%;display:block}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:.25in;margin-top:.42in;width:100%}
+.steps div{font-size:15px;color:#4a463d;line-height:1.35}
+.steps b{display:block;font:400 40px/1 var(--serif);color:var(--terra);margin-bottom:6px}
+.foot{position:absolute;bottom:.45in;left:0;right:0;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#8a8478}
+@media print{body{background:none;padding:0}.tools{display:none}.sheet{box-shadow:none}}
+@media (max-width:860px){.sheet{transform:scale(calc((100vw - 24px) / 816));transform-origin:top center;margin-bottom:calc((100vw - 24px) / 816 * 1056px - 1056px)}}
+</style>
+</head>
+<body>
+<div class="tools"><button class="btn btn-ink" onclick="print()" type="button">Imprimir letrero</button><a class="btn btn-ghost" href="../">Volver a la propuesta</a></div>
+<div class="sheet">
+  <img class="logo" src="../img/logo-dark.png" alt="Higuera">
+  <div class="k">Tampiquito · walk ins only</div>
+  <h1>¿hay espera?<br><em>anótate aquí</em></h1>
+  <p class="l">Escanea el código, da una vuelta por el barrio y te avisamos cuando tu mesa esté lista.</p>
+  <div class="qrw"><div class="q" id="q"></div></div>
+  <div class="steps">
+    <div><b>1</b>Abre la cámara y escanea</div>
+    <div><b>2</b>Pon tu nombre y cuántos son</div>
+    <div><b>3</b>Te avisamos por aquí y por WhatsApp</div>
+  </div>
+  <div class="foot">Sin descargar nada · sin hacer fila</div>
+</div>
+<script src="../../_engine/qrcode.js"></script>
+<script src="../fila.js"></script>
+<script>document.getElementById("q").innerHTML = HG.qrSvg(location.origin + "/higuera/fila/", { margin: 1 });</script>
+</body>
+</html>
