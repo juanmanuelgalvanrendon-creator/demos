@@ -94,6 +94,7 @@ export class Fila {
       room, name: cfg.name, tz: cfg.tz, open: true, minsPerGroup: cfg.minsPerGroup,
       pinHash: null, salt: rid(), counter: 0, day: dayKey(cfg.tz), entries: [], history: [], v: 1,
       autoHours: true, lastCall: 30, tolerance: 10, maxSize: 10,
+      site: { notice: "", season: { on: true, title: "Buttermilk waffle con moras", text: "El destacado de la semana. El equipo lo cambia cuando quiera desde su panel.", img: "waffle" }, soldout: [], soldDay: "" },
     };
     this.s = { ...base, ...((await this.ctx.storage.get("s")) || {}) };
     this.cfg = cfg;
@@ -104,6 +105,7 @@ export class Fila {
   sql() {
     if (!this.sqlReady) {
       this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS contacts (phone TEXT PRIMARY KEY, name TEXT, first TEXT, last TEXT, visits INTEGER DEFAULT 1)");
+      this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS requests (id TEXT PRIMARY KEY, kind TEXT, created INTEGER, status TEXT, data TEXT, ipH TEXT)");
       this.sqlReady = true;
     }
     return this.ctx.storage.sql;
@@ -189,6 +191,26 @@ export class Fila {
     return per;
   }
 
+  siteState() {
+    const st = this.s.site || {};
+    return {
+      notice: st.notice || "",
+      season: st.season && st.season.on && st.season.title ? { title: st.season.title, text: st.season.text || "", img: st.season.img || "waffle" } : null,
+      soldout: st.soldDay === this.s.day ? st.soldout || [] : [],
+    };
+  }
+  newRequests() { try { return this.sql().exec("SELECT COUNT(*) AS n FROM requests WHERE status='nuevo'").one().n; } catch (e) { return 0; } }
+  hoursStats() {
+    const days = [0, 0, 0, 0, 0, 0, 0], sum = Array.from({ length: 7 }, () => ({}));
+    for (const h of this.s.history || []) {
+      const wd = (new Date(h.day + "T12:00:00Z").getUTCDay() + 6) % 7;
+      days[wd]++;
+      for (const [hr, n] of Object.entries(h.byHour || {})) sum[wd][hr] = (sum[wd][hr] || 0) + n;
+    }
+    const avg = sum.map((o, wd) => Object.fromEntries(Object.entries(o).map(([hr, n]) => [hr, Math.round((n / Math.max(1, days[wd])) * 10) / 10])));
+    return { days, avg, today: this.statsFor(this.s.entries, this.s.day).byHour, wd: parts(this.s.tz).wd };
+  }
+
   publicState(mineId) {
     const s = this.s;
     const q = this.queue();
@@ -201,6 +223,7 @@ export class Fila {
       tolerance: s.tolerance, maxSize: s.maxSize, cutoffTxt: s.autoHours ? hi.cutoffTxt : "", inHours: hi.inHours,
       waiting: waitingAhead, estWait: waitingAhead ? Math.max(5, Math.round((waitingAhead + 1) * per)) : 0,
       queue: q.map((e) => ({ code: e.code, size: e.size, status: e.status, initial: (e.name[0] || "").toUpperCase() })),
+      site: this.siteState(),
     };
     if (mineId) {
       const me = s.entries.find((e) => e.id === mineId);
@@ -231,6 +254,7 @@ export class Fila {
       queue: this.queue().map((e) => this.hostEntry(e)),
       done: s.entries.filter((e) => !ACTIVE.includes(e.status)).sort((a, b) => b.tDone - a.tDone).slice(0, 30).map((e) => this.hostEntry(e)),
       today: this.statsFor(s.entries, s.day), history: s.history.slice(-14), contacts: this.contactCount(),
+      site: { ...(s.site || {}), soldout: this.siteState().soldout }, newRequests: this.newRequests(),
     };
   }
 
@@ -377,6 +401,31 @@ export class Fila {
       return json({ ok: true });
     }
 
+    // ---- datos para "la mejor hora" ----
+    if (p === "/stats/hours" && method === "GET") return json(this.hoursStats());
+
+    // ---- solicitudes: eventos y oficinas, empleo ----
+    if (p === "/request" && method === "POST") {
+      const kind = body.kind === "empleo" ? "empleo" : body.kind === "evento" ? "evento" : null;
+      if (!kind) return json({ error: "Solicitud inválida" }, 400);
+      if (clean(body.website, 50)) return json({ ok: true }); // trampa para robots
+      const name = clean(body.name, 60), phone = digits(body.phone);
+      if (!name) return json({ error: "Escribe tu nombre" }, 400);
+      if (phone.length !== 10) return json({ error: "Escribe un WhatsApp de 10 dígitos" }, 400);
+      const ipH = (await sha(this.s.salt + (request.headers.get("x-ip") || ""))).slice(0, 16);
+      const since = Date.now() - 24 * 3600 * 1000;
+      const recent = this.sql().exec("SELECT COUNT(*) AS n FROM requests WHERE ipH=? AND created>?", ipH, since).one().n;
+      if (recent >= 5) return json({ error: "Ya recibimos varias solicitudes desde este celular. Te contactamos pronto." }, 429);
+      const data = kind === "evento"
+        ? { name, phone, company: clean(body.company, 80), type: clean(body.type, 40), date: clean(body.date, 20), time: clean(body.time, 20), people: Math.max(1, Math.min(500, parseInt(body.people, 10) || 0)), notes: clean(body.notes, 500) }
+        : { name, phone, role: clean(body.role, 40), availability: clean(body.availability, 60), experience: clean(body.experience, 500) };
+      const id = rid();
+      this.sql().exec("INSERT INTO requests (id,kind,created,status,data,ipH) VALUES (?,?,?,?,?,?)", id, kind, Date.now(), "nuevo", JSON.stringify(data), ipH);
+      this.sql().exec("DELETE FROM requests WHERE created<?", Date.now() - 120 * 24 * 3600 * 1000);
+      this.broadcast();
+      return json({ ok: true, id });
+    }
+
     // ---- push ----
     if (p === "/push/key" && method === "GET") return json({ key: (await this.vapid()).pub });
     if (p === "/push/sub" && method === "POST") {
@@ -453,6 +502,27 @@ export class Fila {
         await this.save();
         return json(this.hostState());
       }
+      if (p === "/host/site" && method === "POST") {
+        const st = this.s.site || (this.s.site = {});
+        if (typeof body.notice === "string") st.notice = clean(body.notice, 140);
+        if (body.season && typeof body.season === "object") {
+          const imgs = ["waffle", "chilaquiles-xl", "sopa-xl", "latte", "enfrijoladas", "postre", "shakshouka", "sandwich", "barra-xl", "interior-xl"];
+          st.season = { on: !!body.season.on, title: clean(body.season.title, 60), text: clean(body.season.text, 160), img: imgs.includes(body.season.img) ? body.season.img : "waffle" };
+        }
+        if (Array.isArray(body.soldout)) { st.soldout = body.soldout.map((x) => clean(x, 60)).filter(Boolean).slice(0, 60); st.soldDay = this.s.day; }
+        await this.save();
+        return json(this.hostState());
+      }
+      if (p === "/host/requests" && method === "GET") {
+        const rows = this.sql().exec("SELECT id,kind,created,status,data FROM requests ORDER BY created DESC LIMIT 200").toArray().map((r) => ({ ...r, data: JSON.parse(r.data) }));
+        return json({ rows });
+      }
+      if (p === "/host/request" && method === "POST") {
+        if (body.action === "delete") this.sql().exec("DELETE FROM requests WHERE id=?", String(body.id));
+        else if (["visto", "nuevo", "archivado"].includes(body.action)) this.sql().exec("UPDATE requests SET status=? WHERE id=?", body.action, String(body.id));
+        this.broadcast();
+        return json({ ok: true, newRequests: this.newRequests() });
+      }
       if (p === "/host/contacts" && method === "GET") {
         const rows = this.sql().exec("SELECT phone,name,first,last,visits FROM contacts ORDER BY last DESC").toArray();
         return json({ rows });
@@ -468,11 +538,17 @@ export class Fila {
           const r = this.newEntry({ name: n, size: sz, demo: true }, "demo");
           r.e.t0 = now - (90 - i * 15) * 60000; r.e.status = "seated"; r.e.tDone = r.e.t0 + w * 60000;
         });
+        const ex = this.sql().exec("SELECT COUNT(*) AS n FROM requests WHERE ipH='demo'").one().n;
+        if (!ex) {
+          this.sql().exec("INSERT INTO requests (id,kind,created,status,data,ipH) VALUES (?,?,?,?,?,?)", rid(), "evento", now - 50 * 60000, "nuevo", JSON.stringify({ name: "Ana Treviño", phone: "8110000000", company: "Despacho Treviño", type: "Desayuno en oficina", date: "", time: "9:00", people: 18, notes: "Ejemplo: junta mensual, chilaquiles y café para todos." }), "demo");
+          this.sql().exec("INSERT INTO requests (id,kind,created,status,data,ipH) VALUES (?,?,?,?,?,?)", rid(), "empleo", now - 3 * 3600000, "nuevo", JSON.stringify({ name: "Luis Garza", phone: "8120000000", role: "Barra", availability: "Fines de semana", experience: "Ejemplo: un año como barista." }), "demo");
+        }
         await this.save();
         return json(this.hostState());
       }
       if (p === "/host/reset" && method === "POST") {
         this.s.entries = []; this.s.counter = 0; this.s.open = true;
+        try { this.sql().exec("DELETE FROM requests WHERE ipH='demo'"); } catch (e) {}
         if (body.history) this.s.history = [];
         await this.save();
         return json(this.hostState());

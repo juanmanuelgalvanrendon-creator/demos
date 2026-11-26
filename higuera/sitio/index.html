@@ -53,6 +53,53 @@
 .scrollcue{position:absolute;left:50%;bottom:16px;z-index:3;transform:translateX(-50%);width:1.5px;height:38px;background:rgba(244,241,234,.25);overflow:hidden}
 .scrollcue::after{content:"";position:absolute;left:0;top:-40%;width:100%;height:40%;background:#f4f1ea;animation:cue 1.8s var(--ease) infinite}
 @keyframes cue{to{top:100%}}
+/* panel de accesos */
+.hub{padding:34px 0 0;position:relative;z-index:4}
+.hubh{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:18px}
+.hubh h2{font-size:clamp(34px,3.6vw,52px);margin:8px 0 0}
+.hubg{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(170px,auto);gap:14px}
+.tile{position:relative;border-radius:26px;padding:22px;background:var(--paper);box-shadow:0 16px 36px -26px rgba(28,27,23,.55);text-decoration:none;display:flex;flex-direction:column;overflow:hidden;transition:transform .35s var(--ease),box-shadow .35s;isolation:isolate}
+.tile:hover{transform:translateY(-4px);box-shadow:0 26px 50px -28px rgba(28,27,23,.6)}
+.tile .ic{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:var(--sage);color:var(--olive);flex:none}
+.tile small{font-size:10.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;opacity:.7;margin-top:auto;padding-top:14px}
+.tile b{font:400 30px/1.05 var(--serif);margin-top:4px}
+.tile p{font-size:13.5px;opacity:.8;margin-top:4px;line-height:1.4}
+.tile .go{position:absolute;right:18px;top:18px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;box-shadow:inset 0 0 0 1.5px currentColor;opacity:.4;transition:opacity .3s,transform .4s var(--ease)}
+.tile:hover .go{opacity:1;transform:rotate(-45deg)}
+.t-lista{grid-column:span 2;background:var(--terra);color:#fff}
+.t-lista .ic{background:rgba(255,255,255,.18);color:#fff}
+.t-lista .big{font:400 64px/1 var(--serif);margin-top:16px;display:flex;gap:18px;align-items:baseline;flex-wrap:wrap}
+.t-lista .big span{font:600 14px var(--sans)}
+.t-lista small{opacity:1}
+.t-photo{color:#fff;background:#1c1b17}
+.t-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1;transition:transform 1s var(--ease)}
+.t-photo::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(20,19,16,.05) 30%,rgba(20,19,16,.8))}
+.t-photo:hover img{transform:scale(1.05)}
+.t-photo .ic{background:rgba(244,241,234,.16);color:#fff;backdrop-filter:blur(6px)}
+.t-dest{grid-row:span 2}
+.t-dest .chip{position:absolute;left:22px;top:22px;background:#fffdf8;color:var(--terra-d);font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:6px 10px;border-radius:6px}
+.t-hora{grid-column:span 2;background:var(--olive);color:#f4f1ea}
+.t-hora .ic{background:rgba(244,241,234,.12);color:#f4f1ea}
+.t-hora .row{display:flex;gap:22px;align-items:flex-end;margin-top:auto;padding-top:12px}
+.t-hora .row>div:first-child{flex:1}
+.t-hora .row small,.t-hora .row b,.t-hora .row p{display:block}
+.spark{display:flex;align-items:flex-end;gap:4px;height:70px;flex:1.2}
+.spark i{flex:1;border-radius:4px 4px 2px 2px;background:rgba(244,241,234,.22);min-height:4px}
+.spark i.best{background:#8fc79a}.spark i.peak{background:var(--peach)}.spark i.now{box-shadow:0 0 0 2px #f4f1ea}
+.t-ink{background:var(--ink);color:#f4f1ea}
+.t-ink .ic{background:rgba(244,241,234,.12);color:#f4f1ea}
+.t-visit .st{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:800;margin-top:14px}
+.t-visit .st.cl .dot{background:var(--red);animation:none}
+@media (max-width:960px){
+  .hub{padding-top:26px}
+  .hubg{grid-template-columns:1fr 1fr;gap:10px;grid-auto-rows:minmax(150px,auto);grid-auto-flow:dense}
+  .t-lista,.t-hora{grid-column:span 2}
+  .t-dest{grid-row:span 1;grid-column:span 2;min-height:220px}
+  .tile{padding:18px;border-radius:22px}
+  .tile b{font-size:24px}
+  .t-lista .big{font-size:52px}
+  .tile .go{display:none}
+}
 /* intro */
 .intro{padding:130px 0 0}
 .intro .wrap{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:end}
@@ -109,7 +156,7 @@
   .hero p.sub{font-size:16px}
   .hello{font-size:11px;letter-spacing:.16em}
   .live{width:auto}
-  .badge{width:92px;height:92px;top:88px;right:14px}.badge img{width:40px}
+  .badge{width:84px;height:84px;top:calc(var(--hh,110px) + 14px);right:14px}.badge img{width:36px}
   .intro{padding-top:90px}.intro .wrap,.wband .wrap,.vb{grid-template-columns:1fr;gap:28px}
   .explore,.dishes,.vband{padding-top:90px}
   .ex{grid-template-columns:1fr}.exc{min-height:380px}
@@ -148,7 +195,22 @@
   <div class="scrollcue" aria-hidden="true"></div>
 </section>
 
-<div class="marq" aria-hidden="true"><div class="track" id="marq"></div></div>
+<section class="hub" id="panel"><div class="wrap">
+  <div class="hubh"><div><span class="k" data-i="hub.k">Todo Higuera</span><h2 data-i="hub.h">A un <em>toque</em></h2></div></div>
+  <div class="hubg">
+    <a class="tile t-lista" href="/higuera/fila/"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3M21 14v7h-7"/></svg></span><span class="go"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><div class="big" id="tW">–</div><small data-i="hub.l1">Lista de espera</small><b data-i="c.joinList">Anotarme en la lista</b></a>
+    <a class="tile" href="/higuera/sitio/menu/"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/><path d="M8 9h8M8 13h6"/></svg></span><span class="go"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><small data-i="hub.m1">31 platillos</small><b data-i="hub.m2">El menú</b><p data-i="hub.m3">Arma tu comanda mientras esperas.</p></a>
+    <a class="tile t-photo t-dest" href="/higuera/sitio/menu/" id="tDest"><img src="/higuera/img/waffle.webp" alt="" id="tDestImg" loading="lazy"><span class="chip" data-i="hub.d0">Destacado</span><small data-i="hub.d1">De la semana</small><b id="tDestT">Buttermilk waffle con moras</b><p id="tDestP"></p></a>
+    <a class="tile t-hora" href="/higuera/sitio/visitanos/#hora"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="go"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><div class="row"><div><small data-i="hub.h1">La mejor hora para venir</small><b id="tBest">Antes de las 9 am</b><p id="tPeak"></p></div><div class="spark" id="tSpark" aria-hidden="true"></div></div></a>
+    <a class="tile t-visit" href="/higuera/sitio/visitanos/"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-6.2 8-12a8 8 0 1 0-16 0c0 5.8 8 12 8 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span><div class="st" id="tOpen"><span class="dot"></span><span></span></div><small data-i="hub.v1">Tampiquito</small><b data-i="hub.v2">Visítanos</b></a>
+    <a class="tile t-ink" href="/higuera/sitio/eventos/"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9h18v11H3zM8 9V5h8v4M3 13h18"/></svg></span><span class="go"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><small data-i="hub.e1">Para tu equipo</small><b data-i="hub.e2">Eventos y oficinas</b><p data-i="hub.e3">Desayunos para juntas y grupos.</p></a>
+    <a class="tile t-photo" href="/higuera/sitio/la-casa/"><img src="/higuera/img/interior-md.webp" alt="" loading="lazy" style="object-position:30% center"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9H3z"/><path d="M9 20v-6h6v6"/></svg></span><small data-i="hub.c1">Nuestra historia</small><b data-i="hub.c2">La casa</b></a>
+    <a class="tile" href="/higuera/sitio/trabaja/"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span class="go"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><small data-i="hub.j1">Únete al equipo</small><b data-i="hub.j2">Trabaja con nosotros</b></a>
+    <a class="tile" href="https://www.instagram.com/higuera_mx/" target="_blank" rel="noopener"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></span><span class="go"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg></span><small>Instagram</small><b>@higuera_mx</b></a>
+  </div>
+</div></section>
+
+<div class="marq" aria-hidden="true" style="margin-top:90px"><div class="track" id="marq"></div></div>
 
 <section class="intro"><div class="wrap">
   <div><span class="k rv" data-i="in.k">Bienvenidos a Higuera</span><h2 class="rv d1" data-i="in.h">Una cocina de <em>barrio</em></h2></div>
@@ -158,8 +220,8 @@
 <section class="explore"><div class="wrap">
   <span class="k rv" data-i="ex.k">Explora</span>
   <div class="ex">
-    <a class="exc rv" href="/higuera/sitio/menu/"><img src="/higuera/img/chilaquiles-xl.webp" alt="" loading="lazy"><span class="go"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><div class="in2"><i>01</i><b data-i="ex.1">El menú</b><span data-i="ex.1s">Desayunos, toasts, sándwiches y café de barra.</span></div></a>
-    <a class="exc rv d1" href="/higuera/sitio/la-casa/"><img src="/higuera/img/interior-xl.webp" alt="" loading="lazy" style="object-position:30% center"><span class="go"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><div class="in2"><i>02</i><b data-i="ex.2">La casa</b><span data-i="ex.2s">Así se arma una mañana en Higuera.</span></div></a>
+    <a class="exc rv" href="/higuera/sitio/menu/"><img src="/higuera/img/chilaquiles-md.webp" alt="" loading="lazy" width="640" height="854"><span class="go"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><div class="in2"><i>01</i><b data-i="ex.1">El menú</b><span data-i="ex.1s">Desayunos, toasts, sándwiches y café de barra.</span></div></a>
+    <a class="exc rv d1" href="/higuera/sitio/la-casa/"><img src="/higuera/img/interior-md.webp" alt="" loading="lazy" style="object-position:30% center"><span class="go"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><div class="in2"><i>02</i><b data-i="ex.2">La casa</b><span data-i="ex.2s">Así se arma una mañana en Higuera.</span></div></a>
     <a class="exc rv d2" href="/higuera/sitio/lista/"><img src="/higuera/img/latte.webp" alt="" loading="lazy"><span class="go"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><div class="in2"><i>03</i><b data-i="ex.3">Lista de espera</b><span data-i="ex.3s">Sin reservas, pero sin fila en la banqueta.</span></div></a>
   </div>
 </div></section>
@@ -167,7 +229,7 @@
 <section class="dishes"><div class="wrap">
   <div class="dh2"><div><span class="k rv" data-i="d.k">De la carta</span><h2 class="rv d1" data-i="d.h">Para <em>empezar</em></h2></div><a class="btn btn-ink rv" href="/higuera/sitio/menu/" data-i="d.all">Ver el menú completo</a></div>
   <div class="dgrid">
-    <a class="dc rv" href="/higuera/sitio/menu/#desayunos" style="text-decoration:none"><div class="film"><img src="/higuera/img/chilaquiles-xl.webp" alt="Chilaquiles verdes" loading="lazy"></div><b>Chilaquiles verdes</b><span data-i="d.1">Desayunos</span></a>
+    <a class="dc rv" href="/higuera/sitio/menu/#desayunos" style="text-decoration:none"><div class="film"><img src="/higuera/img/chilaquiles-md.webp" alt="Chilaquiles verdes" loading="lazy"></div><b>Chilaquiles verdes</b><span data-i="d.1">Desayunos</span></a>
     <a class="dc rv d1" href="/higuera/sitio/menu/#toasts" style="text-decoration:none"><div class="film"><img src="/higuera/img/sopa.webp" alt="Sopa de tomate" loading="lazy"></div><b data-i="d.2t">Sopa de tomate</b><span data-i="d.2">Con grilled cheese</span></a>
     <a class="dc rv d2" href="/higuera/sitio/menu/#desayunos" style="text-decoration:none"><div class="film"><img src="/higuera/img/waffle.webp" alt="Buttermilk waffle con moras" loading="lazy"></div><b>Buttermilk waffles</b><span data-i="d.3">Dulce</span></a>
     <a class="dc rv d3" href="/higuera/sitio/menu/#cafe" style="text-decoration:none"><div class="film"><img src="/higuera/img/latte.webp" alt="Latte de barra" loading="lazy"></div><b data-i="d.4t">Café de barra</b><span data-i="d.4">Lattes de la casa</span></a>
@@ -188,7 +250,7 @@
   <span class="k rv" data-i="v.k">Visítanos</span>
   <h2 class="rv d1">Plutarco Elías Calles <em>419</em></h2>
   <div class="vb">
-    <div class="film rv"><img src="/higuera/img/barra-xl.webp" alt="La barra de Higuera" loading="lazy"></div>
+    <div class="film rv"><img src="/higuera/img/barra-md.webp" alt="La barra de Higuera" loading="lazy"></div>
     <div class="vcard rv d1">
       <span class="k" data-i="v.today">Hoy</span>
       <div class="today" id="todayH">8 am – 4 pm</div>
@@ -203,6 +265,7 @@
 
 <script>
 window.T_EN = {
+  "hub.k": "All of Higuera", "hub.h": "One <em>tap</em> away", "hub.l1": "Waitlist", "hub.m1": "31 dishes", "hub.m2": "The menu", "hub.m3": "Build your order while you wait.", "hub.d0": "Featured", "hub.d1": "This week", "hub.h1": "Best time to come", "hub.v1": "Tampiquito", "hub.v2": "Visit us", "hub.e1": "For your team", "hub.e2": "Events & offices", "hub.e3": "Breakfast for meetings and groups.", "hub.c1": "Our story", "hub.c2": "The house", "hub.j1": "Join the team", "hub.j2": "Work with us",
   "h1a": "Kitchen &", "h1b": "lingering", "sub": "Breakfast and lunch made slowly, specialty coffee and a table to stay at. No reservations, no standing in line.",
   "seeMenu": "See the menu", "howGet": "Directions",
   "in.k": "Welcome to Higuera", "in.h": "A <em>neighborhood</em> kitchen", "in.p": "Chilaquiles, waffles, enfrijoladas and the tomato soup with <em>grilled cheese</em> everyone orders. Specialty coffee at the bar, in the heart of Tampiquito.",
@@ -213,6 +276,7 @@ window.T_EN = {
 };
 </script>
 <script src="/higuera/fila.js"></script>
+<script src="/higuera/sitio/horas.js"></script>
 <script src="/higuera/sitio/site.js"></script>
 <script>
 (() => {
@@ -227,8 +291,25 @@ function today() {
   el.innerHTML = `<span class="dot"></span><span>${s.open ? L(`Abierto ahora · cierra a las ${hr(s.c)}`, `Open now · closes at ${hr(s.c)}`) : L("Cerrado ahora · abre a las 8 am", "Closed now · opens at 8 am")}</span>`;
 }
 today(); onLang(today); setInterval(today, 60000);
+/* panel de accesos */
+function hub() {
+  const s = state();
+  const el = $("#tOpen"); el.classList.toggle("cl", !s.open);
+  el.innerHTML = `<span class="dot"></span><span>${s.open ? L(`Abierto · cierra ${hr(s.c)}`, `Open · closes ${hr(s.c)}`) : L("Cerrado · abre 8 am", "Closed · opens 8 am")}</span>`;
+  HORAS.ready(() => {
+    const sm = HORAS.summary(s.di), cv = HORAS.curve(s.di), max = Math.max(...cv.hours.map((x) => x.v), 1);
+    $("#tBest").textContent = L(`Hoy, a las ${HORAS.hr(sm.best)}`, `Today, at ${HORAS.hr(sm.best)}`);
+    $("#tPeak").textContent = L(`Más lleno a las ${HORAS.hr(sm.peak)}${sm.real ? "" : " · estimado"}`, `Busiest at ${HORAS.hr(sm.peak)}${sm.real ? "" : " · estimate"}`);
+    $("#tSpark").innerHTML = cv.hours.map((x) => `<i class="${x.h === sm.best ? "best" : x.h === sm.peak ? "peak" : ""} ${s.open && Math.floor(s.h) === x.h ? "now" : ""}" style="height:${Math.max(6, (x.v / max) * 100)}%"></i>`).join("");
+  });
+}
+hub(); onLang(hub); setInterval(hub, 60000);
 onLive((d) => {
   const w = d.waiting, e = d.estWait;
+  $("#tW").innerHTML = !d.open && d.reason === "hours" ? `${L("Cerrada", "Closed")}<span>${L("abre " + d.next, "opens tomorrow")}</span>` : w ? `${w}<span>${L(w === 1 ? "grupo esperando" : "grupos esperando", w === 1 ? "party waiting" : "parties waiting")} · ~${e} min</span>` : `0<span>${L("sin espera ahorita", "no wait right now")}</span>`;
+  const se = d.site && d.site.season;
+  $("#tDest").style.display = se ? "" : "none";
+  if (se) { $("#tDestT").textContent = se.title; $("#tDestP").textContent = se.text; $("#tDestImg").src = "/higuera/img/" + se.img + ".webp"; }
   ["#hW", "#wW"].forEach((s) => ($(s).textContent = w));
   ["#hE", "#wE"].forEach((s) => ($(s).textContent = w ? "~" + e : "0"));
 });

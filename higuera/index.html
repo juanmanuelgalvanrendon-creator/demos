@@ -85,17 +85,17 @@ h2{font:400 clamp(36px,4.4vw,56px)/1 var(--serif);letter-spacing:-.01em}
 /* numeros */
 .calc{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:stretch}
 .inputs{background:var(--paper);border-radius:26px;padding:26px;box-shadow:var(--sh);display:grid;gap:22px}
-.rng label{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-weight:700;font-size:15px}
-.rng label output{font:400 30px/1 var(--serif)}
+.rng .rl{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-weight:700;font-size:15px}
+.rng .rl output{font:400 30px/1 var(--serif)}
 .rng input{width:100%;margin-top:10px;accent-color:var(--terra);height:28px}
 .rng small{display:block;font-size:12.5px;color:var(--mut);margin-top:2px}
 .res{background:var(--terra);color:#fff;border-radius:26px;padding:30px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
-.res .k{color:rgba(255,255,255,.75)}
+.res .k{color:#fff}
 .res .big{font:400 clamp(56px,7vw,88px)/.95 var(--serif);margin-top:10px}
 .res .sub{font-size:15px;opacity:.9;margin-top:8px}
-.res .rec{background:rgba(255,255,255,.14);border-radius:20px;padding:18px}
+.res .rec{background:rgba(0,0,0,.14);border-radius:20px;padding:18px}
 .res .rec b{font:400 44px/1 var(--serif);display:block}
-.res .rec span{font-size:14px;opacity:.9}
+.res .rec span{font-size:14px}
 .res .fine{font-size:12.5px;opacity:.8}
 /* equipo */
 .feat{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
@@ -163,6 +163,7 @@ footer b{color:var(--ink)}
   </div>
 </div></header>
 
+<main>
 <section class="try" id="probar"><div class="wrap">
   <div>
     <span class="k">Pruébala aquí mismo</span>
@@ -211,11 +212,11 @@ footer b{color:var(--ink)}
   <div class="sh"><span class="k">Los números</span><h2>Lo que se va <em>caminando</em> cada mes</h2><p>Mueve los valores con lo que ves un sábado o domingo en la entrada. Durante la prueba lo medimos con datos reales.</p></div>
   <div class="calc">
     <div class="inputs">
-      <div class="rng"><label for="r1">Grupos que se van sin entrar, por hora llena <output id="o1">3</output></label><input type="range" id="r1" min="0" max="15" value="3"><small>Los que ven la fila y se siguen de largo.</small></div>
-      <div class="rng"><label for="r2">Horas llenas por día de fin de semana <output id="o2">3</output></label><input type="range" id="r2" min="1" max="8" value="3"></div>
-      <div class="rng"><label for="r3">Personas por grupo <output id="o3">2</output></label><input type="range" id="r3" min="1" max="6" value="2"></div>
-      <div class="rng"><label for="r4">Consumo por persona <output id="o4">$300</output></label><input type="range" id="r4" min="150" max="600" step="10" value="300"><small>Un platillo de la carta más una bebida.</small></div>
-      <div class="rng"><label for="r5">Días con fila al mes <output id="o5">8</output></label><input type="range" id="r5" min="2" max="30" value="8"><small>8 = sábados y domingos.</small></div>
+      <div class="rng"><div class="rl"><label for="r1">Grupos que se van sin entrar, por hora llena</label> <output id="o1" for="r1">3</output></div><input type="range" id="r1" min="0" max="15" value="3"><small>Los que ven la fila y se siguen de largo.</small></div>
+      <div class="rng"><div class="rl"><label for="r2">Horas llenas por día de fin de semana</label> <output id="o2" for="r2">3</output></div><input type="range" id="r2" min="1" max="8" value="3"></div>
+      <div class="rng"><div class="rl"><label for="r3">Personas por grupo</label> <output id="o3" for="r3">2</output></div><input type="range" id="r3" min="1" max="6" value="2"></div>
+      <div class="rng"><div class="rl"><label for="r4">Consumo por persona</label> <output id="o4" for="r4">$300</output></div><input type="range" id="r4" min="150" max="600" step="10" value="300"><small>Un platillo de la carta más una bebida.</small></div>
+      <div class="rng"><div class="rl"><label for="r5">Días con fila al mes</label> <output id="o5" for="r5">8</output></div><input type="range" id="r5" min="2" max="30" value="8"><small>8 = sábados y domingos.</small></div>
     </div>
     <div class="res">
       <div><span class="k">Se va sin entrar</span><div class="big" id="loss">$43,200</div><div class="sub">al mes, con los valores de la izquierda.</div></div>
@@ -270,6 +271,7 @@ footer b{color:var(--ink)}
   </div>
 </div></section>
 
+</main>
 <footer><div class="wrap"><span>Propuesta preparada por <b>Code Nova</b> para Higuera · Plutarco Elías Calles 419, Tampiquito</span><a href="letrero/" style="font-weight:700;color:var(--terra-d)">Ver el letrero de la entrada</a></div></footer>
 
 <script src="../_engine/qrcode.js"></script>

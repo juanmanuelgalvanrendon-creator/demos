@@ -1,7 +1,7 @@
 /* Higuera · fila virtual — estilos compartidos */
 :root{
-  --bg:#f4f1ea;--paper:#fbfaf6;--ink:#1c1b17;--ink2:#4a463d;--mut:#8a8478;--line:#e3ddd0;--line2:#d6cfbf;
-  --terra:#b8642f;--terra-d:#97501f;--terra-l:#f2e2d3;--olive:#2e3527;--olive2:#4f5b41;--sage:#e4e8dc;
+  --bg:#f4f1ea;--paper:#fbfaf6;--ink:#1c1b17;--ink2:#4a463d;--mut:#6b665b;--line:#e3ddd0;--line2:#d6cfbf;
+  --terra:#a35626;--terra-d:#97501f;--terra-l:#f2e2d3;--olive:#2e3527;--olive2:#4f5b41;--sage:#e4e8dc;
   --ok:#2d7a4b;--ok-l:#dff0e4;--warn:#b7791f;--red:#b4432f;
   --serif:"Instrument Serif",Georgia,serif;--sans:"Manrope",system-ui,-apple-system,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;
   --r:22px;--sh:0 1px 0 var(--line),0 24px 48px -32px rgba(28,27,23,.45)

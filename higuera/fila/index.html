@@ -7,6 +7,7 @@
 <meta name="description" content="Anótate en la lista de espera de Higuera desde tu celular y te avisamos cuando tu mesa esté lista.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#f4f1ea">
+<link rel="icon" href="../img/icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -104,11 +105,11 @@ h1 em{font-style:italic;color:var(--terra)}
 <body>
 <div class="wrap">
   <header class="top">
-    <a href="../sitio/"><img class="logo" src="../img/logo-dark.png" alt="Higuera" width="83" height="30"><small>Tampiquito · Walk ins only</small></a>
+    <a href="../sitio/"><img class="logo" src="../img/logo-sm.png" alt="Higuera" width="83" height="30"><small>Tampiquito · Walk ins only</small></a>
     <div class="conn" id="conn"><span class="dot off" id="cdot"></span><span id="ctxt">Conectando</span></div>
   </header>
   <main id="app"></main>
-  <p class="foot">Lista de espera de Higuera · Plutarco Elías Calles 419, Tampiquito<br>Tus datos solo los ve el equipo de Higuera y se borran al terminar el día. <a href="../sitio/privacidad/">Aviso de privacidad</a></p>
+  <footer class="foot">Lista de espera de Higuera · Plutarco Elías Calles 419, Tampiquito<br>Tus datos solo los ve el equipo de Higuera y se borran al terminar el día. <a href="../sitio/privacidad/">Aviso de privacidad</a></footer>
 </div>
 <div id="calledLayer"></div>
 
@@ -118,7 +119,7 @@ h1 em{font-style:italic;color:var(--terra)}
 const { api, live, store, esc, ZONES, toast, beep, unlockAudio, mmss } = HG;
 const $ = (s) => document.querySelector(s);
 const DISHES = [
-  ["chilaquiles-xl.webp", "Chilaquiles verdes"],
+  ["chilaquiles-md.webp", "Chilaquiles verdes"],
   ["waffle.webp", "Buttermilk waffle con moras"],
   ["sopa.webp", "Grilled cheese y sopa de tomate"],
   ["shakshouka.webp", "Huevos en salsa de jitomate con pan"],

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Higuera · Pantalla de turnos</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1c1b17">
+<link rel="icon" href="/higuera/img/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/higuera/hg.css">
+<style>
+html,body{height:100%;overflow:hidden}
+body{background:#141310;color:#f4f1ea;font-family:var(--sans)}
+.scr{height:100vh;height:100dvh;display:grid;grid-template-columns:1.35fr 1fr;gap:2.4vw;padding:3vw}
+.lft{display:flex;flex-direction:column;min-width:0}
+.top{display:flex;justify-content:space-between;align-items:center}
+.top img{height:clamp(30px,3.6vw,56px);filter:invert(1) brightness(2)}
+.clock{font:600 clamp(18px,1.9vw,30px) var(--mono);opacity:.75}
+.k{font-size:clamp(11px,1vw,16px);font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:var(--peach,#efc3a1)}
+.called{flex:1;display:flex;flex-direction:column;justify-content:center;gap:1.6vw;margin-top:2vw}
+.called h1{font:400 clamp(40px,5.4vw,96px)/.95 var(--serif)}
+.called h1 em{font-style:italic;color:#efc3a1}
+.cards{display:grid;gap:1.2vw}
+.cd{display:flex;align-items:center;gap:2vw;background:var(--terra);border-radius:2vw;padding:1.6vw 2.2vw;animation:pop .6s cubic-bezier(.2,.9,.3,1.2)}
+.cd.old{background:rgba(244,241,234,.08);animation:none}
+@keyframes pop{0%{transform:scale(.9);opacity:0}60%{transform:scale(1.03)}100%{transform:none;opacity:1}}
+.cd b{font:600 clamp(36px,5vw,92px)/1 var(--mono);letter-spacing:.02em}
+.cd span{font-size:clamp(16px,1.8vw,32px);font-weight:700}
+.cd small{display:block;font-size:clamp(12px,1.1vw,18px);opacity:.85;font-weight:600;margin-top:.3vw}
+.cd .pulse{width:clamp(14px,1.4vw,24px);height:clamp(14px,1.4vw,24px);border-radius:50%;background:#fff;margin-left:auto;animation:pl 1.2s infinite}
+@keyframes pl{50%{opacity:.25}}
+.none{font-size:clamp(18px,2vw,34px);color:rgba(244,241,234,.6)}
+.rgt{background:#f4f1ea;color:var(--ink);border-radius:2.4vw;padding:2.4vw;display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center}
+.rgt h2{font:400 clamp(30px,3.4vw,60px)/1 var(--serif)}
+.rgt h2 em{font-style:italic;color:var(--terra)}
+.qr{width:min(22vw,40vh);aspect-ratio:1;background:#fff;border-radius:1.4vw;padding:1vw;box-shadow:0 20px 50px -20px rgba(0,0,0,.4)}
+.qr svg{width:100%;height:100%}
+.nums{display:grid;grid-template-columns:1fr 1fr;gap:1vw;width:100%}
+.nums div{background:var(--paper);border-radius:1.4vw;padding:1.2vw}
+.nums b{display:block;font:400 clamp(36px,4.6vw,84px)/1 var(--serif)}
+.nums span{font-size:clamp(11px,1vw,17px);color:var(--mut);font-weight:700}
+.rgt p{font-size:clamp(13px,1.2vw,20px);color:var(--ink2)}
+.fs{position:fixed;right:14px;bottom:14px;background:rgba(244,241,234,.1);color:#f4f1ea;border-radius:999px;padding:10px 16px;font-weight:700;font-size:13px;opacity:.72}
+.fs:hover,.fs:focus-visible{opacity:1}
+@media (max-aspect-ratio:1/1){.scr{grid-template-columns:1fr;grid-template-rows:1.2fr 1fr}.qr{width:min(34vw,26vh)}}
+</style>
+</head>
+<body>
+<main class="scr">
+  <section class="lft">
+    <div class="top"><img src="/higuera/img/logo-dark.png" alt="Higuera"><span class="clock" id="clock">--:--</span></div>
+    <div class="called">
+      <span class="k">Pasa a la entrada</span>
+      <h1>Tu mesa <em>está lista</em></h1>
+      <div class="cards" id="cards"></div>
+    </div>
+  </section>
+  <aside class="rgt">
+    <span class="k" style="color:var(--terra)">Walk ins only</span>
+    <h2>¿Hay espera? <em>Anótate aquí</em></h2>
+    <div class="qr" id="qr"></div>
+    <div class="nums"><div><b id="w">–</b><span>grupos esperando</span></div><div><b id="e">–</b><span>min aprox.</span></div></div>
+    <p>Escanea con la cámara de tu celular y te avisamos cuando tu mesa esté lista.</p>
+  </aside>
+</main>
+<button class="fs" id="fs" type="button">Pantalla completa</button>
+<script src="/_engine/qrcode.js"></script>
+<script src="/higuera/fila.js"></script>
+<script>
+(() => {
+const $ = (s) => document.querySelector(s);
+$("#qr").innerHTML = HG.qrSvg(location.origin + "/higuera/fila/", { margin: 0 });
+const seen = new Map();
+function clock() { const d = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Monterrey" })); $("#clock").textContent = `${d.getHours() % 12 || 12}:${String(d.getMinutes()).padStart(2, "0")} ${d.getHours() < 12 ? "am" : "pm"}`; }
+clock(); setInterval(clock, 15000);
+HG.live({ role: "guest", onData(d) {
+  if (!d || d.authError) return;
+  $("#w").textContent = d.waiting; $("#e").textContent = d.waiting ? "~" + d.estWait : "0";
+  const called = (d.queue || []).filter((x) => x.status === "called");
+  let fresh = false;
+  called.forEach((x) => { if (!seen.has(x.code)) { seen.set(x.code, Date.now()); fresh = true; } });
+  [...seen.keys()].forEach((k) => { if (!called.some((x) => x.code === k)) seen.delete(k); });
+  const list = called.slice().sort((a, b) => seen.get(b.code) - seen.get(a.code)).slice(0, 4);
+  $("#cards").innerHTML = list.length ? list.map((x, i) => `<div class="cd ${i > 0 ? "old" : ""}"><div><b>${x.code}</b></div><div><span>${x.size} ${x.size === 1 ? "persona" : "personas"}</span><small>${i === 0 ? "Acércate a la entrada" : "Llamado"}</small></div>${i === 0 ? '<i class="pulse"></i>' : ""}</div>`).join("") : `<p class="none">En cuanto se libere una mesa, tu turno aparece aquí.</p>`;
+  if (fresh) HG.beep(2);
+} });
+$("#fs").addEventListener("click", () => { HG.unlockAudio(); (document.documentElement.requestFullscreen || (() => {})).call(document.documentElement); });
+document.addEventListener("click", () => HG.unlockAudio(), { once: true });
+})();
+</script>
+</body>
+</html>

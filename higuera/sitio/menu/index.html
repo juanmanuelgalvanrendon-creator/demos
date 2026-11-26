@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="/higuera/img/chilaquiles-xl.webp">
+<link rel="preload" as="image" href="/higuera/img/chilaquiles-xl.webp" fetchpriority="high">
 <link rel="stylesheet" href="/higuera/hg.css">
 <link rel="stylesheet" href="/higuera/sitio/site.css">
 <style>
@@ -21,8 +22,9 @@
 .house{padding:110px 0 0}
 .hgrid{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:center}
 .house ol{list-style:none;margin-top:26px;border-top:1px solid var(--line)}
-.house li{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:16px 0;border-bottom:1px solid var(--line);cursor:pointer;opacity:.45;transition:opacity .35s}
-.house li.on{opacity:1}
+.house li{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:16px 0;border-bottom:1px solid var(--line);cursor:pointer;transition:color .35s}
+.house li:not(.on) i,.house li:not(.on) b,.house li:not(.on) span{color:var(--mut)}
+.house li i,.house li b,.house li span{transition:color .35s}
 .house li i{font:600 12px var(--mono);font-style:normal;color:var(--terra);padding-top:6px}
 .house li b{display:block;font:400 26px/1.1 var(--serif)}
 .house li span{display:block;font-size:14px;color:var(--ink2);margin-top:3px}
@@ -38,7 +40,7 @@
 .hcap b{font:400 20px var(--serif);display:block}
 .hbar{height:2px;background:var(--line);margin-top:18px;border-radius:2px;overflow:hidden}
 .hbar i{display:block;height:100%;width:0;background:var(--terra)}
-.tools{position:sticky;top:74px;z-index:40;background:rgba(244,241,234,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);margin-top:110px}
+.tools{position:sticky;top:var(--hh,74px);z-index:40;background:rgba(244,241,234,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);margin-top:110px}
 .tools .wrap{display:flex;gap:16px;align-items:center;justify-content:space-between;padding-top:12px;padding-bottom:12px}
 .tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
 .tabs::-webkit-scrollbar{display:none}
@@ -48,7 +50,7 @@
 .search{display:flex;align-items:center;gap:8px;border-bottom:1.5px solid var(--line2);padding:8px 4px;min-width:240px;color:var(--mut)}
 .search input{border:0;background:transparent;outline:none;font:500 14px var(--sans);color:var(--ink);width:100%}
 .search input::placeholder{color:var(--mut)}
-.cat{padding-top:70px;scroll-margin-top:150px}
+.cat{padding-top:70px;scroll-margin-top:calc(var(--hh,74px) + 80px)}
 .cat .ch{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:24px}
 .cat .ch i{font:600 13px var(--mono);font-style:normal;color:var(--terra)}
 .cat .ch h2{font-size:clamp(42px,5vw,72px);margin:6px 0 0}
@@ -75,7 +77,9 @@
 .add.on svg{transform:rotate(135deg)}
 .card .info{padding:16px 18px 18px;display:flex;flex-direction:column;gap:3px}
 .card .cl{font-size:9.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--terra)}
-.card h3{font:400 27px/1.08 var(--serif);cursor:pointer}
+.card h3{font:400 27px/1.08 var(--serif)}
+.tl{font:inherit;color:inherit;text-align:left;padding:0;cursor:pointer;letter-spacing:inherit}
+.tl:hover{color:var(--terra)}
 .card .ft{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:12px;border-top:1px solid var(--line);font-size:12.5px;color:var(--mut);font-weight:600}
 .card .ft button{font-weight:800;color:var(--ink);font-size:12.5px;text-decoration:underline;text-underline-offset:3px}
 .card.tk{background:#fbf8f0;border-radius:6px 6px 18px 18px;box-shadow:0 12px 26px -20px rgba(28,27,23,.5);cursor:pointer}
@@ -87,6 +91,10 @@
 .card.tk .chip{font:800 9.5px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--olive2);background:var(--sage);padding:4px 8px;border-radius:99px}
 .card.tk .add{position:static;width:34px;height:34px;box-shadow:inset 0 0 0 1.5px var(--line2);background:transparent}
 .card.tk .add.on{background:var(--terra);box-shadow:none}
+.card.sold .ph img{filter:grayscale(.9) brightness(.85)}
+.card.sold.tk{opacity:.62}
+.soldb{position:absolute;z-index:4;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-6deg);background:var(--red);color:#fff;font:800 11px var(--sans);letter-spacing:.16em;text-transform:uppercase;padding:8px 14px;border-radius:6px;box-shadow:0 8px 20px rgba(0,0,0,.25);white-space:nowrap}
+.card.tk .soldb{top:56%}
 .empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--mut)}
 .empty b{display:block;font:400 32px var(--serif);color:var(--ink)}
 .dlg{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:24px;background:rgba(20,19,16,.55);backdrop-filter:blur(6px);opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
@@ -201,12 +209,12 @@
   </div>
 </div></section>
 
-<nav class="tools" id="tools"><div class="wrap">
+<nav class="tools" id="tools" aria-label="Filtros de la carta"><div class="wrap">
   <div class="tabs" id="tabs" role="tablist"></div>
   <label class="search"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" autocomplete="off" placeholder="Busca un platillo" aria-label="Buscar en el menú"></label>
 </div></nav>
 
-<main class="wrap" id="menu"></main>
+<div class="wrap" id="menu"></div>
 
 <section class="deliv"><div class="wrap">
   <div class="box2 rv">
@@ -220,7 +228,7 @@
 <footer id="foot"></footer>
 
 <div class="dlg" id="dlg" role="dialog" aria-modal="true" aria-label="Detalle del platillo"><div class="box" id="dbox"></div></div>
-<div class="cpill" id="cpill"><span data-i="c.pill">Tu comanda</span><b id="cn">0</b><button type="button" id="copen" data-i="c.see">Ver</button></div>
+<aside class="cpill" id="cpill" aria-label="Mi comanda"><span data-i="c.pill">Tu comanda</span><b id="cn">0</b><button type="button" id="copen" data-i="c.see">Ver</button></aside>
 <div class="sheet" id="sheet"><div class="pn" id="spn"></div></div>
 
 <script>
@@ -232,56 +240,17 @@ window.T_EN = {
 };
 </script>
 <script src="/higuera/fila.js"></script>
+<script src="/higuera/carta.js"></script>
 <script src="/higuera/sitio/site.js"></script>
 <script>
 (() => {
 const { L, esc, onLang, reveal } = SITE;
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const hh = () => parseInt(getComputedStyle(document.documentElement).getPropertyValue("--hh")) || 74;
 
-/* ---------- carta ---------- */
-const CATS = [
-  { id: "desayunos", es: "Desayunos", en: "Breakfast", pes: "Lo clásico de la mañana, de lo salado a lo dulce.", pen: "Morning classics, savory to sweet." },
-  { id: "toasts", es: "Toasts y sándwiches", en: "Toasts & sandwiches", pes: "Pan dorado a la plancha y la sopa de tomate que todos piden.", pen: "Griddled bread and the tomato soup everyone orders." },
-  { id: "cafe", es: "Café", en: "Coffee", pes: "Café de especialidad preparado en barra.", pen: "Specialty coffee made at the bar." },
-  { id: "bebidas", es: "Otras bebidas", en: "Other drinks", pes: "Para quien no toma café.", pen: "For non-coffee days." },
-];
-// [nombre, categoría, etiqueta, fotos, sugerencia para acompañar]
-const RAW = [
-  ["Chilaquiles verdes", "desayunos", "Clásico", ["chilaquiles-xl", "chilaquiles"], "Cold brew"],
-  ["Chilaquiles rojos", "desayunos", "", [], "Americano"],
-  ["Chilaquiles divorciados", "desayunos", "", [], "Horchata latte"],
-  ["Enfrijoladas", "desayunos", "", ["enfrijoladas"], "Americano"],
-  ["Enchiladas poblanas", "desayunos", "", [], "Jugo cold press"],
-  ["Buttermilk waffles", "desayunos", "Dulce", ["waffle"], "Latte"],
-  ["French toast", "desayunos", "Dulce", [], "Cappuccino"],
-  ["Morning bun", "desayunos", "Dulce", [], "Flat white"],
-  ["Mollete", "desayunos", "", [], "Americano"],
-  ["Bowl de fruta con yoghurt", "desayunos", "", [], "Matcha"],
-  ["Sopa de tomate", "toasts", "Con grilled cheese", ["sopa-xl", "sopa", "sopa-bn"], "Cold brew"],
-  ["Scrambled toast", "toasts", "", [], "Flat white"],
-  ["Kale avo toast", "toasts", "", [], "Matcha horchata"],
-  ["Tostado de pimiento asado con salmón", "toasts", "", [], "Jugo cold press"],
-  ["Sándwich de jamones", "toasts", "", [], "Cold brew"],
-  ["Sándwich de pastrami", "toasts", "", [], "Americano"],
-  ["Cheeseburger", "toasts", "", [], "Cold brew"],
-  ["Latte", "cafe", "", ["latte"], "Morning bun"],
-  ["Americano", "cafe", "", [], "Mollete"],
-  ["Cappuccino", "cafe", "", [], "French toast"],
-  ["Flat white", "cafe", "", [], "Morning bun"],
-  ["Mocha", "cafe", "", [], "Buttermilk waffles"],
-  ["Cold brew", "cafe", "", [], "Chilaquiles verdes"],
-  ["Honey lavender latte", "cafe", "De la casa", [], "Buttermilk waffles"],
-  ["Horchata latte", "cafe", "De la casa", [], "Chilaquiles divorciados"],
-  ["Salted caramel latte", "cafe", "", [], "French toast"],
-  ["Matcha", "bebidas", "", [], "Bowl de fruta con yoghurt"],
-  ["Matcha horchata", "bebidas", "De la casa", [], "Kale avo toast"],
-  ["Chai", "bebidas", "", [], "Morning bun"],
-  ["Chocolate", "bebidas", "", [], "French toast"],
-  ["Jugo cold press", "bebidas", "", [], "Enchiladas poblanas"],
-];
-const slug = (s) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-const ITEMS = RAW.map(([n, cat, tag, photos, pair], i) => ({ id: slug(n), n, cat, tag, photos, pair: slug(pair), no: String(i + 1).padStart(2, "0") }));
+/* ---------- carta (compartida con el panel) ---------- */
+const { CATS, ITEMS } = window.CARTA;
 const BY = Object.fromEntries(ITEMS.map((x) => [x.id, x]));
 const TAG_EN = { "Clásico": "Classic", "Dulce": "Sweet", "Con grilled cheese": "With grilled cheese", "De la casa": "House" };
 const catName = (id) => { const c = CATS.find((x) => x.id === id); return L(c.es, c.en); };
@@ -310,20 +279,22 @@ function paintTabs() {
   const tabs = [["all", L("Todo", "All")], ...CATS.map((c) => [c.id, L(c.es, c.en)]), ["mine", L("Mi comanda", "My order")]];
   $("#tabs").innerHTML = tabs.map(([id, t]) => `<button type="button" role="tab" data-tab="${id}" class="${view === id ? "on" : ""}" aria-selected="${view === id}">${t}${id === "mine" && mine.length ? `<span class="n">${mine.length}</span>` : ""}</button>`).join("");
 }
+let SOLD = [];
 function cardHTML(x, k) {
   const add = `<button type="button" class="add" data-add="${x.id}">${PLUS}</button>`;
-  if (x.photos.length) return `<article class="card photo" style="animation-delay:${Math.min(k, 8) * 40}ms">
-    <div class="ph" data-open="${x.id}" role="button" tabindex="0" aria-label="${L("Ver", "View")} ${esc(x.n)}">
+  const sold = SOLD.includes(x.id), sb = sold ? `<span class="soldb">${L("Agotado hoy", "Sold out today")}</span>` : "";
+  if (x.photos.length) return `<article class="card photo${sold ? " sold" : ""}" style="animation-delay:${Math.min(k, 8) * 40}ms">
+    <div class="ph" data-open="${x.id}">
       ${x.photos.map((p, i) => `<img src="/higuera/img/${p}.webp" alt="${i ? "" : esc(x.n)}" loading="lazy" class="${i ? "" : "on"}">`).join("")}
-      ${x.tag ? `<span class="tag">${esc(tagTxt(x.tag))}</span>` : ""}
-      <span class="fr">${x.no}A · HIGUERA</span>
-      ${x.photos.length > 1 ? `<span class="dots">${x.photos.map((_, i) => `<i class="${i ? "" : "on"}"></i>`).join("")}</span>` : ""}
+      ${x.tag ? `<span class="tag">${esc(tagTxt(x.tag))}</span>` : ""}${sb}
+      <span class="fr" aria-hidden="true">${x.no}A · HIGUERA</span>
+      ${x.photos.length > 1 ? `<span class="dots" aria-hidden="true">${x.photos.map((_, i) => `<i class="${i ? "" : "on"}"></i>`).join("")}</span>` : ""}
     </div>${add}
-    <div class="info"><span class="cl">${esc(catName(x.cat))}</span><h3 data-open="${x.id}">${esc(x.n)}</h3>
-    <div class="ft"><span>${L("Precio en la carta", "Price on the menu")}</span><button type="button" data-open="${x.id}">${L("Ver detalle", "Details")}</button></div></div>
+    <div class="info"><span class="cl">${esc(catName(x.cat))}</span><h3><button type="button" class="tl" data-open="${x.id}">${esc(x.n)}</button></h3>
+    <div class="ft"><span>${L("Precio en la carta", "Price on the menu")}</span><button type="button" data-open="${x.id}" aria-label="${L("Ver detalle de", "Details for")} ${esc(x.n)}">${L("Ver detalle", "Details")}</button></div></div>
   </article>`;
-  return `<article class="card tk" data-open="${x.id}" style="animation-delay:${Math.min(k, 8) * 40}ms" tabindex="0" role="button" aria-label="${L("Ver", "View")} ${esc(x.n)}">
-    <div class="info"><div class="no"><span>N.º ${x.no}</span><span>${esc(catName(x.cat))}</span></div><h3>${esc(x.n)}</h3>
+  return `<article class="card tk${sold ? " sold" : ""}" data-open="${x.id}" style="animation-delay:${Math.min(k, 8) * 40}ms">
+    ${sb}<div class="info"><div class="no" aria-hidden="true"><span>N.º ${x.no}</span><span>${esc(catName(x.cat))}</span></div><h3><button type="button" class="tl" data-open="${x.id}">${esc(x.n)}</button></h3>
     <div class="ln">${x.tag ? `<span class="chip">${esc(tagTxt(x.tag))}</span>` : `<span>HIGUERA</span>`}${add}</div></div>
   </article>`;
 }
@@ -361,7 +332,7 @@ function slides() {
 
 /* ---------- detalle ---------- */
 let cur = null, lastFocus = null;
-function visibleIds() { return [...new Set($$("#menu .card").map((c) => c.dataset.open || (c.querySelector("[data-open]") || {}).dataset?.open).filter(Boolean))]; }
+function visibleIds() { return [...new Set($$("#menu .card").map((c) => c.dataset.open || ((c.querySelector("[data-open]") || {}).dataset || {}).open).filter(Boolean))]; }
 function open(id) {
   const x = BY[id]; if (!x) return;
   if (!$("#dlg").classList.contains("on")) lastFocus = document.activeElement;
@@ -375,6 +346,7 @@ function open(id) {
     <span class="cl">${esc(catName(x.cat))}</span>
     <h2>${esc(x.n)}</h2>
     ${x.tag ? `<div class="tags"><span>${esc(tagTxt(x.tag))}</span></div>` : ""}
+    ${SOLD.includes(x.id) ? `<p class="note" style="color:var(--red);font-weight:700">${L("Se nos acabó por hoy. Mañana vuelve.", "We're out of it today. It'll be back tomorrow.")}</p>` : ""}
     <p class="note">${L("La descripción y el precio se agregan con la carta de Higuera.", "Description and price are added with Higuera's menu.")}</p>
     ${p ? `<div class="pair" data-open="${p.id}" role="button" tabindex="0">${p.photos.length ? `<img src="/higuera/img/${p.photos[0]}.webp" alt="">` : `<span class="pp">${esc(p.n[0])}</span>`}<div><small>${L("Para acompañar, una idea", "To go with it, an idea")}</small><b>${esc(p.n)}</b></div></div>` : ""}
     <div class="acts"><button type="button" class="btn btn-ink" data-add="${x.id}" data-addtxt="${x.id}">${L("Agregar a mi comanda", "Add to my order")}</button><a class="btn btn-ghost" href="/higuera/fila/">${L("Anotarme en la lista", "Join the waitlist")}</a></div>
@@ -410,7 +382,7 @@ let hi = 0, hEl = 0, hPause = false, hLast = null, hVis = false;
 function house() {
   $("#hlist").innerHTML = HOT.map((h, i) => { const [t, d] = L(h.es, h.en); return `<li data-h="${i}" class="${i === hi ? "on" : ""}"><i>0${i + 1}</i><div><b>${t}</b><span>${d}</span></div></li>`; }).join("");
   $$(".hot").forEach((e) => e.remove());
-  HOT.forEach((h, i) => { const b = document.createElement("button"); b.type = "button"; b.className = "hot" + (i === hi ? " on" : ""); b.dataset.h = i; b.style.left = h.x + "%"; b.style.top = h.y + "%"; b.textContent = "0" + (i + 1); b.setAttribute("aria-label", L(h.es, h.en)[0]); $("#hphoto").append(b); });
+  HOT.forEach((h, i) => { const b = document.createElement("button"); b.type = "button"; b.className = "hot" + (i === hi ? " on" : ""); b.dataset.h = i; b.style.left = h.x + "%"; b.style.top = h.y + "%"; b.textContent = "0" + (i + 1); b.setAttribute("aria-label", "0" + (i + 1) + " · " + L(h.es, h.en)[0]); $("#hphoto").append(b); });
   setH(hi);
 }
 function setH(i) {
@@ -442,7 +414,7 @@ if (!reduce) setInterval(() => {
 document.addEventListener("click", (e) => {
   const a = e.target.closest("[data-add]"); if (a) { e.stopPropagation(); toggle(a.dataset.add); return; }
   const rm = e.target.closest("[data-rm]"); if (rm) { toggle(rm.dataset.rm); return; }
-  const t = e.target.closest("[data-tab]"); if (t) { view = t.dataset.tab; paintTabs(); render(); slides(); const top = $("#tools").offsetTop - 74; if (scrollY > top) scrollTo({ top, behavior: "smooth" }); return; }
+  const t = e.target.closest("[data-tab]"); if (t) { view = t.dataset.tab; paintTabs(); render(); slides(); const top = $("#tools").offsetTop - hh(); if (scrollY > top) scrollTo({ top, behavior: "smooth" }); return; }
   const g = e.target.closest("[data-go]"); if (g) { open(g.dataset.go); return; }
   const o = e.target.closest("[data-open]"); if (o) { open(o.dataset.open); return; }
   const h = e.target.closest("[data-h]"); if (h) { setH(+h.dataset.h); hPause = true; setTimeout(() => (hPause = false), 6000); return; }
@@ -461,9 +433,10 @@ $("#dlg").addEventListener("touchend", (e) => { if (sx0 == null) return; const d
 $("#q").addEventListener("input", (e) => { q = e.target.value; render(); slides(); });
 onLang(() => { $("#q").placeholder = L("Busca un platillo", "Search a dish"); paintTabs(); render(); house(); rot(); if (cur) open(cur); if ($("#sheet").classList.contains("on")) sheet(); });
 
+SITE.onLive((d) => { const so = (d.site && d.site.soldout) || []; if (so.join() !== SOLD.join()) { SOLD = so; render(); slides(); } });
 $("#q").placeholder = L("Busca un platillo", "Search a dish");
 paintTabs(); render(); slides(); house(); rot(); paintPill(); requestAnimationFrame(hFrame);
-if (location.hash) { const id = location.hash.slice(1); if (CATS.some((c) => c.id === id)) setTimeout(() => { const el = document.getElementById(id); if (el) scrollTo({ top: el.offsetTop - 140 }); }, 300); }
+if (location.hash) { const id = location.hash.slice(1); if (CATS.some((c) => c.id === id)) setTimeout(() => { const el = document.getElementById(id); if (el) scrollTo({ top: el.offsetTop - hh() - 66 }); }, 300); }
 })();
 </script>
 </body>

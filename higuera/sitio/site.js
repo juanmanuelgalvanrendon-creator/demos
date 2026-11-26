@@ -8,8 +8,10 @@ const PAGES = [
   ["menu", R + "menu/", "Menú", "Menu"],
   ["casa", R + "la-casa/", "La casa", "The house"],
   ["lista", R + "lista/", "Lista de espera", "Waitlist"],
+  ["eventos", R + "eventos/", "Eventos y oficinas", "Events & offices"],
   ["visita", R + "visitanos/", "Visítanos", "Visit us"],
 ];
+const SHORT = { eventos: ["Eventos", "Events"] };
 const page = document.body.dataset.page || "inicio";
 
 /* ---------- textos compartidos ---------- */
@@ -27,38 +29,67 @@ const L = (es, en) => (lang === "es" ? es : en);
 
 /* ---------- encabezado, menú móvil, pie y barra móvil ---------- */
 function chrome() {
-  const nav = PAGES.slice(1).map(([k, u, es, en]) => `<a href="${u}" class="${k === page ? "cur" : ""}">${L(es, en)}</a>`).join("");
+  const nm = (k, es, en) => (SHORT[k] ? L(...SHORT[k]) : L(es, en));
+  const nav = PAGES.slice(1).map(([k, u, es, en]) => `<a href="${u}" class="${k === page ? "cur" : ""}">${nm(k, es, en)}</a>`).join("");
+  const strip = PAGES.map(([k, u, es, en]) => `<a href="${u}" class="${k === page ? "cur" : ""}"${k === page ? ' aria-current="page"' : ""}>${nm(k, es, en)}</a>`).join("");
   const top = $("#top");
-  if (top) top.innerHTML = `<div class="wrap">
-    <a href="${R}" aria-label="Higuera, inicio"><img class="logo" src="/higuera/img/logo-dark.png" alt="Higuera" width="94" height="34"></a>
-    <nav>${nav}</nav>
+  const rawN = LV ? ((LV.site && LV.site.notice) || "") : cachedNotice();
+  lastNotice = rawN;
+  let dismissed = ""; try { dismissed = sessionStorage.getItem("hg_notice_x") || ""; } catch (x) {}
+  const notice = rawN && dismissed !== rawN ? rawN : "";
+  if (top) top.innerHTML = `${notice ? `<div class="notice" role="status"><span>${esc(notice)}</span><button type="button" id="nx" aria-label="${L("Cerrar aviso", "Dismiss")}">×</button></div>` : ""}<div class="wrap">
+    <a href="${R}" aria-label="Higuera, inicio"><img class="logo" src="/higuera/img/logo-sm.png" alt="Higuera" width="94" height="34"></a>
+    <nav aria-label="${L("Principal", "Main")}">${nav}</nav>
     <div class="lang" role="group" aria-label="Idioma"><button type="button" data-lang="es" class="${lang === "es" ? "on" : ""}"><span>ES</span></button><button type="button" data-lang="en" class="${lang === "en" ? "on" : ""}"><span>EN</span></button></div>
     <a class="pill" href="/higuera/fila/"><span class="dot" id="pdot"></span><span id="pillTxt">${L("Lista de espera", "Waitlist")}</span><b>${L("Anotarme", "Join")}</b></a>
-    <button class="burger" type="button" id="burger" aria-label="${L("Abrir menú", "Open menu")}"><i></i></button>
-  </div>`;
+    <button class="burger" type="button" id="burger" aria-label="${L("Más opciones", "More options")}"><i></i></button>
+  </div>
+  <div class="mstrip" role="navigation" aria-label="${L("Secciones", "Sections")}"><div class="mrow">${strip}</div></div>`;
+  requestAnimationFrame(() => { const c = top && top.querySelector(".mstrip .cur"); if (c) c.parentElement.scrollLeft = c.offsetLeft - 20; setHH(); });
   let d = $("#drawer");
-  if (!d) { d = document.createElement("div"); d.id = "drawer"; d.className = "drawer"; d.setAttribute("aria-hidden", "true"); document.body.append(d); }
-  d.innerHTML = `<div class="dh"><img src="/higuera/img/logo-dark.png" alt="Higuera"><button class="x" type="button" id="dx" aria-label="${L("Cerrar menú", "Close menu")}">×</button></div>
-    <nav>${PAGES.map(([k, u, es, en], i) => `<a href="${u}" class="${k === page ? "cur" : ""}">${L(es, en)}<span>0${i + 1}</span></a>`).join("")}</nav>
-    <div class="df"><div class="lang" role="group"><button type="button" data-lang="es" class="${lang === "es" ? "on" : ""}"><span>ES</span></button><button type="button" data-lang="en" class="${lang === "en" ? "on" : ""}"><span>EN</span></button></div>
+  if (!d) { d = document.createElement("div"); d.id = "drawer"; d.className = "drawer"; d.setAttribute("role", "dialog"); d.setAttribute("aria-hidden", "true"); document.body.append(d); }
+  d.setAttribute("aria-label", L("Menú", "Menu"));
+  d.innerHTML = `<div class="dh"><img src="/higuera/img/logo-sm.png" alt="Higuera" width="83" height="30"><button class="x" type="button" id="dx" aria-label="${L("Cerrar menú", "Close menu")}">×</button></div>
+    <nav aria-label="${L("Todas las páginas", "All pages")}">${PAGES.map(([k, u, es, en], i) => `<a href="${u}" class="${k === page ? "cur" : ""}">${L(es, en)}<span aria-hidden="true">0${i + 1}</span></a>`).join("")}</nav>
+    <div class="df"><div class="lang" role="group" aria-label="Idioma"><button type="button" data-lang="es" class="${lang === "es" ? "on" : ""}"><span>ES</span></button><button type="button" data-lang="en" class="${lang === "en" ? "on" : ""}"><span>EN</span></button></div>
     <span>Plutarco Elías Calles 419, Tampiquito · <a href="https://www.instagram.com/higuera_mx/" target="_blank" rel="noopener" style="color:#f4f1ea">@higuera_mx</a></span>
     <a class="btn btn-terra btn-block" href="/higuera/fila/">${L("Anotarme en la lista", "Join the waitlist")}</a></div>`;
   const f = $("#foot");
   if (f) f.innerHTML = `<div class="wrap">
-    <img class="big" src="/higuera/img/logo-dark.png" alt="Higuera">
+    <img class="big" src="/higuera/img/logo-dark.png" alt="Higuera" width="712" height="259" loading="lazy">
     <div class="cols">
       <div><b>${L("Dirección", "Address")}</b>Plutarco Elías Calles 419<br>Tampiquito, San Pedro Garza García, N.L.</div>
       <div><b>${L("Horario", "Hours")}</b>${L("Lunes a viernes", "Monday to Friday")} 8 – 4<br>${L("Sábado y domingo", "Saturday & Sunday")} 8 – 5</div>
       <div class="links"><b>${L("Páginas", "Pages")}</b>${PAGES.map(([, u, es, en]) => `<a href="${u}">${L(es, en)}</a>`).join("")}</div>
-      <div class="links"><b>${L("Síguenos", "Follow")}</b><a href="https://www.instagram.com/higuera_mx/" target="_blank" rel="noopener">Instagram</a><a href="https://www.rappi.com.mx/restaurantes/1930063909-cocina-higuera" target="_blank" rel="noopener">Rappi</a><a href="https://www.ubereats.com/mx/store/cocina-higuera/KLVI_U3pXb20CwlV5h75RQ" target="_blank" rel="noopener">Uber Eats</a><a href="${R}privacidad/">${L("Aviso de privacidad", "Privacy notice")}</a></div>
+      <div class="links"><b>${L("Síguenos", "Follow")}</b><a href="${R}trabaja/">${L("Trabaja con nosotros", "Work with us")}</a><a href="https://www.instagram.com/higuera_mx/" target="_blank" rel="noopener">Instagram</a><a href="https://www.rappi.com.mx/restaurantes/1930063909-cocina-higuera" target="_blank" rel="noopener">Rappi</a><a href="https://www.ubereats.com/mx/store/cocina-higuera/KLVI_U3pXb20CwlV5h75RQ" target="_blank" rel="noopener">Uber Eats</a><a href="${R}privacidad/">${L("Aviso de privacidad", "Privacy notice")}</a></div>
     </div>
     <div class="cn"><span>${L("Sitio de muestra preparado por Code Nova para Higuera.", "Sample site prepared by Code Nova for Higuera.")}</span><a href="#" id="toTop">${L("Volver arriba", "Back to top")}</a></div>
   </div>`;
   let mb = $("#mbar");
-  if (!mb && page !== "lista" && page !== "menu") { mb = document.createElement("div"); mb.id = "mbar"; mb.className = "mbar"; document.body.append(mb); }
+  if (!mb && page !== "lista" && page !== "menu") { mb = document.createElement("aside"); mb.setAttribute("aria-label", L("Lista de espera", "Waitlist")); mb.id = "mbar"; mb.className = "mbar"; document.body.append(mb); }
   if (mb) mb.innerHTML = `<div><b id="mW">${L("Lista de espera", "Waitlist")}</b><span>${L("Te avisamos cuando tu mesa esté lista", "We'll let you know when your table is ready")}</span></div><a href="/higuera/fila/">${L("Anotarme", "Join")}</a>`;
   paintLive();
 }
+
+function landmarks() {
+  if (document.querySelector(".skip")) return;
+  const top = $("#top"), foot = $("#foot");
+  if (!top || !foot) return;
+  let m = document.querySelector("main");
+  if (m) { if (!m.id) m.id = "main"; }
+  else {
+    m = document.createElement("main"); m.id = "main";
+    let n = top.nextSibling;
+    while (n && n !== foot) { const nx = n.nextSibling; if (!(n.nodeType === 1 && /^(SCRIPT|STYLE)$/.test(n.tagName))) m.append(n); n = nx; }
+    foot.before(m);
+  }
+  m.tabIndex = -1;
+  const sk = document.createElement("a"); sk.className = "skip"; sk.href = "#" + m.id; sk.textContent = L("Saltar al contenido", "Skip to content");
+  document.body.prepend(sk);
+}
+
+function setHH() { const t = $("#top"); if (t) document.documentElement.style.setProperty("--hh", t.offsetHeight + "px"); }
+addEventListener("resize", setHH);
 
 /* ---------- idioma ---------- */
 function setLang(l) {
@@ -95,8 +126,13 @@ function hoursTable(el) {
 
 /* ---------- lista en vivo ---------- */
 let LV = null; const liveSubs = [];
+let lastNotice = null;
+function cachedNotice() { try { return localStorage.getItem("hg_notice") || ""; } catch (x) { return ""; } }
 function paintLive() {
   if (!LV) return;
+  const nn = (LV.site && LV.site.notice) || "";
+  try { localStorage.setItem("hg_notice", nn); } catch (x) {}
+  if (nn !== lastNotice) { chrome(); return; }
   const w = LV.waiting, e = LV.estWait;
   const pt = $("#pillTxt"); if (pt) pt.textContent = !LV.open && LV.reason === "hours" ? L("Lista cerrada", "List closed") : w ? L(`Espera ~${e} min`, `~${e} min wait`) : L("Sin espera", "No wait");
   $$('[data-i="c.groups"]').forEach((el) => (el.textContent = L(w === 1 ? "grupo esperando" : "grupos esperando", w === 1 ? "party waiting" : "parties waiting")));
@@ -125,6 +161,7 @@ document.addEventListener("click", (e) => {
   if (e.target.closest("#burger")) { $("#drawer").classList.add("on"); $("#drawer").setAttribute("aria-hidden", "false"); document.body.style.overflow = "hidden"; return; }
   if (e.target.closest("#dx") || (e.target.closest("#drawer a"))) { $("#drawer").classList.remove("on"); $("#drawer").setAttribute("aria-hidden", "true"); document.body.style.overflow = ""; if (e.target.closest("#dx")) return; }
   if (e.target.closest("#toTop")) { e.preventDefault(); scrollTo({ top: 0, behavior: "smooth" }); }
+  if (e.target.closest("#nx")) { try { sessionStorage.setItem("hg_notice_x", LV.site.notice); } catch (x) {} chrome(); }
 });
 addEventListener("keydown", (e) => { if (e.key === "Escape") { const d = $("#drawer"); if (d && d.classList.contains("on")) $("#dx").click(); } });
 
@@ -153,6 +190,7 @@ window.SITE = {
   get lang() { return lang; }, L, esc, state, hr, DAYS, H, hoursTable, reveal, peek,
   onLang(f) { subs.push(f); }, onLive(f) { liveSubs.push(f); if (LV) f(LV); }, onScroll(f) { scrollSubs.push(f); },
 };
+landmarks();
 chrome();
 if (lang !== "es") setLang(lang); else hello();
 reveal();

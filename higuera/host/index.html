@@ -96,6 +96,34 @@ td{padding:9px 6px;border-bottom:1px dashed var(--line)}
 .gate p{color:var(--ink2);font-size:14.5px}
 .gate .in{text-align:center;font:600 28px var(--mono);letter-spacing:.4em;margin-top:18px}
 .gate .err{color:var(--red);font-weight:700;font-size:14px;min-height:22px;margin-top:10px}
+.tabs button .bdg{font:600 11px var(--mono);background:var(--terra);color:#fff;border-radius:99px;padding:2px 7px;margin-left:4px}
+.notice-prev{margin-top:10px;background:var(--terra);color:#fff;border-radius:12px;padding:9px 12px;font-size:13px;font-weight:700;text-align:center}
+.pgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:6px}
+.pgrid button{aspect-ratio:1;border-radius:12px;overflow:hidden;box-shadow:inset 0 0 0 2px transparent;position:relative;padding:0}
+.pgrid button img{width:100%;height:100%;object-fit:cover;display:block}
+.pgrid button.on{box-shadow:0 0 0 3px var(--terra)}
+.pgrid button.on::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 3px #fff;border-radius:12px}
+.dprev{margin-top:14px;border-radius:18px;overflow:hidden;position:relative;height:150px;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:14px}
+.dprev img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1}
+.dprev::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(20,19,16,.8));z-index:-1}
+.dprev{isolation:isolate}
+.dprev b{font:400 24px var(--serif)}.dprev span{font-size:12.5px;opacity:.85}
+.solds{display:grid;gap:14px;margin-top:6px}
+.solds h4{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin-bottom:6px}
+.solds .chips{display:flex;flex-wrap:wrap;gap:6px}
+.solds .chips button{padding:8px 12px;border-radius:999px;background:var(--bg);box-shadow:inset 0 0 0 1.5px var(--line);font-weight:700;font-size:13px}
+.solds .chips button.on{background:var(--red);color:#fff;box-shadow:none;text-decoration:line-through}
+.rq{background:var(--paper);border-radius:20px;padding:16px 18px;box-shadow:var(--sh);display:grid;gap:8px}
+.rq.nuevo{box-shadow:inset 4px 0 0 var(--terra),var(--sh)}
+.rq .hd{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.rq .hd b{font-size:17px}
+.rq dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:13.5px}
+.rq dt{color:var(--mut);font-weight:700}
+.rq .acts{display:flex;gap:8px;flex-wrap:wrap}
+.rq .acts .btn{height:40px;font-size:13.5px;padding:0 14px}
+.rqf{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.rqf button{padding:8px 14px;border-radius:999px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line);font-weight:700;font-size:13.5px}
+.rqf button.on{background:var(--ink);color:var(--paper)}
 .hide{display:none!important}
 @media (max-width:760px){
   .kpis{grid-template-columns:repeat(2,1fr)}
@@ -111,12 +139,12 @@ td{padding:9px 6px;border-bottom:1px dashed var(--line)}
 </style>
 </head>
 <body>
-<div class="gate" id="gate">
-  <form class="box" id="gf">
-    <img src="../img/logo-dark.png" alt="Higuera" style="height:40px;margin:0 auto">
+<div class="gate" id="gate" role="main">
+  <form class="box" id="gf" aria-labelledby="gt">
+    <img src="../img/logo-sm.png" alt="Higuera" width="110" height="40" style="height:40px;width:auto;margin:0 auto">
     <h1 id="gt">Panel del equipo</h1>
     <p id="gp">Escribe el PIN del equipo.</p>
-    <input class="in" id="pin" inputmode="numeric" autocomplete="off" maxlength="6" placeholder="····">
+    <input type="text" class="in" id="pin" inputmode="numeric" autocomplete="off" maxlength="6" placeholder="····" aria-label="PIN del equipo">
     <p class="err" id="gerr"></p>
     <button class="btn btn-ink btn-block" type="submit" id="gbtn">Entrar</button>
   </form>
@@ -139,14 +167,14 @@ td{padding:9px 6px;border-bottom:1px dashed var(--line)}
     <div class="kpi"><div class="n" id="kL">0</div><div class="l">Se fueron sin sentarse</div></div>
   </section>
 
-  <nav class="tabs" id="tabs"><button class="on" data-t="lista">Lista</button><button data-t="resumen">Resumen del día</button><button data-t="clientes">Clientes</button><button data-t="ajustes">Ajustes</button><button data-t="guia">Guía</button></nav>
+  <nav class="tabs" id="tabs"><button type="button" class="on" data-t="lista">Lista</button><button type="button" data-t="resumen">Resumen del día</button><button type="button" data-t="clientes">Clientes</button><button type="button" data-t="solicitudes">Solicitudes<span class="bdg hide" id="rqn">0</span></button><button type="button" data-t="sitio">Sitio web</button><button type="button" data-t="ajustes">Ajustes</button><button type="button" data-t="guia">Guía</button></nav>
 
   <section id="v-lista">
     <div class="head"><h2>En espera</h2><button class="btn btn-ink" id="addBtn" type="button" style="height:44px;font-size:14px">+ Anotar en la entrada</button></div>
     <form class="add" id="addF">
-      <div><label class="lab" for="aN">Nombre</label><input class="in" id="aN" maxlength="40" placeholder="Nombre"></div>
+      <div><label class="lab" for="aN">Nombre</label><input type="text" class="in" id="aN" maxlength="40" placeholder="Nombre"></div>
       <div><span class="lab">Personas</span><div class="step"><button type="button" data-as="-1">−</button><b id="aS">2</b><button type="button" class="plus" data-as="1">+</button></div></div>
-      <div><label class="lab" for="aP">WhatsApp (opcional)</label><input class="in" id="aP" inputmode="tel" maxlength="14" placeholder="10 dígitos"></div>
+      <div><label class="lab" for="aP">WhatsApp (opcional)</label><input type="tel" class="in" id="aP" inputmode="tel" maxlength="14" placeholder="10 dígitos"></div>
       <button class="btn btn-terra" type="submit">Agregar</button>
     </form>
     <div class="list" id="list"></div>
@@ -189,9 +217,39 @@ td{padding:9px 6px;border-bottom:1px dashed var(--line)}
           <span class="lab">El QR de la entrada</span>
           <div class="qr" id="qr"></div>
           <p style="font-size:13px;color:var(--mut);margin:10px 0 14px" id="qrUrl"></p>
-          <a class="btn btn-ink" href="../letrero/" target="_blank" rel="noopener" style="height:44px;font-size:14px">Ver letrero para imprimir</a>
+          <div class="rowb" style="justify-content:center"><a class="btn btn-ink" href="../letrero/" target="_blank" rel="noopener" style="height:44px;font-size:14px">Ver letrero para imprimir</a><a class="btn btn-ghost" href="../pantalla/" target="_blank" rel="noopener" style="height:44px;font-size:14px">Pantalla de turnos</a></div>
         </div>
         <button class="btn btn-ghost" id="logout" type="button" style="height:44px;font-size:14px;width:max-content">Salir del panel</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="v-solicitudes" class="hide">
+    <div class="head"><h2>Solicitudes</h2></div>
+    <div class="rqf" id="rqf"></div>
+    <div class="list" id="rqlist"></div>
+    <p class="s" style="font-size:12.5px;color:var(--mut);margin-top:12px">Llegan desde las páginas «Eventos y oficinas» y «Trabaja con nosotros» del sitio. Se borran solas después de 4 meses.</p>
+  </section>
+
+  <section id="v-sitio" class="hide">
+    <div class="grid2">
+      <div class="panel set">
+        <h3>Aviso del día</h3>
+        <div><label class="lab" for="sNotice">Aparece arriba en todas las páginas del sitio</label><input type="text" class="in" id="sNotice" maxlength="140" placeholder="Ej.: Hoy cerramos a las 2 pm por un evento privado"><div class="notice-prev hide" id="sNoticePrev"></div></div>
+        <div class="rowb"><button class="btn btn-ink" type="button" id="sNoticeSave" style="height:44px;font-size:14px">Publicar aviso</button><button class="btn btn-ghost" type="button" id="sNoticeOff" style="height:44px;font-size:14px">Quitar aviso</button></div>
+        <h3 style="margin-top:10px">Platillo destacado</h3>
+        <div><span class="lab">Se muestra en el inicio del sitio</span><button class="sw light" id="sSeasonSw" type="button"><span id="sSeasonTxt">Visible</span><i></i></button></div>
+        <div><label class="lab" for="sTitle">Nombre</label><input type="text" class="in" id="sTitle" maxlength="60"></div>
+        <div><label class="lab" for="sText">Texto corto</label><input type="text" class="in" id="sText" maxlength="160"></div>
+        <div><span class="lab">Foto</span><div class="pgrid" id="sPhotos"></div></div>
+        <div class="dprev" id="sPrev"><img alt="" id="sPrevImg"><b id="sPrevT"></b><span id="sPrevP"></span></div>
+        <button class="btn btn-ink" type="button" id="sSeasonSave" style="height:44px;font-size:14px;width:max-content">Guardar destacado</button>
+      </div>
+      <div class="panel set">
+        <h3>Agotados de hoy</h3>
+        <p class="s" style="margin-top:-6px">Toca lo que se acabó. En el menú del sitio aparece como «Agotado hoy». Se reinicia solo cada mañana.</p>
+        <div class="solds" id="sSold"></div>
+        <a class="btn btn-ghost" href="../sitio/" target="_blank" rel="noopener" style="height:44px;font-size:14px;width:max-content">Ver el sitio</a>
       </div>
     </div>
   </section>
@@ -215,6 +273,7 @@ td{padding:9px 6px;border-bottom:1px dashed var(--line)}
           <li><span><b>Si la cocina se satura</b>, apaga «Lista abierta» arriba: nadie nuevo puede anotarse en línea hasta que la vuelvas a abrir.</span></li>
           <li><span><b>La lista se cierra sola</b> antes de la hora de cierre y se vacía al día siguiente; el resumen de cada día se queda guardado.</span></li>
           <li><span><b>Los números del día</b> están en «Resumen»: cuántos se anotaron, espera promedio y a qué hora se llenó.</span></li>
+          <li><span><b>El sitio web se maneja desde aquí:</b> en «Sitio web» pones un aviso del día, cambias el platillo destacado y marcas lo que se acabó. Las cotizaciones de eventos y las solicitudes de empleo llegan a «Solicitudes».</span></li>
           <li><span><b>El PIN</b> lo comparte el equipo. Si alguien lo escribe mal 5 veces, el panel espera un minuto.</span></li>
         </ol>
       </div>
@@ -223,6 +282,7 @@ td{padding:9px 6px;border-bottom:1px dashed var(--line)}
 </div>
 
 <script src="../../_engine/qrcode.js"></script>
+<script src="../carta.js"></script>
 <script src="../fila.js"></script>
 <script>
 (() => {
@@ -286,8 +346,8 @@ function card(e, i) {
   if (e.src === "host") tags.push(`<span class="tag g">Anotado en la entrada</span>`);
   (e.needs || []).forEach((n) => tags.push(`<span class="tag w">${NEEDS[n] || n}</span>`));
   const acts = called
-    ? `<button class="btn btn-ok" data-a="seat" data-id="${e.id}">Sentar</button>${e.hasPush ? `<button class="btn btn-ghost" data-a="renotify" data-id="${e.id}">Avisar otra vez</button>` : ""}${e.phone ? `<a class="btn btn-wa" href="${waLink(e)}" target="_blank" rel="noopener">WhatsApp</a>` : ""}<button class="btn btn-ghost" data-a="noshow" data-id="${e.id}">No llegó</button>`
-    : `<button class="btn btn-terra" data-a="call" data-id="${e.id}">Llamar mesa</button>`;
+    ? `<button type="button" class="btn btn-ok" data-a="seat" data-id="${e.id}">Sentar</button>${e.hasPush ? `<button type="button" class="btn btn-ghost" data-a="renotify" data-id="${e.id}">Avisar otra vez</button>` : ""}${e.phone ? `<a class="btn btn-wa" href="${waLink(e)}" target="_blank" rel="noopener">WhatsApp</a>` : ""}<button type="button" class="btn btn-ghost" data-a="noshow" data-id="${e.id}">No llegó</button>`
+    : `<button type="button" class="btn btn-terra" data-a="call" data-id="${e.id}">Llamar mesa</button>`;
   return `<article class="card ${called ? "called" : ""} ${late ? "late" : ""} ${isNew ? "new" : ""}" data-card="${e.id}">
     <div class="pos">${i + 1}</div>
     <div>
@@ -295,7 +355,7 @@ function card(e, i) {
       <div class="meta"><span><b>${e.size}</b> ${e.size === 1 ? "persona" : "personas"}</span><span>${esc(ZONES[e.zone] || "")}</span><span data-ago="${e.t0}">Espera ${ago(e.t0, H.now)}</span>${called ? `<span class="tag ${late ? "r" : "w"}" data-called="${e.tCalled}">${late ? "Pasó la tolerancia" : "Quedan " + mmss(tolLeft(e))}</span>` : ""}${e.phone ? `<span>${e.phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3")}</span>` : `<span style="color:var(--mut)">Sin WhatsApp</span>`}</div>
     </div>
     <div class="acts">${acts}</div>
-    <div class="more">${called ? `<button data-a="back" data-id="${e.id}">Regresar a la lista</button>` : ""}<button data-a="remove" data-id="${e.id}">Quitar</button></div>
+    <div class="more">${called ? `<button type="button" data-a="back" data-id="${e.id}">Regresar a la lista</button>` : ""}<button type="button" data-a="remove" data-id="${e.id}">Quitar</button></div>
   </article>`;
 }
 function opts(key, vals, fmt) {
@@ -326,7 +386,12 @@ function paint() {
   const fresh = q.filter((e) => !known.has(e.id) && e.src === "qr");
   if (!first && fresh.length) { beep(1); toast("Nuevo en la lista: " + fresh.map((e) => e.name + " · " + e.size).join(", ")); try { navigator.vibrate && navigator.vibrate(120); } catch (x) {} }
   $("#list").innerHTML = q.length ? q.map(card).join("") : `<div class="empty"><b>Sin espera</b>Cuando alguien escanee el QR aparecerá aquí al instante.</div>`;
-  known = new Set(q.map((e) => e.id)); first = false;
+  known = new Set(q.map((e) => e.id));
+  const nr = H.newRequests || 0; $("#rqn").textContent = nr; $("#rqn").classList.toggle("hide", !nr);
+  if (!first && nr > lastNR) { beep(1); toast("Llegó una solicitud nueva: revisa «Solicitudes»"); if (view === "solicitudes") loadReq(); }
+  lastNR = nr;
+  if (view === "sitio") siteForm(false);
+  first = false;
 
   const stt = { seated: "Se sentó", noshow: "No llegó", cancelled: "Salió de la lista" };
   $("#done").innerHTML = H.done.length ? `<h3>Hace rato</h3>` + H.done.slice(0, 8).map((e) => `<div class="drow"><span>${esc(e.code)} · ${esc(e.name)} · ${e.size}p</span><span>${stt[e.status] || e.status}${e.status === "seated" ? " tras " + Math.max(1, Math.round((e.tDone - e.t0) / 60000)) + " min" : ""}</span></div>`).join("") : "";
@@ -362,7 +427,7 @@ async function loadContacts() {
 async function setting(body, msg) { try { H = await api("/host/settings", { pin, body }); paint(); if (msg) toast(msg); } catch (x) { toast(x.message); } }
 document.addEventListener("click", async (e) => {
   const b = e.target.closest("[data-a]"); if (b) { b.disabled = true; await act(b.dataset.id, b.dataset.a); return; }
-  const t = e.target.closest("[data-t]"); if (t) { view = t.dataset.t; document.querySelectorAll("[data-t]").forEach((x) => x.classList.toggle("on", x === t)); ["lista", "resumen", "clientes", "ajustes", "guia"].forEach((v) => $("#v-" + v).classList.toggle("hide", v !== view)); if (view === "clientes") loadContacts(); return; }
+  const t = e.target.closest("[data-t]"); if (t) { view = t.dataset.t; document.querySelectorAll("[data-t]").forEach((x) => x.classList.toggle("on", x === t)); ["lista", "resumen", "clientes", "solicitudes", "sitio", "ajustes", "guia"].forEach((v) => $("#v-" + v).classList.toggle("hide", v !== view)); if (view === "clientes") loadContacts(); if (view === "solicitudes") loadReq(); if (view === "sitio") siteForm(true); return; }
   if (e.target.closest("#openSw")) { setting({ open: !H.open }, !H.open ? "Lista abierta" : "Lista en pausa: nadie nuevo puede anotarse en línea"); return; }
   if (e.target.closest("#autoSw")) { setting({ autoHours: !H.autoHours }); return; }
   const sv = e.target.closest("[data-sv]"); if (sv) { setting({ [sv.parentElement.dataset.set]: +sv.dataset.sv }); return; }
@@ -386,6 +451,59 @@ $("#addF").addEventListener("submit", async (e) => {
   e.preventDefault();
   const name = $("#aN").value.trim(); if (!name) { $("#aN").focus(); return; }
   try { H = await api("/host/add", { pin, body: { name, size: addSize, phone: $("#aP").value } }); known.add("x"); paint(); $("#aN").value = ""; $("#aP").value = ""; addSize = 2; $("#aS").textContent = 2; $("#addF").classList.remove("on"); toast(name + " agregado a la lista"); } catch (x) { toast(x.message); }
+});
+
+/* ---------- solicitudes ---------- */
+let lastNR = 0, RQ = [], rqView = "todas";
+const ago2 = (t) => { const m = Math.round((Date.now() - t) / 60000); return m < 60 ? `hace ${Math.max(1, m)} min` : m < 1440 ? `hace ${Math.round(m / 60)} h` : `hace ${Math.round(m / 1440)} d`; };
+async function loadReq() { try { const r = await api("/host/requests", { pin }); RQ = r.rows; paintReq(); } catch (e) { toast(e.message); } }
+function paintReq() {
+  const f = [["todas", "Todas"], ["evento", "Eventos"], ["empleo", "Empleo"], ["archivado", "Archivadas"]];
+  $("#rqf").innerHTML = f.map(([k, t]) => `<button type="button" data-rqf="${k}" class="${rqView === k ? "on" : ""}">${t}</button>`).join("");
+  const list = RQ.filter((r) => (rqView === "archivado" ? r.status === "archivado" : r.status !== "archivado" && (rqView === "todas" || r.kind === rqView)));
+  $("#rqlist").innerHTML = list.length ? list.map((r) => {
+    const d = r.data, ev = r.kind === "evento";
+    const msg = ev ? `Hola ${d.name.split(" ")[0]}, te escribimos de Higuera por tu solicitud de ${d.type || "evento"} para ${d.people} personas${d.date ? " el " + d.date.split("-").reverse().join("/") : ""}.` : `Hola ${d.name.split(" ")[0]}, te escribimos de Higuera por tu solicitud de empleo en ${d.role || "el equipo"}.`;
+    const rows = ev ? [["Tipo", d.type], ["Empresa", d.company], ["Fecha", d.date ? d.date.split("-").reverse().join("/") : ""], ["Hora", d.time], ["Personas", d.people], ["Detalles", d.notes]] : [["Área", d.role], ["Disponibilidad", d.availability], ["Experiencia", d.experience]];
+    return `<article class="rq ${r.status}"><div class="hd"><b>${esc(d.name)}</b><span class="tag ${ev ? "w" : "i"}">${ev ? "Evento u oficina" : "Empleo"}</span>${r.status === "nuevo" ? `<span class="tag">Nueva</span>` : ""}<span style="font-size:12.5px;color:var(--mut);margin-left:auto">${ago2(r.created)}</span></div>
+      <dl><dt>WhatsApp</dt><dd>${d.phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3")}</dd>${rows.filter(([, v]) => v).map(([k, v]) => `<dt>${k}</dt><dd>${esc(String(v))}</dd>`).join("")}</dl>
+      <div class="acts"><a class="btn btn-wa" href="https://wa.me/52${d.phone}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener" data-rqseen="${r.id}">Responder por WhatsApp</a>${r.status === "nuevo" ? `<button type="button" class="btn btn-ghost" data-rq="${r.id}" data-ra="visto">Marcar como vista</button>` : ""}${r.status !== "archivado" ? `<button type="button" class="btn btn-ghost" data-rq="${r.id}" data-ra="archivado">Archivar</button>` : `<button type="button" class="btn btn-ghost" data-rq="${r.id}" data-ra="visto">Regresar</button>`}<button type="button" class="btn btn-ghost" data-rq="${r.id}" data-ra="delete">Borrar</button></div></article>`;
+  }).join("") : `<div class="empty"><b>Sin solicitudes</b>Cuando alguien pida una cotización o deje sus datos para trabajar, aparecerá aquí.</div>`;
+}
+async function rqAct(id, action) {
+  if (action === "delete" && !confirmDel.has(id)) { confirmDel.add(id); toast("Toca «Borrar» otra vez para confirmar"); setTimeout(() => confirmDel.delete(id), 4000); return; }
+  try { const r = await api("/host/request", { pin, body: { id, action } }); lastNR = r.newRequests; $("#rqn").textContent = r.newRequests; $("#rqn").classList.toggle("hide", !r.newRequests); await loadReq(); } catch (e) { toast(e.message); }
+}
+const confirmDel = new Set();
+
+/* ---------- sitio web ---------- */
+let SF = null, soldSel = [];
+function siteForm(force) {
+  if (!H || !H.site) return;
+  const st = H.site, se = st.season || {};
+  if (force || !SF) {
+    SF = { on: se.on !== false, title: se.title || "", text: se.text || "", img: se.img || "waffle" };
+    $("#sNotice").value = st.notice || ""; $("#sTitle").value = SF.title; $("#sText").value = SF.text;
+  }
+  soldSel = (st.soldout || []).slice();
+  $("#sNoticePrev").textContent = st.notice || ""; $("#sNoticePrev").classList.toggle("hide", !st.notice);
+  $("#sSeasonSw").classList.toggle("on", SF.on); $("#sSeasonTxt").textContent = SF.on ? "Visible" : "Oculto";
+  $("#sPhotos").innerHTML = CARTA.PHOTOS.map(([k, n]) => `<button type="button" data-ph="${k}" class="${SF.img === k ? "on" : ""}" aria-label="${n}" title="${n}"><img src="../img/${k}.webp" alt=""></button>`).join("");
+  $("#sPrevImg").src = "../img/" + SF.img + ".webp"; $("#sPrevT").textContent = $("#sTitle").value || "Nombre del platillo"; $("#sPrevP").textContent = $("#sText").value;
+  $("#sSold").innerHTML = CARTA.CATS.map((c) => `<div><h4>${c.es}</h4><div class="chips">${CARTA.ITEMS.filter((x) => x.cat === c.id).map((x) => `<button type="button" data-sold="${x.id}" class="${soldSel.includes(x.id) ? "on" : ""}" aria-pressed="${soldSel.includes(x.id)}">${esc(x.n)}</button>`).join("")}</div></div>`).join("");
+}
+async function saveSite(body, msg) { try { H = await api("/host/site", { pin, body }); paint(); siteForm(true); if (msg) toast(msg); } catch (e) { toast(e.message); } }
+document.addEventListener("input", (e) => { if (e.target.id === "sTitle" || e.target.id === "sText") { $("#sPrevT").textContent = $("#sTitle").value || "Nombre del platillo"; $("#sPrevP").textContent = $("#sText").value; } });
+document.addEventListener("click", (e) => {
+  const rf = e.target.closest("[data-rqf]"); if (rf) { rqView = rf.dataset.rqf; paintReq(); return; }
+  const ra = e.target.closest("[data-ra]"); if (ra) { rqAct(ra.dataset.rq, ra.dataset.ra); return; }
+  const rs = e.target.closest("[data-rqseen]"); if (rs) { const r = RQ.find((x) => x.id === rs.dataset.rqseen); if (r && r.status === "nuevo") rqAct(r.id, "visto"); return; }
+  const ph = e.target.closest("[data-ph]"); if (ph && SF) { SF.img = ph.dataset.ph; SF.title = $("#sTitle").value; SF.text = $("#sText").value; siteForm(false); return; }
+  if (e.target.closest("#sSeasonSw") && SF) { SF.on = !SF.on; SF.title = $("#sTitle").value; SF.text = $("#sText").value; siteForm(false); return; }
+  if (e.target.closest("#sSeasonSave")) { const t = $("#sTitle").value.trim(); if (SF.on && !t) { toast("Escribe el nombre del platillo"); return; } saveSite({ season: { on: SF.on, title: t, text: $("#sText").value.trim(), img: SF.img } }, SF.on ? "Destacado publicado en el sitio" : "Destacado oculto"); return; }
+  if (e.target.closest("#sNoticeSave")) { const v = $("#sNotice").value.trim(); if (!v) { toast("Escribe el aviso"); return; } saveSite({ notice: v }, "Aviso publicado en el sitio"); return; }
+  if (e.target.closest("#sNoticeOff")) { saveSite({ notice: "" }, "Aviso quitado"); return; }
+  const so = e.target.closest("[data-sold]"); if (so) { const id = so.dataset.sold; soldSel = soldSel.includes(id) ? soldSel.filter((x) => x !== id) : [...soldSel, id]; saveSite({ soldout: soldSel }, soldSel.includes(id) ? "Marcado como agotado" : "Disponible otra vez"); return; }
 });
 
 const fila = location.origin + "/higuera/fila/";

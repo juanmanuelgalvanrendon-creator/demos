@@ -10,6 +10,7 @@
 <link rel="icon" href="/higuera/img/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="/higuera/img/interior-xl.webp" fetchpriority="high">
 <link rel="stylesheet" href="/higuera/hg.css">
 <link rel="stylesheet" href="/higuera/sitio/site.css">
 <style>
@@ -23,8 +24,10 @@
 .story{position:relative;height:420vh;margin-top:60px}
 .story .stick{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center;max-width:1240px;margin:0 auto;padding:90px 28px 40px}
 .steps ol{list-style:none;display:grid;gap:4px;margin-top:20px}
-.steps li{display:grid;grid-template-columns:56px 1fr;gap:10px;padding:14px 0;border-top:1px solid var(--line);opacity:.32;transition:opacity .5s}
-.steps li.on{opacity:1}
+.steps li{display:grid;grid-template-columns:56px 1fr;gap:10px;padding:14px 0;border-top:1px solid var(--line)}
+.steps li i,.steps li b{transition:color .5s}
+.steps li:not(.on) i,.steps li:not(.on) b{color:var(--mut)}
+.steps li:not(.on) b{color:#8a8478}
 .steps li i{font:600 13px var(--mono);font-style:normal;color:var(--terra);padding-top:8px}
 .steps li b{display:block;font:400 34px/1 var(--serif)}
 .steps li p{font-size:15px;color:var(--ink2);max-height:0;overflow:hidden;transition:max-height .6s var(--ease),margin .6s;margin:0}
@@ -109,7 +112,7 @@
   <span class="k rv" data-i="r.k">El rollo de Higuera</span>
   <h2 class="rv d1" data-i="r.h">Tal cual <em>sale de la cocina</em></h2>
 </div>
-<div class="film-strip rv"><div class="reel" id="reel"></div></div>
+<div class="film-strip rv"><div class="reel" id="reel" tabindex="0" role="region" aria-label="Rollo de fotos, desliza para ver más"></div></div>
 <div class="wrap"><p class="mnote" data-i="r.c">Fotos: @higuera_mx · Arrastra para ver más</p></div>
 </section>
 
@@ -143,8 +146,8 @@ const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelect
 const STORY = [
   ["La comanda", "The ticket", "Cada pedido entra en papel, directo a la cocina.", "Every order goes in on paper, straight to the kitchen.", "comandas"],
   ["La plancha", "The griddle", "Pan dorado a la plancha, crujiente por fuera.", "Bread toasted golden on the griddle.", "sandwich"],
-  ["La salsa", "The salsa", "Chilaquiles verdes con crema y queso, recién servidos.", "Green chilaquiles with cream and cheese, just served.", "chilaquiles-xl"],
-  ["La sobremesa", "The lingering", "Y después, un café de barra para quedarse un rato más.", "And then, a coffee from the bar to stay a little longer.", "barra-xl"],
+  ["La salsa", "The salsa", "Chilaquiles verdes con crema y queso, recién servidos.", "Green chilaquiles with cream and cheese, just served.", "chilaquiles-md"],
+  ["La sobremesa", "The lingering", "Y después, un café de barra para quedarse un rato más.", "And then, a coffee from the bar to stay a little longer.", "barra-md"],
 ];
 let cur = 0;
 function steps() {
@@ -160,7 +163,7 @@ onScroll(() => {
   const i = Math.min(3, Math.floor(p * 4 * 0.999));
   if (i !== cur) { cur = i; $$("#steps li").forEach((li, k) => li.classList.toggle("on", k === i)); $$("#frames figure").forEach((f, k) => f.classList.toggle("on", k === i)); }
 });
-const ROLL = [["chilaquiles-xl", "Chilaquiles verdes"], ["waffle", "Buttermilk waffle con moras"], ["sopa", "Sopa de tomate"], ["latte", "Latte"], ["comandas", "Comandas"], ["shakshouka", "Huevos con pan tostado"], ["barra-xl", "La barra"], ["sandwich", "Sándwich a la plancha"], ["enfrijoladas", "Enfrijoladas"], ["bun", "Algo dulce"], ["sopa-bn", "Sopa, en blanco y negro"], ["postre", "Postre"]];
+const ROLL = [["chilaquiles-md", "Chilaquiles verdes"], ["waffle", "Buttermilk waffle con moras"], ["sopa", "Sopa de tomate"], ["latte", "Latte"], ["comandas", "Comandas"], ["shakshouka", "Huevos con pan tostado"], ["barra-md", "La barra"], ["sandwich", "Sándwich a la plancha"], ["enfrijoladas", "Enfrijoladas"], ["bun", "Algo dulce"], ["sopa-bn", "Sopa, en blanco y negro"], ["postre", "Postre"]];
 $("#reel").innerHTML = ROLL.map(([f, n], i) => `<div class="fr"><div class="film"><img src="/higuera/img/${f}.webp" alt="${esc(n)}" loading="lazy" draggable="false"></div><span>${String(i + 1).padStart(2, "0")}A · HIGUERA</span><b>${esc(n)}</b></div>`).join("");
 const reel = $("#reel"); let down = false, sx = 0, sl = 0;
 reel.addEventListener("pointerdown", (e) => { if (e.pointerType !== "mouse") return; down = true; sx = e.clientX; sl = reel.scrollLeft; reel.classList.add("drag"); });

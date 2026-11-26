@@ -16,7 +16,7 @@ function phoneHTML() {
 
     <section class="dsc d-cam" data-s="0">
       <div class="feed"></div>
-      <div class="sign"><img src="/higuera/img/logo-dark.png" alt=""><b>${L("¿Hay espera?", "Is there a wait?")}</b><div class="qr" id="dqr"></div><small>${L("Anótate aquí", "Join here")}</small></div>
+      <div class="sign"><img src="/higuera/img/logo-sm.png" alt=""><b>${L("¿Hay espera?", "Is there a wait?")}</b><div class="qr" id="dqr"></div><small>${L("Anótate aquí", "Join here")}</small></div>
       <div class="bracket" id="dbr"><i></i><i></i><i></i><i></i></div>
       <div class="pill" id="dpill"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg><span>${L("Lista de espera de Higuera", "Higuera waitlist")}<small>higuera · ${L("abrir en Safari", "open in Safari")}</small></span></div>
       <div class="modes">${L("VIDEO <b>FOTO</b> RETRATO", "VIDEO <b>PHOTO</b> PORTRAIT")}</div>
@@ -24,7 +24,7 @@ function phoneHTML() {
     </section>
 
     <section class="dsc d-form" data-s="1"><div class="clip"><div class="in2" id="dfin">
-      <div class="d-top"><img src="/higuera/img/logo-dark.png" alt=""><span><i class="dot"></i>${L("En vivo", "Live")}</span></div>
+      <div class="d-top"><img src="/higuera/img/logo-sm.png" alt=""><span><i class="dot"></i>${L("En vivo", "Live")}</span></div>
       <div class="d-photo"></div>
       <div class="d-live"><b id="dlw">3</b><span><strong>${L("Grupos", "Parties")}</strong>${L("esperando", "waiting")}</span><i></i><b id="dle">~18</b><span><strong>${L("Minutos", "Minutes")}</strong>${L("aprox.", "approx.")}</span></div>
       <div class="d-h">${L("Espera donde quieras, <em>no en la banqueta</em>", "Wait wherever you like, <em>not on the sidewalk</em>")}</div>
