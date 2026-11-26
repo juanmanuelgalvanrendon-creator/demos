@@ -7,6 +7,10 @@
 <meta name="description" content="Anótate en la lista de espera de Higuera desde tu celular y te avisamos cuando tu mesa esté lista.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#f4f1ea">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Higuera">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../hg.css">
@@ -14,6 +18,7 @@
 body{min-height:100vh;min-height:100dvh}
 .wrap{max-width:520px;margin:0 auto;padding:0 18px 40px}
 .top{display:flex;align-items:center;justify-content:space-between;padding:16px 0 14px}
+.top a{text-decoration:none}
 .top small{display:block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin-top:4px}
 .conn{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--mut)}
 .photo{height:150px;border-radius:var(--r);margin-bottom:-38px;position:relative;z-index:0}
@@ -23,16 +28,19 @@ body{min-height:100vh;min-height:100dvh}
 .live .lbl{font-size:13px;color:var(--mut);line-height:1.35}
 .live .lbl b{display:block;color:var(--ink);font-size:15px}
 .live .sep{width:1px;align-self:stretch;background:var(--line)}
-h1{font:400 40px/1.02 var(--serif);text-transform:lowercase;margin:28px 0 8px;letter-spacing:-.01em}
+h1{font:400 40px/1.02 var(--serif);margin:28px 0 8px;letter-spacing:-.01em}
 h1 em{font-style:italic;color:var(--terra)}
 .lead{color:var(--ink2);font-size:15.5px}
 .form{margin-top:22px;display:grid;gap:20px}
 .hint{font-size:12.5px;color:var(--mut);margin-top:7px}
 .check{display:flex;gap:11px;align-items:flex-start;font-size:13.5px;color:var(--ink2);cursor:pointer}
 .check input{width:20px;height:20px;accent-color:var(--ink);margin-top:1px;flex:none}
+.needs{display:flex;flex-wrap:wrap;gap:8px}
+.needs button{padding:10px 14px;border-radius:999px;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--line);font-weight:600;font-size:14px}
+.needs button.on{background:var(--sage);box-shadow:inset 0 0 0 1.5px var(--olive2);color:var(--olive)}
 .err{color:var(--red);font-weight:700;font-size:14px;min-height:20px}
+.legal{font-size:12px;color:var(--mut);text-align:center;margin-top:-6px}
 .foot{text-align:center;font-size:11.5px;color:var(--mut);margin-top:34px;line-height:1.5}
-/* ticket */
 .ticket{background:var(--olive);color:#f4f1ea;border-radius:26px;padding:22px 22px 20px;position:relative;overflow:hidden;margin-top:6px}
 .ticket::after{content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(242,226,211,.16),transparent 70%)}
 .ticket .k{font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;opacity:.65}
@@ -53,8 +61,15 @@ h1 em{font-style:italic;color:var(--terra)}
 .line em{font-style:normal;font-size:12px;color:var(--mut);margin-left:4px}
 .note{display:flex;gap:12px;align-items:flex-start;background:var(--terra-l);border-radius:18px;padding:14px 16px;margin-top:14px;font-size:14px;color:#5b3a1f}
 .note svg{flex:none;margin-top:2px}
+.notif{margin-top:14px;border-radius:20px;padding:16px 18px;background:var(--ink);color:#f4f1ea;display:grid;gap:12px}
+.notif b{font-size:16px}
+.notif p{font-size:13.5px;opacity:.82;line-height:1.5}
+.notif .btn{height:48px;background:#f4f1ea;color:var(--ink)}
+.notif.ok{background:var(--ok-l);color:var(--ok)}
+.notif.ok p{opacity:1;color:#2b5a3d}
+.notif ol{font-size:13.5px;opacity:.9;padding-left:18px;display:grid;gap:4px}
 .menu{margin-top:26px}
-.menu h2{font:400 26px/1.1 var(--serif);text-transform:lowercase;margin-bottom:12px}
+.menu h2{font:400 26px/1.1 var(--serif);margin-bottom:12px}
 .strip{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;margin:0 -18px;padding-left:18px;padding-right:18px;scrollbar-width:none}
 .strip::-webkit-scrollbar{display:none}
 .dish{flex:none;width:150px;scroll-snap-align:start}
@@ -64,35 +79,36 @@ h1 em{font-style:italic;color:var(--terra)}
 .leave button{font-size:14px;font-weight:700;color:var(--mut);text-decoration:underline;text-underline-offset:3px;padding:8px}
 .confirm{display:none;margin-top:10px;gap:8px;justify-content:center}
 .confirm.on{display:flex}
-/* llamado */
-.called-v{position:fixed;inset:0;background:var(--terra);color:#fff;z-index:50;display:flex;flex-direction:column;justify-content:center;padding:28px 24px calc(28px + env(safe-area-inset-bottom));text-align:center;animation:pop .45s cubic-bezier(.2,.9,.3,1.2)}
+.called-v{position:fixed;inset:0;background:var(--terra);color:#fff;z-index:50;display:flex;flex-direction:column;justify-content:center;padding:28px 24px calc(28px + env(safe-area-inset-bottom));text-align:center;animation:pop .45s cubic-bezier(.2,.9,.3,1.2);overflow-y:auto}
 @keyframes pop{from{transform:scale(1.06);opacity:0}to{transform:none;opacity:1}}
 .called-v .k{font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;opacity:.8}
-.called-v h2{font:400 58px/.95 var(--serif);text-transform:lowercase;margin:14px 0 12px}
+.called-v h2{font:400 56px/.95 var(--serif);margin:14px 0 12px}
 .called-v .code{font:600 30px var(--mono);background:rgba(255,255,255,.16);border-radius:16px;padding:10px 18px;display:inline-block;margin:6px auto 0}
 .called-v .cd{font:400 64px/1 var(--serif);margin-top:26px}
+.called-v .cd.late{opacity:.7}
 .called-v .cdl{font-size:14px;opacity:.85;margin-top:6px}
 .called-v .btn{margin-top:28px;background:#fff;color:var(--terra-d);height:58px;font-size:16.5px}
+.called-v .btn.sec{margin-top:10px;background:rgba(255,255,255,.14);color:#fff;height:50px;font-size:15px}
 .called-v .ok{margin-top:22px;font-size:15px;opacity:.95;line-height:1.5}
 .called-v .ring{width:84px;height:84px;border-radius:50%;margin:0 auto;display:grid;place-items:center;background:rgba(255,255,255,.18);animation:ring 1.4s infinite}
 @keyframes ring{0%{box-shadow:0 0 0 0 rgba(255,255,255,.45)}80%{box-shadow:0 0 0 26px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
 .end{text-align:center;padding:40px 6px 10px}
-.end h2{font:400 46px/1 var(--serif);text-transform:lowercase;margin:18px 0 10px}
+.end h2{font:400 46px/1 var(--serif);margin:18px 0 10px}
 .end p{color:var(--ink2)}
 .end .btn{margin-top:22px}
 .paused{background:var(--paper);border-radius:20px;padding:20px;box-shadow:var(--sh);margin-top:22px;text-align:center}
-.paused b{display:block;font:400 28px var(--serif);text-transform:lowercase}
+.paused b{display:block;font:400 28px var(--serif)}
 .skel{opacity:.5}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
-    <div><img class="logo" src="../img/logo-dark.png" alt="Higuera" width="83" height="30"><small>Tampiquito · walk ins only</small></div>
+    <a href="../sitio/"><img class="logo" src="../img/logo-dark.png" alt="Higuera" width="83" height="30"><small>Tampiquito · Walk ins only</small></a>
     <div class="conn" id="conn"><span class="dot off" id="cdot"></span><span id="ctxt">Conectando</span></div>
   </header>
   <main id="app"></main>
-  <p class="foot">Lista de espera de Higuera · Plutarco Elías Calles 419, Tampiquito<br>Tus datos solo los ve el equipo de Higuera.</p>
+  <p class="foot">Lista de espera de Higuera · Plutarco Elías Calles 419, Tampiquito<br>Tus datos solo los ve el equipo de Higuera y se borran al terminar el día. <a href="../sitio/privacidad/">Aviso de privacidad</a></p>
 </div>
 <div id="calledLayer"></div>
 
@@ -109,8 +125,56 @@ const DISHES = [
   ["postre.webp", "Algo dulce de temporada"],
   ["barra.webp", "Café de barra"],
 ];
-let S = null, mine = store.get("mine"), form = { name: "", size: 2, zone: "any", phone: "", optin: false }, sending = false;
-let lastStatus = null, ackCalled = store.get("ack") || "", vibT = null;
+const NEEDS = { bebe: "Silla para bebé", mascota: "Venimos con mascota", accesible: "Acceso sin escalones" };
+
+// El turno se recupera con la liga (?t=...) aunque se abra en otro navegador o desde la pantalla de inicio
+const qs = new URLSearchParams(location.search);
+let mine = qs.get("t") || store.get("mine");
+if (qs.get("t")) store.set("mine", mine);
+function syncUrl() {
+  const u = new URL(location.href);
+  if (mine) u.searchParams.set("t", mine); else u.searchParams.delete("t");
+  history.replaceState(null, "", u.pathname + u.search);
+}
+syncUrl();
+
+let S = null, form = { name: "", size: 2, zone: "any", phone: "", optin: false, needs: [] }, sending = false;
+let ackCalled = store.get("ack") || "", vibT = null;
+
+/* ---------- notificaciones ---------- */
+const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+const pushSupported = "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+let pushState = "idle"; // idle | on | denied | unsupported | ios-home | busy
+function computePush(m) {
+  if (m && m.hasPush && (!("Notification" in window) || Notification.permission === "granted")) return "on";
+  if (!pushSupported) return isIOS && !standalone ? "ios-home" : "unsupported";
+  if (Notification.permission === "denied") return "denied";
+  return pushState === "busy" ? "busy" : "idle";
+}
+const b64ToU8 = (b) => { const p = "=".repeat((4 - (b.length % 4)) % 4); const s = atob((b + p).replace(/-/g, "+").replace(/_/g, "/")); return Uint8Array.from(s, (c) => c.charCodeAt(0)); };
+async function enablePush() {
+  pushState = "busy"; render();
+  try {
+    const reg = await navigator.serviceWorker.register("/higuera/sw.js", { scope: "/higuera/" });
+    const perm = await Notification.requestPermission();
+    if (perm !== "granted") { pushState = perm === "denied" ? "denied" : "idle"; render(); return; }
+    await navigator.serviceWorker.ready;
+    const { key } = await api("/push/key");
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToU8(key) });
+    await api("/push/sub", { body: { id: mine, sub: sub.toJSON() } });
+    pushState = "on"; toast("Listo: te avisamos en este celular"); conn.refresh();
+  } catch (e) { pushState = "idle"; toast("No se pudo activar el aviso: " + (e.message || "intenta otra vez")); render(); }
+}
+function notifCard(m) {
+  const st = computePush(m);
+  if (st === "on") return `<div class="notif ok"><b>Aviso activado en este celular</b><p>Te llega una notificación cuando seas el siguiente y cuando tu mesa esté lista, aunque cierres esta página.</p></div>`;
+  if (st === "ios-home") return `<div class="notif"><b>¿Quieres el aviso con la página cerrada?</b><p>En iPhone las notificaciones funcionan si agregas esta página a tu pantalla de inicio:</p><ol><li>Toca el botón de compartir de Safari.</li><li>Elige «Agregar a pantalla de inicio».</li><li>Ábrela desde el ícono de Higuera y activa el aviso.</li></ol><p>Si no, deja esta página abierta${m.hasPhone ? " y el equipo te escribe por WhatsApp" : ""}.</p></div>`;
+  if (st === "denied") return `<div class="notif"><b>Las notificaciones están bloqueadas</b><p>Deja esta página abierta para que te avise${m.hasPhone ? ", o espera el WhatsApp del equipo" : ""}. Puedes permitirlas desde los ajustes del navegador.</p></div>`;
+  if (st === "unsupported") return `<div class="notif"><b>Deja esta página abierta</b><p>Tu navegador no permite avisos con la página cerrada. Esta pantalla suena y vibra cuando tu mesa esté lista.</p></div>`;
+  return `<div class="notif"><b>Recibe el aviso aunque cierres la página</b><p>Te mandamos una notificación cuando seas el siguiente y cuando tu mesa esté lista.</p><button class="btn btn-block" id="push" type="button" ${st === "busy" ? "disabled" : ""}>${st === "busy" ? "Activando…" : "Activar aviso en este celular"}</button></div>`;
+}
 
 function setConn(s) {
   $("#cdot").className = "dot" + (s === "live" || s === "poll" ? "" : " off");
@@ -124,35 +188,41 @@ function render() {
     if (m.status === "waiting" || m.status === "called") return renderTicket(app, m);
     return renderEnd(app, m);
   }
-  if (mine && m && m.gone) { mine = null; store.set("mine", null); }
+  if (mine && m && m.gone) { mine = null; store.set("mine", null); syncUrl(); }
   renderJoin(app);
 }
 
 function liveCard() {
   if (!S) return `<div class="live skel"><div><div class="big">·</div></div><div class="lbl">Cargando la espera…</div></div>`;
   if (!S.waiting) return `<div class="live"><div class="big">0</div><div class="lbl"><b>Sin espera ahorita</b>Anótate y te sentamos en cuanto llegues.</div></div>`;
-  return `<div class="live"><div><div class="big">${S.waiting}</div></div><div class="lbl"><b>${S.waiting === 1 ? "grupo esperando" : "grupos esperando"}</b>antes que tú</div><div class="sep"></div><div><div class="big">~${S.estWait}</div></div><div class="lbl"><b>minutos</b>de espera aprox.</div></div>`;
+  return `<div class="live"><div><div class="big">${S.waiting}</div></div><div class="lbl"><b>${S.waiting === 1 ? "Grupo esperando" : "Grupos esperando"}</b>antes que tú</div><div class="sep"></div><div><div class="big">~${S.estWait}</div></div><div class="lbl"><b>Minutos</b>de espera aprox.</div></div>`;
 }
 
 function renderJoin(app) {
+  const photo = `<div class="photo film"><img src="../img/sopa-h.webp" alt="Grilled cheese y sopa de tomate de Higuera"></div>`;
   if (S && !S.open) {
-    app.innerHTML = `<div class="photo film"><img src="../img/sopa-h.webp" alt="Grilled cheese y sopa de tomate de Higuera"></div>${liveCard()}<div class="paused"><b>la lista está en pausa</b><p class="lead" style="margin-top:6px">El equipo la vuelve a abrir en unos minutos. Puedes preguntar en la entrada.</p></div>`;
+    const hours = S.reason === "hours";
+    app.innerHTML = `${photo}${liveCard()}<div class="paused"><b>${hours ? "La lista en línea está cerrada" : "La lista está en pausa"}</b><p class="lead" style="margin-top:6px">${hours ? `Abre ${esc(S.next || "en el siguiente horario")}. Si ya estás aquí, pregunta en la entrada.` : "El equipo la vuelve a abrir en unos minutos. Puedes preguntar en la entrada."}</p></div>`;
     return;
   }
+  const max = (S && S.maxSize) || 10;
   const z = Object.entries(ZONES).map(([k, v]) => `<button type="button" class="${form.zone === k ? "on" : ""}" data-zone="${k}">${v}</button>`).join("");
+  const nd = Object.entries(NEEDS).map(([k, v]) => `<button type="button" class="${form.needs.includes(k) ? "on" : ""}" data-need="${k}">${v}</button>`).join("");
   app.innerHTML = `
-    <div class="photo film"><img src="../img/sopa-h.webp" alt="Grilled cheese y sopa de tomate de Higuera"></div>
+    ${photo}
     ${liveCard()}
-    <h1>espera donde quieras, <em>no en la banqueta</em></h1>
+    <h1>Espera donde quieras, <em>no en la banqueta</em></h1>
     <p class="lead">Anótate, da una vuelta por Tampiquito y te avisamos cuando tu mesa esté lista.</p>
     <form class="form" id="f" novalidate>
-      <div><label class="lab" for="name">Tu nombre</label><input class="in" id="name" maxlength="40" autocomplete="given-name" placeholder="Como te llamamos" value="${esc(form.name)}"></div>
-      <div><span class="lab">¿Cuántos son?</span><div class="step"><button type="button" data-size="-1" aria-label="Menos">−</button><b id="sz">${form.size} ${form.size === 1 ? "persona" : "personas"}</b><button type="button" class="plus" data-size="1" aria-label="Más">+</button></div></div>
+      <div><label class="lab" for="name">Tu nombre</label><input class="in" id="name" maxlength="40" autocomplete="given-name" placeholder="¿Cómo te llamamos?" value="${esc(form.name)}"></div>
+      <div><span class="lab">¿Cuántos son?</span><div class="step"><button type="button" data-size="-1" aria-label="Menos">−</button><b id="sz">${form.size} ${form.size === 1 ? "persona" : "personas"}</b><button type="button" class="plus" data-size="1" aria-label="Más">+</button></div><p class="hint">Grupos de más de ${max}: pregunta directamente en la entrada.</p></div>
       <div><span class="lab">¿Dónde prefieren?</span><div class="seg">${z}</div></div>
-      <div><label class="lab" for="phone">WhatsApp</label><input class="in" id="phone" inputmode="tel" autocomplete="tel" maxlength="14" placeholder="10 dígitos" value="${esc(form.phone)}"><p class="hint">Para avisarte aunque cierres esta página.</p></div>
+      <div><span class="lab">¿Necesitan algo? (opcional)</span><div class="needs">${nd}</div></div>
+      <div><label class="lab" for="phone">WhatsApp (opcional)</label><input class="in" id="phone" inputmode="tel" autocomplete="tel" maxlength="14" placeholder="10 dígitos" value="${esc(form.phone)}"><p class="hint">Por si no ves la notificación, el equipo te puede escribir.</p></div>
       <label class="check"><input type="checkbox" id="optin" ${form.optin ? "checked" : ""}><span>Quiero enterarme de temporadas y novedades de Higuera por WhatsApp.</span></label>
       <p class="err" id="err"></p>
       <button class="btn btn-ink btn-block" id="go" type="submit">Anotarme en la lista</button>
+      <p class="legal">Al anotarte aceptas el <a href="../sitio/privacidad/">aviso de privacidad</a>.</p>
     </form>`;
 }
 
@@ -160,44 +230,50 @@ function queueLine(m) {
   const q = (S.queue || []);
   const idx = q.findIndex((x) => x.code === m.code);
   const shown = q.slice(0, Math.max(idx + 1, 1)).slice(-9);
-  return shown.map((x) => `<span class="${x.code === m.code ? "me" : x.status === "called" ? "called" : ""}" title="${x.code}">${x.code === m.code ? "tú" : esc(x.initial || "·")}</span>`).join("") + (q.length > idx + 1 ? `<em>+${q.length - idx - 1} después de ti</em>` : "");
+  return shown.map((x) => `<span class="${x.code === m.code ? "me" : x.status === "called" ? "called" : ""}" title="${x.code}">${x.code === m.code ? "Tú" : esc(x.initial || "·")}</span>`).join("") + (q.length > idx + 1 ? `<em>+${q.length - idx - 1} después de ti</em>` : "");
 }
 
 function renderTicket(app, m) {
   const ahead = m.ahead, eta = m.eta;
   const waited = Math.max(1, Math.round((Date.now() - m.t0) / 60000));
   const pct = Math.min(96, Math.max(6, Math.round((waited / Math.max(1, waited + eta)) * 100)));
+  const chips = [`${m.size} ${m.size === 1 ? "persona" : "personas"}`, ZONES[m.zone] || "", ...(m.needs || []).map((n) => NEEDS[n])].filter(Boolean);
   app.innerHTML = `
     <section class="ticket">
-      <div class="k">tu turno</div>
+      <div class="k">Tu turno</div>
       <div class="code">${esc(m.code)}</div>
       <div class="who">Hola, ${esc(m.name)}. Ya estás en la lista.</div>
-      <div class="row"><span class="chip">${m.size} ${m.size === 1 ? "persona" : "personas"}</span><span class="chip">${esc(ZONES[m.zone] || "")}</span></div>
+      <div class="row">${chips.map((c) => `<span class="chip">${esc(c)}</span>`).join("")}</div>
     </section>
     <div class="pos">
       <div class="box"><div class="n">${ahead}</div><div class="t">${ahead === 1 ? "grupo antes que tú" : "grupos antes que tú"}</div></div>
       <div class="box"><div class="n">~${eta}</div><div class="t">minutos aprox. para tu mesa</div></div>
     </div>
+    ${notifCard(m)}
     <div class="box" style="margin-top:12px"><span class="lab" style="margin:0">La lista ahora</span><div class="line">${queueLine(m)}</div><div class="bar"><i style="width:${pct}%"></i></div><p class="hint">Llevas ${waited} min esperando.</p></div>
-    <div class="note"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#97501f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-6.2 8-12a8 8 0 1 0-16 0c0 5.8 8 12 8 12z"/><circle cx="12" cy="10" r="2.6"/></svg><span>Puedes dar una vuelta por el barrio. Cuando tu mesa esté lista, esta pantalla te avisa${m.hasPhone ? " y el equipo te escribe por WhatsApp" : ""}. Si cierras la página, vuelve a abrir el mismo link.</span></div>
-    <section class="menu"><h2>mientras esperas</h2><div class="strip">${DISHES.map(([f, n]) => `<div class="dish"><div class="film"><img src="../img/${f}" alt="${esc(n)}" loading="lazy"></div><b>${esc(n)}</b></div>`).join("")}</div></section>
+    <div class="note"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#97501f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-6.2 8-12a8 8 0 1 0-16 0c0 5.8 8 12 8 12z"/><circle cx="12" cy="10" r="2.6"/></svg><span>Cuando te llamemos tendrás ${S.tolerance || 10} minutos para llegar a la entrada. Si cierras la página, vuelve a abrir esta misma liga y ahí sigue tu turno.</span></div>
+    <section class="menu"><h2>Mientras esperas</h2><div class="strip">${DISHES.map(([f, n]) => `<div class="dish"><div class="film"><img src="../img/${f}" alt="${esc(n)}" loading="lazy"></div><b>${esc(n)}</b></div>`).join("")}</div></section>
     <div class="leave"><button type="button" id="leave">Ya no podemos esperar, salir de la lista</button><div class="confirm" id="conf"><button class="btn btn-ghost" type="button" id="no" style="height:44px">Seguir esperando</button><button class="btn btn-ink" type="button" id="yes" style="height:44px">Sí, salir</button></div></div>`;
   calledLayer(m);
 }
 
+function leftMs(m) { return (S.tolerance || 10) * 60000 - (Date.now() - (m.tCalled || Date.now())); }
 function calledLayer(m) {
   const L = $("#calledLayer");
   if (m.status !== "called") { L.innerHTML = ""; stopAlert(); return; }
-  const left = 10 * 60000 - (Date.now() - (m.tCalled || Date.now()));
+  const left = leftMs(m);
+  const status = m.here ? `<p class="ok">Perfecto, ${esc(m.name)}. El equipo ya sabe que estás en la entrada.</p>`
+    : m.otw ? `<p class="ok">Listo, ${esc(m.name)}. Le avisamos al equipo que vas en camino. Dile tu código en la entrada.</p><button class="btn btn-block sec" id="here" type="button">Ya estoy en la entrada</button>`
+    : `<button class="btn btn-block" id="otw" type="button">Voy en camino</button><button class="btn btn-block sec" id="here" type="button">Ya estoy en la entrada</button>`;
   L.innerHTML = `<div class="called-v" role="alertdialog" aria-live="assertive">
     <div class="ring"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18h20M4 18a8 8 0 0 1 16 0M12 10V7M10 7h4"/></svg></div>
     <div class="k" style="margin-top:22px">Higuera · Tampiquito</div>
-    <h2>tu mesa está lista</h2>
+    <h2>Tu mesa está lista</h2>
     <div><span class="code">${esc(m.code)}</span></div>
-    <div class="cd" id="cd">${mmss(left)}</div><div class="cdl">para llegar a la entrada</div>
-    ${m.otw ? `<p class="ok">Listo, ${esc(m.name)}. Le avisamos al equipo que vas en camino. Dile tu código en la entrada.</p>` : `<button class="btn btn-block" id="otw" type="button">Voy en camino</button>`}
+    <div class="cd ${left <= 0 ? "late" : ""}" id="cd">${left > 0 ? mmss(left) : "0:00"}</div><div class="cdl" id="cdl">${left > 0 ? "para llegar a la entrada" : "Se acabó la tolerancia. Si ya vienes, avísale al equipo en la entrada."}</div>
+    ${status}
   </div>`;
-  if (ackCalled !== m.code + m.tCalled && !m.otw) startAlert();
+  if (ackCalled !== m.code + m.tCalled && !m.otw && !m.here) startAlert();
 }
 function startAlert() {
   stopAlert();
@@ -212,21 +288,28 @@ function renderEnd(app, m) {
   const seated = m.status === "seated";
   app.innerHTML = `<section class="end">
     <img src="../img/logo-dark.png" alt="Higuera" style="height:44px;margin:0 auto">
-    <h2>${seated ? "buen provecho, <span style=\"text-transform:none\">" + esc(m.name) + "</span>" : "tu turno ya no está activo"}</h2>
-    <p>${seated ? "Gracias por esperar con la lista de Higuera." : m.status === "cancelled" ? "Saliste de la lista. Ojalá te veamos pronto." : "Te llamamos, pero no te encontramos en la entrada."}</p>
+    <h2>${seated ? "Buen provecho, " + esc(m.name) : "Tu turno ya no está activo"}</h2>
+    <p>${seated ? "Gracias por esperar con la lista de Higuera." : m.status === "cancelled" ? "Saliste de la lista. Ojalá te veamos pronto." : "Te llamamos, pero no te encontramos en la entrada. Si sigues por aquí, pregunta al equipo."}</p>
     <button class="btn btn-ghost" id="again" type="button">Anotarme otra vez</button>
   </section>`;
 }
 
 /* ---------- eventos ---------- */
+async function meAction(action) {
+  ackCalled = S.mine.code + S.mine.tCalled; store.set("ack", ackCalled); stopAlert();
+  try { await api("/me/" + mine, { body: { action } }); conn.refresh(); } catch (err) { toast(err.message); }
+}
 document.addEventListener("click", async (e) => {
   const z = e.target.closest("[data-zone]"); if (z) { form.zone = z.dataset.zone; document.querySelectorAll("[data-zone]").forEach((b) => b.classList.toggle("on", b === z)); return; }
-  const s = e.target.closest("[data-size]"); if (s) { form.size = Math.max(1, Math.min(12, form.size + +s.dataset.size)); $("#sz").textContent = form.size + (form.size === 1 ? " persona" : " personas"); return; }
+  const n = e.target.closest("[data-need]"); if (n) { const k = n.dataset.need; form.needs = form.needs.includes(k) ? form.needs.filter((x) => x !== k) : [...form.needs, k]; n.classList.toggle("on"); return; }
+  const s = e.target.closest("[data-size]"); if (s) { const max = (S && S.maxSize) || 10; form.size = Math.max(1, Math.min(max, form.size + +s.dataset.size)); $("#sz").textContent = form.size + (form.size === 1 ? " persona" : " personas"); return; }
+  if (e.target.closest("#push")) { enablePush(); return; }
   if (e.target.closest("#leave")) { $("#conf").classList.add("on"); e.target.closest("#leave").style.display = "none"; return; }
   if (e.target.closest("#no")) { render(); return; }
   if (e.target.closest("#yes")) { try { await api("/me/" + mine, { body: { action: "cancel" } }); conn.refresh(); } catch (err) { toast(err.message); } return; }
-  if (e.target.closest("#otw")) { ackCalled = S.mine.code + S.mine.tCalled; store.set("ack", ackCalled); stopAlert(); try { await api("/me/" + mine, { body: { action: "otw" } }); conn.refresh(); } catch (err) { toast(err.message); } return; }
-  if (e.target.closest("#again")) { mine = null; store.set("mine", null); conn.setMine(null); render(); return; }
+  if (e.target.closest("#otw")) { meAction("otw"); return; }
+  if (e.target.closest("#here")) { meAction("here"); return; }
+  if (e.target.closest("#again")) { mine = null; store.set("mine", null); syncUrl(); conn.setMine(null); render(); return; }
 });
 document.addEventListener("input", (e) => {
   if (e.target.id === "name") form.name = e.target.value;
@@ -240,19 +323,34 @@ document.addEventListener("submit", async (e) => {
   const name = form.name.trim(), phone = form.phone.replace(/\D/g, "");
   if (!name) { err.textContent = "Escribe tu nombre para llamarte."; $("#name").focus(); return; }
   if (phone && phone.length < 10) { err.textContent = "El WhatsApp debe tener 10 dígitos."; $("#phone").focus(); return; }
+  if (form.optin && !phone) { err.textContent = "Para recibir novedades escribe tu WhatsApp."; $("#phone").focus(); return; }
   if (sending) return; sending = true; $("#go").disabled = true; $("#go").textContent = "Anotando…";
   try {
-    const r = await api("/join", { body: { name, size: form.size, zone: form.zone, phone, optin: form.optin && !!phone } });
-    mine = r.id; store.set("mine", mine); conn.setMine(mine); conn.refresh();
-    toast("Listo, tu turno es " + r.code.replace("-", "\u2011"));
+    const r = await api("/join", { body: { name, size: form.size, zone: form.zone, phone, optin: form.optin && !!phone, needs: form.needs } });
+    mine = r.id; store.set("mine", mine); syncUrl(); conn.setMine(mine); conn.refresh();
+    const code = r.code.replace("-", "\u2011");
+    toast(r.existing ? "Ya estabas en la lista: tu turno es " + code : "Listo, tu turno es " + code);
     window.scrollTo({ top: 0, behavior: "smooth" });
   } catch (x) { err.textContent = x.message; }
   sending = false; const g = $("#go"); if (g) { g.disabled = false; g.textContent = "Anotarme en la lista"; }
 });
 
 setInterval(() => {
-  const cd = $("#cd"); if (cd && S && S.mine && S.mine.tCalled) cd.textContent = mmss(10 * 60000 - (Date.now() - S.mine.tCalled));
+  const cd = $("#cd"); if (!cd || !S || !S.mine || !S.mine.tCalled) return;
+  const left = leftMs(S.mine);
+  cd.textContent = left > 0 ? mmss(left) : "0:00";
+  if (left <= 0 && !cd.classList.contains("late")) { cd.classList.add("late"); $("#cdl").textContent = "Se acabó la tolerancia. Si ya vienes, avísale al equipo en la entrada."; }
 }, 1000);
+
+// si el navegador ya tiene la suscripción de antes, la volvemos a mandar con el turno nuevo
+async function reattach() {
+  if (!pushSupported || Notification.permission !== "granted" || !mine) return;
+  try {
+    const reg = await navigator.serviceWorker.getRegistration("/higuera/");
+    const sub = reg && (await reg.pushManager.getSubscription());
+    if (sub && S && S.mine && !S.mine.hasPush && !S.mine.gone) await api("/push/sub", { body: { id: mine, sub: sub.toJSON() } });
+  } catch (e) {}
+}
 
 const conn = live({
   role: "guest", mine,
@@ -263,6 +361,7 @@ const conn = live({
     const typing = document.activeElement && ["name", "phone"].includes(document.activeElement.id) && !(S.mine && !S.mine.gone);
     if (typing) { const c = document.querySelector(".live"); if (c) c.outerHTML = liveCard(); return; }
     render();
+    if (S.mine && S.mine.status === "waiting" && !S.mine.hasPush) reattach();
     if (S.mine && prev && prev !== S.mine.status && S.mine.status === "seated") toast("¡Buen provecho!");
   },
   onStatus: setConn,

@@ -15,7 +15,7 @@ a{color:inherit}
 img{display:block;max-width:100%}
 .mono{font-family:var(--mono)}
 .serif{font-family:var(--serif);font-weight:400}
-.lc{text-transform:lowercase}
+
 .logo{height:30px;width:auto}
 .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 rgba(45,122,75,.5);animation:pulse 2s infinite}
 .dot.off{background:var(--mut);animation:none}

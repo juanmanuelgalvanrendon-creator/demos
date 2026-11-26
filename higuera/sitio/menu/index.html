@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Menú · Higuera, Tampiquito</title>
+<meta name="description" content="El menú de Higuera: chilaquiles, waffles, enfrijoladas, toasts, sándwiches, sopa de tomate con grilled cheese y café de barra.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1c1b17">
+<link rel="icon" href="/higuera/img/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/higuera/hg.css">
+<link rel="stylesheet" href="/higuera/sitio/site.css">
+<style>
+.mnav{position:sticky;top:74px;z-index:40;background:rgba(244,241,234,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.mnav .wrap{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-top:12px;padding-bottom:12px}
+.mnav .wrap::-webkit-scrollbar{display:none}
+.mnav a{padding:10px 18px;border-radius:999px;font-weight:700;font-size:14px;color:var(--ink2);text-decoration:none;white-space:nowrap;transition:background .25s,color .25s}
+.mnav a.on{background:var(--ink);color:var(--paper)}
+.msec{padding-top:90px;scroll-margin-top:140px}
+.msec .hd{display:grid;grid-template-columns:1fr 1.6fr;gap:60px;align-items:start}
+.msec .side{position:sticky;top:170px}
+.msec .side i{font:600 13px var(--mono);font-style:normal;color:var(--terra)}
+.msec .side h2{font-size:clamp(44px,5vw,76px)}
+.msec .side p{color:var(--ink2);font-size:15.5px;max-width:340px}
+.msec .side .film{margin-top:22px;border-radius:24px;aspect-ratio:4/4.4;max-width:380px}
+.mi{display:flex;align-items:center;gap:14px;padding:22px 0;border-bottom:1px solid var(--line);transition:padding .35s var(--ease)}
+.mi:first-child{border-top:1px solid var(--line)}
+.mi .n{font:400 32px/1.1 var(--serif);flex:1;transition:color .25s}
+.mi .d{display:block;font:500 14px/1.4 var(--sans);color:var(--mut);margin-top:4px}
+.mi .t{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--olive2);background:var(--sage);padding:4px 9px;border-radius:99px;white-space:nowrap}
+.mi .ph{width:16px;height:16px;flex:none;opacity:.35}
+.mi[data-ph]{cursor:zoom-in}
+.mi[data-ph]:hover{padding-left:10px}.mi[data-ph]:hover .n{color:var(--terra)}
+.mi .th{display:none}
+.deliv{margin-top:120px}
+.deliv .box2{background:var(--paper);border-radius:32px;padding:44px;box-shadow:var(--sh);display:flex;justify-content:space-between;align-items:center;gap:30px;flex-wrap:wrap}
+.deliv h3{font:400 clamp(34px,3.6vw,52px)/1 var(--serif)}
+.deliv p{color:var(--ink2);margin-top:8px}
+.deliv .acts{display:flex;gap:10px;flex-wrap:wrap}
+@media (max-width:960px){
+  .mnav{top:74px}
+  .msec{padding-top:70px}
+  .msec .hd{grid-template-columns:1fr;gap:20px}
+  .msec .side{position:static}
+  .msec .side .film{display:none}
+  .mi .n{font-size:25px}
+  .mi .th{display:block;width:56px;height:56px;border-radius:14px;overflow:hidden;flex:none}
+  .mi .th img{width:100%;height:100%;object-fit:cover}
+  .mi .ph{display:none}
+  .deliv{margin-top:90px}.deliv .box2{padding:28px}
+}
+</style>
+</head>
+<body data-page="menu">
+<header class="top" id="top"></header>
+
+<section class="phero">
+  <div class="bg" style="background-image:url(/higuera/img/chilaquiles.webp)" role="img" aria-label="Chilaquiles verdes de Higuera"></div>
+  <div class="grain"></div>
+  <div class="wrap">
+    <div class="crumb"><a href="/higuera/sitio/">Higuera</a><span>/</span><span data-i="m.crumb">Menú</span></div>
+    <h1><span class="ln"><span data-i="m.h1a">Lo que hay</span></span><span class="ln"><span><em data-i="m.h1b">en la mesa</em></span></span></h1>
+    <p data-i="m.p">Desayunos y comida todo el día, toasts, sándwiches y café de especialidad en barra.</p>
+  </div>
+</section>
+
+<nav class="mnav" id="mnav"><div class="wrap" id="mnavIn"></div></nav>
+<main class="wrap" id="menu"></main>
+
+<section class="deliv"><div class="wrap">
+  <div class="box2 rv">
+    <div><h3 data-i="m.dh">¿Mejor en casa?</h3><p data-i="m.dp">Higuera también llega a domicilio.</p></div>
+    <div class="acts"><a class="btn btn-ink" href="https://www.rappi.com.mx/restaurantes/1930063909-cocina-higuera" target="_blank" rel="noopener">Rappi</a><a class="btn btn-ink" href="https://www.ubereats.com/mx/store/cocina-higuera/KLVI_U3pXb20CwlV5h75RQ" target="_blank" rel="noopener">Uber Eats</a></div>
+  </div>
+  <p class="mnote rv" data-i="m.note">Carta tomada de su menú actual. Los precios y descripciones se agregan con la carta del restaurante.</p>
+</div></section>
+
+<a class="nextp" href="/higuera/sitio/la-casa/"><div class="wrap"><div><small data-i="np.k">Siguiente</small><b data-i="np.b">La casa</b></div><span class="arr"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></a>
+<footer id="foot"></footer>
+
+<script>
+window.T_EN = {
+  "m.crumb": "Menu", "m.h1a": "What's", "m.h1b": "on the table", "m.p": "Breakfast and lunch all day, toasts, sandwiches and specialty coffee at the bar.",
+  "m.dh": "Rather at home?", "m.dp": "Higuera also delivers.", "m.note": "Taken from their current menu. Prices and descriptions are added with the restaurant's menu.",
+  "np.k": "Next", "np.b": "The house",
+};
+</script>
+<script src="/higuera/fila.js"></script>
+<script src="/higuera/sitio/site.js"></script>
+<script>
+(() => {
+const { L, esc, onLang, reveal, peek, onScroll } = SITE;
+const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
+// [nombre, etiqueta, foto]
+const MENU = [
+  { id: "desayunos", es: "Desayunos", en: "Breakfast", pes: "Lo clásico de la mañana, de lo salado a lo dulce.", pen: "Morning classics, savory to sweet.", img: "chilaquiles", items: [
+    ["Chilaquiles verdes", "Clásico", "chilaquiles"], ["Chilaquiles rojos", "", "chilaquiles"], ["Chilaquiles divorciados", "", "chilaquiles"], ["Enfrijoladas", "", "enfrijoladas"], ["Enchiladas poblanas", ""], ["Buttermilk waffles", "Dulce"], ["French toast", "Dulce"], ["Morning bun", "Dulce", "bun"], ["Mollete", ""], ["Bowl de fruta con yoghurt", ""]] },
+  { id: "toasts", es: "Toasts y sándwiches", en: "Toasts & sandwiches", pes: "Pan dorado a la plancha y la sopa de tomate que todos piden.", pen: "Griddled bread and the tomato soup everyone orders.", img: "sandwich", items: [
+    ["Sopa de tomate", "Con grilled cheese", "sopa"], ["Scrambled toast", ""], ["Kale avo toast", ""], ["Tostado de pimiento asado con salmón", ""], ["Sándwich de jamones", "", "sandwich"], ["Sándwich de pastrami", "", "sandwich"], ["Cheeseburger", ""]] },
+  { id: "cafe", es: "Café", en: "Coffee", pes: "Café de especialidad preparado en barra.", pen: "Specialty coffee made at the bar.", img: "barra", items: [
+    ["Americano", "", "barra"], ["Cappuccino", "", "barra"], ["Flat white", "", "barra"], ["Latte", "", "barra"], ["Mocha", "", "barra"], ["Cold brew", "", "barra"], ["Honey lavender latte", "De la casa", "barra"], ["Horchata latte", "De la casa", "barra"], ["Salted caramel latte", "", "barra"]] },
+  { id: "bebidas", es: "Otras bebidas", en: "Other drinks", pes: "Para quien no toma café.", pen: "For non-coffee days.", img: "postre", items: [
+    ["Matcha", ""], ["Matcha horchata", "De la casa"], ["Chai", ""], ["Chocolate", ""], ["Jugo cold press", ""]] },
+];
+const TAG_EN = { "Clásico": "Classic", "Dulce": "Sweet", "Con grilled cheese": "With grilled cheese", "De la casa": "House" };
+function render() {
+  $("#mnavIn").innerHTML = MENU.map((c, i) => `<a href="#${c.id}" data-nav="${c.id}" class="${i === 0 ? "on" : ""}">${L(c.es, c.en)}</a>`).join("");
+  $("#menu").innerHTML = MENU.map((c, ci) => `<section class="msec" id="${c.id}"><div class="hd">
+    <div class="side rv"><i>0${ci + 1}</i><h2>${L(c.es, c.en)}</h2><p>${L(c.pes, c.pen)}</p><div class="film"><img src="/higuera/img/${c.img}.webp" alt="" loading="lazy"></div></div>
+    <div class="items">${c.items.map(([n, t, ph]) => `<div class="mi rv" ${ph ? `data-ph="${ph}"` : ""}>${ph ? `<div class="th"><img src="/higuera/img/${ph}.webp" alt="" loading="lazy"></div>` : ""}<span class="n">${esc(n)}</span>${t ? `<span class="t">${esc(L(t, TAG_EN[t] || t))}</span>` : ""}${ph ? `<svg class="ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="m21 17-5-5-9 7"/></svg>` : ""}</div>`).join("")}</div>
+  </div></section>`).join("");
+  reveal();
+}
+render(); onLang(render); peek(".mi");
+onScroll(() => {
+  let cur = MENU[0].id;
+  MENU.forEach((c) => { const el = document.getElementById(c.id); if (el && el.getBoundingClientRect().top < 200) cur = c.id; });
+  $$("[data-nav]").forEach((a) => { const on = a.dataset.nav === cur; if (on !== a.classList.contains("on")) { a.classList.toggle("on", on); if (on) { const w = $("#mnavIn"); w.scrollTo({ left: a.offsetLeft - w.clientWidth / 2 + a.offsetWidth / 2, behavior: "smooth" }); } } });
+});
+})();
+</script>
+</body>
+</html>

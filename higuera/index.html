@@ -20,9 +20,9 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;height:6
 nav .by{font-size:12px;font-weight:700;color:var(--mut);letter-spacing:.04em;text-align:right;line-height:1.35}
 nav .by b{color:var(--ink)}
 .k{font-size:11.5px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--terra)}
-h1{font:400 clamp(46px,6.4vw,84px)/.95 var(--serif);text-transform:lowercase;letter-spacing:-.015em}
+h1{font:400 clamp(46px,6.4vw,84px)/.95 var(--serif);letter-spacing:-.015em}
 h1 em,h2 em{font-style:italic;color:var(--terra)}
-h2{font:400 clamp(36px,4.4vw,56px)/1 var(--serif);text-transform:lowercase;letter-spacing:-.01em}
+h2{font:400 clamp(36px,4.4vw,56px)/1 var(--serif);letter-spacing:-.01em}
 .lead{font-size:18px;color:var(--ink2);max-width:520px}
 /* hero */
 .hero{padding:54px 0 30px}
@@ -74,7 +74,7 @@ h2{font:400 clamp(36px,4.4vw,56px)/1 var(--serif);text-transform:lowercase;lette
 .vs .col{border-radius:26px;padding:26px}
 .vs .a{background:var(--paper);box-shadow:inset 0 0 0 1px var(--line)}
 .vs .b{background:var(--ink);color:#f4f1ea}
-.vs h3{font:400 30px/1 var(--serif);text-transform:lowercase;margin-bottom:16px}
+.vs h3{font:400 30px/1 var(--serif);margin-bottom:16px}
 .vs ul{list-style:none;display:grid;gap:13px}
 .vs li{display:grid;grid-template-columns:24px 1fr;gap:10px;font-size:15.5px;line-height:1.45}
 .vs .a li{color:var(--ink2)}
@@ -101,7 +101,7 @@ h2{font:400 clamp(36px,4.4vw,56px)/1 var(--serif);text-transform:lowercase;lette
 .feat{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .f{background:var(--paper);border-radius:24px;padding:24px;box-shadow:var(--sh)}
 .f .ic{width:48px;height:48px;border-radius:14px;background:var(--sage);display:grid;place-items:center;margin-bottom:16px}
-.f h3{font:400 26px/1.05 var(--serif);text-transform:lowercase;margin-bottom:8px}
+.f h3{font:400 26px/1.05 var(--serif);margin-bottom:8px}
 .f p{font-size:14.5px;color:var(--ink2)}
 .mock{margin-top:16px;background:var(--ink);border-radius:26px;padding:18px;display:grid;gap:10px}
 .mrow{background:#f4f1ea;border-radius:16px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
@@ -117,7 +117,7 @@ h2{font:400 clamp(36px,4.4vw,56px)/1 var(--serif);text-transform:lowercase;lette
 .pilot h3{font-size:17px;margin-bottom:6px}
 .pilot p{font-size:14.5px;color:var(--ink2)}
 .close{margin-top:22px;background:var(--ink);color:#f4f1ea;border-radius:30px;padding:34px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
-.close h3{font:400 clamp(30px,3.6vw,44px)/1.02 var(--serif);text-transform:lowercase}
+.close h3{font:400 clamp(30px,3.6vw,44px)/1.02 var(--serif)}
 .close p{color:rgba(244,241,234,.75);margin-top:8px;font-size:15.5px}
 footer{padding:60px 0 50px;color:var(--mut);font-size:13.5px}
 footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
@@ -142,13 +142,13 @@ footer b{color:var(--ink)}
 <header class="hero"><div class="wrap">
   <div>
     <span class="k">Lista de espera virtual</span>
-    <h1>walk ins only, <em>sin la fila en la banqueta</em></h1>
+    <h1>Walk ins only, <em>sin la fila en la banqueta</em></h1>
     <p class="lead">Tus clientes se anotan con un QR en la entrada, ven su turno en vivo y les avisamos cuando su mesa está lista. El equipo maneja toda la lista desde un celular.</p>
     <div class="cta"><a class="btn btn-ink" href="#probar">Pruébala ahora</a><a class="btn btn-ghost" href="#numeros">Lo que se recupera</a></div>
     <div class="ticks">
       <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2d7a4b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Sin app que descargar</span>
       <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2d7a4b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Sigue siendo walk ins only</span>
-      <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2d7a4b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Lista en un día</span>
+      <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2d7a4b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Aviso al celular aunque cierren la página</span>
     </div>
   </div>
   <div class="stage">
@@ -156,7 +156,7 @@ footer b{color:var(--ink)}
     <span class="cap">Foto: @higuera_mx</span>
     <div class="phone" aria-hidden="true"><div class="scr">
       <img src="img/logo-dark.png" alt="">
-      <div class="tk"><small>tu turno</small><b>H-014</b></div>
+      <div class="tk"><small>Tu turno</small><b>H-014</b></div>
       <div class="row"><div><strong id="ph1">3</strong><span>grupos antes que tú</span></div><div><strong id="ph2">~18</strong><span>min aprox.</span></div></div>
       <div class="ok">Te avisamos cuando tu mesa esté lista</div>
     </div></div>
@@ -166,12 +166,12 @@ footer b{color:var(--ink)}
 <section class="try" id="probar"><div class="wrap">
   <div>
     <span class="k">Pruébala aquí mismo</span>
-    <h2 style="margin:12px 0 14px">anótate como cliente y <em>yo te llamo a la mesa</em></h2>
+    <h2 style="margin:12px 0 14px">Anótate como cliente y <em>yo te llamo a la mesa</em></h2>
     <p>No es una maqueta: es la lista funcionando. Lo que hagas en tu celular aparece al instante en el panel del equipo.</p>
     <div class="steps3">
       <div><b>1</b><p><strong>Escanea el código</strong><span>Con la cámara de tu celular, como lo haría un cliente en la entrada.</span></p></div>
       <div><b>2</b><p><strong>Anótate en la lista</strong><span>Tu nombre, cuántos son y dónde prefieren. Ves tu turno y la espera en vivo.</span></p></div>
-      <div><b>3</b><p><strong>Te llamo desde el panel</strong><span>Toco "Llamar mesa" y a tu celular le llega el aviso con sonido y vibración.</span></p></div>
+      <div><b>3</b><p><strong>Te llamo desde el panel</strong><span>Toco «Llamar mesa» y te llega la notificación con sonido y vibración, aunque hayas cerrado la página.</span></p></div>
     </div>
   </div>
   <div class="qrcard">
@@ -184,18 +184,18 @@ footer b{color:var(--ink)}
 </div></section>
 
 <section class="sec"><div class="wrap">
-  <div class="sh"><span class="k">Un fin de semana</span><h2>la misma fila, <em>vivida de otra forma</em></h2><p>Higuera sigue sin reservaciones. Lo que cambia es dónde y cómo espera la gente.</p></div>
+  <div class="sh"><span class="k">Un fin de semana</span><h2>La misma fila, <em>vivida de otra forma</em></h2><p>Higuera sigue sin reservaciones. Lo que cambia es dónde y cómo espera la gente.</p></div>
   <div class="vs">
-    <div class="col a"><h3>hoy</h3><ul>
+    <div class="col a"><h3>Hoy</h3><ul>
       <li><span>—</span>La gente espera parada afuera sin saber cuánto falta.</li>
       <li><span>—</span>Alguien del equipo lleva la lista en papel o de memoria y contesta "¿cuánto falta?" una y otra vez.</li>
       <li><span>—</span>Quien ve la fila desde el coche se sigue de largo, y nadie sabe cuántos fueron.</li>
       <li><span>—</span>Al final del día no queda registro de cuánta gente llegó ni a qué hora.</li>
     </ul></div>
-    <div class="col b"><h3>con la lista virtual</h3><ul>
+    <div class="col b"><h3>Con la lista virtual</h3><ul>
       <li><span>+</span>Se anotan con un QR y esperan donde quieran: un café en la barra, una vuelta por Tampiquito.</li>
       <li><span>+</span>El turno y la espera se ven en vivo en su celular; nadie tiene que preguntar.</li>
-      <li><span>+</span>El host llama la mesa con un toque y, si hace falta, les escribe por WhatsApp.</li>
+      <li><span>+</span>El equipo llama la mesa con un toque: les llega una notificación al celular y, si hace falta, un WhatsApp ya escrito.</li>
       <li><span>+</span>Cada día queda el resumen: cuántos se anotaron, espera promedio, hora más llena.</li>
     </ul></div>
   </div>
@@ -208,7 +208,7 @@ footer b{color:var(--ink)}
 </div></section>
 
 <section class="sec" id="numeros"><div class="wrap">
-  <div class="sh"><span class="k">Los números</span><h2>lo que se va <em>caminando</em> cada mes</h2><p>Mueve los valores con lo que ves un sábado o domingo en la entrada. Durante la prueba lo medimos con datos reales.</p></div>
+  <div class="sh"><span class="k">Los números</span><h2>Lo que se va <em>caminando</em> cada mes</h2><p>Mueve los valores con lo que ves un sábado o domingo en la entrada. Durante la prueba lo medimos con datos reales.</p></div>
   <div class="calc">
     <div class="inputs">
       <div class="rng"><label for="r1">Grupos que se van sin entrar, por hora llena <output id="o1">3</output></label><input type="range" id="r1" min="0" max="15" value="3"><small>Los que ven la fila y se siguen de largo.</small></div>
@@ -226,11 +226,11 @@ footer b{color:var(--ink)}
 </div></section>
 
 <section class="sec"><div class="wrap">
-  <div class="sh"><span class="k">Para el equipo</span><h2>todo en <em>un celular</em> en la entrada</h2><p>Quien recibe en la puerta no necesita capacitación: ve la lista, llama la mesa y la marca como sentada.</p></div>
+  <div class="sh"><span class="k">Para el equipo</span><h2>Todo en <em>un celular</em> en la entrada</h2><p>Quien recibe en la puerta no necesita capacitación: ve la lista, llama la mesa y la marca como sentada. La lista se cierra sola antes de la hora de cierre y marca en rojo a quien pasó la tolerancia.</p></div>
   <div class="feat">
-    <div class="f"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2e3527" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M10 18h4"/></svg></div><h3>panel en vivo</h3><p>Los que se anotan con el QR aparecen al instante, con sonido. También se puede anotar a alguien en la puerta.</p></div>
-    <div class="f"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2e3527" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 21l2.1-5.6A8.4 8.4 0 1 1 21 11.5z"/></svg></div><h3>aviso en un toque</h3><p>"Llamar mesa" le avisa en su celular. Si dejó WhatsApp, el mensaje ya sale escrito para mandarlo.</p></div>
-    <div class="f"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2e3527" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div><h3>resumen y clientes</h3><p>Cuántos se anotaron, espera promedio y hora más llena. Y una lista de clientes que aceptaron recibir novedades de Higuera.</p></div>
+    <div class="f"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2e3527" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M10 18h4"/></svg></div><h3>Panel en vivo</h3><p>Los que se anotan con el QR aparecen al instante, con sonido. También se puede anotar a alguien en la puerta.</p></div>
+    <div class="f"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2e3527" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 21l2.1-5.6A8.4 8.4 0 1 1 21 11.5z"/></svg></div><h3>Aviso en un toque</h3><p>«Llamar mesa» le manda una notificación a su celular aunque haya cerrado la página, y al siguiente le avisa que ya casi. Si dejó WhatsApp, el mensaje ya sale escrito.</p></div>
+    <div class="f"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2e3527" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div><h3>Resumen y clientes</h3><p>Cuántos se anotaron, espera promedio y hora más llena. Y una lista de clientes que aceptaron recibir novedades de Higuera.</p></div>
   </div>
   <div class="mock" aria-hidden="true">
     <div class="mrow c"><div class="p">1</div><div><b>Mariana · H-012</b><small>2 personas · Terraza · llamado hace 1:24 · va en camino</small></div><div style="display:flex;gap:6px"><span class="bt g">Sentar</span><span class="bt w">WhatsApp</span></div></div>
@@ -240,14 +240,15 @@ footer b{color:var(--ink)}
 </div></section>
 
 <section class="sec"><div class="wrap">
-  <div class="sh"><span class="k">Y de paso</span><h2>una página que <em>sí vende la mesa</em></h2><p>Su sitio actual muestra el menú como una sola imagen de fotos pequeñas, sin nombres ni precios. Esta versión integra la lista de espera desde el inicio.</p></div>
+  <div class="sh"><span class="k">Y de paso</span><h2>Una página que <em>sí vende la mesa</em></h2><p>Su sitio actual muestra el menú como una sola imagen de fotos pequeñas, sin nombres ni precios. Esta versión integra la lista de espera desde el inicio.</p></div>
   <div class="vs">
-    <div class="col a"><h3>la página de hoy</h3><ul>
+    <div class="col a"><h3>La página de hoy</h3><ul>
       <li><span>—</span>"menu - 2026" es una imagen de miniaturas de diciembre de 2024: en el celular no se lee y Google no la entiende.</li>
       <li><span>—</span>Nada dice cuánto se espera ni que pueden anotarse antes de llegar.</li>
       <li><span>—</span>"order here" son solo dos logotipos; el horario se repite en cada página.</li>
     </ul></div>
-    <div class="col b"><h3>la propuesta</h3><ul>
+    <div class="col b"><h3>La propuesta</h3><ul>
+      <li><span>+</span>Páginas separadas: Inicio, Menú, La casa, Lista de espera y Visítanos, en español e inglés.</li>
       <li><span>+</span>Menú en texto, por categorías, que se lee en el celular y aparece en Google.</li>
       <li><span>+</span>"Abierto ahora" y la espera en vivo arriba, con botón para anotarse en la lista.</li>
       <li><span>+</span>Horario, cómo llegar, Rappi y Uber Eats en un solo lugar, con sus fotos.</li>
@@ -257,14 +258,14 @@ footer b{color:var(--ink)}
 </div></section>
 
 <section class="sec"><div class="wrap">
-  <div class="sh"><span class="k">La prueba</span><h2>dos fines de semana, <em>sin costo</em></h2><p>Antes de hablar de dinero, que los números de Higuera digan si sirve.</p></div>
+  <div class="sh"><span class="k">La prueba</span><h2>Dos fines de semana, <em>sin costo</em></h2><p>Antes de hablar de dinero, que los números de Higuera digan si sirve.</p></div>
   <div class="pilot">
     <div><h3>Ponemos el QR en la entrada</h3><p>Te llevo el letrero impreso con el código y dejo la lista lista para el equipo, con el PIN que ustedes elijan.</p></div>
     <div><h3>El equipo la usa sábado y domingo</h3><p>Desde un celular o tablet en la puerta. Estoy disponible por WhatsApp esos días por cualquier detalle.</p></div>
     <div><h3>Te enseño los números</h3><p>Cuántos se anotaron, cuánto esperaron, a qué hora se llenó y cuántos dejaron su WhatsApp. Con eso decides.</p></div>
   </div>
   <div class="close">
-    <div><h3>¿arrancamos este fin de semana?</h3><p>Juan Manuel Galván · Code Nova · Monterrey</p></div>
+    <div><h3>¿Arrancamos este fin de semana?</h3><p>Juan Manuel Galván · Code Nova · Monterrey</p></div>
     <a class="btn btn-terra" id="wa" href="#" target="_blank" rel="noopener">Agendar la prueba por WhatsApp</a>
   </div>
 </div></section>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lista de espera · Higuera, Tampiquito</title>
+<meta name="description" content="Higuera no toma reservaciones. Anótate en la lista de espera desde tu celular, mira tu turno en vivo y te avisamos cuando tu mesa esté lista.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1c1b17">
+<link rel="icon" href="/higuera/img/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/higuera/hg.css">
+<link rel="stylesheet" href="/higuera/sitio/site.css">
+<style>
+.wl{background:var(--olive);color:#f4f1ea;padding:110px 0;position:relative;overflow:hidden}
+.wl::before{content:"";position:absolute;right:-240px;top:-240px;width:680px;height:680px;border-radius:50%;background:radial-gradient(circle,rgba(239,195,161,.13),transparent 70%)}
+.wl .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:center;position:relative}
+.wl .k{color:var(--peach)}.wl h2 em{color:var(--peach)}
+.wl .lede{color:rgba(244,241,234,.78)}
+.wl .st{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:800;background:rgba(244,241,234,.1);padding:7px 12px;border-radius:99px;margin-bottom:6px}
+.wl .st.cl .dot{background:#e0735e;animation:none}
+.wl .stats{display:flex;gap:12px;margin:28px 0}
+.wl .stats div{flex:1;background:rgba(244,241,234,.08);border:1px solid rgba(244,241,234,.12);border-radius:20px;padding:18px}
+.wl .stats b{display:block;font:400 56px/1 var(--serif)}
+.wl .stats span{font-size:13px;opacity:.75;font-weight:600}
+.wl .q{display:flex;gap:6px;flex-wrap:wrap;min-height:30px;margin-bottom:26px}
+.wl .q i{width:32px;height:32px;border-radius:50%;background:rgba(244,241,234,.12);font-style:normal;font-size:12px;font-weight:800;display:grid;place-items:center}
+.wl .q i.c{background:var(--terra);color:#fff}
+.wl .q em{font-style:normal;font-size:13.5px;opacity:.7;align-self:center}
+.phone{width:300px;margin:0 auto;background:#0f0f0d;border-radius:46px;padding:12px;box-shadow:0 60px 100px -50px rgba(0,0,0,.9),inset 0 0 0 1.5px rgba(255,255,255,.08)}
+.screen{position:relative;height:590px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--ink)}
+.screen .sc{position:absolute;inset:0;padding:22px 18px;opacity:0;transform:translateX(30px);transition:opacity .6s var(--ease),transform .6s var(--ease);display:flex;flex-direction:column}
+.screen .sc.on{opacity:1;transform:none}
+.screen .sc.out{opacity:0;transform:translateX(-30px)}
+.screen .lg{height:20px;width:auto;margin-bottom:16px;align-self:flex-start}
+.screen .fi{background:var(--paper);border-radius:14px;padding:12px 14px;box-shadow:inset 0 0 0 1.5px var(--line);font-size:14px;margin-top:8px}
+.screen .fi small{display:block;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.screen .tt{font:400 30px/1 var(--serif);margin:6px 0 12px}
+.screen .bt{margin-top:auto;height:48px;border-radius:999px;background:var(--ink);color:#f4f1ea;font-weight:800;font-size:14px;display:grid;place-items:center}
+.screen .tk{background:var(--olive);color:#f4f1ea;border-radius:20px;padding:16px}
+.screen .tk small{font-size:9.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;opacity:.6}
+.screen .tk b{display:block;font:600 34px var(--mono);margin:4px 0}
+.screen .two{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.screen .two div{background:var(--paper);border-radius:14px;padding:12px}
+.screen .two b{font:400 38px/1 var(--serif);display:block}
+.screen .two span{font-size:11px;color:var(--mut);font-weight:600}
+.screen .nt{margin-top:10px;background:var(--ink);color:#f4f1ea;border-radius:14px;padding:12px;font-size:12px;line-height:1.4}
+.screen .nt b{display:block;font-size:13px}
+.screen .sc.lock{background:linear-gradient(160deg,#3a3f33,#1c1b17);color:#f4f1ea;align-items:center}
+.screen .clock{font:300 64px/1 var(--sans);margin-top:40px;letter-spacing:-.02em}
+.screen .date{font-size:13px;opacity:.75;margin-top:6px}
+.screen .push{margin-top:auto;margin-bottom:30px;width:100%;background:rgba(244,241,234,.9);color:var(--ink);border-radius:18px;padding:12px;display:flex;gap:10px;align-items:flex-start}
+.screen .sc.on .push{animation:drop .7s var(--ease) .4s both}
+@keyframes drop{from{transform:translateY(-20px);opacity:0}}
+.screen .push img{width:34px;height:34px;border-radius:9px;flex:none}
+.screen .push b{display:block;font-size:13px}
+.screen .push span{font-size:12px;color:var(--ink2);line-height:1.35;display:block}
+.screen .sc.call{background:var(--terra);color:#fff;text-align:center;justify-content:center}
+.screen .sc.call h4{font:400 44px/.95 var(--serif);margin:16px 0 10px;font-weight:400}
+.screen .sc.call .code{font:600 22px var(--mono);background:rgba(255,255,255,.18);border-radius:12px;padding:8px 14px;display:inline-block}
+.screen .sc.call .bt{background:#fff;color:var(--terra-d);margin-top:28px}
+.screen .ring{width:70px;height:70px;border-radius:50%;margin:0 auto;background:rgba(255,255,255,.2);animation:ring2 1.4s infinite}
+@keyframes ring2{0%{box-shadow:0 0 0 0 rgba(255,255,255,.45)}80%{box-shadow:0 0 0 22px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
+.how{padding:130px 0 0}
+.hgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:34px}
+.hc{background:var(--paper);border-radius:26px;padding:26px;box-shadow:var(--sh)}
+.hc i{font:600 13px var(--mono);font-style:normal;color:var(--terra)}
+.hc b{display:block;font:400 30px/1.05 var(--serif);margin:14px 0 10px}
+.hc p{font-size:14.5px;color:var(--ink2)}
+.hc svg{margin-top:18px;color:var(--olive2)}
+.faq{padding:130px 0 0}
+.faq .wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:60px;align-items:start}
+.faq .side{position:sticky;top:120px}
+.qa{border-top:1px solid var(--line)}
+.qa details{border-bottom:1px solid var(--line)}
+.qa summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:24px 0;font:400 28px/1.15 var(--serif)}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary i{width:36px;height:36px;border-radius:50%;flex:none;box-shadow:inset 0 0 0 1.5px var(--line2);position:relative;transition:transform .35s var(--ease),background .3s}
+.qa summary i::before,.qa summary i::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:1.5px;background:var(--ink);transform:translate(-50%,-50%)}
+.qa summary i::after{transform:translate(-50%,-50%) rotate(90deg)}
+.qa details[open] summary i{transform:rotate(45deg);background:var(--sage)}
+.qa .ans{padding:0 50px 24px 0;color:var(--ink2);font-size:16px;line-height:1.65}
+.cta2{padding:120px 0 0}
+.cta2 .box2{background:var(--ink);color:#f4f1ea;border-radius:36px;padding:60px 44px;text-align:center;position:relative;overflow:hidden}
+.cta2 h3{font:400 clamp(44px,6vw,86px)/.95 var(--serif)}
+.cta2 h3 em{font-style:italic;color:var(--peach)}
+.cta2 p{opacity:.8;margin:14px auto 26px;max-width:460px}
+@media (max-width:960px){
+  .wl{padding:76px 0}
+  .wl .wrap,.faq .wrap{grid-template-columns:1fr;gap:40px}
+  .faq .side{position:static}
+  .how,.faq{padding-top:90px}
+  .hgrid{grid-template-columns:1fr 1fr;gap:12px}.hc{padding:20px}.hc b{font-size:24px}
+  .qa summary{font-size:23px}
+  .qa .ans{padding-right:0}
+  .cta2{padding-top:90px}.cta2 .box2{padding:44px 24px}
+}
+@media (max-width:520px){.hgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-page="lista">
+<header class="top" id="top"></header>
+
+<section class="phero">
+  <div class="bg" style="background-image:url(/higuera/img/comandas.webp)" role="img" aria-label="Comandas en la cocina de Higuera"></div>
+  <div class="grain"></div>
+  <div class="wrap">
+    <div class="crumb"><a href="/higuera/sitio/">Higuera</a><span>/</span><span data-i="l.crumb">Lista de espera</span></div>
+    <h1><span class="ln"><span data-i="l.h1a">Sin reservas,</span></span><span class="ln"><span><em data-i="l.h1b">pero sin fila</em></span></span></h1>
+    <p data-i="l.p">Higuera es walk ins only. Anótate desde tu celular y espera donde quieras, no en la banqueta.</p>
+  </div>
+</section>
+
+<section class="wl" id="ahora"><div class="wrap">
+  <div>
+    <div class="st rv" id="lst"><span class="dot"></span><span>…</span></div>
+    <h2 class="rv d1" data-i="wl.h">La lista, <em>en vivo</em></h2>
+    <p class="lede rv d2" data-i="wl.p">Esto es lo que hay ahorita en Higuera. Se actualiza solo cada vez que alguien se anota o se sienta.</p>
+    <div class="stats rv d2"><div><b id="wW">–</b><span data-i="c.groups">grupos esperando</span></div><div><b id="wE">–</b><span data-i="c.mins">min aprox.</span></div></div>
+    <div class="q rv d3" id="wQ"></div>
+    <a class="btn btn-light rv d3" href="/higuera/fila/" data-i="c.joinList">Anotarme en la lista</a>
+  </div>
+  <div class="phone rv d2" aria-hidden="true"><div class="screen" id="screen">
+    <div class="sc on"><img class="lg" src="/higuera/img/logo-dark.png" alt=""><div class="tt" data-i="ph.t1">Anótate en la lista</div><div class="fi"><small data-i="ph.name">Tu nombre</small>Mariana</div><div class="fi"><small data-i="ph.size">Personas</small>2</div><div class="fi"><small data-i="ph.zone">Zona</small><span data-i="ph.zonev">Terraza</span></div><div class="bt" data-i="ph.go">Anotarme</div></div>
+    <div class="sc"><img class="lg" src="/higuera/img/logo-dark.png" alt=""><div class="tk"><small data-i="ph.turn">Tu turno</small><b>H-014</b><span style="font-size:13px;opacity:.85" data-i="ph.hi">Hola, Mariana. Ya estás en la lista.</span></div><div class="two"><div><b>3</b><span data-i="ph.ahead">grupos antes</span></div><div><b>~18</b><span data-i="ph.min">min aprox.</span></div></div><div class="nt"><b data-i="ph.nt">Aviso activado</b><span data-i="ph.nts">Te llega una notificación aunque cierres la página.</span></div></div>
+    <div class="sc lock"><div class="clock">10:42</div><div class="date" data-i="ph.date">Sábado</div><div class="push"><img src="/higuera/img/icon-192.png" alt=""><div><b data-i="ph.pt">Tu mesa está lista, Mariana</b><span data-i="ph.pb">Te esperamos en la entrada de Higuera en los próximos 10 minutos. Tu turno: H-014.</span></div></div></div>
+    <div class="sc call"><div class="ring"></div><h4 data-i="ph.ready">Tu mesa está lista</h4><div><span class="code">H-014</span></div><div class="bt" data-i="ph.otw">Voy en camino</div></div>
+  </div></div>
+</div></section>
+
+<section class="how"><div class="wrap">
+  <span class="k rv" data-i="h.k">Cómo funciona</span>
+  <h2 class="rv d1" data-i="h.h">Cuatro pasos, <em>cero fila</em></h2>
+  <div class="hgrid">
+    <div class="hc rv"><i>01</i><b data-i="h.1">Anótate</b><p data-i="h.1p">Con el QR de la entrada o desde esta página. Solo tu nombre y cuántos son.</p><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3M21 14v7h-7"/></svg></div>
+    <div class="hc rv d1"><i>02</i><b data-i="h.2">Activa el aviso</b><p data-i="h.2p">Te llega una notificación aunque cierres la página o bloquees el celular.</p><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></div>
+    <div class="hc rv d2"><i>03</i><b data-i="h.3">Date una vuelta</b><p data-i="h.3p">Mira tu turno en vivo mientras recorres Tampiquito.</p><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s8-6.2 8-12a8 8 0 1 0-16 0c0 5.8 8 12 8 12z"/><circle cx="12" cy="10" r="2.6"/></svg></div>
+    <div class="hc rv d3"><i>04</i><b data-i="h.4">Tu mesa está lista</b><p data-i="h.4p" id="h4p">Te avisamos y tienes unos minutos para llegar a la entrada.</p><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 18h20M4 18a8 8 0 0 1 16 0M12 10V7M10 7h4"/></svg></div>
+  </div>
+</div></section>
+
+<section class="faq"><div class="wrap">
+  <div class="side"><span class="k rv" data-i="f.k">Antes de venir</span><h2 class="rv d1" data-i="f.h">Preguntas <em>frecuentes</em></h2></div>
+  <div class="qa rv" id="qa"></div>
+</div></section>
+
+<section class="cta2"><div class="wrap">
+  <div class="box2 rv">
+    <h3 data-i="cta.h">¿Ya vienes <em>en camino?</em></h3>
+    <p data-i="cta.p">Anótate ahora y llega justo cuando tu mesa esté lista.</p>
+    <a class="btn btn-terra" href="/higuera/fila/" data-i="c.joinList">Anotarme en la lista</a>
+  </div>
+</div></section>
+
+<a class="nextp" href="/higuera/sitio/visitanos/"><div class="wrap"><div><small data-i="np.k">Siguiente</small><b data-i="np.b">Visítanos</b></div><span class="arr"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></a>
+<footer id="foot"></footer>
+
+<script>
+window.T_EN = {
+  "l.crumb": "Waitlist", "l.h1a": "No reservations,", "l.h1b": "no line", "l.p": "Higuera is walk ins only. Join from your phone and wait wherever you like, not on the sidewalk.",
+  "wl.h": "The list, <em>live</em>", "wl.p": "This is what's happening at Higuera right now. It updates every time someone joins or gets seated.",
+  "ph.t1": "Join the waitlist", "ph.name": "Your name", "ph.size": "Party", "ph.zone": "Area", "ph.zonev": "Terrace", "ph.go": "Join", "ph.turn": "Your spot", "ph.hi": "Hi, Mariana. You're on the list.", "ph.ahead": "parties ahead", "ph.min": "min approx.", "ph.nt": "Alert on", "ph.nts": "You'll get a notification even if you close the page.", "ph.date": "Saturday", "ph.pt": "Your table is ready, Mariana", "ph.pb": "We'll be waiting at Higuera's entrance for the next 10 minutes. Your spot: H-014.", "ph.ready": "Your table is ready", "ph.otw": "On my way",
+  "h.k": "How it works", "h.h": "Four steps, <em>zero line</em>", "h.1": "Join", "h.1p": "With the QR at the door or from this page. Just your name and party size.", "h.2": "Turn on the alert", "h.2p": "You'll get a notification even if you close the page or lock your phone.", "h.3": "Take a walk", "h.3p": "Watch your spot live while you explore Tampiquito.", "h.4": "Your table is ready", "h.4p": "We'll let you know and you'll have a few minutes to get to the entrance.",
+  "f.k": "Before you come", "f.h": "Frequently <em>asked</em>", "cta.h": "Already <em>on your way?</em>", "cta.p": "Join now and arrive right when your table is ready.",
+  "np.k": "Next", "np.b": "Visit us",
+};
+</script>
+<script src="/higuera/fila.js"></script>
+<script src="/higuera/sitio/site.js"></script>
+<script>
+(() => {
+const { L, esc, onLang, onLive } = SITE;
+const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
+let D = null;
+function faq() {
+  const tol = (D && D.tolerance) || 10, max = (D && D.maxSize) || 10, cut = (D && D.cutoffTxt) || "";
+  const Q = [
+    [L("¿Hacen reservaciones?", "Do you take reservations?"), L("No. Higuera es walk ins only: las mesas se dan por orden de llegada. La lista de espera es para que ese orden se respete sin hacer fila en la banqueta.", "No. Higuera is walk ins only: tables go first come, first served. The waitlist keeps that order without a line on the sidewalk.")],
+    [L("¿Desde cuándo me puedo anotar?", "When can I join?"), L(`La lista en línea abre media hora antes de que abra la cocina${cut ? ` y se cierra a las ${cut}` : ""}. Lo ideal es anotarte cuando ya vengas en camino.`, `The online list opens half an hour before the kitchen opens${cut ? ` and closes at ${cut}` : ""}. Ideally, join when you're already on your way.`)],
+    [L("¿Cuánto tiempo tengo cuando me llaman?", "How long do I have when called?"), L(`Tienes ${tol} minutos para llegar a la entrada. En tu pantalla verás la cuenta regresiva y puedes avisar con un botón que ya vas en camino.`, `You have ${tol} minutes to get to the entrance. You'll see a countdown and can tap a button to let the team know you're on your way.`)],
+    [L("¿Cómo me avisan?", "How will I be notified?"), L("Al anotarte puedes activar el aviso: te llega una notificación cuando seas el siguiente y cuando tu mesa esté lista, aunque cierres la página. En iPhone hay que agregar la página a la pantalla de inicio para recibirla. Si dejas tu WhatsApp, el equipo también te puede escribir.", "When you join you can turn on the alert: you'll get a notification when you're next and when your table is ready, even if you close the page. On iPhone, add the page to your home screen to receive it. If you leave your WhatsApp, the team can also message you.")],
+    [L("Somos un grupo grande", "We're a large group"), L(`La lista en línea es para grupos de hasta ${max} personas. Si son más, pregunta directamente en la entrada.`, `The online list is for parties of up to ${max}. For larger groups, ask at the entrance.`)],
+    [L("¿Y si ya no podemos esperar?", "What if we can't wait anymore?"), L("En tu turno hay un botón para salir de la lista. Así el siguiente avanza y nadie te espera.", "Your spot has a button to leave the list, so the next party moves up and no one waits for you.")],
+    [L("¿Qué hacen con mis datos?", "What happens to my data?"), L(`Solo los ve el equipo de Higuera y se borran al terminar el día. Si aceptas recibir novedades, tu WhatsApp se guarda para avisarte de temporadas. <a href="/higuera/sitio/privacidad/">Aviso de privacidad</a>.`, `Only Higuera's team sees it and it's deleted at the end of the day. If you opt in to updates, your WhatsApp is kept to tell you about seasonal dishes. <a href="/higuera/sitio/privacidad/">Privacy notice</a>.`)],
+  ];
+  const open = $$("#qa details").map((d) => d.open);
+  $("#qa").innerHTML = Q.map(([q, a], i) => `<details ${open[i] || (!open.length && i === 0) ? "open" : ""}><summary>${q}<i></i></summary><div class="ans">${a}</div></details>`).join("");
+  $("#h4p").textContent = L(`Te avisamos y tienes ${tol} minutos para llegar a la entrada.`, `We'll let you know and you'll have ${tol} minutes to get to the entrance.`);
+}
+function paint() {
+  if (!D) return;
+  const w = D.waiting, e = D.estWait;
+  $("#wW").textContent = w; $("#wE").textContent = w ? "~" + e : "0";
+  $("#wQ").innerHTML = (D.queue || []).slice(0, 12).map((x) => `<i class="${x.status === "called" ? "c" : ""}">${esc(x.initial || "·")}</i>`).join("") + (w ? "" : `<em>${L("Nadie esperando en este momento", "No one waiting right now")}</em>`);
+  const st = $("#lst"); st.classList.toggle("cl", !D.open);
+  st.innerHTML = `<span class="dot"></span><span>${D.open ? L("Lista abierta", "List open") : D.reason === "hours" ? L("Lista cerrada · abre " + D.next, "List closed") : L("Lista en pausa", "List paused")}</span>`;
+}
+faq(); onLang(() => { faq(); paint(); });
+onLive((d) => { const first = !D; D = d; paint(); if (first) faq(); });
+const scr = $$("#screen .sc"); let si = 0;
+setInterval(() => { const prev = si; scr[prev].classList.remove("on"); scr[prev].classList.add("out"); si = (si + 1) % scr.length; setTimeout(() => scr[prev].classList.remove("out"), 700); scr[si].classList.add("on"); }, 3000);
+})();
+</script>
+</body>
+</html>
