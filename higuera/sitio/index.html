@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Higuera · Cocina y sobremesa en Tampiquito, San Pedro</title>
+<meta name="description" content="Desayunos y comida en Barrio Tampiquito, San Pedro Garza García. Lunes a viernes de 8 a 4, sábado y domingo de 8 a 5. Walk ins only: anótate en la lista de espera desde tu celular.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#f4f1ea">
+<meta property="og:title" content="Higuera · Cocina y sobremesa">
+<meta property="og:description" content="Desayunos y comida en Tampiquito, San Pedro. Walk ins only.">
+<meta property="og:image" content="../img/sopa-h.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../hg.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Restaurant","name":"Higuera","alternateName":"Higuera · Cocina y sobremesa","servesCuisine":["Desayunos","Brunch","Café"],"acceptsReservations":false,
+"address":{"@type":"PostalAddress","streetAddress":"Plutarco Elías Calles 419","addressLocality":"San Pedro Garza García","addressRegion":"N.L.","postalCode":"66240","addressCountry":"MX"},
+"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"08:00","closes":"16:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday","Sunday"],"opens":"08:00","closes":"17:00"}],
+"sameAs":["https://www.instagram.com/higuera_mx/"]}
+</script>
+<style>
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+header.top{position:fixed;top:0;left:0;right:0;z-index:40;transition:background .3s,box-shadow .3s}
+header.top.solid{background:rgba(244,241,234,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--line)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:70px;gap:18px}
+header.top .logo{height:32px;transition:filter .3s}
+header.top:not(.solid) .logo{filter:invert(1) brightness(2)}
+header.top nav{display:flex;gap:26px;font-size:14px;font-weight:700;text-transform:lowercase}
+header.top nav a{text-decoration:none;color:inherit;opacity:.85}
+header.top:not(.solid) nav a{color:#f4f1ea}
+.waitpill{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 14px;border-radius:999px;background:var(--ink);color:#f4f1ea;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap}
+.waitpill b{background:var(--terra);padding:6px 11px;border-radius:999px}
+/* hero */
+.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;color:#f4f1ea;overflow:hidden;background:#1c1b17}
+.hero img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.78;transform:scale(1.04);animation:slow 18s ease-out forwards}
+@keyframes slow{to{transform:scale(1)}}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(28,27,23,.45) 0%,rgba(28,27,23,0) 30%,rgba(28,27,23,.25) 55%,rgba(28,27,23,.88) 100%)}
+.hero .wrap{position:relative;z-index:1;width:100%;padding-bottom:56px;display:grid;grid-template-columns:1.3fr .7fr;gap:40px;align-items:end}
+.hero .k{font-size:12px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;opacity:.8}
+.hero h1{font:400 clamp(58px,9vw,128px)/.88 var(--serif);text-transform:lowercase;margin:14px 0 18px;letter-spacing:-.02em}
+.hero h1 em{font-style:italic;color:#efc3a1}
+.hero p{font-size:18px;max-width:480px;opacity:.9}
+.status{background:rgba(244,241,234,.96);color:var(--ink);border-radius:26px;padding:20px;box-shadow:0 40px 70px -30px rgba(0,0,0,.7)}
+.status .open{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800}
+.status .open.cl .dot{background:var(--red);animation:none}
+.status .w{display:flex;align-items:baseline;gap:10px;margin:14px 0 4px}
+.status .w b{font:400 54px/1 var(--serif)}
+.status .w span{font-size:14px;color:var(--ink2);font-weight:600}
+.status small{display:block;font-size:12.5px;color:var(--mut)}
+.status .btn{margin-top:16px}
+/* bloques */
+.sec{padding:110px 0 0}
+.k2{font-size:11.5px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--terra)}
+h2{font:400 clamp(40px,5vw,66px)/.98 var(--serif);text-transform:lowercase;letter-spacing:-.015em;margin:12px 0 16px}
+h2 em{font-style:italic;color:var(--terra)}
+.lede{font-size:17.5px;color:var(--ink2);max-width:560px}
+.intro{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.intro .film{border-radius:28px;aspect-ratio:4/3.2}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px}
+.facts div{background:var(--paper);border-radius:18px;padding:16px;box-shadow:var(--sh)}
+.facts b{display:block;font:400 26px/1.05 var(--serif);text-transform:lowercase}
+.facts span{font-size:13px;color:var(--mut);font-weight:600}
+/* menu */
+.menu-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.cats{display:flex;gap:6px;background:var(--paper);padding:5px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line);flex-wrap:wrap}
+.cats button{padding:9px 16px;border-radius:999px;font-weight:700;font-size:14px;color:var(--ink2);text-transform:lowercase}
+.cats button.on{background:var(--ink);color:var(--paper)}
+.menu-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;margin-top:30px;align-items:start}
+.items{display:grid;grid-template-columns:1fr 1fr;gap:0 34px}
+.it{padding:16px 0;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:baseline}
+.it b{font:400 24px/1.15 var(--serif);text-transform:lowercase;flex:1}
+.it span{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--olive2);background:var(--sage);padding:3px 8px;border-radius:99px;white-space:nowrap}
+.menu-side{position:sticky;top:96px}
+.menu-side .film{border-radius:26px;aspect-ratio:4/5}
+.menu-side p{font-size:13px;color:var(--mut);margin-top:10px}
+.menu-note{margin-top:22px;font-size:13.5px;color:var(--mut)}
+/* lista de espera */
+.wl{margin-top:110px;background:var(--olive);color:#f4f1ea;padding:90px 0;position:relative;overflow:hidden}
+.wl::before{content:"";position:absolute;left:-180px;bottom:-220px;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(239,195,161,.14),transparent 70%)}
+.wl .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;position:relative}
+.wl .k2{color:#efc3a1}.wl h2 em{color:#efc3a1}
+.wl p{color:rgba(244,241,234,.78);font-size:17px}
+.wl ol{list-style:none;counter-reset:s;display:grid;gap:14px;margin-top:26px}
+.wl li{counter-increment:s;display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:center;font-size:16px}
+.wl li::before{content:counter(s);width:44px;height:44px;border-radius:50%;background:rgba(244,241,234,.1);display:grid;place-items:center;font:400 22px var(--serif)}
+.wlcard{background:#f4f1ea;color:var(--ink);border-radius:30px;padding:28px;box-shadow:0 40px 80px -40px rgba(0,0,0,.7)}
+.wlcard .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 18px}
+.wlcard .row div{background:var(--paper);border-radius:18px;padding:16px}
+.wlcard .row b{display:block;font:400 48px/1 var(--serif)}
+.wlcard .row span{font-size:13px;color:var(--mut);font-weight:600}
+.wlcard .q{display:flex;gap:6px;flex-wrap:wrap;min-height:30px}
+.wlcard .q i{width:30px;height:30px;border-radius:50%;background:var(--sage);color:var(--olive);font-style:normal;font-size:12px;font-weight:800;display:grid;place-items:center}
+.wlcard .q i.c{background:var(--terra-l);color:var(--terra-d)}
+.wlcard .q em{font-style:normal;font-size:13px;color:var(--mut);align-self:center}
+/* galeria */
+.gal{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:150px;gap:12px;margin-top:30px}
+.gal .film{border-radius:20px}
+.gal .a{grid-column:span 3;grid-row:span 2}.gal .b{grid-column:span 3;grid-row:span 2}
+.gal .c{grid-column:span 2;grid-row:span 2}
+/* visitar */
+.visit{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:var(--paper);border-radius:26px;padding:28px;box-shadow:var(--sh)}
+.card h3{font:400 30px/1 var(--serif);text-transform:lowercase;margin-bottom:16px}
+.hours{width:100%;border-collapse:collapse;font-size:15.5px}
+.hours td{padding:11px 0;border-bottom:1px dashed var(--line)}
+.hours td:last-child{text-align:right;font-weight:700}
+.hours tr.today td{color:var(--terra-d)}
+.order{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+footer{padding:80px 0 46px;margin-top:110px;background:var(--ink);color:rgba(244,241,234,.7);font-size:14px}
+footer .wrap{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:30px}
+footer img{height:40px;filter:invert(1) brightness(2);margin-bottom:12px}
+footer b{color:#f4f1ea;display:block;margin-bottom:8px;font-size:12px;letter-spacing:.16em;text-transform:uppercase}
+footer a{color:#f4f1ea}
+footer .cn{grid-column:1/-1;border-top:1px solid rgba(244,241,234,.12);padding-top:20px;font-size:12px}
+.mbar{display:none}
+@media (max-width:920px){
+  header.top nav{display:none}
+  .hero .wrap{grid-template-columns:1fr;gap:26px;padding-bottom:30px}
+  .hero h1{font-size:64px}
+  .hero p{font-size:16px}
+  .intro,.menu-grid,.wl .wrap,.visit,footer .wrap{grid-template-columns:1fr}
+  .intro{gap:30px}
+  .items{grid-template-columns:1fr}
+  .menu-side{display:none}
+  .facts{grid-template-columns:1fr 1fr 1fr;gap:8px}.facts b{font-size:20px}.facts div{padding:12px}
+  .sec{padding-top:80px}.wl{margin-top:80px;padding:64px 0}
+  .gal{grid-template-columns:1fr 1fr;grid-auto-rows:140px}
+  .gal .a,.gal .b{grid-column:span 2}.gal .c{grid-column:span 1}
+  .waitpill span{display:none}
+  .mbar{display:flex;position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:45;background:var(--ink);color:#f4f1ea;border-radius:999px;padding:7px 7px 7px 18px;align-items:center;gap:10px;box-shadow:0 18px 36px -14px rgba(0,0,0,.55);transform:translateY(140%);transition:transform .35s}
+  .mbar.show{transform:none}
+  .mbar div{flex:1;font-size:13px;line-height:1.25}.mbar div b{display:block;font-size:14.5px}
+  .mbar a{height:44px;padding:0 18px;border-radius:999px;background:var(--terra);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;text-decoration:none}
+  footer{padding-bottom:110px}
+}
+</style>
+</head>
+<body>
+<header class="top" id="top">
+  <div class="wrap">
+    <a href="#inicio"><img class="logo" src="../img/logo-dark.png" alt="Higuera" width="88" height="32"></a>
+    <nav><a href="#menu">menú</a><a href="#lista">lista de espera</a><a href="#visitanos">visítanos</a><a href="#visitanos">ordenar</a></nav>
+    <a class="waitpill" href="../fila/"><span id="pillTxt">Lista de espera</span><b>Anotarme</b></a>
+  </div>
+</header>
+
+<section class="hero" id="inicio">
+  <img class="bg" src="../img/sopa-h.webp" alt="Grilled cheese y sopa de tomate de Higuera">
+  <div class="wrap">
+    <div>
+      <span class="k">Barrio Tampiquito · San Pedro</span>
+      <h1>cocina y <em>sobremesa</em></h1>
+      <p>Desayunos y comida hechos con calma, café de barra y una mesa para quedarse. Walk ins only.</p>
+    </div>
+    <div class="status" aria-live="polite">
+      <div class="open" id="openNow"><span class="dot"></span><span>Revisando horario…</span></div>
+      <div class="w"><b id="hW">–</b><span id="hWl">grupos esperando</span></div>
+      <small id="hE">Te avisamos en tu celular cuando tu mesa esté lista.</small>
+      <a class="btn btn-terra btn-block" href="../fila/">Anotarme en la lista</a>
+    </div>
+  </div>
+</section>
+
+<section class="sec"><div class="wrap intro">
+  <div>
+    <span class="k2">La casa</span>
+    <h2>un lugar para <em>quedarse</em> un rato</h2>
+    <p class="lede">Chilaquiles, waffles, enfrijoladas, sándwiches y la sopa de tomate con grilled cheese que todos piden. Cocina por @sebastian.cocina8 y café de especialidad en barra.</p>
+    <div class="facts">
+      <div><b>8 a 4</b><span>lunes a viernes</span></div>
+      <div><b>8 a 5</b><span>sábado y domingo</span></div>
+      <div><b>walk ins</b><span>lista en línea</span></div>
+    </div>
+  </div>
+  <div class="film"><img src="../img/interior.webp" alt="Interior de Higuera" loading="lazy"></div>
+</div></section>
+
+<section class="sec" id="menu"><div class="wrap">
+  <div class="menu-head">
+    <div><span class="k2">Menú</span><h2>lo que hay <em>en la mesa</em></h2></div>
+    <div class="cats" id="cats"></div>
+  </div>
+  <div class="menu-grid">
+    <div><div class="items" id="items"></div><p class="menu-note">Carta tomada de su menú actual. Los precios se agregan con la carta del restaurante.</p></div>
+    <aside class="menu-side"><div class="film"><img id="mimg" src="../img/chilaquiles.webp" alt="Platillo de Higuera" loading="lazy"></div><p id="mcap">Chilaquiles verdes</p></aside>
+  </div>
+</div></section>
+
+<section class="wl" id="lista"><div class="wrap">
+  <div>
+    <span class="k2">Walk ins only</span>
+    <h2>no tomamos reservas, <em>pero no tienes que hacer fila</em></h2>
+    <p>Anótate desde aquí o con el QR de la entrada. Ve tu turno en vivo y date una vuelta por Tampiquito: te avisamos cuando tu mesa esté lista.</p>
+    <ol><li>Pon tu nombre y cuántos son</li><li>Mira tu turno y la espera en tu celular</li><li>Te avisamos cuando tu mesa esté lista</li></ol>
+  </div>
+  <div class="wlcard">
+    <div style="display:flex;justify-content:space-between;align-items:center"><span class="lab" style="margin:0">Ahora mismo en Higuera</span><span class="dot" id="wdot"></span></div>
+    <div class="row"><div><b id="wW">–</b><span>grupos esperando</span></div><div><b id="wE">–</b><span>min de espera aprox.</span></div></div>
+    <div class="q" id="wQ"></div>
+    <a class="btn btn-ink btn-block" href="../fila/" style="margin-top:18px">Anotarme en la lista</a>
+  </div>
+</div></section>
+
+<section class="sec"><div class="wrap">
+  <span class="k2">Galería</span>
+  <h2>tal cual <em>sale de la cocina</em></h2>
+  <div class="gal">
+    <div class="film a"><img src="../img/chilaquiles.webp" alt="Chilaquiles verdes" loading="lazy"></div>
+    <div class="film b"><img src="../img/shakshouka.webp" alt="Huevos en salsa con pan tostado" loading="lazy"></div>
+    <div class="film c"><img src="../img/barra.webp" alt="La barra de café" loading="lazy"></div>
+    <div class="film c"><img src="../img/enfrijoladas.webp" alt="Enfrijoladas" loading="lazy"></div>
+    <div class="film c"><img src="../img/postre.webp" alt="Postre de temporada" loading="lazy"></div>
+  </div>
+  <p class="menu-note">Fotos: @higuera_mx</p>
+</div></section>
+
+<section class="sec" id="visitanos"><div class="wrap">
+  <span class="k2">Visítanos</span>
+  <h2>plutarco elías calles <em>419</em></h2>
+  <div class="visit">
+    <div class="card">
+      <h3>horario</h3>
+      <table class="hours" id="hours"></table>
+      <p style="font-size:13px;color:var(--mut);margin-top:12px">Festivos: de 8 a 4.</p>
+    </div>
+    <div class="card">
+      <h3>cómo llegar</h3>
+      <p style="color:var(--ink2)">Barrio Tampiquito, 66240 San Pedro Garza García, N.L.</p>
+      <div class="order"><a class="btn btn-ink" href="https://www.google.com/maps/search/?api=1&query=Higuera+Plutarco+El%C3%ADas+Calles+419+Tampiquito+San+Pedro" target="_blank" rel="noopener">Abrir en Maps</a></div>
+      <h3 style="margin-top:26px">a domicilio</h3>
+      <div class="order"><a class="btn btn-ghost" href="https://www.rappi.com.mx/restaurantes/1930063909-cocina-higuera" target="_blank" rel="noopener">Pedir en Rappi</a><a class="btn btn-ghost" href="https://www.ubereats.com/mx/store/cocina-higuera/KLVI_U3pXb20CwlV5h75RQ" target="_blank" rel="noopener">Pedir en Uber Eats</a></div>
+    </div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <div><img src="../img/logo-dark.png" alt="Higuera"><p>Cocina y sobremesa en Barrio Tampiquito.</p></div>
+  <div><b>Dirección</b>Plutarco Elías Calles 419<br>Tampiquito, San Pedro Garza García</div>
+  <div><b>Síguenos</b><a href="https://www.instagram.com/higuera_mx/" target="_blank" rel="noopener">@higuera_mx</a><br><a href="../fila/">Lista de espera</a></div>
+  <div class="cn">Sitio de muestra preparado por Code Nova para Higuera.</div>
+</div></footer>
+
+<div class="mbar" id="mbar"><div><b id="mW">Lista de espera</b><span id="mE">Te avisamos cuando tu mesa esté lista</span></div><a href="../fila/">Anotarme</a></div>
+
+<script src="../fila.js"></script>
+<script>
+(() => {
+const $ = (s) => document.querySelector(s);
+const MENU = {
+  "desayunos": [["Chilaquiles verdes","clásico"],["Chilaquiles rojos",""],["Chilaquiles divorciados",""],["Enfrijoladas",""],["Enchiladas poblanas",""],["Buttermilk waffles","dulce"],["French toast","dulce"],["Morning bun","dulce"],["Mollete",""],["Bowl de fruta con yoghurt",""]],
+  "toasts y sándwiches": [["Scrambled toast",""],["Kale avo toast",""],["Tostado de pimiento asado con salmón",""],["Sándwich de jamones",""],["Sándwich de pastrami",""],["Cheeseburger",""],["Sopa de tomate","con grilled cheese"]],
+  "café": [["Americano",""],["Cappuccino",""],["Flat white",""],["Latte",""],["Mocha",""],["Cold brew",""],["Honey lavender latte","de la casa"],["Horchata latte","de la casa"],["Salted caramel latte",""]],
+  "otras bebidas": [["Matcha",""],["Matcha horchata","de la casa"],["Chai",""],["Chocolate",""],["Jugo cold press",""]],
+};
+const PICS = { "desayunos": ["chilaquiles.webp", "Chilaquiles verdes"], "toasts y sándwiches": ["sopa.webp", "Sopa de tomate con grilled cheese"], "café": ["barra.webp", "La barra de café"], "otras bebidas": ["postre.webp", "Algo dulce para acompañar"] };
+let cat = "desayunos";
+function menu() {
+  $("#cats").innerHTML = Object.keys(MENU).map((c) => `<button type="button" class="${c === cat ? "on" : ""}" data-c="${c}">${c}</button>`).join("");
+  $("#items").innerHTML = MENU[cat].map(([n, t]) => `<div class="it"><b>${HG.esc(n)}</b>${t ? `<span>${HG.esc(t)}</span>` : ""}</div>`).join("");
+  $("#mimg").src = "../img/" + PICS[cat][0]; $("#mcap").textContent = PICS[cat][1];
+}
+document.addEventListener("click", (e) => { const b = e.target.closest("[data-c]"); if (b) { cat = b.dataset.c; menu(); } });
+menu();
+
+// horario y "abierto ahora" (hora de Monterrey)
+const H = [["Lunes", 8, 16], ["Martes", 8, 16], ["Miércoles", 8, 16], ["Jueves", 8, 16], ["Viernes", 8, 16], ["Sábado", 8, 17], ["Domingo", 8, 17]];
+const now = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Monterrey" }));
+const di = (now.getDay() + 6) % 7, h = now.getHours() + now.getMinutes() / 60;
+$("#hours").innerHTML = H.map(([d, a, c], i) => `<tr class="${i === di ? "today" : ""}"><td>${d}${i === di ? " · hoy" : ""}</td><td>${a} am – ${c - 12} pm</td></tr>`).join("");
+const [, op, cl] = H[di], isOpen = h >= op && h < cl;
+$("#openNow").classList.toggle("cl", !isOpen);
+$("#openNow").innerHTML = `<span class="dot"></span><span>${isOpen ? `Abierto ahora · cierra a las ${cl - 12} pm` : `Cerrado ahora · abre a las ${op} am`}</span>`;
+
+// estado en vivo de la lista
+HG.live({ role: "guest", onData(d) {
+  if (!d || d.authError) return;
+  const w = d.waiting, e = d.estWait;
+  $("#hW").textContent = w; $("#hWl").textContent = w === 1 ? "grupo esperando" : "grupos esperando";
+  $("#hE").textContent = w ? `Espera aproximada de ${e} min. Anótate y te avisamos.` : "Sin espera ahorita. Anótate y te sentamos al llegar.";
+  $("#wW").textContent = w; $("#wE").textContent = w ? "~" + e : "0";
+  $("#wQ").innerHTML = (d.queue || []).slice(0, 10).map((x) => `<i class="${x.status === "called" ? "c" : ""}">${HG.esc(x.initial || "·")}</i>`).join("") + (w ? "" : `<em>Nadie esperando en este momento</em>`);
+  $("#pillTxt").textContent = w ? `Espera ~${e} min` : "Sin espera";
+  $("#mW").textContent = w ? `${w} ${w === 1 ? "grupo" : "grupos"} · ~${e} min` : "Sin espera ahorita";
+}, onStatus(s) { $("#wdot").className = "dot" + (s === "off" ? " off" : ""); } });
+
+// cabecera y barra móvil
+const top = $("#top"), mbar = $("#mbar");
+function onScroll() { const y = scrollY; top.classList.toggle("solid", y > window.innerHeight * 0.6); mbar.classList.toggle("show", y > window.innerHeight * 0.8); }
+addEventListener("scroll", onScroll, { passive: true }); onScroll();
+})();
+</script>
+</body>
+</html>
