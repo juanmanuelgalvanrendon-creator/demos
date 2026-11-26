@@ -3,42 +3,54 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Higuera · Pedidos y llamados</title>
+<title>Higuera · Equipo</title>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#1f231b">
-<link rel="icon" href="../img/icon-192.png">
+<link rel="icon" href="/higuera/img/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../hg.css">
+<link rel="stylesheet" href="/higuera/hg.css">
 <style>
 body{background:#1f231b;color:#f4f1ea;min-height:100vh}
 .hide{display:none!important}
-/* acceso */
 .gate{position:fixed;inset:0;z-index:90;background:#1f231b;display:grid;place-items:center;padding:20px}
 .gate .box{width:100%;max-width:360px;background:var(--bg);color:var(--ink);border-radius:26px;padding:28px;display:flex;flex-direction:column;gap:12px;text-align:center}
 .gate h1{font:400 32px/1.05 var(--serif)}
 .gate p{font-size:14px;color:var(--mut)}
 .gate .err{color:var(--red);font-weight:700;font-size:13.5px;min-height:18px}
 .gate .in{text-align:center;font-size:24px;letter-spacing:.4em}
-/* barra superior */
-.bar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:14px;padding:12px 18px;background:rgba(31,35,27,.94);backdrop-filter:blur(12px);border-bottom:1px solid rgba(244,241,234,.08)}
+.bar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:12px;padding:12px 18px;background:rgba(31,35,27,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(244,241,234,.08)}
 .bar .logo{height:24px;filter:invert(1) brightness(2)}
-.bar h1{font:400 24px/1 var(--serif);white-space:nowrap}
+.bar h1{font:400 26px/1 var(--serif);white-space:nowrap}
 .bar .sp{flex:1}
-.conn{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:rgba(244,241,234,.7)}
-.pill{height:38px;padding:0 14px;border-radius:99px;background:rgba(244,241,234,.08);font-weight:800;font-size:13px;display:inline-flex;align-items:center;gap:8px;color:#f4f1ea;text-decoration:none}
+.conn{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:rgba(244,241,234,.75)}
+.pill{height:38px;padding:0 14px;border-radius:99px;background:rgba(244,241,234,.08);font-weight:800;font-size:13px;display:inline-flex;align-items:center;gap:8px;color:#f4f1ea}
 .pill.on{background:#f0c7a6;color:#1f231b}
-.panels{display:flex;gap:6px}
-.panels a{font-size:12.5px;font-weight:800;color:rgba(244,241,234,.6);text-decoration:none;padding:8px 10px;border-radius:10px}
-.panels a.cur{background:rgba(244,241,234,.1);color:#f4f1ea}
-/* distribución */
-.lay{display:grid;grid-template-columns:1fr 360px;gap:18px;padding:18px;align-items:start}
-.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.col h2{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,241,234,.7);margin:0 4px 10px}
-.col h2 b{font:600 13px var(--mono);background:rgba(244,241,234,.1);color:#f4f1ea;border-radius:99px;padding:2px 9px;letter-spacing:0}
-.col .zone{display:flex;flex-direction:column;gap:12px;min-height:120px;border-radius:20px}
-.none{border:1.5px dashed rgba(244,241,234,.15);border-radius:18px;padding:22px 14px;text-align:center;font-size:13px;color:rgba(244,241,234,.45)}
-/* ticket */
+.panels{display:flex;gap:4px}
+.panels a{font-size:12.5px;font-weight:800;color:rgba(244,241,234,.65);text-decoration:none;padding:8px 10px;border-radius:10px}
+.panels a.cur{background:rgba(244,241,234,.12);color:#f4f1ea}
+.sbtn{height:38px;padding:0 12px;border-radius:99px;background:rgba(244,241,234,.08);color:#f4f1ea;font-weight:800;font-size:12.5px;display:inline-flex;align-items:center;gap:7px}
+.cfg{position:fixed;right:14px;top:66px;z-index:60;width:min(360px,calc(100% - 28px));background:var(--bg);color:var(--ink);border-radius:22px;padding:18px;box-shadow:0 30px 60px -20px rgba(0,0,0,.7);max-height:calc(100vh - 80px);overflow:auto}
+.cfg h3{font:400 24px/1.1 var(--serif);margin-bottom:6px}
+.cfg .row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.cfg .row b{font-size:14.5px;display:block}
+.cfg .row span{font-size:12.5px;color:var(--mut)}
+.cfg .seg{display:inline-flex;background:var(--paper);border-radius:99px;padding:3px;box-shadow:inset 0 0 0 1.5px var(--line);flex:0 0 auto}
+.cfg .seg button{height:34px;padding:0 12px;border-radius:99px;font-weight:800;font-size:12.5px}
+.cfg .seg button.on{background:var(--ink);color:#fff}
+.cfg .btn{width:100%;margin-top:12px;height:48px}
+.cfg .note{font-size:12.5px;color:var(--mut);margin-top:10px;line-height:1.45}
+.lay{display:grid;gap:18px;padding:18px;align-items:start}
+body[data-role="todo"] .lay{grid-template-columns:1fr 360px}
+body[data-role="cocina"] .lay{grid-template-columns:1fr 300px}
+body[data-role="meseros"] .lay{grid-template-columns:1fr 1fr 1fr;max-width:1500px;margin:0 auto}
+.cols{display:grid;gap:14px}
+body[data-role="todo"] .cols{grid-template-columns:repeat(3,1fr)}
+body[data-role="cocina"] .cols{grid-template-columns:1fr 1fr}
+.col h2,.box h2{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,241,234,.75);margin:0 4px 10px}
+.col h2 b,.box h2 b{font:600 13px var(--mono);background:rgba(244,241,234,.1);color:#f4f1ea;border-radius:99px;padding:2px 9px;letter-spacing:0}
+.zone{display:flex;flex-direction:column;gap:12px;min-height:110px}
+.none{border:1.5px dashed rgba(244,241,234,.15);border-radius:18px;padding:22px 14px;text-align:center;font-size:13.5px;color:rgba(244,241,234,.55)}
 .tk{background:#fbfaf6;color:var(--ink);border-radius:16px;overflow:hidden;box-shadow:0 18px 30px -18px rgba(0,0,0,.7);position:relative}
 .tk.new{animation:pop .6s cubic-bezier(.2,.9,.3,1.3)}
 @keyframes pop{0%{transform:scale(.92);opacity:0}100%{transform:none;opacity:1}}
@@ -51,68 +63,72 @@ body{background:#1f231b;color:#f4f1ea;min-height:100vh}
 .tk .tm.w{background:#f3d9a5;color:#7a4e0c}
 .tk .tm.r{background:#9a3624;color:#fff;animation:blink 1.2s infinite}
 @keyframes blink{50%{opacity:.6}}
-.tk .who{font-size:12px;font-weight:800;color:var(--olive2);padding:8px 14px 0;display:flex;gap:6px;align-items:center}
+.tk .who{font-size:12px;font-weight:800;color:var(--olive2);padding:8px 14px 0}
 .tk ul{list-style:none;padding:8px 14px 4px;border-bottom:1.5px dashed #d8d1c2}
 .tk li{display:grid;grid-template-columns:34px 1fr;gap:6px;padding:6px 0;font-size:16px;font-weight:700;line-height:1.25}
+body[data-role="cocina"] .tk li{font-size:18px}
 .tk li .q{font:600 16px var(--mono);color:var(--terra)}
 .tk li i{display:block;font-style:normal;font-weight:600;font-size:13px;color:#fff;background:var(--terra);border-radius:7px;padding:2px 7px;margin-top:4px;width:max-content;max-width:100%}
 .tk .gn{margin:8px 14px 0;font-size:13px;font-weight:700;background:var(--terra-l);color:var(--terra-d);border-radius:9px;padding:7px 10px}
 .tk .ac{display:flex;gap:8px;padding:12px 14px}
-.tk .ac .btn{flex:1;height:48px;font-size:15px}
+.tk .ac .btn{flex:1;height:52px;font-size:16px}
 .tk .sm{display:flex;justify-content:space-between;padding:0 14px 12px}
 .tk .sm button{font-size:12.5px;font-weight:800;color:var(--mut);text-decoration:underline;text-underline-offset:3px}
-.tk .sm button.dg{color:var(--red)}
-/* llamados y mesas */
-.side{display:flex;flex-direction:column;gap:18px;position:sticky;top:76px}
+.tk .sm button.dg{color:#9a3624}
+.mini{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:rgba(244,241,234,.06);margin-bottom:8px;font-size:13.5px}
+.mini b{font:400 22px/1 var(--serif);margin-right:8px}
+.mini span{color:rgba(244,241,234,.8)}
+.mini .t{font:600 12px var(--mono);padding:3px 8px;border-radius:99px;background:rgba(244,241,234,.1)}
+.mini .t.r{background:#9a3624;color:#fff}
 .box{background:rgba(244,241,234,.06);border-radius:22px;padding:16px}
-.box h2{font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,241,234,.7);margin-bottom:12px;display:flex;justify-content:space-between}
+.side{display:flex;flex-direction:column;gap:18px}
+body[data-role="todo"] aside.side,body[data-role="cocina"] aside.side{position:sticky;top:76px}
 .call{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;background:#f0c7a6;color:#1f231b;margin-bottom:10px;animation:ring 1.6s ease-in-out infinite}
 .call.cuenta{background:#fbfaf6}
 .call.alerta{background:#9a3624;color:#fff;animation:ring2 1.2s ease-in-out infinite}
-.call.alerta .tx small{color:rgba(255,255,255,.8)}
-.call.alerta .btn{background:#fff;color:#9a3624}
-@keyframes ring2{0%,100%{box-shadow:0 0 0 0 rgba(154,54,36,.6)}50%{box-shadow:0 0 0 9px rgba(154,54,36,0)}}
-.tb.bad{background:#9a3624;color:#fff}.tb.bad small{color:#fff}
 @keyframes ring{0%,100%{box-shadow:0 0 0 0 rgba(240,199,166,.5)}50%{box-shadow:0 0 0 8px rgba(240,199,166,0)}}
-.call .m{font:400 32px/1 var(--serif);min-width:54px;text-align:center}
-.call .tx{flex:1;font-size:14px;font-weight:800;line-height:1.25}
+@keyframes ring2{0%,100%{box-shadow:0 0 0 0 rgba(154,54,36,.6)}50%{box-shadow:0 0 0 9px rgba(154,54,36,0)}}
+.call .m{font:400 34px/1 var(--serif);min-width:54px;text-align:center}
+.call .tx{flex:1;font-size:14.5px;font-weight:800;line-height:1.25}
 .call .tx small{display:block;font-weight:600;font-size:12px;color:rgba(31,35,27,.82)}
-.call .btn{height:42px;padding:0 14px;font-size:13.5px}
+.call.alerta .tx small{color:rgba(255,255,255,.85)}
+.call .btn{height:46px;padding:0 14px;font-size:13.5px}
+.call.alerta .btn{background:#fff;color:#9a3624}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .tb{aspect-ratio:1;border-radius:14px;background:rgba(244,241,234,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#f4f1ea;position:relative;transition:transform .12s}
 .tb:active{transform:scale(.96)}
 .tb b{font:400 26px/1 var(--serif)}
-.tb small{font-size:10.5px;font-weight:800;color:rgba(244,241,234,.6);text-transform:uppercase;letter-spacing:.06em}
+.tb small{font-size:10.5px;font-weight:800;color:rgba(244,241,234,.75);text-transform:uppercase;letter-spacing:.06em}
 .tb.oc{background:#4f5b41}
-.tb.oc small{color:rgba(244,241,234,.85)}
+.tb.oc small{color:rgba(244,241,234,.9)}
 .tb.al{background:#f0c7a6;color:#1f231b}
 .tb.al small{color:#1f231b}
+.tb.bad{background:#9a3624;color:#fff}
+.tb.bad small{color:#fff}
 .tb .dt{position:absolute;top:7px;right:7px;width:9px;height:9px;border-radius:50%;background:#e8a06d}
-.legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:11.5px;color:rgba(244,241,234,.6);font-weight:700}
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:11.5px;color:rgba(244,241,234,.75);font-weight:700}
 .legend span{display:flex;align-items:center;gap:6px}
 .legend i{width:12px;height:12px;border-radius:4px;display:inline-block}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .stats div{background:rgba(244,241,234,.06);border-radius:14px;padding:12px}
 .stats b{display:block;font:400 28px/1 var(--serif)}
-.stats small{font-size:11.5px;color:rgba(244,241,234,.6);font-weight:700}
-/* pestañas en celular */
+.stats small{font-size:11.5px;color:rgba(244,241,234,.75);font-weight:700}
 .mtabs{display:none}
-@media (max-width:1100px){.lay{grid-template-columns:1fr 320px}.cols{grid-template-columns:1fr 1fr}.cols .col:nth-child(3){grid-column:span 2}}
+@media (max-width:1100px){body[data-role="todo"] .lay{grid-template-columns:1fr 320px}body[data-role="todo"] .cols{grid-template-columns:1fr 1fr}body[data-role="meseros"] .lay{grid-template-columns:1fr 1fr}}
 @media (max-width:820px){
-  .bar h1{font-size:20px}.panels{display:none}#modeP,#ctxt{display:none}
+  .bar h1{font-size:21px}.panels,#modeP,#ctxt,#cfgTxt{display:none}
   .bar{padding:12px 14px}
-  .lay{grid-template-columns:1fr;padding:12px}
-  .side{position:static}
-  .cols{grid-template-columns:1fr}.cols .col:nth-child(3){grid-column:auto}
-  .mtabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:10px 12px 0;position:sticky;top:61px;z-index:20;background:#1f231b}
-  .mtabs button{height:42px;border-radius:12px;background:rgba(244,241,234,.07);color:#f4f1ea;font-weight:800;font-size:13.5px}
+  .lay,body[data-role] .lay{grid-template-columns:1fr;padding:12px}
+  .side{position:static!important}
+  body[data-role] .cols{grid-template-columns:1fr}
+  .mtabs{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px;padding:10px 12px 0;position:sticky;top:61px;z-index:20;background:#1f231b}
+  .mtabs button{height:44px;border-radius:12px;background:rgba(244,241,234,.07);color:#f4f1ea;font-weight:800;font-size:13.5px}
   .mtabs button.on{background:#f4f1ea;color:#1f231b}
   .mtabs b{font:600 12px var(--mono);margin-left:4px}
-  body[data-mt="pedidos"] .side{display:none}
-  body[data-mt="llamados"] .cols,body[data-mt="llamados"] #bxMesas,body[data-mt="llamados"] #bxStats{display:none}
-  body[data-mt="mesas"] .cols,body[data-mt="mesas"] #bxCalls{display:none}
+  [data-sec]{display:none}
+  [data-sec].on{display:block}
+  .cols[data-sec].on{display:grid}
 }
-/* hoja de mesa */
 .scrim{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center}
 .scrim.on{display:flex}
 .sheet{background:var(--bg);color:var(--ink);width:100%;max-width:520px;border-radius:26px 26px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom));max-height:88vh;overflow:auto}
@@ -125,15 +141,15 @@ body{background:#1f231b;color:#f4f1ea;min-height:100vh}
 .sheet .o ul{list-style:none;margin-top:6px;font-size:14.5px}
 .sheet .btn{width:100%;margin-top:14px}
 .sheet .note{font-size:13px;color:var(--mut);margin-top:10px}
-.snd{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:50;background:#f0c7a6;color:#1f231b;border-radius:99px;padding:12px 18px;font-weight:800;font-size:14px;box-shadow:0 18px 30px -12px rgba(0,0,0,.6)}
+.snd{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:50;background:#f0c7a6;color:#1f231b;border-radius:99px;padding:14px 20px;font-weight:800;font-size:14.5px;box-shadow:0 18px 30px -12px rgba(0,0,0,.6);white-space:nowrap}
 </style>
 </head>
-<body data-mt="pedidos">
+<body data-role="todo">
 <div class="gate" id="gate">
   <form class="box" id="gf" aria-labelledby="gt">
-    <img src="../img/logo-sm.png" alt="Higuera" width="110" height="40" style="height:40px;width:auto;margin:0 auto">
-    <h1 id="gt">Pedidos y llamados</h1>
-    <p>Pantalla para barra, cocina y meseros. Escribe el PIN del equipo.</p>
+    <img src="/higuera/img/logo-sm.png" alt="Higuera" width="110" height="40" style="height:40px;width:auto;margin:0 auto">
+    <h1 id="gt">Equipo</h1>
+    <p id="gp">Escribe el PIN del equipo.</p>
     <input type="password" class="in" id="pin" inputmode="numeric" autocomplete="current-password" maxlength="6" placeholder="····" aria-label="PIN del equipo">
     <p class="err" id="gerr" role="alert"></p>
     <button class="btn btn-ink btn-block" type="submit">Entrar</button>
@@ -141,94 +157,155 @@ body{background:#1f231b;color:#f4f1ea;min-height:100vh}
 </div>
 
 <header class="bar">
-  <img class="logo" src="../img/logo-sm.png" alt="Higuera" width="66" height="24">
-  <h1>Pedidos y llamados</h1>
-  <nav class="panels" aria-label="Paneles"><a href="../host/">Entrada</a><a href="./" class="cur" aria-current="page">Pedidos</a><a href="../club/">Club y mesas</a></nav>
+  <img class="logo" src="/higuera/img/logo-sm.png" alt="Higuera" width="66" height="24">
+  <h1 id="title">Equipo</h1>
+  <nav class="panels" aria-label="Paneles"><a href="/higuera/host/">Entrada</a><a href="/higuera/cocina/" data-r="cocina">Cocina</a><a href="/higuera/meseros/" data-r="meseros">Meseros</a><a href="/higuera/club/">Club y mesas</a></nav>
   <div class="sp"></div>
   <span class="pill" id="modeP"></span>
+  <button class="sbtn" type="button" id="cfgBtn" aria-expanded="false" aria-label="Avisos y sonido"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg><span id="cfgTxt">Sonido</span></button>
   <div class="conn"><span class="dot off" id="cdot"></span><span id="ctxt">…</span></div>
 </header>
-<nav class="mtabs" aria-label="Secciones"><button type="button" class="on" data-mt="pedidos">Pedidos<b id="nP">0</b></button><button type="button" data-mt="llamados">Llamados<b id="nC">0</b></button><button type="button" data-mt="mesas">Mesas</button></nav>
+<div class="cfg hide" id="cfg" role="dialog" aria-label="Avisos y sonido">
+  <h3>Avisos</h3>
+  <div class="row"><div><b>Volumen</b><span>Fuerte se escucha por encima del ruido.</span></div><div class="seg" data-k="vol"><button type="button" data-v="0.35">Normal</button><button type="button" data-v="1">Fuerte</button></div></div>
+  <div class="row"><div><b>Decirlo en voz alta</b><span>Por ejemplo: "Nuevo pedido, mesa cuatro".</span></div><div class="seg" data-k="voz"><button type="button" data-v="1">Sí</button><button type="button" data-v="0">No</button></div></div>
+  <div class="row"><div><b>Repetir hasta atender</b><span>Vuelve a sonar cada 30 segundos mientras haya algo pendiente.</span></div><div class="seg" data-k="rep"><button type="button" data-v="1">Sí</button><button type="button" data-v="0">No</button></div></div>
+  <button class="btn btn-terra" type="button" id="testSnd">Probar sonido</button>
+  <button class="btn btn-ink" type="button" id="pushOn">Avisarme en este celular aunque esté bloqueado</button>
+  <p class="note" id="pushNote">Llega como notificación con sonido y vibración. En iPhone, primero agrega esta página a la pantalla de inicio.</p>
+</div>
+<nav class="mtabs" id="mtabs" aria-label="Secciones"></nav>
 
-<main class="lay">
-  <div class="cols">
-    <section class="col"><h2>Nuevos <b id="cN">0</b></h2><div class="zone" id="zN"></div></section>
-    <section class="col"><h2>Preparando <b id="cP">0</b></h2><div class="zone" id="zP"></div></section>
-    <section class="col"><h2>Listos para llevar <b id="cL">0</b></h2><div class="zone" id="zL"></div></section>
-  </div>
-  <aside class="side">
-    <section class="box" id="bxCalls"><h2>Llamados <span id="cC"></span></h2><div id="calls"></div></section>
-    <section class="box" id="bxMesas"><h2>Mesas <span>Toca para ver o cerrar</span></h2><div class="grid" id="tables"></div>
-      <div class="legend"><span><i style="background:rgba(244,241,234,.12)"></i>Libre</span><span><i style="background:#4f5b41"></i>Con pedido</span><span><i style="background:#f0c7a6"></i>Llamando</span><span><i style="background:#9a3624"></i>Gerente</span></div></section>
-    <section class="box" id="bxStats"><h2>Hoy</h2><div class="stats" id="stats"></div></section>
-  </aside>
-</main>
+<main class="lay" id="lay"></main>
 
 <div class="scrim" id="scrim"><div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Mesa"></div></div>
 <button class="snd hide" id="snd" type="button">Toca para activar el sonido de avisos</button>
 
-<script src="../fila.js"></script>
+<script src="/higuera/fila.js"></script>
 <script>
 (() => {
-const { api, live, store, esc, ago, toast, beep, unlockAudio } = HG;
+const { api, live, store, esc, ago, toast, alarm, say, wake, unlockAudio, pushSubscribe } = HG;
 const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
-let pin = store.get("pin") || "", H = null, conn = null, seenO = null, seenC = null, sheetM = 0, closeArm = 0, audioOk = false;
+const ROLE = location.pathname.includes("/cocina") ? "cocina" : location.pathname.includes("/meseros") ? "meseros" : "todo";
+const T = { cocina: ["Cocina", "Aquí llegan los pedidos de las mesas."], meseros: ["Meseros", "Platillos listos para llevar, llamados de las mesas y la cuenta."], todo: ["Pedidos y llamados", "Pantalla completa: pedidos, llamados y mesas."] }[ROLE];
+const PUSHROLE = ROLE === "cocina" ? "cocina" : "meseros";
+document.body.dataset.role = ROLE; document.title = "Higuera · " + T[0];
+$("#title").textContent = T[0]; $("#gt").textContent = T[0]; $("#gp").textContent = T[1] + " Escribe el PIN del equipo.";
+$$(".panels a").forEach((a) => { if (a.dataset.r === ROLE) { a.classList.add("cur"); a.setAttribute("aria-current", "page"); } });
+const CFG = Object.assign({ vol: "1", voz: "1", rep: "1" }, JSON.parse(store.get("snd_" + ROLE) || "{}"));
+let pin = store.get("pin") || "", H = null, conn = null, seenO = null, seenC = null, seenL = null, sheetM = 0, closeArm = 0, audioOk = false, sec = "", lastRing = 0;
 
+/* ---------- secciones según el puesto ---------- */
+const S_ORD = (id, t, z) => `<section class="col" data-sec="${id}"><h2>${t} <b id="c_${z}">0</b></h2><div class="zone" id="${z}"></div></section>`;
+const S_CALLS = `<section class="box" data-sec="llamados"><h2>Llamados y alertas <b id="cC">0</b></h2><div id="calls"></div></section>`;
+const S_MESAS = `<section class="box" data-sec="mesas"><h2>Mesas</h2><div class="grid" id="tables"></div><div class="legend"><span><i style="background:rgba(244,241,234,.12)"></i>Libre</span><span><i style="background:#4f5b41"></i>Con pedido</span><span><i style="background:#f0c7a6"></i>Llamando</span><span><i style="background:#9a3624"></i>Gerente</span></div></section>`;
+const S_STATS = `<section class="box" data-sec="hoy"><h2>Hoy</h2><div class="stats" id="stats"></div></section>`;
+const LAYOUT = {
+  cocina: { tabs: [["nuevos", "Nuevos", "c_zN"], ["prep", "Preparando", "c_zP"], ["espera", "Listos", "c_wait"]], html: `<div class="cols">${S_ORD("nuevos", "Nuevos", "zN")}${S_ORD("prep", "Preparando", "zP")}</div><aside class="side"><section class="box" data-sec="espera"><h2>Listos, esperando mesero <b id="c_wait">0</b></h2><div id="wait"></div></section>${S_STATS}</aside>` },
+  meseros: { tabs: [["llamados", "Llamados", "cC"], ["listos", "Para llevar", "c_zL"], ["mesas", "Mesas", ""]], html: `<div class="side">${S_CALLS}<section class="box" data-sec="llamados"><h2>En cocina <b id="c_kit">0</b></h2><div id="kit"></div></section></div>${S_ORD("listos", "Listos para llevar", "zL")}<div class="side">${S_MESAS}${S_STATS}</div>` },
+  todo: { tabs: [["pedidos", "Pedidos", "c_all"], ["llamados", "Llamados", "cC"], ["mesas", "Mesas", ""]], html: `<div class="cols" data-sec="pedidos">${S_ORD("pedidos", "Nuevos", "zN")}${S_ORD("pedidos", "Preparando", "zP")}${S_ORD("pedidos", "Listos para llevar", "zL")}</div><aside class="side">${S_CALLS}${S_MESAS}${S_STATS}</aside>` },
+}[ROLE];
+$("#lay").innerHTML = LAYOUT.html;
+$("#mtabs").innerHTML = LAYOUT.tabs.map(([k, l, c], i) => `<button type="button" data-tab="${k}" class="${i ? "" : "on"}">${l}${c ? `<b data-mirror="${c}">0</b>` : ""}</button>`).join("");
+sec = LAYOUT.tabs[0][0]; showSec();
+function showSec() {
+  $$("[data-sec]").forEach((el) => el.classList.toggle("on", el.dataset.sec === sec));
+  $$("#mtabs button").forEach((b) => b.classList.toggle("on", b.dataset.tab === sec));
+}
+
+/* ---------- acceso y conexión ---------- */
 async function login(p, silent) {
   try {
     const r = await api("/host/claim", { body: { pin: p } });
-    if (r.created) { toast("PIN creado"); }
+    if (r.created) toast("PIN creado");
     pin = p; store.set("pin", p); $("#gate").classList.add("hide");
-    H = r.state; paint(); start();
+    H = r.state; paint(); start(); wake();
     if (silent && !audioOk) $("#snd").classList.remove("hide");
   } catch (e) { if (!silent) $("#gerr").textContent = e.message; store.set("pin", null); }
 }
 $("#gf").addEventListener("submit", (e) => { e.preventDefault(); unlockAudio(); audioOk = true; const p = $("#pin").value.replace(/\D/g, ""); if (p.length < 4) { $("#gerr").textContent = "Escribe al menos 4 números."; return; } login(p); });
-$("#snd").onclick = () => { unlockAudio(); audioOk = true; $("#snd").classList.add("hide"); beep(1); };
+$("#snd").onclick = () => { unlockAudio(); audioOk = true; $("#snd").classList.add("hide"); wake(); ring("pedido"); };
 function start() {
   conn && conn.stop();
   conn = live({ role: "host", pin, onData(d) { if (d.authError) { store.set("pin", null); location.reload(); return; } H = d; paint(); }, onStatus(s) { $("#cdot").className = "dot" + (s === "off" ? " off" : ""); $("#ctxt").textContent = s === "live" ? "En vivo" : s === "poll" ? "En línea" : "Reconectando"; } });
 }
 
+/* ---------- sonido ---------- */
+function ring(kind, text) {
+  lastRing = Date.now();
+  alarm(kind, +CFG.vol);
+  if (CFG.voz === "1" && text) setTimeout(() => say(text), kind === "alerta" ? 1300 : 1500);
+  if (navigator.vibrate) navigator.vibrate([300, 120, 300]);
+}
+// repetir mientras haya algo sin atender por más de 30 s
+setInterval(() => {
+  if (!H || CFG.rep !== "1" || Date.now() - lastRing < 29000) return;
+  const old = (t) => Date.now() - t > 30000;
+  const act = H.orders.filter((o) => !o.closed);
+  let k = null, txt = "";
+  if (ROLE !== "cocina") {
+    const al = H.calls.find((c) => c.kind === "alerta" && old(c.t0)), c = H.calls.find((x) => old(x.t0)), l = act.find((o) => o.status === "listo" && old(o.tUpd));
+    if (al) { k = "alerta"; txt = "Mesa " + al.m + ", que pase el gerente"; }
+    else if (c) { k = "llamado"; txt = "Mesa " + c.m + (c.kind === "cuenta" ? " sigue esperando la cuenta" : " sigue llamando"); }
+    else if (l) { k = "pedido"; txt = "El pedido de la mesa " + l.m + " sigue esperando"; }
+  }
+  if (!k && ROLE !== "meseros") { const n = act.find((o) => o.status === "nuevo" && old(o.t0)); if (n) { k = "pedido"; txt = "Pedido de la mesa " + n.m + " sin empezar"; } }
+  if (k) ring(k, txt);
+}, 5000);
+
+/* ---------- pintar ---------- */
 const mins = (t) => Math.floor((Date.now() - t) / 60000);
 function tmCls(o) { const m = mins(o.t0); return o.status === "listo" ? (mins(o.tUpd) >= 4 ? "r" : "") : m >= 15 ? "r" : m >= 10 ? "w" : ""; }
 function ticket(o, isNew) {
   const next = { nuevo: ["start", "Empezar", "btn-ink"], prep: ["ready", "Listo", "btn-ok"], listo: ["deliver", "Entregado", "btn-terra"] }[o.status];
+  const can = !(ROLE === "cocina" && o.status === "listo") && !(ROLE === "meseros" && o.status !== "listo");
   return `<article class="tk c-${o.status}${isNew ? " new" : ""}">
-    <div class="hd"><span class="ms">Mesa ${o.m}<small>#${String(o.n).padStart(3, "0")}</small></span><span class="tm ${tmCls(o)}" data-t="${o.status === "listo" ? o.tUpd : o.t0}">${o.status === "listo" ? "listo " : ""}${ago(o.status === "listo" ? o.tUpd : o.t0)}</span></div>
+    <div class="hd"><span class="ms">Mesa ${o.m}<small>#${String(o.n).padStart(3, "0")}</small></span><span class="tm ${tmCls(o)}" data-t="${o.status === "listo" ? o.tUpd : o.t0}" data-pre="${o.status === "listo" ? "listo " : ""}">${o.status === "listo" ? "listo " : ""}${ago(o.status === "listo" ? o.tUpd : o.t0)}</span></div>
     ${o.who ? `<div class="who">${o.member ? "Club · " : ""}${esc(o.who)}</div>` : ""}
     <ul>${o.items.map((it) => `<li><span class="q">${it.q}×</span><span>${esc(it.n)}${it.note ? `<i>${esc(it.note)}</i>` : ""}</span></li>`).join("")}</ul>
     ${o.note ? `<div class="gn">Nota: ${esc(o.note)}</div>` : ""}
-    <div class="ac"><button class="btn ${next[2]}" type="button" data-o="${o.id}" data-a="${next[0]}">${next[1]}</button></div>
-    <div class="sm">${o.status !== "nuevo" ? `<button type="button" data-o="${o.id}" data-a="back">Regresar</button>` : "<span></span>"}<button type="button" class="dg" data-o="${o.id}" data-a="cancel">Cancelar</button></div>
+    ${can ? `<div class="ac"><button class="btn ${next[2]}" type="button" data-o="${o.id}" data-a="${next[0]}">${next[1]}</button></div>
+    <div class="sm">${o.status !== "nuevo" ? `<button type="button" data-o="${o.id}" data-a="back">Regresar</button>` : "<span></span>"}<button type="button" class="dg" data-o="${o.id}" data-a="cancel">Cancelar</button></div>` : ""}
   </article>`;
 }
+const setN = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; $$(`[data-mirror="${id}"]`).forEach((m) => { m.textContent = v; }); };
 function paint() {
   if (!H) return;
   const M = H.mesas;
   $("#modeP").textContent = !M.on ? "Pedidos en pausa" : M.mode === "pedir" ? "Piden desde la mesa" : "Solo llaman al mesero";
   $("#modeP").classList.toggle("on", M.on && M.mode === "pedir");
   const act = H.orders.filter((o) => !o.closed && ["nuevo", "prep", "listo"].includes(o.status));
-  // sonido y animación para lo nuevo
-  const firstPaint = seenO === null;
+  const first = seenO === null;
   const newO = act.filter((o) => o.status === "nuevo" && seenO && !seenO.has(o.id));
   const newC = H.calls.filter((c) => seenC && !seenC.has(c.id));
-  if (!firstPaint && (newO.length || newC.length)) { beep(newC.length ? 3 : 2); if (newO.length) toast(`Nuevo pedido · Mesa ${newO[0].m}`); else toast(`Mesa ${newC[0].m}: ${newC[0].kind === "cuenta" ? "pide la cuenta" : newC[0].kind === "alerta" ? "calificación baja, que pase el gerente" : "llama al mesero"}`); }
-  seenO = new Set(H.orders.map((o) => o.id)); seenC = new Set(H.calls.map((c) => c.id));
+  const newL = act.filter((o) => o.status === "listo" && seenL && !seenL.has(o.id));
+  if (!first) {
+    const al = newC.find((c) => c.kind === "alerta");
+    if (ROLE !== "cocina" && al) { ring("alerta", `Mesa ${al.m} calificó ${al.stars} de 5. Que pase el gerente.`); toast(`Mesa ${al.m}: calificación baja`); }
+    else if (ROLE !== "cocina" && newC.length) { const c = newC[0]; ring("llamado", `Mesa ${c.m} ${c.kind === "cuenta" ? "pide la cuenta" : "llama al mesero"}`); toast(`Mesa ${c.m}: ${c.kind === "cuenta" ? "pide la cuenta" : "llama al mesero"}`); }
+    else if (ROLE !== "meseros" && newO.length) { const o = newO[0]; ring("pedido", `Nuevo pedido, mesa ${o.m}`); toast(`Nuevo pedido · Mesa ${o.m}`); }
+    else if (ROLE === "meseros" && newL.length) { const o = newL[0]; ring("pedido", `Pedido listo, mesa ${o.m}`); toast(`Listo para llevar · Mesa ${o.m}`); }
+  }
+  seenO = new Set(H.orders.map((o) => o.id)); seenC = new Set(H.calls.map((c) => c.id)); seenL = new Set(act.filter((o) => o.status === "listo").map((o) => o.id));
   const by = (s) => act.filter((o) => o.status === s).sort((a, b) => a.t0 - b.t0);
-  const fill = (id, list, empty) => { $(id).innerHTML = list.length ? list.map((o) => ticket(o, newO.includes(o))).join("") : `<div class="none">${empty}</div>`; };
-  fill("#zN", by("nuevo"), "Sin pedidos nuevos");
-  fill("#zP", by("prep"), "Nada en preparación");
-  fill("#zL", by("listo"), "Nada esperando mesero");
-  $("#cN").textContent = by("nuevo").length; $("#cP").textContent = by("prep").length; $("#cL").textContent = by("listo").length;
-  $("#nP").textContent = act.length; $("#nC").textContent = H.calls.length;
-  const calls = H.calls.slice().sort((a, b) => a.t0 - b.t0);
-  $("#cC").textContent = calls.length ? calls.length + " abiertos" : "";
-  const lbl = (c) => c.kind === "cuenta" ? "Pide la cuenta" : c.kind === "alerta" ? `Calificó ${c.stars} de 5: que pase el gerente` : "Llama al mesero";
-  $("#calls").innerHTML = calls.length ? calls.sort((a, b) => (a.kind === "alerta" ? 0 : 1) - (b.kind === "alerta" ? 0 : 1)).map((c) => `<div class="call ${c.kind}"><span class="m">${c.m}</span><span class="tx">${lbl(c)}${c.text ? `<small>"${esc(c.text)}"</small>` : ""}<small data-t="${c.t0}">hace ${ago(c.t0)}</small></span><button class="btn btn-ink" type="button" data-c="${c.id}">${c.kind === "alerta" ? "Ya pasé" : "Atendido"}</button></div>`).join("") : `<div class="none">Ninguna mesa está llamando</div>`;
-  $("#tables").innerHTML = H.tables.map((t) => { const al = t.mesero || t.cuenta; return `<button type="button" class="tb ${t.alerta ? "bad" : al ? "al" : t.orders ? "oc" : ""}" data-m="${t.m}" aria-label="Mesa ${t.m}"><b>${t.m}</b><small>${t.alerta ? "Gerente" : t.cuenta ? "Cuenta" : t.mesero ? "Llama" : t.pending ? t.pending + " en curso" : t.orders ? "Servida" : "Libre"}</small>${t.pending && !al ? '<span class="dt"></span>' : ""}</button>`; }).join("");
-  const T = H.mesaToday;
-  $("#stats").innerHTML = `<div><b>${T.orders}</b><small>Pedidos desde la mesa</small></div><div><b>${T.prepAvg ? T.prepAvg + "'" : "–"}</b><small>Tiempo promedio a "listo"</small></div><div><b>${T.calls}</b><small>Llamados</small></div><div><b>${T.callAvg ? T.callAvg + "'" : "–"}</b><small>Tiempo en atender</small></div><div><b>${T.reviews ? T.rating : "–"}</b><small>Calificación del día (de 5)</small></div><div><b>${T.reviews}</b><small>Calificaciones</small></div>`;
+  const fill = (id, list, empty) => { const z = document.getElementById(id); if (!z) return; z.innerHTML = list.length ? list.map((o) => ticket(o, newO.includes(o) || newL.includes(o))).join("") : `<div class="none">${empty}</div>`; setN("c_" + id, list.length); };
+  fill("zN", by("nuevo"), "Sin pedidos nuevos");
+  fill("zP", by("prep"), "Nada en preparación");
+  fill("zL", by("listo"), ROLE === "meseros" ? "Nada listo por llevar" : "Nada esperando mesero");
+  setN("c_all", act.length);
+  if ($("#wait")) { const w = by("listo"); $("#wait").innerHTML = w.length ? w.map((o) => `<div class="mini"><span><b>${o.m}</b>${o.items.reduce((a, i) => a + i.q, 0)} productos</span><span class="t ${mins(o.tUpd) >= 4 ? "r" : ""}" data-t="${o.tUpd}">${ago(o.tUpd)}</span></div>`).join("") : `<div class="none">Nada esperando</div>`; setN("c_wait", w.length); }
+  if ($("#kit")) { const k = act.filter((o) => o.status !== "listo").sort((a, b) => a.t0 - b.t0); $("#kit").innerHTML = k.length ? k.map((o) => `<div class="mini"><span><b>${o.m}</b>${o.status === "prep" ? "Preparando" : "Recibido"}</span><span class="t ${mins(o.t0) >= 15 ? "r" : ""}" data-t="${o.t0}">${ago(o.t0)}</span></div>`).join("") : `<div class="none">Cocina sin pendientes</div>`; setN("c_kit", k.length); }
+  if ($("#calls")) {
+    const calls = H.calls.slice().sort((a, b) => (a.kind === "alerta" ? 0 : 1) - (b.kind === "alerta" ? 0 : 1) || a.t0 - b.t0);
+    const lbl = (c) => c.kind === "cuenta" ? "Pide la cuenta" : c.kind === "alerta" ? `Calificó ${c.stars} de 5: que pase el gerente` : "Llama al mesero";
+    $("#calls").innerHTML = calls.length ? calls.map((c) => `<div class="call ${c.kind}"><span class="m">${c.m}</span><span class="tx">${lbl(c)}${c.text ? `<small>"${esc(c.text)}"</small>` : ""}<small data-t="${c.t0}" data-pre="hace ">hace ${ago(c.t0)}</small></span><button class="btn btn-ink" type="button" data-c="${c.id}">${c.kind === "alerta" ? "Ya pasé" : "Atendido"}</button></div>`).join("") : `<div class="none">Ninguna mesa está llamando</div>`;
+    setN("cC", calls.length);
+  }
+  if ($("#tables")) $("#tables").innerHTML = H.tables.map((t) => { const al = t.mesero || t.cuenta; return `<button type="button" class="tb ${t.alerta ? "bad" : al ? "al" : t.orders ? "oc" : ""}" data-m="${t.m}" aria-label="Mesa ${t.m}"><b>${t.m}</b><small>${t.alerta ? "Gerente" : t.cuenta ? "Cuenta" : t.mesero ? "Llama" : t.pending ? t.pending + " en curso" : t.orders ? "Servida" : "Libre"}</small>${t.pending && !al && !t.alerta ? '<span class="dt"></span>' : ""}</button>`; }).join("");
+  const Q = H.mesaToday;
+  if ($("#stats")) $("#stats").innerHTML = ROLE === "cocina"
+    ? `<div><b>${Q.orders}</b><small>Pedidos hoy</small></div><div><b>${Q.items}</b><small>Productos</small></div><div><b>${Q.prepAvg ? Q.prepAvg + "'" : "–"}</b><small>Promedio a "listo"</small></div><div><b>${act.filter((o) => o.status !== "listo").length}</b><small>Pendientes</small></div>`
+    : `<div><b>${Q.orders}</b><small>Pedidos desde la mesa</small></div><div><b>${Q.prepAvg ? Q.prepAvg + "'" : "–"}</b><small>Promedio a "listo"</small></div><div><b>${Q.calls}</b><small>Llamados</small></div><div><b>${Q.callAvg ? Q.callAvg + "'" : "–"}</b><small>Tiempo en atender</small></div><div><b>${Q.reviews ? Q.rating : "–"}</b><small>Calificación del día</small></div><div><b>${Q.reviews}</b><small>Calificaciones</small></div>`;
   if (sheetM) tableSheet(sheetM);
 }
 function tableSheet(m) {
@@ -237,31 +314,54 @@ function tableSheet(m) {
   const cs = H.calls.filter((c) => c.m === m);
   const st = { nuevo: "Nuevo", prep: "Preparando", listo: "Listo", entregado: "Entregado", cancelado: "Cancelado" };
   $("#sheet").innerHTML = `<button class="x" type="button" id="sx" aria-label="Cerrar">×</button><h3>Mesa ${m}</h3>
-    ${cs.length ? `<p class="note" style="color:var(--terra-d);font-weight:800">${cs.map((c) => (c.kind === "cuenta" ? "Pidió la cuenta" : "Llamó al mesero") + " hace " + ago(c.t0)).join(" · ")}</p>` : ""}
+    ${cs.length ? `<p class="note" style="color:var(--terra-d);font-weight:800">${cs.map((c) => (c.kind === "cuenta" ? "Pidió la cuenta" : c.kind === "alerta" ? `Calificó ${c.stars} de 5` : "Llamó al mesero") + " hace " + ago(c.t0)).join(" · ")}</p>` : ""}
     ${os.length ? os.map((o) => `<div class="o"><b>#${String(o.n).padStart(3, "0")}</b><span>${st[o.status]} · hace ${ago(o.t0)}${o.who ? " · " + esc(o.who) : ""}</span><ul>${o.items.map((it) => `<li>${it.q} × ${esc(it.n)}${it.note ? " · " + esc(it.note) : ""}</li>`).join("")}</ul></div>`).join("") : `<p class="note">Sin pedidos abiertos en esta mesa.</p>`}
-    <button class="btn ${closeArm === m ? "btn-terra" : "btn-ink"}" type="button" id="closeT">${closeArm === m ? "Toca otra vez para cerrar la mesa" : "Cerrar mesa (ya pagaron)"}</button>
-    <p class="note">Al cerrar, la mesa queda libre y los próximos clientes que escaneen el QR empiezan desde cero.</p>`;
+    <button class="btn ${closeArm === m ? "btn-terra" : "btn-ink"}" type="button" id="closeT">${closeArm === m ? "Toca otra vez para liberar la mesa" : "Cerrar mesa (ya pagaron)"}</button>
+    <p class="note">Al cerrarla, la mesa queda libre: la entrada la ve para llamar al siguiente de la lista de espera, y el QR empieza desde cero.</p>`;
   $("#scrim").classList.add("on");
 }
 function closeSheet() { sheetM = 0; closeArm = 0; $("#scrim").classList.remove("on"); }
 
+/* ---------- ajustes de sonido ---------- */
+function paintCfg() {
+  $$("#cfg .seg").forEach((sg) => sg.querySelectorAll("button").forEach((b) => b.classList.toggle("on", CFG[sg.dataset.k] === b.dataset.v)));
+  $("#cfgTxt").textContent = CFG.vol === "1" ? "Sonido fuerte" : "Sonido";
+}
+paintCfg();
+
 document.addEventListener("click", async (e) => {
-  const b = e.target.closest("button"); if (!b) { if (e.target.id === "scrim") closeSheet(); return; }
-  if (!audioOk) { unlockAudio(); audioOk = true; $("#snd").classList.add("hide"); }
+  const b = e.target.closest("button");
+  if (!$("#cfg").classList.contains("hide") && !e.target.closest("#cfg") && !e.target.closest("#cfgBtn")) { $("#cfg").classList.add("hide"); $("#cfgBtn").setAttribute("aria-expanded", "false"); }
+  if (!b) { if (e.target.id === "scrim") closeSheet(); return; }
+  if (!audioOk) { unlockAudio(); audioOk = true; $("#snd").classList.add("hide"); wake(); }
   try {
+    if (b.id === "cfgBtn") { const h = $("#cfg").classList.toggle("hide"); b.setAttribute("aria-expanded", String(!h)); return; }
+    const sg = b.closest("#cfg .seg"); if (sg) { CFG[sg.dataset.k] = b.dataset.v; store.set("snd_" + ROLE, JSON.stringify(CFG)); paintCfg(); return; }
+    if (b.id === "testSnd") { ring(ROLE === "meseros" ? "llamado" : "pedido", ROLE === "meseros" ? "Mesa cuatro llama al mesero" : "Nuevo pedido, mesa cuatro"); return; }
+    if (b.id === "pushOn") {
+      b.disabled = true; b.textContent = "Activando…";
+      try {
+        const sub = await pushSubscribe();
+        const r = await api("/host/push/sub", { pin, body: { sub: sub.toJSON(), role: PUSHROLE } });
+        await api("/host/push/test", { pin, body: { role: PUSHROLE } });
+        $("#pushNote").textContent = `Listo: ${r.count} ${r.count === 1 ? "celular recibe" : "celulares reciben"} los avisos de ${PUSHROLE}. Te mandamos una prueba.`;
+        b.textContent = "Avisos activados en este celular"; b.classList.add("btn-ok");
+      } catch (x) { $("#pushNote").textContent = x.message || "No se pudieron activar."; b.disabled = false; b.textContent = "Avisarme en este celular aunque esté bloqueado"; }
+      return;
+    }
+    if (b.dataset.tab) { sec = b.dataset.tab; showSec(); window.scrollTo(0, 0); return; }
     if (b.dataset.o) { H = await api("/host/order", { pin, body: { id: b.dataset.o, action: b.dataset.a } }); paint(); }
     else if (b.dataset.c) { H = await api("/host/call", { pin, body: { id: b.dataset.c } }); paint(); }
     else if (b.dataset.m) tableSheet(+b.dataset.m);
     else if (b.id === "sx") closeSheet();
     else if (b.id === "closeT") {
       if (closeArm !== sheetM) { closeArm = sheetM; tableSheet(sheetM); setTimeout(() => { if (closeArm) { closeArm = 0; if (sheetM) tableSheet(sheetM); } }, 4000); return; }
-      const m = sheetM; H = await api("/host/table", { pin, body: { m, action: "close" } }); closeSheet(); paint(); toast(`Mesa ${m} cerrada`);
+      const m = sheetM; H = await api("/host/table", { pin, body: { m, action: "close" } }); closeSheet(); paint(); toast(`Mesa ${m} libre`);
     }
-    else if (b.dataset.mt) { document.body.dataset.mt = b.dataset.mt; $$(".mtabs button").forEach((x) => x.classList.toggle("on", x === b)); }
   } catch (x) { toast(x.message); }
 });
-document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeSheet(); });
-setInterval(() => { $$("[data-t]").forEach((el) => { const t = +el.dataset.t; const pre = el.textContent.startsWith("listo") ? "listo " : el.textContent.startsWith("hace") ? "hace " : ""; el.textContent = pre + ago(t); }); }, 15000);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeSheet(); $("#cfg").classList.add("hide"); } });
+setInterval(() => { $$("[data-t]").forEach((el) => { el.textContent = (el.dataset.pre || "") + ago(+el.dataset.t); }); }, 15000);
 if (pin) login(pin, true);
 })();
 </script>

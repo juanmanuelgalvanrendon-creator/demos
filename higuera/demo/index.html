@@ -11,7 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../hg.css">
 <style>
-html,body{height:100%}
+html,body{height:100%;overflow:hidden}
 body{background:#1f231b;color:#f4f1ea;overflow:hidden}
 .hide{display:none!important}
 .gate{position:fixed;inset:0;z-index:90;background:#1f231b;display:grid;place-items:center;padding:20px}
@@ -20,7 +20,7 @@ body{background:#1f231b;color:#f4f1ea;overflow:hidden}
 .gate p{font-size:14px;color:var(--mut)}
 .gate .err{color:var(--red);font-weight:700;font-size:13.5px;min-height:18px}
 .gate .in{text-align:center;font-size:24px;letter-spacing:.4em}
-.app{display:grid;grid-template-rows:auto auto 1fr;height:100vh}
+.app{display:grid;grid-template-rows:auto auto 1fr;height:100vh;overflow:hidden}
 .bar{display:flex;align-items:center;gap:14px;padding:12px 20px;border-bottom:1px solid rgba(244,241,234,.08)}
 .bar .logo{height:22px;filter:invert(1) brightness(2)}
 .bar h1{font:400 22px/1 var(--serif)}
@@ -45,7 +45,8 @@ body{background:#1f231b;color:#f4f1ea;overflow:hidden}
 .phone{position:relative;width:calc(var(--ph) * .48);height:var(--ph);border-radius:46px;background:#0d0d0b;padding:11px;box-shadow:0 30px 60px -30px rgba(0,0,0,.9),inset 0 0 0 2px #3a3a35;flex:0 0 auto}
 .phone::before{content:"";position:absolute;top:19px;left:50%;transform:translateX(-50%);width:30%;height:24px;border-radius:99px;background:#0d0d0b;z-index:3}
 .phone .scr{width:100%;height:100%;border-radius:36px;overflow:hidden;background:var(--bg);position:relative}
-.phone iframe{position:absolute;top:0;left:0;border:0;width:390px;height:calc(390px / .48 * (1 - .05));transform-origin:0 0}
+.phone .scr::before{content:"";position:absolute;inset:0 0 auto 0;height:34px;background:var(--bg);z-index:1}
+.phone iframe{position:absolute;top:34px;left:0;border:0;width:390px;height:calc(390px / .48 * (1 - .05));transform-origin:0 0}
 .scan{display:flex;gap:12px;align-items:center;background:rgba(244,241,234,.06);border-radius:16px;padding:10px 12px;width:100%}
 .scan .q{width:78px;height:78px;background:#fff;border-radius:10px;padding:4px;flex:0 0 auto}
 .scan .q svg{width:100%;height:100%}
@@ -87,12 +88,12 @@ body{background:#1f231b;color:#f4f1ea;overflow:hidden}
   <div class="steps" id="steps"></div>
   <div class="main">
     <div class="left">
-      <div class="lbl"><span>El celular del cliente · Mesa 1</span><button type="button" class="bbtn" id="reloadP" style="height:28px;font-size:11.5px">Recargar</button></div>
+      <div class="lbl"><span>El celular del cliente</span><div class="vseg" id="pseg"><button type="button" class="on" data-p="mesa">En la mesa 1</button><button type="button" data-p="fila">En la fila</button></div></div>
       <div class="phone" id="phone"><div class="scr"><iframe id="pf" title="App del cliente en la mesa 1"></iframe></div></div>
-      <div class="scan"><div class="q" id="qr2"></div><div><b>Pruébalo con tu celular</b><small>Escanea este código: es la mesa 2. Pide algo y míralo llegar a la barra.</small></div></div>
+      <div class="scan"><div class="q" id="qr2"></div><div><b>Pruébalo con tu celular</b><small>Escanea este código: es la mesa 2. Pide algo y míralo llegar a la cocina.</small></div></div>
     </div>
     <div class="right">
-      <div class="lbl"><span id="rlbl">Lo que ve el equipo en la barra</span><div class="vseg" id="seg"><button type="button" class="on" data-v="barra">Barra y meseros</button><button type="button" data-v="club">Gerente</button><button type="button" data-v="host">Entrada</button></div></div>
+      <div class="lbl"><span id="rlbl">Lo que ve el equipo en la barra</span><div class="vseg" id="seg"><button type="button" class="on" data-v="cocina">Cocina</button><button type="button" data-v="meseros">Meseros</button><button type="button" data-v="club">Gerente</button><button type="button" data-v="host">Entrada</button></div></div>
       <div class="frame"><iframe id="rf" title="Pantalla del equipo"></iframe></div>
     </div>
   </div>
@@ -111,16 +112,16 @@ body{background:#1f231b;color:#f4f1ea;overflow:hidden}
 (() => {
 const { api, live, store, toast, unlockAudio, qrSvg } = HG;
 const $ = (s) => document.querySelector(s);
-let pin = store.get("pin") || "", H = null, conn = null, base = 0, baseMem = null, view = "barra";
+let pin = store.get("pin") || "", H = null, conn = null, base = 0, baseMem = null, view = "cocina", pview = "mesa";
 const STEPS = [
   ["Pide desde la mesa", "En el celular, agrega algo y toca Enviar a cocina"],
-  ["Llega a la barra", "La comanda aparece al instante con sonido"],
-  ["Márcalo listo", "Toca Empezar y luego Listo: el cliente lo ve"],
+  ["Llega a cocina", "La comanda aparece al instante con sonido"],
+  ["Cocina lo marca listo", "Al mesero le suena para llevarlo; el cliente lo ve"],
   ["Pide la cuenta", "El cliente la pide y califica su visita"],
   ["Únete al club", "En la pestaña Club, con nombre y WhatsApp"],
   ["Mira al gerente", "Cambia a la vista Gerente: socios, reseñas, promos"],
 ];
-const VIEWS = { barra: ["../barra/", "Lo que ve el equipo en la barra"], club: ["../club/", "Lo que ve el gerente"], host: ["../host/", "La lista de espera en la entrada"] };
+const VIEWS = { cocina: ["../cocina/", "Lo que ve la cocina"], meseros: ["../meseros/", "Lo que ven los meseros"], club: ["../club/", "Lo que ve el gerente"], host: ["../host/", "La entrada: lista de espera y mesas que se liberan"] };
 
 async function login(p, silent) {
   try {
@@ -132,15 +133,16 @@ async function login(p, silent) {
 $("#gf").addEventListener("submit", (e) => { e.preventDefault(); unlockAudio(); const p = $("#pin").value.replace(/\D/g, ""); if (p.length < 4) { $("#gerr").textContent = "Escribe al menos 4 números."; return; } login(p); });
 const tUrl = (m) => location.origin + "/higuera/mesa/?m=" + m + "&k=" + H.mesas.keys[m];
 function fit() {
-  const avail = innerHeight - $(".bar").offsetHeight - $("#steps").offsetHeight - 150;
+  const avail = innerHeight - $(".bar").offsetHeight - $("#steps").offsetHeight - 200;
   const ph = Math.max(480, Math.min(820, avail));
   $("#phone").style.setProperty("--ph", ph + "px");
   const scrW = ph * 0.48 - 22, k = scrW / 390;
-  const f = $("#pf"); f.style.transform = `scale(${k})`; f.style.height = (ph - 22) / k + "px";
+  const f = $("#pf"); f.style.transform = `scale(${k})`; f.style.height = (ph - 22 - 34) / k + "px";
   $(".scan").style.width = ph * 0.48 + "px";
 }
+function phoneSrc() { return pview === "fila" ? location.origin + "/higuera/fila/" : tUrl(1); }
 function setup() {
-  $("#pf").src = tUrl(1);
+  $("#pf").src = phoneSrc();
   $("#qr2").innerHTML = qrSvg(tUrl(2), { margin: 1 });
   setView(view); fit();
 }
@@ -168,13 +170,13 @@ function steps() {
   $("#steps").innerHTML = STEPS.map(([b, s], i) => `<div class="st ${done[i] ? "ok" : i === now ? "now" : ""}"><i>${done[i] ? "✓" : i + 1}</i><span><b>${b}</b><small>${s}</small></span></div>`).join("");
 }
 $("#seg").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) { setView(b.dataset.v); steps(); } });
-$("#reloadP").onclick = () => { $("#pf").src = tUrl(1); };
+$("#pseg").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; pview = b.dataset.p; document.querySelectorAll("#pseg button").forEach((x) => x.classList.toggle("on", x === b)); $("#pf").src = phoneSrc(); if (pview === "fila" && view !== "host") setView("host"); steps(); });
 $("#restart").onclick = async () => {
   try {
     // borra el socio que se haya creado en esta demostración y vacía la mesa 1 y 2
     const c = JSON.parse(store.get("club") || "null");
     if (c) { try { await api("/club/leave", { body: c }); } catch (x) {} store.set("club", null); }
-    store.set("cart_1", null); store.set("cart_2", null);
+    store.set("cart_1", null); store.set("cart_2", null); store.set("w_1_" + new Date().toDateString(), null); store.set("w_2_" + new Date().toDateString(), null);
     await api("/host/table", { pin, body: { m: 1, action: "close" } });
     await api("/host/table", { pin, body: { m: 2, action: "close" } });
     await api("/host/reset", { pin, body: { only: "mesas" } });
@@ -182,6 +184,9 @@ $("#restart").onclick = async () => {
   } catch (x) { toast(x.message); }
 };
 addEventListener("resize", fit);
+// la presentación no se desplaza aunque el celular de adentro haga scroll
+addEventListener("scroll", () => { if (scrollY) scrollTo(0, 0); });
+$("#app").addEventListener("scroll", () => { $("#app").scrollTop = 0; });
 steps();
 if (pin) login(pin, true);
 })();

@@ -85,6 +85,8 @@ h1 em{font-style:italic;color:var(--terra)}
 .called-v .k{font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;opacity:.8}
 .called-v h2{font:400 56px/.95 var(--serif);margin:14px 0 12px}
 .called-v .code{font:600 30px var(--mono);background:rgba(255,255,255,.16);border-radius:16px;padding:10px 18px;display:inline-block;margin:6px auto 0}
+.called-v .mesa-n{font-size:17px;font-weight:700;margin:0 0 12px}
+.called-v .mesa-n b{font:400 44px/1 var(--serif);display:block;margin-top:4px}
 .called-v .cd{font:400 64px/1 var(--serif);margin-top:26px}
 .called-v .cd.late{opacity:.7}
 .called-v .cdl{font-size:14px;opacity:.85;margin-top:6px}
@@ -271,6 +273,7 @@ function calledLayer(m) {
     <div class="ring"><svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18h20M4 18a8 8 0 0 1 16 0M12 10V7M10 7h4"/></svg></div>
     <div class="k" style="margin-top:22px">Higuera · Tampiquito</div>
     <h2>Tu mesa está lista</h2>
+    ${m.mesa ? `<div class="mesa-n">Pasa a la mesa <b>${m.mesa}</b></div>` : ""}
     <div><span class="code">${esc(m.code)}</span></div>
     <div class="cd ${left <= 0 ? "late" : ""}" id="cd">${left > 0 ? mmss(left) : "0:00"}</div><div class="cdl" id="cdl">${left > 0 ? "para llegar a la entrada" : "Se acabó la tolerancia. Si ya vienes, avísale al equipo en la entrada."}</div>
     ${status}

@@ -37,6 +37,13 @@ export default {
       return stub.fetch(req);
     }
     if (url.pathname === "/api/ping") return json({ ok: true, t: Date.now() });
+    if (url.pathname === "/higuera/cocina" || url.pathname === "/higuera/meseros") return Response.redirect(url.origin + url.pathname + "/" + url.search, 301);
+    if (url.pathname === "/higuera/cocina/" || url.pathname === "/higuera/meseros/") {
+      const r = await env.ASSETS.fetch(new Request(new URL("/higuera/barra/", url).toString(), request));
+      const out = new Response(r.body, r);
+      out.headers.set("cache-control", "no-cache");
+      return out;
+    }
     const res = await env.ASSETS.fetch(request);
     // el service worker necesita poder controlar todo /higuera/
     if (url.pathname === "/higuera/sw.js") {
@@ -95,7 +102,7 @@ export class Fila {
       pinHash: null, salt: rid(), counter: 0, day: dayKey(cfg.tz), entries: [], history: [], v: 1,
       autoHours: true, lastCall: 30, tolerance: 10, maxSize: 10,
       mesas: { on: true, mode: "pedir", count: 12, keys: {}, rewardVisits: 5, rewardText: "Tu latte va por la casa", onlyHours: false, reviewUrl: "https://www.google.com/maps/search/?api=1&query=Cocina%20Higuera%20San%20Pedro%20Garza%20Garc%C3%ADa" },
-      orders: [], calls: [], orderSeq: 0, promos: [], reviews: [],
+      orders: [], calls: [], orderSeq: 0, promos: [], reviews: [], staff: [], freed: [],
       site: { notice: "", season: { on: true, title: "Buttermilk waffle con moras", text: "El destacado de la semana. El equipo lo cambia cuando quiera desde su panel.", img: "waffle" }, soldout: [], soldDay: "" },
     };
     this.s = { ...base, ...((await this.ctx.storage.get("s")) || {}) };
@@ -131,7 +138,7 @@ export class Fila {
     if (s.day === today) return;
     const st = { ...this.statsFor(s.entries, s.day), ...this.mesaStats() };
     if (st.joined || st.orders || st.calls) s.history = [...s.history.filter((h) => h.day !== s.day), st].slice(-60);
-    s.orders = []; s.calls = []; s.orderSeq = 0;
+    s.orders = []; s.calls = []; s.orderSeq = 0; s.freed = [];
     (s.reviews || []).forEach((r) => { r.closed = true; delete r.ipH; });
     // los datos personales de la lista se borran al cambiar el día
     s.entries = [];
@@ -237,7 +244,7 @@ export class Fila {
       if (me) {
         const ahead = q.filter((e) => e.status === "waiting" && e.t0 < me.t0).length;
         out.mine = {
-          id: me.id, code: me.code, name: me.name, size: me.size, zone: me.zone, status: me.status, otw: !!me.otw, here: !!me.here,
+          id: me.id, code: me.code, name: me.name, size: me.size, zone: me.zone, status: me.status, otw: !!me.otw, here: !!me.here, mesa: me.mesa || 0,
           hasPhone: !!me.phone, hasPush: !!me.push, needs: me.needs || [],
           t0: me.t0, tCalled: me.tCalled || null, ahead, eta: me.status === "waiting" ? Math.max(3, Math.round((ahead + 1) * per)) : 0,
         };
@@ -265,6 +272,7 @@ export class Fila {
       mesas: s.mesas, tables: this.tablesView(),
       orders: s.orders.filter((o) => !o.closed || Date.now() - o.tUpd < 3600000).map((o) => ({ ...this.orderView(o), closed: !!o.closed, tReady: o.tReady || null })),
       calls: s.calls.filter((c) => c.status === "open").map((c) => ({ id: c.id, m: c.m, kind: c.kind, t0: c.t0, demo: !!c.demo, stars: c.stars || 0, text: c.text || "" })),
+      freed: (s.freed || []).filter((f) => Date.now() - f.t < 30 * 60000), staffPush: { cocina: (s.staff || []).filter((x) => x.role === "cocina").length, meseros: (s.staff || []).filter((x) => x.role === "meseros").length, gerente: (s.staff || []).filter((x) => x.role === "gerente").length },
       reviews: (s.reviews || []).slice(-40).reverse(), mesaToday: this.mesaStats(true), club: this.clubSummary(), promos: (s.promos || []).slice(-8).reverse(),
     };
   }
@@ -325,6 +333,24 @@ export class Fila {
       reviews: revs.length, rating: revs.length ? Math.round((revs.reduce((a, r) => a + r.stars, 0) / revs.length) * 10) / 10 : 0, low: revs.filter((r) => r.stars <= 3).length,
     };
   }
+  /* ----- avisos al celular del equipo (cocina, meseros, gerente) ----- */
+  notifyStaff(roles, msg) {
+    const subs = (this.s.staff || []).filter((x) => roles.includes(x.role));
+    if (!subs.length) return;
+    const t = Date.now();
+    subs.forEach((x) => { x.msg = { ...msg, t }; });
+    const job = (async () => {
+      let changed = false;
+      await Promise.all(subs.map(async (x) => {
+        const st = await this.webPush(x.ep, "hgstaff" + x.role);
+        if (st === 404 || st === 410) { this.s.staff = this.s.staff.filter((y) => y !== x); changed = true; }
+      }));
+      await this.ctx.storage.put("s", this.s);
+      if (changed) this.broadcast();
+    })();
+    try { this.ctx.waitUntil(job); } catch (e) {}
+  }
+  itemsTxt(items) { return items.map((it) => it.q + "× " + it.n).join(", ").slice(0, 120); }
   async ipHash(request) { return (await sha(this.s.salt + (request.headers.get("x-ip") || ""))).slice(0, 16); }
 
   /* ----- club ----- */
@@ -572,6 +598,7 @@ export class Fila {
       if (r) { o.mid = r.id; o.who = (r.name || "").split(" ")[0]; visit = this.visitFor(r); }
       this.s.orders.push(o);
       await this.save();
+      this.notifyStaff(["cocina"], { title: "Nuevo pedido · Mesa " + m, body: this.itemsTxt(items), url: "/higuera/cocina/" });
       return json({ ok: true, order: this.orderView(o), member: r ? this.memberView(r) : null, visit });
     }
     if (p === "/mesa/call" && method === "POST") {
@@ -585,7 +612,10 @@ export class Fila {
         return json({ ok: true });
       }
       let c = this.s.calls.find((x) => x.m === m && x.kind === kind && x.status === "open");
-      if (!c) { c = { id: rid(), m, kind, t0: Date.now(), status: "open" }; this.s.calls.push(c); await this.save(); }
+      if (!c) {
+        c = { id: rid(), m, kind, t0: Date.now(), status: "open" }; this.s.calls.push(c); await this.save();
+        this.notifyStaff(["meseros"], { title: "Mesa " + m + (kind === "cuenta" ? " pide la cuenta" : " llama al mesero"), body: kind === "cuenta" ? "Lleva la cuenta a la mesa " + m + "." : "Pasa a la mesa " + m + ".", url: "/higuera/meseros/" });
+      }
       return json({ ok: true, id: c.id });
     }
 
@@ -607,7 +637,10 @@ export class Fila {
       r.stars = stars; r.text = clean(body.text, 300); r.who = mem ? (mem.name || "").split(" ")[0] : ""; r.tUpd = Date.now();
       // calificación baja: alerta al gerente para que pase a la mesa antes de que el cliente se vaya
       const al = s.calls.find((c) => c.kind === "alerta" && c.rid === r.id && c.status === "open");
-      if (stars <= 3 && !al) s.calls.push({ id: rid(), m, kind: "alerta", t0: Date.now(), status: "open", rid: r.id, stars, text: r.text });
+      if (stars <= 3 && !al) {
+        s.calls.push({ id: rid(), m, kind: "alerta", t0: Date.now(), status: "open", rid: r.id, stars, text: r.text });
+        this.notifyStaff(["meseros", "gerente"], { title: "Mesa " + m + " calificó " + stars + " de 5", body: (r.text ? "\"" + r.text + "\". " : "") + "Que pase el gerente a la mesa.", url: "/higuera/meseros/" });
+      }
       else if (al) { if (stars > 3) { al.status = "done"; al.tDone = Date.now(); } else { al.stars = stars; al.text = r.text; } }
       s.reviews = s.reviews.slice(-300);
       await this.save();
@@ -689,6 +722,8 @@ export class Fila {
       return json({ ok: true });
     }
     if (p === "/push/msg" && method === "POST") {
+      const sx = body.endpoint && (this.s.staff || []).find((x) => x.ep === body.endpoint && x.msg);
+      if (sx) return json({ title: sx.msg.title, body: sx.msg.body, url: sx.msg.url, tag: "hg-staff-" + sx.msg.t });
       const e = body.endpoint && this.s.entries.filter((x) => x.push && x.push.endpoint === body.endpoint && x.pushMsg).sort((a, b) => b.pushMsg.t - a.pushMsg.t)[0];
       if (!e || !e.pushMsg) {
         const r = body.endpoint ? this.sql().exec("SELECT pmsg FROM members WHERE push=? AND pmsg IS NOT NULL", String(body.endpoint)).toArray()[0] : null;
@@ -724,9 +759,13 @@ export class Fila {
         const now = Date.now();
         let pushed = null;
         if (body.action === "call" || body.action === "renotify") {
-          if (body.action === "call") { e.status = "called"; e.tCalled = now; e.calls = 1; }
+          if (body.action === "call") {
+            e.status = "called"; e.tCalled = now; e.calls = 1;
+            const mm = parseInt(body.mesa, 10);
+            if (mm >= 1 && mm <= this.s.mesas.count) { e.mesa = mm; this.s.freed = (this.s.freed || []).filter((f) => f.m !== mm); }
+          }
           else e.calls = (e.calls || 1) + 1;
-          pushed = await this.sendPush(e, { kind: "call" + (e.calls || 1), title: "Tu mesa está lista, " + e.name, body: `Te esperamos en la entrada de ${this.s.name} en los próximos ${this.s.tolerance} minutos. Tu turno: ${e.code}.`, url: this.cfg.site + "?t=" + e.id });
+          pushed = await this.sendPush(e, { kind: "call" + (e.calls || 1), title: "Tu mesa está lista, " + e.name, body: `${e.mesa ? "Pasa a la mesa " + e.mesa + ". " : ""}Te esperamos en la entrada de ${this.s.name} en los próximos ${this.s.tolerance} minutos. Tu turno: ${e.code}.`, url: this.cfg.site + "?t=" + e.id });
           if (body.action === "call") await this.notifyNext();
         }
         else if (body.action === "seat") {
@@ -800,6 +839,33 @@ export class Fila {
         await this.save();
         return json(this.hostState());
       }
+      // ---- avisos en el celular del equipo ----
+      if (p === "/host/push/sub" && method === "POST") {
+        const role = ["cocina", "meseros", "gerente"].includes(body.role) ? body.role : "meseros";
+        let ep;
+        try { ep = new URL(body.sub?.endpoint); } catch (x) { return json({ error: "Suscripción inválida" }, 400); }
+        if (ep.protocol !== "https:" || !PUSH_HOSTS.some((rx) => rx.test(ep.hostname))) return json({ error: "Servicio de notificaciones no permitido" }, 400);
+        this.s.staff = (this.s.staff || []).filter((x) => x.ep !== ep.toString());
+        this.s.staff.push({ ep: ep.toString(), role, t: Date.now() });
+        this.s.staff = this.s.staff.slice(-40);
+        await this.save();
+        return json({ ok: true, count: this.s.staff.filter((x) => x.role === role).length });
+      }
+      if (p === "/host/push/off" && method === "POST") {
+        this.s.staff = (this.s.staff || []).filter((x) => x.ep !== String(body.endpoint || ""));
+        await this.save();
+        return json({ ok: true });
+      }
+      if (p === "/host/push/test" && method === "POST") {
+        const role = ["cocina", "meseros", "gerente"].includes(body.role) ? body.role : "meseros";
+        this.notifyStaff([role], { title: "Prueba de aviso · " + role, body: "Si ves esto con el celular bloqueado, los avisos funcionan.", url: "/higuera/" + (role === "gerente" ? "club" : role) + "/" });
+        return json({ ok: true });
+      }
+      if (p === "/host/freed" && method === "POST") {
+        this.s.freed = (this.s.freed || []).filter((f) => f.m !== parseInt(body.m, 10));
+        await this.save();
+        return json(this.hostState());
+      }
       // ---- mesas ----
       if (p === "/host/mesas" && method === "POST") {
         const M = this.s.mesas;
@@ -820,7 +886,7 @@ export class Fila {
         if (!o) return json({ error: "No existe" }, 404);
         const now = Date.now(), a = body.action;
         if (a === "start") o.status = "prep";
-        else if (a === "ready") { o.status = "listo"; o.tReady = o.tReady || now; }
+        else if (a === "ready") { o.status = "listo"; o.tReady = o.tReady || now; this.notifyStaff(["meseros"], { title: "Listo para llevar · Mesa " + o.m, body: this.itemsTxt(o.items), url: "/higuera/meseros/" }); }
         else if (a === "deliver") { o.status = "entregado"; o.tReady = o.tReady || now; }
         else if (a === "cancel") o.status = "cancelado";
         else if (a === "back") o.status = o.status === "entregado" ? "listo" : o.status === "listo" ? "prep" : "nuevo";
@@ -840,6 +906,7 @@ export class Fila {
           this.s.orders.forEach((o) => { if (o.m === m && !o.closed) { o.closed = true; o.tUpd = now; if (["nuevo", "prep", "listo"].includes(o.status)) o.status = "entregado"; } });
           this.s.calls.forEach((c) => { if (c.m === m && c.status === "open") { c.status = "done"; c.tDone = now; } });
           (this.s.reviews || []).forEach((r) => { if (r.m === m) r.closed = true; });
+          this.s.freed = [...(this.s.freed || []).filter((f) => f.m !== m && now - f.t < 30 * 60000), { m, t: now }];
         }
         await this.save();
         return json(this.hostState());
@@ -920,7 +987,7 @@ export class Fila {
       }
       if (p === "/host/reset" && method === "POST") {
         this.s.entries = []; this.s.counter = 0; this.s.open = true;
-        this.s.orders = []; this.s.calls = []; this.s.orderSeq = 0; this.s.reviews = [];
+        this.s.orders = []; this.s.calls = []; this.s.orderSeq = 0; this.s.reviews = []; this.s.freed = [];
         try { this.sql().exec("DELETE FROM requests WHERE ipH='demo'"); this.sql().exec("DELETE FROM members WHERE demo=1"); } catch (e) {}
         if (body.history) this.s.history = [];
         await this.save();

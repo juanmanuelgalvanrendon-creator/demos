@@ -77,23 +77,53 @@
     clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2600);
   }
 
-  let actx = null;
-  function beep(n = 3) {
+  let actx = null, master = null;
+  // volumen: "alto" pasa por un compresor para sonar fuerte aun con bocinas de tablet
+  function ctx() {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    if (!master) {
+      const comp = actx.createDynamicsCompressor();
+      comp.threshold.value = -24; comp.knee.value = 10; comp.ratio.value = 8; comp.attack.value = 0.002; comp.release.value = 0.2;
+      master = actx.createGain(); master.gain.value = 1;
+      master.connect(comp); comp.connect(actx.destination);
+    }
+    if (actx.state === "suspended") actx.resume();
+    return actx;
+  }
+  function tone(f, st, dur, vol, type) {
+    const a = ctx(), o = a.createOscillator(), g = a.createGain();
+    o.type = type || "square"; o.frequency.value = f; o.connect(g); g.connect(master);
+    g.gain.setValueAtTime(0.0001, st); g.gain.exponentialRampToValueAtTime(vol, st + 0.015); g.gain.setValueAtTime(vol, st + dur - 0.05); g.gain.exponentialRampToValueAtTime(0.0001, st + dur);
+    o.start(st); o.stop(st + dur + 0.02);
+  }
+  // patrones: "pedido" (tres notas que suben), "llamado" (timbre de dos tonos), "alerta" (sirena corta), "suave" (el de antes)
+  function alarm(kind = "pedido", vol = 0.9) {
     try {
-      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
-      const now = actx.currentTime;
-      for (let i = 0; i < n; i++) {
-        [660, 880].forEach((f, j) => {
-          const o = actx.createOscillator(), g = actx.createGain();
-          o.type = "sine"; o.frequency.value = f; o.connect(g); g.connect(actx.destination);
-          const st = now + i * 0.55 + j * 0.16;
-          g.gain.setValueAtTime(0.0001, st); g.gain.exponentialRampToValueAtTime(0.25, st + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, st + 0.28);
-          o.start(st); o.stop(st + 0.3);
-        });
-      }
+      const a = ctx(), t = a.currentTime + 0.02;
+      if (kind === "suave") { [660, 880].forEach((f, j) => tone(f, t + j * 0.16, 0.28, 0.25 * vol, "sine")); return; }
+      if (kind === "pedido") { for (let r = 0; r < 2; r++) [784, 988, 1319].forEach((f, j) => tone(f, t + r * 0.75 + j * 0.15, 0.17, vol, "square")); return; }
+      if (kind === "llamado") { for (let r = 0; r < 3; r++) { tone(1175, t + r * 0.6, 0.22, vol, "square"); tone(880, t + r * 0.6 + 0.24, 0.3, vol, "square"); } return; }
+      if (kind === "alerta") { for (let r = 0; r < 6; r++) tone(r % 2 ? 740 : 1480, t + r * 0.2, 0.19, vol, "sawtooth"); return; }
     } catch (e) {}
   }
-  function unlockAudio() { try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === "suspended") actx.resume(); } catch (e) {} }
+  function beep(n = 3) { alarm(n >= 3 ? "llamado" : "pedido"); }
+  function unlockAudio() { try { ctx(); } catch (e) {} }
+  // aviso por voz (español de México si existe)
+  function say(text) {
+    try {
+      if (!window.speechSynthesis) return;
+      const u = new SpeechSynthesisUtterance(text);
+      const v = speechSynthesis.getVoices().find((x) => /es[-_]MX/i.test(x.lang)) || speechSynthesis.getVoices().find((x) => /^es/i.test(x.lang));
+      if (v) u.voice = v; u.lang = v ? v.lang : "es-MX"; u.rate = 1; u.volume = 1;
+      speechSynthesis.speak(u);
+    } catch (e) {}
+  }
+  // mantener la pantalla encendida (tablets de cocina y barra)
+  let wl = null;
+  async function wake() {
+    try { if ("wakeLock" in navigator && !wl) { wl = await navigator.wakeLock.request("screen"); wl.addEventListener("release", () => { wl = null; }); } } catch (e) {}
+  }
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && wake._on) wake(); });
 
   function qrSvg(text, opts = {}) {
     if (!window.qrcode) return "";
@@ -104,5 +134,18 @@
     return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" shape-rendering="crispEdges" role="img" aria-label="Código QR"><rect width="${size}" height="${size}" fill="${opts.bg || "#fff"}"/><path d="${d}" fill="${opts.fg || "#1c1b17"}"/></svg>`;
   }
 
-  window.HG = { api, live, store, esc, ago, mmss, ZONES, toast, beep, unlockAudio, qrSvg, ROOM };
+  const b64ToU8 = (b) => { const p = "=".repeat((4 - (b.length % 4)) % 4); const x = atob((b + p).replace(/-/g, "+").replace(/_/g, "/")); return Uint8Array.from([...x].map((c) => c.charCodeAt(0))); };
+  // suscribe este navegador a notificaciones push y regresa la suscripción
+  async function pushSubscribe() {
+    const reg = await navigator.serviceWorker.register("/higuera/sw.js", { scope: "/higuera/" });
+    await navigator.serviceWorker.ready;
+    const perm = await Notification.requestPermission();
+    if (perm !== "granted") throw new Error(perm === "denied" ? "Las notificaciones están bloqueadas en este navegador" : "No se dio permiso");
+    const { key } = await api("/push/key");
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToU8(key) });
+    return sub;
+  }
+
+  window.HG = { api, live, store, esc, ago, mmss, ZONES, toast, beep, alarm, say, wake: () => { wake._on = true; return wake(); }, unlockAudio, qrSvg, pushSubscribe, ROOM };
 })();

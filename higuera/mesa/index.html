@@ -175,7 +175,7 @@ body{background:var(--bg);padding-bottom:calc(var(--tabs) + env(safe-area-inset-
 .danger{color:var(--red);font-weight:800;font-size:13px;text-decoration:underline;text-underline-offset:3px;margin-top:22px;display:block}
 /* barra inferior */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(251,250,246,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
-.tabs nav{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);height:var(--tabs)}
+.tabs nav{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);height:var(--tabs)}
 .tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:11.5px;font-weight:700;color:var(--mut);position:relative}
 .tabs button svg{width:23px;height:23px}
 .tabs button.on{color:var(--ink)}
@@ -215,6 +215,34 @@ body{background:var(--bg);padding-bottom:calc(var(--tabs) + env(safe-area-inset-
 .rvcard{padding:16px;margin-top:12px;display:flex;gap:12px;align-items:center}
 .rvcard p{font-size:13.5px;color:var(--ink2);flex:1}
 .rvcard b{display:block;font:400 21px/1.1 var(--serif);color:var(--ink)}
+.hact{display:flex;gap:6px}
+.tchip{white-space:nowrap;padding:0 11px;height:34px;font-size:13px}
+.top{padding:0 12px}
+.hb{white-space:nowrap;height:38px;padding:0 11px;border-radius:99px;background:var(--ink);color:#fff;display:inline-flex;align-items:center;gap:6px;font-weight:800;font-size:13px}
+.hb svg{width:17px;height:17px}
+.hb.on{background:var(--olive);box-shadow:0 0 0 3px rgba(79,91,65,.25)}
+.intro{padding:4px 2px 2px}
+.intro .h2{margin-top:6px}
+.how{font-size:14.5px;color:var(--ink2);margin-top:8px;line-height:1.45}
+.catsec{scroll-margin-top:140px}
+.cat-h{margin:26px 0 2px;padding-top:4px}
+.clubmini{display:flex;align-items:center;gap:12px;width:100%;margin-top:26px;padding:14px 16px;border-radius:18px;background:var(--olive);color:#f4f1ea;text-align:left;font-size:14px;font-weight:700;line-height:1.35}
+.clubmini svg{flex:0 0 auto;color:#f0c7a6}
+.clubmini span:nth-child(2){flex:1}
+.clubmini .go{background:#f0c7a6;color:var(--olive);border-radius:99px;padding:7px 12px;font-size:12.5px;font-weight:800}
+.cbar{position:fixed;left:12px;right:12px;bottom:calc(var(--tabs) + env(safe-area-inset-bottom) + 10px);z-index:39;max-width:536px;margin:0 auto;height:58px;border-radius:18px;background:var(--terra);color:#fff;display:flex;align-items:center;gap:12px;padding:0 10px 0 12px;font-weight:800;font-size:15.5px;box-shadow:0 18px 30px -12px rgba(0,0,0,.45)}
+.cbar[hidden]{display:none}
+.cbar .cn{min-width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.2);display:grid;place-items:center;font:600 15px var(--mono)}
+.cbar span:nth-child(2){flex:1;text-align:left}
+.cbar .go{background:#fff;color:var(--terra-d);border-radius:12px;padding:9px 14px;font-size:13.5px}
+body.has-cbar{padding-bottom:calc(var(--tabs) + env(safe-area-inset-bottom) + 76px)}
+body.has-cbar .toast{bottom:calc(var(--tabs) + env(safe-area-inset-bottom) + 80px)}
+.wsteps{list-style:none;margin:6px 0 18px;display:flex;flex-direction:column;gap:12px}
+.wsteps li{display:grid;grid-template-columns:38px 1fr;gap:12px;align-items:start}
+.wsteps b{width:38px;height:38px;border-radius:50%;background:var(--terra);color:#fff;display:grid;place-items:center;font:400 20px var(--serif)}
+.wsteps strong{display:block;font-size:15.5px}
+.wsteps span{font-size:14px;color:var(--ink2);line-height:1.4}
+@media (max-width:370px){.top .logo{height:20px}.hb span{display:none}.hb{width:40px;padding:0;justify-content:center}}
 .foot{text-align:center;font-size:12px;color:var(--mut);margin-top:30px;line-height:1.5}
 </style>
 </head>
@@ -224,22 +252,21 @@ body{background:var(--bg);padding-bottom:calc(var(--tabs) + env(safe-area-inset-
     <img class="logo" src="../img/logo-sm.png" alt="Higuera" width="72" height="26">
     <div class="tr">
       <span class="tchip" id="tchip"><span class="dot" id="ldot"></span><span id="tlabel">Club Higuera</span></span>
-      <button class="bell" id="bell" type="button" aria-label="Llamar al mesero o pedir la cuenta" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></button>
+      <div class="hact" id="hact"></div>
     </div>
   </header>
 
   <main>
-    <section class="view on" id="v-inicio" aria-label="Inicio"></section>
-    <section class="view" id="v-carta" aria-label="Carta"></section>
+    <section class="view on" id="v-carta" aria-label="Carta"></section>
     <section class="view" id="v-pedido" aria-label="Tu pedido"></section>
     <section class="view" id="v-club" aria-label="Club Higuera"></section>
   </main>
 </div>
 
+<button class="cbar" id="cbar" type="button" data-tab="pedido" hidden></button>
 <div class="tabs"><nav aria-label="Secciones">
-  <button type="button" data-tab="inicio" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Inicio</button>
-  <button type="button" data-tab="carta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>Carta</button>
-  <button type="button" data-tab="pedido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 3h12l-1 18H7z"/><path d="M9 7h6M9 11h6"/></svg><span id="tabPedLbl">Pedido</span><span class="bd" id="bdg" hidden>0</span></button>
+  <button type="button" data-tab="carta" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>Carta</button>
+  <button type="button" data-tab="pedido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 3h12l-1 18H7z"/><path d="M9 7h6M9 11h6"/></svg><span id="tabPedLbl">Mi pedido</span><span class="bd" id="bdg" hidden>0</span></button>
   <button type="button" data-tab="club"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 10h18M7 15h4"/></svg>Club</button>
 </nav></div>
 
@@ -257,7 +284,7 @@ const M = parseInt(Q.get("m"), 10) || 0, K = Q.get("k") || "";
 const C = window.CARTA, BY = Object.fromEntries(C.ITEMS.map((i) => [i.id, i])), BYN = Object.fromEntries(C.ITEMS.map((i) => [i.n, i]));
 const img = (n) => `../img/${n}.webp`;
 const S = {
-  tab: ["inicio", "carta", "pedido", "club"].includes(Q.get("tab")) ? Q.get("tab") : "inicio",
+  tab: ["carta", "pedido", "club"].includes(Q.get("tab")) ? Q.get("tab") : "carta",
   st: null, bad: false, cat: "todo", q: "",
   cart: JSON.parse(store.get("cart_" + M) || "[]"), note: "",
   club: JSON.parse(store.get("club") || "null"), me: null,
@@ -302,9 +329,21 @@ function live() {
   document.addEventListener("visibilitychange", () => { if (!document.hidden && !alive) { clearTimeout(pollT); poll(); } });
   open();
 }
+function welcome() {
+  const key = "w_" + M + "_" + new Date().toDateString();
+  if (store.get(key)) return;
+  store.set(key, "1");
+  const order = canOrder();
+  openSheet(`<div class="bd2 wel"><span class="k">Mesa ${M}</span><h3>Bienvenido a Higuera</h3><p class="pair">Así funciona, en tres pasos:</p>
+    <ol class="wsteps"><li><b>1</b><span><strong>Elige en la carta</strong>${order ? "Toca + en lo que se te antoje." : "Mira lo que hay y arma tu lista."}</span></li>
+    <li><b>2</b><span><strong>${order ? "Envía tu pedido" : "Llama a tu mesero"}</strong>${order ? "Revísalo en Mi pedido y mándalo directo a cocina. Te avisamos cuando esté listo." : "Toca Mesero arriba y te toma la orden."}</span></li>
+    <li><b>3</b><span><strong>¿Necesitas algo?</strong>Arriba tienes Mesero y Cuenta, siempre a la mano.</span></li></ol>
+    <button class="btn btn-ink btn-block" type="button" id="welGo">Ver la carta</button></div>`, "welcome");
+}
 function onState(d) {
   d.nowLocal = Date.now();
   const first = !S.st;
+  if (first && M && !S.bad) setTimeout(() => { if (S.st && !$("#sheet").classList.contains("on")) welcome(); }, 400);
   // avisar cuando un pedido cambia a "listo"
   d.orders.forEach((o) => {
     const prev = S.lastStatus[o.id];
@@ -328,14 +367,15 @@ async function loadMe() {
 function render() {
   const t = $("#tlabel");
   t.textContent = S.bad ? "QR no válido" : M ? "Mesa " + M : "Club Higuera";
-  $("#bell").hidden = !hasTable();
-  const open = S.st ? S.st.calls.length : 0;
-  $("#bell").classList.toggle("on", !!open);
-  $("#tabPedLbl").textContent = canOrder() || !hasTable() ? "Pedido" : "Mi lista";
+  $("#hact").innerHTML = hasTable() ? ["mesero", "cuenta"].map((k) => { const c = callState(k); return `<button type="button" class="hb${c ? " on" : ""}" ${c ? `data-callsheet="1"` : `data-call="${k}"`} aria-label="${k === "mesero" ? (c ? "Tu mesero ya viene" : "Llamar al mesero") : (c ? "Tu cuenta va en camino" : "Pedir la cuenta")}">${IC[k]}<span>${k === "mesero" ? (c ? "Ya viene" : "Mesero") : (c ? "En camino" : "Cuenta")}</span></button>`; }).join("") : "";
+  $("#tabPedLbl").textContent = canOrder() || !hasTable() ? "Mi pedido" : "Mi lista";
   const n = cartCount(), b = $("#bdg"); b.hidden = !n; b.textContent = n;
+  const cb = $("#cbar"); cb.hidden = !(n && hasTable() && S.tab !== "pedido");
+  if (!cb.hidden) cb.innerHTML = `<span class="cn">${n}</span><span>${canOrder() ? "Ver mi pedido" : "Ver mi lista"}</span><span class="go">${canOrder() ? "Enviar" : "Mostrar"}</span>`;
+  document.body.classList.toggle("has-cbar", !cb.hidden);
   $$(".tabs [data-tab]").forEach((x) => { x.classList.toggle("on", x.dataset.tab === S.tab); x.setAttribute("aria-current", x.dataset.tab === S.tab ? "page" : "false"); });
   $$(".view").forEach((v) => v.classList.toggle("on", v.id === "v-" + S.tab));
-  ({ inicio: rInicio, carta: rCarta, pedido: rPedido, club: rClub })[S.tab]();
+  ({ carta: rCarta, pedido: rPedido, club: rClub })[S.tab]();
 }
 
 function callState(kind) { return S.st && S.st.calls.find((c) => c.kind === kind); }
@@ -366,43 +406,45 @@ function addBtn(it) {
   return q ? `<span class="qs"><button type="button" data-minus="${it.id}" aria-label="Quitar uno de ${esc(it.n)}">−</button><span aria-live="polite">${q}</span><button type="button" data-plus="${it.id}" aria-label="Agregar otro ${esc(it.n)}">+</button></span>` : `<button class="add" type="button" data-plus="${it.id}" aria-label="Agregar ${esc(it.n)}">+</button>`;
 }
 
-function rInicio() {
-  const v = $("#v-inicio");
-  if (S.bad) { v.innerHTML = `<div class="bar-no">Este QR no corresponde a una mesa activa. Pide ayuda a alguien del equipo.</div>${clubCard()}`; return; }
+function rCarta() {
+  const v = $("#v-carta");
+  if (S.bad) { v.innerHTML = `<div class="bar-no" style="margin-top:8px">Este QR no corresponde a una mesa activa. Pide ayuda a alguien del equipo.</div>${clubCard()}`; return; }
+  const keep = document.activeElement && document.activeElement.id === "q";
+  const q = S.q.trim().toLowerCase();
+  const list = C.ITEMS.filter((i) => !q || (i.n + " " + i.tag).toLowerCase().includes(q));
+  const groups = C.CATS.map((c) => ({ c, items: list.filter((i) => i.cat === c.id) })).filter((g) => g.items.length);
   const se = S.st && S.st.site && S.st.site.season;
   const destIt = se ? C.ITEMS.find((i) => se.title.toLowerCase().includes(i.n.toLowerCase().split(" ")[0])) : null;
-  const active = S.st ? S.st.orders.filter((o) => o.status !== "cancelado") : [];
-  const lastO = active.slice(-1)[0];
-  const picks = C.ITEMS.filter((i) => i.photos.length).concat(C.ITEMS.filter((i) => i.tag === "De la casa"));
-  const subtitle = !hasTable() ? "Tu tarjeta del club y la carta de Higuera." : canOrder() ? "Pide desde aquí y te lo llevamos a la mesa. Si necesitas algo, toca la campana." : "Revisa la carta y llama a tu mesero cuando estés listo para ordenar.";
+  const lastO = S.st ? S.st.orders.filter((o) => o.status !== "cancelado").slice(-1)[0] : null;
+  const how = !hasTable() ? "Para pedir, escanea el QR de tu mesa." : canOrder() ? "Toca + para agregar. Cuando termines, envía tu pedido desde la barra de abajo." : "Elige lo que se te antoje y toca Mesero arriba para ordenar.";
+  const row = (it) => `<div class="row${isSold(it.n) ? " sold" : ""}"><button type="button" class="th" data-open="${it.id}" aria-label="Ver ${esc(it.n)}">${photoOf(it) ? `<img src="${photoOf(it)}" alt="" loading="lazy">` : esc(it.n.split(" ").map((w) => w[0]).slice(0, 2).join(""))}</button><button type="button" class="tx" data-open="${it.id}" style="text-align:left"><b>${esc(it.n)}</b>${it.tag ? `<span class="tag">${esc(it.tag)}</span>` : ""}${isSold(it.n) ? `<small class="so" style="display:block;margin-top:4px">Agotado hoy</small>` : ""}</button>${isSold(it.n) ? "" : addBtn(it)}</div>`;
   v.innerHTML = `
-    <div class="hero"><img src="../img/chilaquiles-md.webp" alt="" fetchpriority="high"><span class="k">${hello()}${hasTable() ? " · Mesa " + M : ""}</span><h1>Bienvenido a <em>Higuera</em></h1><p>${subtitle}</p></div>
+    <div class="intro"><span class="k">${hello()}${hasTable() ? " · Mesa " + M : ""}</span><h2 class="h2">La carta de <em>Higuera</em></h2><p class="how">${how}</p></div>
     ${lastO ? `<button class="mini${lastO.status === "listo" || lastO.status === "entregado" ? " ok" : ""}" type="button" data-tab="pedido"><span><span class="k" style="color:rgba(255,255,255,.7)">Tu pedido #${lastO.n}</span><br><b style="font:400 20px var(--serif)">${statusTxt(lastO.status)[0]}</b></span><span class="st">Ver</span></button>` : ""}
     ${S.st && S.st.site && S.st.site.notice ? `<div class="bar-no" style="margin-top:12px;background:var(--ink);color:#fff" role="status">${esc(S.st.site.notice)}</div>` : ""}
     ${S.st && S.st.closed ? `<div class="bar-no" style="margin-top:12px">${esc(S.st.closed)}</div>` : ""}
-    ${hasTable() ? `<div class="calls">${callBtn("mesero")}${callBtn("cuenta")}</div>${rateCard()}` : ""}
-    <div class="sec">${clubCard()}</div>
-    ${se ? `<div class="sec"><div class="sec-h"><span class="k">El destacado</span></div><div class="card dest"><img src="${img(se.img)}" alt="" loading="lazy"><div><span class="tg">De la semana</span><h4>${esc(se.title)}</h4><p>${esc(se.text)}</p>${destIt ? addBtn(destIt) : ""}</div></div></div>` : ""}
-    <div class="sec"><div class="sec-h"><span class="k">${canOrder() ? "Para pedir" : "De la carta"}</span><button type="button" data-tab="carta">Ver toda la carta</button></div>
-      <div class="rail">${picks.map((it) => `<div class="pk"><div class="im">${photoOf(it) ? `<img src="${photoOf(it)}" alt="" loading="lazy">` : `<div style="height:100%;display:grid;place-items:center;font:400 46px var(--serif);color:#b9ae98">${it.no}</div>`}</div><div class="tx"><b>${esc(it.n)}</b><small>${esc(it.tag || C.CATS.find((c) => c.id === it.cat).es)}</small></div><div class="add-w" style="position:absolute;right:10px;top:110px">${addBtn(it)}</div><button type="button" data-open="${it.id}" style="position:absolute;inset:0 0 auto 0;height:104px" aria-label="Ver ${esc(it.n)}"></button></div>`).join("")}</div>
-    </div>
-    <p class="foot">Higuera · Plutarco Elías Calles 419, Tampiquito<br>Sistema de mesa preparado por Code Nova</p>`;
-}
-
-function rCarta() {
-  const v = $("#v-carta");
-  const keep = document.activeElement && document.activeElement.id === "q";
-  const q = S.q.trim().toLowerCase();
-  const list = C.ITEMS.filter((i) => (S.cat === "todo" || i.cat === S.cat) && (!q || (i.n + " " + i.tag).toLowerCase().includes(q)));
-  const groups = C.CATS.map((c) => ({ c, items: list.filter((i) => i.cat === c.id) })).filter((g) => g.items.length);
-  v.innerHTML = `
-    <h2 class="h2">La <em>carta</em></h2>
+    ${rateCard()}
     <div class="ctools"><label class="srch">${IC.search}<input id="q" type="search" placeholder="Busca un platillo o bebida" value="${esc(S.q)}" aria-label="Buscar en la carta"></label>
-      <div class="cats" role="tablist" aria-label="Categorías">${[{ id: "todo", es: "Todo" }, ...C.CATS].map((c) => `<button type="button" role="tab" aria-selected="${S.cat === c.id}" class="${S.cat === c.id ? "on" : ""}" data-cat="${c.id}">${c.es}</button>`).join("")}</div></div>
-    ${!hasTable() ? `<div class="bar-no" style="background:var(--sage);color:var(--olive)">Para pedir, escanea el QR de tu mesa.</div>` : !canOrder() ? `<div class="bar-no" style="background:var(--sage);color:var(--olive)">Arma tu lista y muéstrasela a tu mesero, o tócale la campana.</div>` : ""}
-    ${groups.length ? groups.map((g) => `<div class="cat-h"><h3>${g.c.es}</h3><p>${g.c.pes}</p></div>${g.items.map((it) => `<div class="row${isSold(it.n) ? " sold" : ""}"><button type="button" class="th" data-open="${it.id}" aria-label="Ver ${esc(it.n)}">${photoOf(it) ? `<img src="${photoOf(it)}" alt="" loading="lazy">` : it.no}</button><button type="button" class="tx" data-open="${it.id}" style="text-align:left"><b>${esc(it.n)}</b>${it.tag ? `<span class="tag">${esc(it.tag)}</span>` : ""}</button>${addBtn(it)}</div>`).join("")}`).join("") : `<div class="empty">No encontramos "${esc(S.q)}" en la carta.</div>`}
-    <p class="foot">Los precios se cargan con la carta oficial de Higuera.</p>`;
+      ${q ? "" : `<div class="cats" aria-label="Ir a la sección">${C.CATS.map((c, i) => `<button type="button" class="${i ? "" : "on"}" data-jump="${c.id}">${c.es}</button>`).join("")}</div>`}</div>
+    ${!q && se ? `<div class="card dest" style="margin-top:12px"><img src="${img(se.img)}" alt="" loading="lazy"><div><span class="tg">Recomendado de la semana</span><h4>${esc(se.title)}</h4><p>${esc(se.text)}</p>${destIt && hasTable() ? addBtn(destIt) : ""}</div></div>` : ""}
+    ${groups.length ? groups.map((g) => `<section class="catsec" id="cat-${g.c.id}" data-cat-sec="${g.c.id}"><div class="cat-h"><h3>${g.c.es}</h3><p>${g.c.pes}</p></div>${g.items.map(row).join("")}</section>`).join("") : `<div class="empty">No encontramos "${esc(S.q)}" en la carta.</div>`}
+    ${!q ? `<button type="button" class="clubmini" data-tab="club">${IC.gift}<span>${S.me ? (S.me.ready ? "Ya tienes tu recompensa del club" : `Club Higuera: te ${S.me.need - S.me.visits === 1 ? "falta 1 visita" : "faltan " + (S.me.need - S.me.visits) + " visitas"} para tu premio`) : `Únete al Club Higuera: a la ${S.st ? S.st.reward.visits : 5}.ª visita, ${esc((S.st ? S.st.reward.text : "tu latte va por la casa").toLowerCase())}`}</span><span class="go">${S.me ? "Ver" : "Unirme"}</span></button>` : ""}
+    <p class="foot">Los precios se cargan con la carta oficial de Higuera.<br>Higuera · Plutarco Elías Calles 419, Tampiquito</p>`;
   if (keep) { const i = $("#q"); i.focus(); i.setSelectionRange(i.value.length, i.value.length); }
+  spy();
+}
+// marca en las categorías la sección que se está viendo
+function spy() {
+  const secs = $$(".catsec"); if (!secs.length || S.tab !== "carta") return;
+  const off = $("#top").offsetHeight + ($(".ctools") ? $(".ctools").offsetHeight : 0) + 20;
+  let cur = secs[0].dataset.catSec;
+  secs.forEach((x) => { if (x.getBoundingClientRect().top - off <= 0) cur = x.dataset.catSec; });
+  $$("[data-jump]").forEach((b) => b.classList.toggle("on", b.dataset.jump === cur));
+}
+function jump(id) {
+  const el = $("#cat-" + id); if (!el) return;
+  const off = $("#top").offsetHeight + $(".ctools").offsetHeight + 6;
+  window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - off, behavior: "smooth" });
 }
 
 function statusTxt(s) {
@@ -422,7 +464,7 @@ function rPedido() {
       <div class="send">${canOrder() ? `<button class="btn btn-terra" type="button" id="send"${S.sending || (S.st && S.st.closed) ? " disabled" : ""}>${S.sending ? "Enviando…" : `Enviar a cocina · ${cartCount()} ${cartCount() === 1 ? "producto" : "productos"}`}</button>` : `<button class="btn btn-ink" type="button" data-call="mesero">${callState("mesero") ? "Tu mesero ya viene" : "Llamar al mesero para ordenar"}</button>`}</div></div>`
     : `<div class="card blk" style="margin-top:16px"><h4>${orders.length ? "¿Algo más?" : "Aún no agregas nada"}</h4><p>Agrega platillos y bebidas desde la carta${canOrder() ? " y envíalos directo a cocina" : ""}.</p><button class="btn btn-ink" type="button" data-tab="carta">Ver la carta</button></div>`}
     ${orders.length ? `<div class="sec"><span class="k">Enviados de esta mesa</span>${orders.map((o) => { const [t, n] = statusTxt(o.status); return `<div class="card ord${o.status === "cancelado" ? " x" : ""}" aria-live="polite"><div class="hd"><b>#${String(o.n).padStart(3, "0")}${o.who ? " · " + esc(o.who) : ""}</b><span>${ago(o.t0, srvNow()) === "ahora" ? "Hace un momento" : "Hace " + ago(o.t0, srvNow())}</span></div>${o.status !== "cancelado" ? `<div class="trk">${[1, 2, 3, 4].map((k) => `<div class="${k < n || (k === n && n === 4) ? "on" : k === n ? "now" : ""}"></div>`).join("")}</div>` : ""}<div class="st">${o.status === "listo" || o.status === "entregado" ? `<em>${t}</em>` : t}</div><ul>${o.items.map((it) => `<li>${it.q} × ${esc(it.n)}${it.note ? ` <i>· ${esc(it.note)}</i>` : ""}</li>`).join("")}</ul>${o.note ? `<p class="note">Nota: ${esc(o.note)}</p>` : ""}</div>`; }).join("")}</div>` : ""}
-    ${hasTable() ? `<div class="calls" style="margin-top:22px">${callBtn("mesero")}${callBtn("cuenta")}</div>${rateCard()}` : ""}`;
+    ${hasTable() ? rateCard() : ""}`;
 }
 
 function rClub() {
@@ -603,10 +645,11 @@ document.addEventListener("click", async (e) => {
   if (t.dataset.cminus) { const i = +t.dataset.cminus; S.cart[i].q--; if (S.cart[i].q <= 0) S.cart.splice(i, 1); saveCart(); render(); return; }
   if (t.dataset.edit) { const x = S.cart[+t.dataset.edit]; itemSheet(x.id, +t.dataset.edit); return; }
   if (t.dataset.open) { itemSheet(t.dataset.open); return; }
-  if (t.dataset.cat) { S.cat = t.dataset.cat; render(); return; }
+  if (t.dataset.jump) { jump(t.dataset.jump); return; }
+  if (t.dataset.callsheet) { callSheet(); return; }
+  if (t.id === "welGo") { closeSheet(); return; }
   if (t.dataset.call) { await doCall(t.dataset.call); if (sheetCtx === "calls") closeSheet(); return; }
   if (t.dataset.cancel) { await cancelCall(t.dataset.cancel); if (sheetCtx === "calls") closeSheet(); return; }
-  if (t.id === "bell") { callSheet(); return; }
   if (t.id === "rateOpen") { rateSheet(); return; }
   if (t.id === "rvClose") { closeSheet(); return; }
   if (t.id === "send") { sendOrder(); return; }
@@ -634,9 +677,10 @@ document.addEventListener("input", (e) => {
 });
 $("#scrim").onclick = closeSheet;
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeSheet(); });
-addEventListener("scroll", () => $("#top").classList.toggle("sc", scrollY > 6), { passive: true });
+let spyT = 0;
+addEventListener("scroll", () => { $("#top").classList.toggle("sc", scrollY > 6); if (!spyT) spyT = requestAnimationFrame(() => { spyT = 0; spy(); }); }, { passive: true });
 // re-pintar los "hace X min" cada 30 s
-setInterval(() => { if (S.st && (S.tab === "inicio" || S.tab === "pedido") && !$("#sheet").classList.contains("on") && document.activeElement.tagName !== "TEXTAREA") render(); }, 30000);
+setInterval(() => { if (S.st && S.tab === "pedido" && !$("#sheet").classList.contains("on") && document.activeElement.tagName !== "TEXTAREA") render(); }, 30000);
 
 render(); live(); loadMe();
 })();
