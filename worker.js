@@ -94,8 +94,8 @@ export class Fila {
       room, name: cfg.name, tz: cfg.tz, open: true, minsPerGroup: cfg.minsPerGroup,
       pinHash: null, salt: rid(), counter: 0, day: dayKey(cfg.tz), entries: [], history: [], v: 1,
       autoHours: true, lastCall: 30, tolerance: 10, maxSize: 10,
-      mesas: { on: true, mode: "pedir", count: 12, keys: {}, rewardVisits: 5, rewardText: "Tu latte va por la casa" },
-      orders: [], calls: [], orderSeq: 0, promos: [],
+      mesas: { on: true, mode: "pedir", count: 12, keys: {}, rewardVisits: 5, rewardText: "Tu latte va por la casa", onlyHours: false, reviewUrl: "https://www.google.com/maps/search/?api=1&query=Cocina%20Higuera%20San%20Pedro%20Garza%20Garc%C3%ADa" },
+      orders: [], calls: [], orderSeq: 0, promos: [], reviews: [],
       site: { notice: "", season: { on: true, title: "Buttermilk waffle con moras", text: "El destacado de la semana. El equipo lo cambia cuando quiera desde su panel.", img: "waffle" }, soldout: [], soldDay: "" },
     };
     this.s = { ...base, ...((await this.ctx.storage.get("s")) || {}) };
@@ -132,6 +132,7 @@ export class Fila {
     const st = { ...this.statsFor(s.entries, s.day), ...this.mesaStats() };
     if (st.joined || st.orders || st.calls) s.history = [...s.history.filter((h) => h.day !== s.day), st].slice(-60);
     s.orders = []; s.calls = []; s.orderSeq = 0;
+    (s.reviews || []).forEach((r) => { r.closed = true; delete r.ipH; });
     // los datos personales de la lista se borran al cambiar el día
     s.entries = [];
     s.counter = 0;
@@ -263,8 +264,8 @@ export class Fila {
       site: { ...(s.site || {}), soldout: this.siteState().soldout }, newRequests: this.newRequests(),
       mesas: s.mesas, tables: this.tablesView(),
       orders: s.orders.filter((o) => !o.closed || Date.now() - o.tUpd < 3600000).map((o) => ({ ...this.orderView(o), closed: !!o.closed, tReady: o.tReady || null })),
-      calls: s.calls.filter((c) => c.status === "open").map((c) => ({ id: c.id, m: c.m, kind: c.kind, t0: c.t0, demo: !!c.demo })),
-      mesaToday: this.mesaStats(true), club: this.clubSummary(), promos: (s.promos || []).slice(-8).reverse(),
+      calls: s.calls.filter((c) => c.status === "open").map((c) => ({ id: c.id, m: c.m, kind: c.kind, t0: c.t0, demo: !!c.demo, stars: c.stars || 0, text: c.text || "" })),
+      reviews: (s.reviews || []).slice(-40).reverse(), mesaToday: this.mesaStats(true), club: this.clubSummary(), promos: (s.promos || []).slice(-8).reverse(),
     };
   }
 
@@ -273,6 +274,12 @@ export class Fila {
     const M = this.s.mesas;
     M.keys = M.keys || {};
     for (let i = 1; i <= M.count; i++) if (!M.keys[i]) M.keys[i] = rid().slice(0, 6);
+  }
+  // si el gerente activa "solo en horario", fuera de horario no se aceptan pedidos ni llamados
+  closedMsg() {
+    if (!this.s.mesas.onlyHours) return "";
+    const hi = this.hoursInfo();
+    return hi.inHours ? "" : "Higuera está cerrado en este momento. Abrimos " + (hi.next || "mañana") + ".";
   }
   tableOk(m, k) {
     const n = parseInt(m, 10);
@@ -285,8 +292,9 @@ export class Fila {
     return {
       v: s.v, now: Date.now(), name: s.name, m, on: M.on, mode: M.mode, reward: { visits: M.rewardVisits, text: M.rewardText },
       orders: s.orders.filter((o) => o.m === m && !o.closed).map((o) => this.orderView(o)),
-      calls: s.calls.filter((c) => c.m === m && c.status === "open").map((c) => ({ id: c.id, kind: c.kind, t0: c.t0 })),
-      site: this.siteState(),
+      calls: s.calls.filter((c) => c.m === m && c.status === "open" && c.kind !== "alerta").map((c) => ({ id: c.id, kind: c.kind, t0: c.t0 })),
+      site: this.siteState(), reviewUrl: M.reviewUrl, closed: this.closedMsg(),
+      reviewed: (s.reviews || []).some((r) => r.m === m && !r.closed),
     };
   }
   tablesView() {
@@ -294,7 +302,7 @@ export class Fila {
     for (let m = 1; m <= s.mesas.count; m++) {
       const os = s.orders.filter((o) => o.m === m && !o.closed);
       const cs = s.calls.filter((c) => c.m === m && c.status === "open");
-      out.push({ m, orders: os.length, pending: os.filter((o) => ["nuevo", "prep", "listo"].includes(o.status)).length, since: os.length ? Math.min(...os.map((o) => o.t0)) : 0, mesero: cs.some((c) => c.kind === "mesero"), cuenta: cs.some((c) => c.kind === "cuenta") });
+      out.push({ m, orders: os.length, pending: os.filter((o) => ["nuevo", "prep", "listo"].includes(o.status)).length, since: os.length ? Math.min(...os.map((o) => o.t0)) : 0, mesero: cs.some((c) => c.kind === "mesero"), cuenta: cs.some((c) => c.kind === "cuenta"), alerta: cs.some((c) => c.kind === "alerta") });
     }
     return out;
   }
@@ -305,7 +313,8 @@ export class Fila {
     const counts = {};
     real.forEach((o) => o.items.forEach((it) => { counts[it.n] = (counts[it.n] || 0) + it.q; }));
     const prep = real.filter((o) => o.tReady).map((o) => (o.tReady - o.t0) / 60000);
-    const calls = (s.calls || []).filter((c) => withDemo || !c.demo);
+    const calls = (s.calls || []).filter((c) => (withDemo || !c.demo) && c.kind !== "alerta");
+    const revs = (s.reviews || []).filter((r) => r.day === s.day && (withDemo || !r.demo));
     const resp = calls.filter((c) => c.tDone).map((c) => (c.tDone - c.t0) / 60000);
     const avg = (a) => (a.length ? Math.round((a.reduce((x, y) => x + y, 0) / a.length) * 10) / 10 : 0);
     return {
@@ -313,6 +322,7 @@ export class Fila {
       top: Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 8),
       prepAvg: avg(prep), calls: calls.length, callsMesero: calls.filter((c) => c.kind === "mesero").length, callsCuenta: calls.filter((c) => c.kind === "cuenta").length, callAvg: avg(resp),
       byMember: real.filter((o) => o.mid).length,
+      reviews: revs.length, rating: revs.length ? Math.round((revs.reduce((a, r) => a + r.stars, 0) / revs.length) * 10) / 10 : 0, low: revs.filter((r) => r.stars <= 3).length,
     };
   }
   async ipHash(request) { return (await sha(this.s.salt + (request.headers.get("x-ip") || ""))).slice(0, 16); }
@@ -545,6 +555,7 @@ export class Fila {
       const M = this.s.mesas;
       const m = this.tableOk(body.m, body.k);
       if (!m) return json({ error: "Este QR no es válido. Pide ayuda al equipo." }, 404);
+      if (this.closedMsg()) return json({ error: this.closedMsg() }, 409);
       if (!M.on) return json({ error: "Los pedidos desde la mesa están pausados. Llama al mesero, por favor." }, 409);
       if (M.mode !== "pedir") return json({ error: "En este momento el mesero toma tu orden. Usa el botón de llamar al mesero." }, 409);
       const sold = this.siteState().soldout;
@@ -567,6 +578,7 @@ export class Fila {
       const m = this.tableOk(body.m, body.k);
       if (!m) return json({ error: "Este QR no es válido. Pide ayuda al equipo." }, 404);
       const kind = body.kind === "cuenta" ? "cuenta" : "mesero";
+      if (!body.cancel && this.closedMsg()) return json({ error: this.closedMsg() }, 409);
       if (body.cancel) {
         const c = this.s.calls.find((x) => x.id === body.cancel && x.m === m && x.status === "open");
         if (c) { c.status = "cancel"; c.tDone = Date.now(); await this.save(); }
@@ -575,6 +587,31 @@ export class Fila {
       let c = this.s.calls.find((x) => x.m === m && x.kind === kind && x.status === "open");
       if (!c) { c = { id: rid(), m, kind, t0: Date.now(), status: "open" }; this.s.calls.push(c); await this.save(); }
       return json({ ok: true, id: c.id });
+    }
+
+    if (p === "/mesa/review" && method === "POST") {
+      const m = this.tableOk(body.m, body.k);
+      if (!m) return json({ error: "Este QR no es válido. Pide ayuda al equipo." }, 404);
+      const stars = Math.max(1, Math.min(5, parseInt(body.stars, 10) || 0));
+      if (!parseInt(body.stars, 10)) return json({ error: "Elige de 1 a 5 estrellas." }, 400);
+      const ipH = await this.ipHash(request);
+      const s = this.s; s.reviews = s.reviews || [];
+      // una calificación por mesa hasta que se cierre; si la cambia, se actualiza
+      let r = s.reviews.find((x) => x.m === m && !x.closed && x.ipH === ipH);
+      const mem = this.memberRow(body.mid, body.mt);
+      if (!r) {
+        if (request.headers.get("x-ip") && s.reviews.filter((x) => x.ipH === ipH && Date.now() - x.t < 3600000).length >= 4) return json({ error: "Ya recibimos tu calificación, gracias." }, 429);
+        r = { id: rid(), m, t: Date.now(), day: s.day, ipH };
+        s.reviews.push(r);
+      }
+      r.stars = stars; r.text = clean(body.text, 300); r.who = mem ? (mem.name || "").split(" ")[0] : ""; r.tUpd = Date.now();
+      // calificación baja: alerta al gerente para que pase a la mesa antes de que el cliente se vaya
+      const al = s.calls.find((c) => c.kind === "alerta" && c.rid === r.id && c.status === "open");
+      if (stars <= 3 && !al) s.calls.push({ id: rid(), m, kind: "alerta", t0: Date.now(), status: "open", rid: r.id, stars, text: r.text });
+      else if (al) { if (stars > 3) { al.status = "done"; al.tDone = Date.now(); } else { al.stars = stars; al.text = r.text; } }
+      s.reviews = s.reviews.slice(-300);
+      await this.save();
+      return json({ ok: true, low: stars <= 3, reviewUrl: s.mesas.reviewUrl });
     }
 
     // ---- club: registro, tarjeta, notificaciones ----
@@ -771,6 +808,8 @@ export class Fila {
         if (body.count != null) M.count = Math.max(1, Math.min(60, parseInt(body.count, 10) || 12));
         if (body.rewardVisits != null) M.rewardVisits = Math.max(2, Math.min(20, parseInt(body.rewardVisits, 10) || 5));
         if (typeof body.rewardText === "string" && clean(body.rewardText, 60)) M.rewardText = clean(body.rewardText, 60);
+        if (typeof body.onlyHours === "boolean") M.onlyHours = body.onlyHours;
+        if (typeof body.reviewUrl === "string") { const u = body.reviewUrl.trim(); if (/^https:\/\/[^\s<>"]{6,400}$/.test(u)) M.reviewUrl = u; else return json({ error: "La liga de reseñas debe empezar con https://" }, 400); }
         if (body.rekey) { const n = parseInt(body.rekey, 10); if (n >= 1 && n <= M.count) M.keys[n] = rid().slice(0, 6); }
         this.ensureKeys();
         await this.save();
@@ -800,6 +839,7 @@ export class Fila {
         if (body.action === "close") {
           this.s.orders.forEach((o) => { if (o.m === m && !o.closed) { o.closed = true; o.tUpd = now; if (["nuevo", "prep", "listo"].includes(o.status)) o.status = "entregado"; } });
           this.s.calls.forEach((c) => { if (c.m === m && c.status === "open") { c.status = "done"; c.tDone = now; } });
+          (this.s.reviews || []).forEach((r) => { if (r.m === m) r.closed = true; });
         }
         await this.save();
         return json(this.hostState());
@@ -856,6 +896,10 @@ export class Fila {
         mk(Math.min(9, M.count), [{ n: "French toast", q: 2, note: "" }, { n: "Americano", q: 2, note: "" }], "entregado", 26);
         this.s.calls.push({ id: rid(), m: Math.min(4, M.count), kind: "mesero", t0: now - 60000, status: "open", demo: true });
         this.s.calls.push({ id: rid(), m: Math.min(9, M.count), kind: "cuenta", t0: now - 30000, status: "open", demo: true });
+        const rv = (m, stars, text, ago, who) => { const r = { id: rid(), m, t: now - ago * 60000, day: this.s.day, stars, text, who: who || "", demo: true, closed: m !== Math.min(11, M.count) }; this.s.reviews.push(r); return r; };
+        rv(3, 5, "Los chilaquiles increíbles y nos atendieron rapidísimo.", 95, "Sofía"); rv(6, 4, "", 70); rv(8, 5, "", 40, "Rodrigo");
+        const low = rv(Math.min(11, M.count), 2, "Tardaron mucho con los cafés.", 2);
+        this.s.calls.push({ id: rid(), m: low.m, kind: "alerta", t0: now - 2 * 60000, status: "open", demo: true, rid: low.id, stars: 2, text: low.text });
         const ex = this.sql().exec("SELECT COUNT(*) AS n FROM members WHERE demo=1").one().n;
         if (!ex) {
           [["Ana Treviño", "8110000001", 4, 9], ["Diego Garza", "8110000002", 2, 2], ["Sofía Cantú", "8110000003", 5, 11], ["Rodrigo Leal", "8110000004", 1, 1]].forEach(([n, ph, v, t], i) => {
@@ -869,13 +913,14 @@ export class Fila {
         // solo borra lo de ejemplo de mesas y club; no toca la lista de espera ni datos reales
         this.s.orders = this.s.orders.filter((o) => !o.demo);
         this.s.calls = this.s.calls.filter((c) => !c.demo);
+        this.s.reviews = (this.s.reviews || []).filter((r) => !r.demo);
         try { this.sql().exec("DELETE FROM members WHERE demo=1"); } catch (e) {}
         await this.save();
         return json(this.hostState());
       }
       if (p === "/host/reset" && method === "POST") {
         this.s.entries = []; this.s.counter = 0; this.s.open = true;
-        this.s.orders = []; this.s.calls = []; this.s.orderSeq = 0;
+        this.s.orders = []; this.s.calls = []; this.s.orderSeq = 0; this.s.reviews = [];
         try { this.sql().exec("DELETE FROM requests WHERE ipH='demo'"); this.sql().exec("DELETE FROM members WHERE demo=1"); } catch (e) {}
         if (body.history) this.s.history = [];
         await this.save();

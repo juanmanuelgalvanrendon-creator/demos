@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Higuera · Demostración del sistema</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1f231b">
+<link rel="icon" href="../img/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../hg.css">
+<style>
+html,body{height:100%}
+body{background:#1f231b;color:#f4f1ea;overflow:hidden}
+.hide{display:none!important}
+.gate{position:fixed;inset:0;z-index:90;background:#1f231b;display:grid;place-items:center;padding:20px}
+.gate .box{width:100%;max-width:380px;background:var(--bg);color:var(--ink);border-radius:26px;padding:28px;display:flex;flex-direction:column;gap:12px;text-align:center}
+.gate h1{font:400 32px/1.05 var(--serif)}
+.gate p{font-size:14px;color:var(--mut)}
+.gate .err{color:var(--red);font-weight:700;font-size:13.5px;min-height:18px}
+.gate .in{text-align:center;font-size:24px;letter-spacing:.4em}
+.app{display:grid;grid-template-rows:auto auto 1fr;height:100vh}
+.bar{display:flex;align-items:center;gap:14px;padding:12px 20px;border-bottom:1px solid rgba(244,241,234,.08)}
+.bar .logo{height:22px;filter:invert(1) brightness(2)}
+.bar h1{font:400 22px/1 var(--serif)}
+.bar h1 em{font-style:italic;color:#f0c7a6}
+.bar .sp{flex:1}
+.bar .by{font-size:12px;font-weight:700;color:rgba(244,241,234,.55)}
+.bbtn{height:38px;padding:0 14px;border-radius:99px;background:rgba(244,241,234,.08);color:#f4f1ea;font-weight:800;font-size:13px}
+.bbtn:hover{background:rgba(244,241,234,.14)}
+.steps{display:flex;gap:8px;padding:12px 20px;overflow-x:auto;scrollbar-width:none}
+.steps::-webkit-scrollbar{display:none}
+.st{flex:1 0 170px;display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;background:rgba(244,241,234,.05);transition:background .3s}
+.st i{width:28px;height:28px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;font:600 12px var(--mono);font-style:normal;box-shadow:inset 0 0 0 1.5px rgba(244,241,234,.3)}
+.st b{font-size:13px;line-height:1.2;display:block}
+.st small{font-size:11.5px;color:rgba(244,241,234,.6);display:block;line-height:1.25}
+.st.now{background:rgba(240,199,166,.16)}
+.st.now i{background:#f0c7a6;color:#1f231b;box-shadow:none}
+.st.ok i{background:#2d7a4b;color:#fff;box-shadow:none}
+.st.ok b{color:rgba(244,241,234,.7)}
+.main{display:grid;grid-template-columns:auto 1fr;gap:22px;padding:6px 20px 18px;min-height:0}
+.left{display:flex;flex-direction:column;align-items:center;gap:12px;min-height:0}
+.lbl{font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:rgba(244,241,234,.6);display:flex;justify-content:space-between;width:100%;gap:10px}
+.phone{position:relative;width:calc(var(--ph) * .48);height:var(--ph);border-radius:46px;background:#0d0d0b;padding:11px;box-shadow:0 30px 60px -30px rgba(0,0,0,.9),inset 0 0 0 2px #3a3a35;flex:0 0 auto}
+.phone::before{content:"";position:absolute;top:19px;left:50%;transform:translateX(-50%);width:30%;height:24px;border-radius:99px;background:#0d0d0b;z-index:3}
+.phone .scr{width:100%;height:100%;border-radius:36px;overflow:hidden;background:var(--bg);position:relative}
+.phone iframe{position:absolute;top:0;left:0;border:0;width:390px;height:calc(390px / .48 * (1 - .05));transform-origin:0 0}
+.scan{display:flex;gap:12px;align-items:center;background:rgba(244,241,234,.06);border-radius:16px;padding:10px 12px;width:100%}
+.scan .q{width:78px;height:78px;background:#fff;border-radius:10px;padding:4px;flex:0 0 auto}
+.scan .q svg{width:100%;height:100%}
+.scan b{font-size:13.5px;display:block}
+.scan small{font-size:12px;color:rgba(244,241,234,.65);line-height:1.35;display:block}
+.right{display:flex;flex-direction:column;gap:10px;min-height:0;min-width:0}
+.vseg{display:inline-flex;background:rgba(244,241,234,.06);border-radius:99px;padding:4px}
+.vseg button{height:34px;padding:0 14px;border-radius:99px;font-weight:800;font-size:12.5px;color:rgba(244,241,234,.8);background:transparent}
+.vseg button.on{background:#f4f1ea;color:#1f231b}
+.frame{flex:1;border-radius:22px;overflow:hidden;background:#1f231b;box-shadow:inset 0 0 0 1px rgba(244,241,234,.1);min-height:0}
+.frame iframe{width:100%;height:100%;border:0;display:block}
+.small-screen{display:none;padding:30px 22px;text-align:center}
+.small-screen h2{font:400 30px/1.1 var(--serif);margin-bottom:10px}
+.small-screen p{color:rgba(244,241,234,.75);font-size:14.5px;margin-bottom:18px}
+.small-screen a{display:flex;margin:8px auto;max-width:320px}
+@media (max-width:980px){body{overflow:auto}.app{display:none}.small-screen{display:block}}
+</style>
+</head>
+<body>
+<div class="gate" id="gate">
+  <form class="box" id="gf" aria-labelledby="gt">
+    <img src="../img/logo-sm.png" alt="Higuera" width="110" height="40" style="height:40px;width:auto;margin:0 auto">
+    <h1 id="gt">Demostración del sistema</h1>
+    <p>Pantalla para presentar en una laptop. Escribe el PIN del equipo.</p>
+    <input type="password" class="in" id="pin" inputmode="numeric" autocomplete="current-password" maxlength="6" placeholder="····" aria-label="PIN del equipo">
+    <p class="err" id="gerr" role="alert"></p>
+    <button class="btn btn-ink btn-block" type="submit">Entrar</button>
+  </form>
+</div>
+
+<div class="app" id="app">
+  <header class="bar">
+    <img class="logo" src="../img/logo-sm.png" alt="Higuera" width="60" height="22">
+    <h1>Tu mesa pide, tu barra recibe, <em>tu cliente regresa</em></h1>
+    <div class="sp"></div>
+    <span class="by">Demostración por Code Nova</span>
+    <button class="bbtn" type="button" id="restart">Reiniciar demostración</button>
+  </header>
+  <div class="steps" id="steps"></div>
+  <div class="main">
+    <div class="left">
+      <div class="lbl"><span>El celular del cliente · Mesa 1</span><button type="button" class="bbtn" id="reloadP" style="height:28px;font-size:11.5px">Recargar</button></div>
+      <div class="phone" id="phone"><div class="scr"><iframe id="pf" title="App del cliente en la mesa 1"></iframe></div></div>
+      <div class="scan"><div class="q" id="qr2"></div><div><b>Pruébalo con tu celular</b><small>Escanea este código: es la mesa 2. Pide algo y míralo llegar a la barra.</small></div></div>
+    </div>
+    <div class="right">
+      <div class="lbl"><span id="rlbl">Lo que ve el equipo en la barra</span><div class="vseg" id="seg"><button type="button" class="on" data-v="barra">Barra y meseros</button><button type="button" data-v="club">Gerente</button><button type="button" data-v="host">Entrada</button></div></div>
+      <div class="frame"><iframe id="rf" title="Pantalla del equipo"></iframe></div>
+    </div>
+  </div>
+</div>
+
+<div class="small-screen">
+  <h2>Abre la demostración en una laptop</h2>
+  <p>Esta pantalla muestra al mismo tiempo el celular del cliente y la pantalla del equipo. En un celular, abre cada parte por separado:</p>
+  <a class="btn btn-terra" href="../club/">Club y mesas (ahí están los QR)</a>
+  <a class="btn btn-ghost" style="color:#f4f1ea;box-shadow:inset 0 0 0 1.5px rgba(244,241,234,.3)" href="../barra/">Pedidos y llamados</a>
+</div>
+
+<script src="/_engine/qrcode.js"></script>
+<script src="../fila.js"></script>
+<script>
+(() => {
+const { api, live, store, toast, unlockAudio, qrSvg } = HG;
+const $ = (s) => document.querySelector(s);
+let pin = store.get("pin") || "", H = null, conn = null, base = 0, baseMem = null, view = "barra";
+const STEPS = [
+  ["Pide desde la mesa", "En el celular, agrega algo y toca Enviar a cocina"],
+  ["Llega a la barra", "La comanda aparece al instante con sonido"],
+  ["Márcalo listo", "Toca Empezar y luego Listo: el cliente lo ve"],
+  ["Pide la cuenta", "El cliente la pide y califica su visita"],
+  ["Únete al club", "En la pestaña Club, con nombre y WhatsApp"],
+  ["Mira al gerente", "Cambia a la vista Gerente: socios, reseñas, promos"],
+];
+const VIEWS = { barra: ["../barra/", "Lo que ve el equipo en la barra"], club: ["../club/", "Lo que ve el gerente"], host: ["../host/", "La lista de espera en la entrada"] };
+
+async function login(p, silent) {
+  try {
+    const r = await api("/host/claim", { body: { pin: p } });
+    pin = p; store.set("pin", p); $("#gate").classList.add("hide");
+    H = r.state; setup(); start();
+  } catch (e) { if (!silent) $("#gerr").textContent = e.message; store.set("pin", null); }
+}
+$("#gf").addEventListener("submit", (e) => { e.preventDefault(); unlockAudio(); const p = $("#pin").value.replace(/\D/g, ""); if (p.length < 4) { $("#gerr").textContent = "Escribe al menos 4 números."; return; } login(p); });
+const tUrl = (m) => location.origin + "/higuera/mesa/?m=" + m + "&k=" + H.mesas.keys[m];
+function fit() {
+  const avail = innerHeight - $(".bar").offsetHeight - $("#steps").offsetHeight - 150;
+  const ph = Math.max(480, Math.min(820, avail));
+  $("#phone").style.setProperty("--ph", ph + "px");
+  const scrW = ph * 0.48 - 22, k = scrW / 390;
+  const f = $("#pf"); f.style.transform = `scale(${k})`; f.style.height = (ph - 22) / k + "px";
+  $(".scan").style.width = ph * 0.48 + "px";
+}
+function setup() {
+  $("#pf").src = tUrl(1);
+  $("#qr2").innerHTML = qrSvg(tUrl(2), { margin: 1 });
+  setView(view); fit();
+}
+function setView(v) {
+  view = v; $("#rf").src = VIEWS[v][0]; $("#rlbl").textContent = VIEWS[v][1];
+  document.querySelectorAll("#seg button").forEach((b) => b.classList.toggle("on", b.dataset.v === v));
+}
+function start() {
+  conn && conn.stop();
+  conn = live({ role: "host", pin, onData(d) { if (d.authError) { store.set("pin", null); location.reload(); return; } const k = JSON.stringify(H && H.mesas.keys); H = d; if (baseMem == null) baseMem = d.club.members; if (k !== JSON.stringify(d.mesas.keys)) setup(); steps(); } });
+}
+// avance automático de los pasos según lo que pasa en la mesa 1 o 2
+function steps() {
+  if (!H) return;
+  const mine = H.orders.filter((o) => (o.m === 1 || o.m === 2) && !o.demo && o.t0 > base);
+  const done = [
+    mine.length > 0,
+    mine.length > 0,
+    mine.some((o) => ["prep", "listo", "entregado"].includes(o.status)) && mine.some((o) => ["listo", "entregado"].includes(o.status)),
+    (H.reviews || []).some((r) => (r.m === 1 || r.m === 2) && !r.demo && r.t > base) || H.calls.some((c) => (c.m === 1 || c.m === 2) && c.kind === "cuenta" && c.t0 > base),
+    baseMem != null && H.club.members > baseMem,
+    view === "club" && baseMem != null && H.club.members > baseMem,
+  ];
+  const now = done.indexOf(false);
+  $("#steps").innerHTML = STEPS.map(([b, s], i) => `<div class="st ${done[i] ? "ok" : i === now ? "now" : ""}"><i>${done[i] ? "✓" : i + 1}</i><span><b>${b}</b><small>${s}</small></span></div>`).join("");
+}
+$("#seg").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) { setView(b.dataset.v); steps(); } });
+$("#reloadP").onclick = () => { $("#pf").src = tUrl(1); };
+$("#restart").onclick = async () => {
+  try {
+    // borra el socio que se haya creado en esta demostración y vacía la mesa 1 y 2
+    const c = JSON.parse(store.get("club") || "null");
+    if (c) { try { await api("/club/leave", { body: c }); } catch (x) {} store.set("club", null); }
+    store.set("cart_1", null); store.set("cart_2", null);
+    await api("/host/table", { pin, body: { m: 1, action: "close" } });
+    await api("/host/table", { pin, body: { m: 2, action: "close" } });
+    await api("/host/reset", { pin, body: { only: "mesas" } });
+    base = Date.now(); baseMem = null; setup(); toast("Demostración reiniciada");
+  } catch (x) { toast(x.message); }
+};
+addEventListener("resize", fit);
+steps();
+if (pin) login(pin, true);
+})();
+</script>
+</body>
+</html>

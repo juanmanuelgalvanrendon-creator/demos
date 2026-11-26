@@ -202,8 +202,19 @@ body{background:var(--bg);padding-bottom:calc(var(--tabs) + env(safe-area-inset-
 .bar-no{background:var(--terra-l);color:var(--terra-d);border-radius:16px;padding:14px 16px;font-size:14px;font-weight:600;margin-bottom:14px}
 .ios{background:var(--paper);border-radius:16px;padding:14px;margin-top:12px;font-size:13.5px;color:var(--ink2);box-shadow:inset 0 0 0 1px var(--line)}
 .ios ol{margin:8px 0 0 18px}
-.toast{top:auto;bottom:calc(var(--tabs) + env(safe-area-inset-bottom) + 14px);transform:translate(-50%,180%)}
-.toast.show{transform:translate(-50%,0)}
+.toast{top:auto;bottom:calc(var(--tabs) + env(safe-area-inset-bottom) + 14px);transform:translate(-50%,24px);opacity:0;visibility:hidden;transition:transform .3s cubic-bezier(.2,.9,.3,1.2),opacity .25s,visibility .3s}
+.toast.show{transform:translate(-50%,0);opacity:1;visibility:visible}
+.rate{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:16px}
+.rate button{height:74px;border-radius:16px;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:transform .12s}
+.rate button b{font:400 28px/1 var(--serif)}
+.rate button span{font-size:10.5px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
+.rate button.on{background:var(--ink);color:#fff;box-shadow:none}
+.rate button.on span{color:rgba(255,255,255,.75)}
+.rvok{text-align:center;padding:8px 0 4px}
+.rvok .ic2{width:58px;height:58px;border-radius:50%;background:var(--ok-l);color:var(--ok);display:grid;place-items:center;margin:0 auto 12px}
+.rvcard{padding:16px;margin-top:12px;display:flex;gap:12px;align-items:center}
+.rvcard p{font-size:13.5px;color:var(--ink2);flex:1}
+.rvcard b{display:block;font:400 21px/1.1 var(--serif);color:var(--ink)}
 .foot{text-align:center;font-size:12px;color:var(--mut);margin-top:30px;line-height:1.5}
 </style>
 </head>
@@ -300,6 +311,7 @@ function onState(d) {
     if (!first && prev && prev !== o.status && o.status === "listo") { beep(2); if (navigator.vibrate) navigator.vibrate([200, 100, 200]); toast("Tu pedido #" + o.n + " está listo, ya va a tu mesa"); }
     S.lastStatus[o.id] = o.status;
   });
+  if (S.st && S.st.orders.length && !d.orders.length && !d.calls.length) S.rated = false; // la mesa se cerró
   S.st = d;
   render();
 }
@@ -366,7 +378,9 @@ function rInicio() {
   v.innerHTML = `
     <div class="hero"><img src="../img/chilaquiles-md.webp" alt="" fetchpriority="high"><span class="k">${hello()}${hasTable() ? " · Mesa " + M : ""}</span><h1>Bienvenido a <em>Higuera</em></h1><p>${subtitle}</p></div>
     ${lastO ? `<button class="mini${lastO.status === "listo" || lastO.status === "entregado" ? " ok" : ""}" type="button" data-tab="pedido"><span><span class="k" style="color:rgba(255,255,255,.7)">Tu pedido #${lastO.n}</span><br><b style="font:400 20px var(--serif)">${statusTxt(lastO.status)[0]}</b></span><span class="st">Ver</span></button>` : ""}
-    ${hasTable() ? `<div class="calls">${callBtn("mesero")}${callBtn("cuenta")}</div>` : ""}
+    ${S.st && S.st.site && S.st.site.notice ? `<div class="bar-no" style="margin-top:12px;background:var(--ink);color:#fff" role="status">${esc(S.st.site.notice)}</div>` : ""}
+    ${S.st && S.st.closed ? `<div class="bar-no" style="margin-top:12px">${esc(S.st.closed)}</div>` : ""}
+    ${hasTable() ? `<div class="calls">${callBtn("mesero")}${callBtn("cuenta")}</div>${rateCard()}` : ""}
     <div class="sec">${clubCard()}</div>
     ${se ? `<div class="sec"><div class="sec-h"><span class="k">El destacado</span></div><div class="card dest"><img src="${img(se.img)}" alt="" loading="lazy"><div><span class="tg">De la semana</span><h4>${esc(se.title)}</h4><p>${esc(se.text)}</p>${destIt ? addBtn(destIt) : ""}</div></div></div>` : ""}
     <div class="sec"><div class="sec-h"><span class="k">${canOrder() ? "Para pedir" : "De la carta"}</span><button type="button" data-tab="carta">Ver toda la carta</button></div>
@@ -405,10 +419,10 @@ function rPedido() {
       <div class="card cart">${cart}</div>
       ${canOrder() ? `<label class="k" for="gnote" style="display:block;margin-top:16px">Nota para cocina (opcional)</label><textarea class="ta" id="gnote" style="margin-top:8px" maxlength="120" placeholder="Ej.: traer todo al mismo tiempo">${esc(S.note)}</textarea>` : ""}
       ${!S.me ? `<p class="note">${IC.gift} <button type="button" class="lnk" data-tab="club">Únete al Club Higuera</button> antes de enviar y esta visita cuenta para tu recompensa.</p>` : `<p class="note">Este pedido suma tu visita de hoy al Club, ${esc(S.me.first)}.</p>`}
-      <div class="send">${canOrder() ? `<button class="btn btn-terra" type="button" id="send"${S.sending ? " disabled" : ""}>${S.sending ? "Enviando…" : `Enviar a cocina · ${cartCount()} ${cartCount() === 1 ? "producto" : "productos"}`}</button>` : `<button class="btn btn-ink" type="button" data-call="mesero">${callState("mesero") ? "Tu mesero ya viene" : "Llamar al mesero para ordenar"}</button>`}</div></div>`
+      <div class="send">${canOrder() ? `<button class="btn btn-terra" type="button" id="send"${S.sending || (S.st && S.st.closed) ? " disabled" : ""}>${S.sending ? "Enviando…" : `Enviar a cocina · ${cartCount()} ${cartCount() === 1 ? "producto" : "productos"}`}</button>` : `<button class="btn btn-ink" type="button" data-call="mesero">${callState("mesero") ? "Tu mesero ya viene" : "Llamar al mesero para ordenar"}</button>`}</div></div>`
     : `<div class="card blk" style="margin-top:16px"><h4>${orders.length ? "¿Algo más?" : "Aún no agregas nada"}</h4><p>Agrega platillos y bebidas desde la carta${canOrder() ? " y envíalos directo a cocina" : ""}.</p><button class="btn btn-ink" type="button" data-tab="carta">Ver la carta</button></div>`}
     ${orders.length ? `<div class="sec"><span class="k">Enviados de esta mesa</span>${orders.map((o) => { const [t, n] = statusTxt(o.status); return `<div class="card ord${o.status === "cancelado" ? " x" : ""}" aria-live="polite"><div class="hd"><b>#${String(o.n).padStart(3, "0")}${o.who ? " · " + esc(o.who) : ""}</b><span>${ago(o.t0, srvNow()) === "ahora" ? "Hace un momento" : "Hace " + ago(o.t0, srvNow())}</span></div>${o.status !== "cancelado" ? `<div class="trk">${[1, 2, 3, 4].map((k) => `<div class="${k < n || (k === n && n === 4) ? "on" : k === n ? "now" : ""}"></div>`).join("")}</div>` : ""}<div class="st">${o.status === "listo" || o.status === "entregado" ? `<em>${t}</em>` : t}</div><ul>${o.items.map((it) => `<li>${it.q} × ${esc(it.n)}${it.note ? ` <i>· ${esc(it.note)}</i>` : ""}</li>`).join("")}</ul>${o.note ? `<p class="note">Nota: ${esc(o.note)}</p>` : ""}</div>`; }).join("")}</div>` : ""}
-    ${hasTable() ? `<div class="calls" style="margin-top:22px">${callBtn("mesero")}${callBtn("cuenta")}</div>` : ""}`;
+    ${hasTable() ? `<div class="calls" style="margin-top:22px">${callBtn("mesero")}${callBtn("cuenta")}</div>${rateCard()}` : ""}`;
 }
 
 function rClub() {
@@ -489,6 +503,32 @@ function callSheet() {
   openSheet(`<div class="bd2"><span class="k">Mesa ${M}</span><h3>¿En qué te ayudamos?</h3><div class="calls" style="margin-top:16px">${callBtn("mesero")}${callBtn("cuenta")}</div><p class="note">Le llega un aviso al equipo al instante.</p></div>`, "calls");
 }
 
+/* ---------- calificación ---------- */
+const RATE = [[1, "Mal"], [2, "Regular"], [3, "Bien"], [4, "Muy bien"], [5, "Excelente"]];
+function rateCard() {
+  if (!S.st || S.st.reviewed || S.rated || !(callState("cuenta") || S.st.orders.some((o) => o.status === "entregado"))) return "";
+  return `<div class="card rvcard"><p><b>¿Cómo estuvo tu visita?</b>Tu opinión le llega directo a Higuera.</p><button class="btn btn-ink" type="button" id="rateOpen" style="height:44px;padding:0 16px;font-size:14px">Calificar</button></div>`;
+}
+function rateSheet() {
+  let st = 0;
+  openSheet(`<div class="bd2"><span class="k">Mesa ${M}</span><h3>¿Cómo estuvo tu visita?</h3><p class="pair">Nos ayuda a mejorar. Toma 10 segundos.</p>
+    <div class="rate" role="radiogroup" aria-label="Calificación del 1 al 5">${RATE.map(([n, l]) => `<button type="button" role="radio" aria-checked="false" data-rate="${n}"><b>${n}</b><span>${l}</span></button>`).join("")}</div>
+    <label class="k" for="rtx" style="display:block;margin-top:16px">¿Algo que quieras contarnos? (opcional)</label><textarea class="ta" id="rtx" style="margin-top:8px" maxlength="300" placeholder="Lo que más te gustó o lo que podemos mejorar"></textarea>
+    <p class="err" id="rerr2" role="alert"></p><button class="btn btn-ink btn-block" type="button" id="rateGo" style="margin-top:6px">Enviar calificación</button></div>`, "rate");
+  const sh = $("#sheet");
+  sh.querySelectorAll("[data-rate]").forEach((b) => b.onclick = () => { st = +b.dataset.rate; sh.querySelectorAll("[data-rate]").forEach((x) => { x.classList.toggle("on", +x.dataset.rate === st); x.setAttribute("aria-checked", +x.dataset.rate === st); }); });
+  $("#rateGo", sh).onclick = async () => {
+    if (!st) { $("#rerr2", sh).textContent = "Elige del 1 al 5."; return; }
+    const b = $("#rateGo", sh); b.disabled = true; b.textContent = "Enviando…";
+    try {
+      const r = await api("/mesa/review", { body: { m: M, k: K, stars: st, text: $("#rtx", sh).value, mid: S.club && S.club.id, mt: S.club && S.club.tok } });
+      S.rated = true; render();
+      const g = `<a class="btn ${r.low ? "btn-ghost" : "btn-terra"} btn-block" href="${esc(r.reviewUrl)}" target="_blank" rel="noopener" style="margin-top:14px">${r.low ? "También puedes dejar tu reseña en Google" : "Dejar mi reseña en Google"}</a>`;
+      openSheet(`<div class="bd2 rvok"><div class="ic2">${IC.check}</div><h3>${r.low ? "Gracias por decírnoslo" : "¡Gracias!"}</h3><p class="pair" style="margin:8px auto 0;max-width:330px">${r.low ? "El gerente ya recibió tu comentario y pasa a tu mesa en un momento para arreglarlo." : "Nos alegra que lo hayas disfrutado. Si tienes un minuto, una reseña en Google le ayuda mucho a Higuera."}</p>${g}<button class="lnk" type="button" id="rvClose" style="margin-top:16px">${r.low ? "Cerrar" : "Ahora no"}</button></div>`, "rate");
+    } catch (e) { $("#rerr2", sh).textContent = e.message; b.disabled = false; b.textContent = "Enviar calificación"; }
+  };
+}
+
 /* ---------- acciones ---------- */
 async function doCall(kind) {
   unlockAudio();
@@ -496,6 +536,7 @@ async function doCall(kind) {
     await api("/mesa/call", { body: { m: M, k: K, kind } });
     toast(kind === "mesero" ? "Listo, avisamos a tu mesero" : "Listo, te llevamos la cuenta");
     if (navigator.vibrate) navigator.vibrate(60);
+    if (kind === "cuenta" && S.st && !S.st.reviewed && !S.rated) setTimeout(rateSheet, 700);
   } catch (e) { toast(e.message); }
 }
 async function cancelCall(id) { try { await api("/mesa/call", { body: { m: M, k: K, cancel: id } }); toast("Aviso cancelado"); } catch (e) { toast(e.message); } }
@@ -566,6 +607,8 @@ document.addEventListener("click", async (e) => {
   if (t.dataset.call) { await doCall(t.dataset.call); if (sheetCtx === "calls") closeSheet(); return; }
   if (t.dataset.cancel) { await cancelCall(t.dataset.cancel); if (sheetCtx === "calls") closeSheet(); return; }
   if (t.id === "bell") { callSheet(); return; }
+  if (t.id === "rateOpen") { rateSheet(); return; }
+  if (t.id === "rvClose") { closeSheet(); return; }
   if (t.id === "send") { sendOrder(); return; }
   if (t.id === "clr") { S.cart = []; saveCart(); render(); return; }
   if (t.id === "joinGo") { join(); return; }

@@ -3,297 +3,287 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Higuera · Lista de espera virtual (propuesta)</title>
-<meta name="description" content="Propuesta de Code Nova para Higuera: lista de espera virtual con QR, aviso por WhatsApp y panel para el equipo.">
+<title>Higuera · Sistema de mesa, pedidos y club (propuesta)</title>
+<meta name="description" content="Propuesta de Code Nova para Higuera: QR en cada mesa para pedir, llamar al mesero y pedir la cuenta, club de lealtad, reseñas y paneles para el equipo.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#f4f1ea">
-<meta property="og:title" content="Higuera · Lista de espera virtual">
-<meta property="og:description" content="Walk ins only, sin la fila en la banqueta. Propuesta preparada por Code Nova.">
-<meta property="og:image" content="img/sopa-h.webp">
+<meta property="og:title" content="Higuera · Tu mesa pide, tu barra recibe, tu cliente regresa">
+<meta property="og:description" content="Sistema de mesa con QR, club de lealtad y reseñas. Propuesta preparada por Code Nova.">
+<meta property="og:image" content="img/sis-inicio.webp">
+<link rel="icon" href="img/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="hg.css">
 <style>
 .wrap{max-width:1160px;margin:0 auto;padding:0 22px}
-nav{position:sticky;top:0;z-index:30;background:rgba(244,241,234,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:14px}
-nav .by{font-size:12px;font-weight:700;color:var(--mut);letter-spacing:.04em;text-align:right;line-height:1.35}
-nav .by b{color:var(--ink)}
+.top{position:sticky;top:0;z-index:30;background:rgba(244,241,234,.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:14px}
+.top .by{font-size:12px;font-weight:700;color:var(--mut);text-align:right;line-height:1.35}
+.top .by b{color:var(--ink)}
 .k{font-size:11.5px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--terra)}
-h1{font:400 clamp(46px,6.4vw,84px)/.95 var(--serif);letter-spacing:-.015em}
+h1{font:400 clamp(46px,6.2vw,82px)/.95 var(--serif);letter-spacing:-.015em}
 h1 em,h2 em{font-style:italic;color:var(--terra)}
-h2{font:400 clamp(36px,4.4vw,56px)/1 var(--serif);letter-spacing:-.01em}
-.lead{font-size:18px;color:var(--ink2);max-width:520px}
-/* hero */
-.hero{padding:54px 0 30px}
-.hero .wrap{display:grid;grid-template-columns:1fr 1.02fr;gap:48px;align-items:center}
+h2{font:400 clamp(34px,4.3vw,54px)/1 var(--serif);letter-spacing:-.01em}
+.lead{font-size:18px;color:var(--ink2);max-width:540px}
+.sec{padding:76px 0}
+.sec.alt{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.sec.dark{background:var(--olive);color:#f4f1ea}
+.sec.dark .k{color:#f0c7a6}
+.sec.dark h2 em{color:#f0c7a6}
+.sec.dark .lead{color:rgba(244,241,234,.82)}
+.hd{max-width:720px;margin-bottom:38px}
+.hd h2{margin:12px 0 14px}
+/* portada */
+.hero{padding:56px 0 64px;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
 .hero h1{margin:16px 0 20px}
-.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
-.ticks{display:flex;gap:18px;flex-wrap:wrap;margin-top:26px;font-size:13.5px;font-weight:700;color:var(--ink2)}
-.ticks span{display:flex;align-items:center;gap:7px}
-.ticks svg{flex:none}
-.stage{position:relative}
-.stage .film{border-radius:28px;aspect-ratio:4/3.1;box-shadow:0 40px 70px -40px rgba(28,27,23,.7)}
-.phone{position:absolute;left:-34px;bottom:-30px;width:220px;background:var(--paper);border-radius:30px;padding:10px;box-shadow:0 30px 60px -24px rgba(28,27,23,.65),0 0 0 1px rgba(28,27,23,.06)}
-.phone .scr{background:var(--bg);border-radius:22px;padding:14px 14px 16px;overflow:hidden}
-.phone .scr img{height:16px;width:auto}
-.phone .tk{background:var(--olive);color:#f4f1ea;border-radius:16px;padding:12px;margin-top:10px}
-.phone .tk small{font-size:9px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;opacity:.6}
-.phone .tk b{display:block;font:600 26px var(--mono);margin-top:2px}
-.phone .row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
-.phone .row div{background:var(--paper);border-radius:12px;padding:8px}
-.phone .row strong{font:400 26px/1 var(--serif);display:block}
-.phone .row span{font-size:10px;color:var(--mut);font-weight:600;line-height:1.2;display:block;margin-top:2px}
-.phone .ok{margin-top:8px;background:var(--terra);color:#fff;border-radius:12px;padding:9px;font-size:11.5px;font-weight:800;text-align:center}
-.cap{position:absolute;right:16px;top:16px;background:rgba(28,27,23,.6);color:#f4f1ea;font-size:11px;font-weight:700;padding:6px 10px;border-radius:99px;backdrop-filter:blur(6px)}
-/* secciones */
-.sec{padding:96px 0 0}
-.sh{max-width:720px;margin-bottom:34px}
-.sh h2{margin:12px 0 14px}
-.sh p{color:var(--ink2);font-size:17px}
-/* probar */
-.try{margin-top:96px;background:var(--olive);color:#f4f1ea;padding:84px 0;position:relative;overflow:hidden}
-.try::before{content:"";position:absolute;right:-200px;top:-200px;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(242,226,211,.12),transparent 70%)}
-.try .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;position:relative}
-.try .k{color:#e8b48d}
-.try h2 em{color:#e8b48d}
-.try p{color:rgba(244,241,234,.78);font-size:17px}
-.steps3{display:grid;gap:14px;margin-top:28px}
-.steps3 div{display:grid;grid-template-columns:46px 1fr;gap:14px;align-items:start}
-.steps3 b{width:46px;height:46px;border-radius:50%;background:rgba(244,241,234,.1);display:grid;place-items:center;font:400 24px var(--serif)}
-.steps3 strong{display:block;font-size:16.5px}
-.steps3 span{font-size:14.5px;color:rgba(244,241,234,.7)}
-.qrcard{background:#f4f1ea;color:var(--ink);border-radius:30px;padding:26px;text-align:center;box-shadow:0 40px 80px -40px rgba(0,0,0,.7)}
-.qrcard .q{width:250px;max-width:100%;margin:6px auto 0}
-.qrcard .q svg{width:100%;display:block}
-.qrcard .lv{display:flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:700;margin-top:14px;color:var(--ink2)}
-.qrcard .btns{display:none;gap:10px;flex-direction:column;margin-top:16px}
-.qrcard .host{display:inline-block;margin-top:14px;font-size:14px;font-weight:800;color:var(--terra-d)}
-/* antes / despues */
-.vs{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.vs .col{border-radius:26px;padding:26px}
-.vs .a{background:var(--paper);box-shadow:inset 0 0 0 1px var(--line)}
-.vs .b{background:var(--ink);color:#f4f1ea}
-.vs h3{font:400 30px/1 var(--serif);margin-bottom:16px}
-.vs ul{list-style:none;display:grid;gap:13px}
-.vs li{display:grid;grid-template-columns:24px 1fr;gap:10px;font-size:15.5px;line-height:1.45}
-.vs .a li{color:var(--ink2)}
-.vs .b li{color:rgba(244,241,234,.86)}
-/* fotos */
-.reel{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px}
-.reel .film{border-radius:20px;aspect-ratio:4/5}
-/* numeros */
-.calc{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:stretch}
-.inputs{background:var(--paper);border-radius:26px;padding:26px;box-shadow:var(--sh);display:grid;gap:22px}
-.rng .rl{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-weight:700;font-size:15px}
-.rng .rl output{font:400 30px/1 var(--serif)}
-.rng input{width:100%;margin-top:10px;accent-color:var(--terra);height:28px}
-.rng small{display:block;font-size:12.5px;color:var(--mut);margin-top:2px}
-.res{background:var(--terra);color:#fff;border-radius:26px;padding:30px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
-.res .k{color:#fff}
-.res .big{font:400 clamp(56px,7vw,88px)/.95 var(--serif);margin-top:10px}
-.res .sub{font-size:15px;opacity:.9;margin-top:8px}
-.res .rec{background:rgba(0,0,0,.14);border-radius:20px;padding:18px}
-.res .rec b{font:400 44px/1 var(--serif);display:block}
-.res .rec span{font-size:14px}
-.res .fine{font-size:12.5px;opacity:.8}
-/* equipo */
-.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.f{background:var(--paper);border-radius:24px;padding:24px;box-shadow:var(--sh)}
-.f .ic{width:48px;height:48px;border-radius:14px;background:var(--sage);display:grid;place-items:center;margin-bottom:16px}
-.f h3{font:400 26px/1.05 var(--serif);margin-bottom:8px}
-.f p{font-size:14.5px;color:var(--ink2)}
-.mock{margin-top:16px;background:var(--ink);border-radius:26px;padding:18px;display:grid;gap:10px}
-.mrow{background:#f4f1ea;border-radius:16px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
-.mrow .p{font:400 28px/1 var(--serif);color:var(--mut);width:24px;text-align:center}
-.mrow b{font-size:15px}.mrow small{display:block;font-size:12.5px;color:var(--ink2)}
-.mrow .bt{padding:10px 14px;border-radius:99px;font-weight:800;font-size:13px;background:var(--terra);color:#fff}
-.mrow .bt.g{background:var(--ok)}.mrow .bt.w{background:#1faa59}
-.mrow.c{background:#fbf3ea;box-shadow:inset 4px 0 0 var(--terra)}
-/* prueba */
-.pilot{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;counter-reset:p}
-.pilot div{background:var(--paper);border-radius:24px;padding:24px;box-shadow:var(--sh);position:relative}
-.pilot div::before{counter-increment:p;content:counter(p);font:400 56px/1 var(--serif);color:var(--terra);display:block;margin-bottom:10px}
-.pilot h3{font-size:17px;margin-bottom:6px}
-.pilot p{font-size:14.5px;color:var(--ink2)}
-.close{margin-top:22px;background:var(--ink);color:#f4f1ea;border-radius:30px;padding:34px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
-.close h3{font:400 clamp(30px,3.6vw,44px)/1.02 var(--serif)}
-.close p{color:rgba(244,241,234,.75);margin-top:8px;font-size:15.5px}
-footer{padding:60px 0 50px;color:var(--mut);font-size:13.5px}
-footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
-footer b{color:var(--ink)}
-@media (max-width:900px){
-  .hero{padding-top:26px}
-  .hero .wrap,.try .wrap,.calc,.vs,.feat,.pilot,.close{grid-template-columns:1fr}
-  .hero .wrap{gap:56px}
-  .phone{left:12px;bottom:-40px;width:180px}
-  .reel{grid-template-columns:repeat(2,1fr)}
-  .sec{padding-top:72px}.try{margin-top:72px;padding:64px 0}
-  .lead{font-size:16.5px}
-  .qrcard .btns{display:flex}
-  .close{padding:26px}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.checks{list-style:none;display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;font-size:14px;font-weight:700;color:var(--ink2)}
+.checks li{display:flex;gap:8px;align-items:center}
+.checks li::before{content:"";width:18px;height:18px;border-radius:50%;background:var(--ok-l) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232d7a4b' stroke-width='3.5'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center/11px no-repeat;flex:0 0 auto}
+.phones{position:relative;height:600px}
+.ph{position:absolute;width:270px;border-radius:38px;padding:9px;background:#151513;box-shadow:0 40px 70px -36px rgba(28,27,23,.75)}
+.ph img{width:100%;height:auto;border-radius:30px;display:block}
+.ph.a{left:4%;top:20px;transform:rotate(-4deg)}
+.ph.b{right:4%;top:70px;transform:rotate(4deg)}
+/* pasos */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;counter-reset:s}
+.stp{background:var(--bg);border-radius:22px;padding:22px;position:relative}
+.stp .n{font:600 12px var(--mono);color:var(--terra)}
+.stp h3{font:400 28px/1.05 var(--serif);margin:10px 0 8px}
+.stp p{font-size:14.5px;color:var(--ink2)}
+/* para quién */
+.who{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center;margin-top:20px}
+.who+.who{margin-top:70px}
+.who.rev .tx{order:2}
+.who h3{font:400 38px/1.02 var(--serif);margin:10px 0 14px}
+.who h3 em{font-style:italic;color:var(--terra)}
+.sec.dark .who h3 em{color:#f0c7a6}
+.who ul{list-style:none;display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.who li{display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:15.5px;color:var(--ink2)}
+.sec.dark .who li{color:rgba(244,241,234,.85)}
+.who li b{color:var(--ink)}
+.sec.dark .who li b{color:#f4f1ea}
+.who li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--terra);margin:9px 0 0 6px}
+.sec.dark .who li::before{background:#f0c7a6}
+.shot{border-radius:22px;overflow:hidden;box-shadow:0 30px 60px -32px rgba(0,0,0,.6);background:#1f231b}
+.shot img{width:100%;height:auto;display:block}
+.duo{display:flex;gap:16px;justify-content:center;align-items:flex-start}
+.duo .ph{position:static;width:240px;transform:none}
+.duo .ph:nth-child(2){margin-top:46px}
+/* ganancias */
+.wins{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.win{background:var(--paper);border-radius:22px;padding:22px;box-shadow:var(--sh)}
+.win h3{font:400 26px/1.08 var(--serif);margin-bottom:8px}
+.win p{font-size:14.5px;color:var(--ink2)}
+/* calculadora */
+.calc{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:start}
+.cbox{background:var(--paper);border-radius:24px;padding:24px;box-shadow:var(--sh)}
+.cbox h3{font:400 26px/1.1 var(--serif);margin-bottom:4px}
+.cbox .sub{font-size:13.5px;color:var(--mut);margin-bottom:8px}
+.rng{padding:14px 0;border-bottom:1px solid var(--line)}
+.rng:last-child{border-bottom:0}
+.rl{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-weight:700;font-size:14.5px}
+.rl output{font:400 28px/1 var(--serif);white-space:nowrap}
+.rng input[type=range]{width:100%;margin-top:10px;accent-color:var(--terra)}
+.rng small{display:block;font-size:12.5px;color:var(--mut);margin-top:4px}
+.res{background:var(--olive);color:#f4f1ea;border-radius:24px;padding:26px;position:sticky;top:84px}
+.res .k{color:#f0c7a6}
+.res .big{font:400 clamp(46px,5vw,64px)/1 var(--serif);margin:10px 0 6px}
+.res p{font-size:14.5px;color:rgba(244,241,234,.85)}
+.res .row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid rgba(244,241,234,.14);font-size:14.5px}
+.res .row b{font:400 24px/1 var(--serif)}
+.res .note{font-size:12px;color:rgba(244,241,234,.6);margin-top:14px;line-height:1.5}
+/* incluye y necesitamos */
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.col{background:var(--bg);border-radius:22px;padding:22px}
+.col h3{font:400 26px/1.1 var(--serif);margin-bottom:12px}
+.col ul{list-style:none;display:flex;flex-direction:column;gap:9px;font-size:14.5px;color:var(--ink2)}
+.col li{display:grid;grid-template-columns:18px 1fr;gap:8px}
+.col li::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--terra);margin:8px 0 0 4px}
+/* preguntas */
+.faq{max-width:820px}
+.faq details{border-bottom:1px solid rgba(244,241,234,.18);padding:18px 0}
+.faq summary{cursor:pointer;font:400 25px/1.2 var(--serif);list-style:none;display:flex;justify-content:space-between;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--sans);font-weight:500;font-size:26px;line-height:1;color:#f0c7a6;transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq p{font-size:15.5px;color:rgba(244,241,234,.85);margin-top:10px;max-width:700px}
+.cta{text-align:center;padding:80px 0}
+.cta h2{max-width:760px;margin:12px auto 16px}
+.cta .lead{margin:0 auto}
+.cta .acts{justify-content:center}
+footer{border-top:1px solid var(--line);padding:26px 0;font-size:13px;color:var(--mut)}
+footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+@media (max-width:960px){
+  .hero .wrap,.who,.calc{grid-template-columns:1fr}
+  .who.rev .tx{order:0}
+  .phones{height:470px;max-width:460px;margin:0 auto;width:100%}
+  .ph{width:205px}
+  .steps{grid-template-columns:1fr 1fr}
+  .wins,.cols3{grid-template-columns:1fr}
+  .res{position:static}
+  .duo .ph{width:46%}
 }
-@media (max-width:520px){nav .by span{display:none}.cta .btn{flex:1}}
+@media (max-width:560px){.steps{grid-template-columns:1fr}.phones{height:400px}.ph{width:170px}.ph.a{left:0}.ph.b{right:0}.sec{padding:58px 0}}
 </style>
 </head>
 <body>
-<nav><div class="wrap"><img class="logo" src="img/logo-dark.png" alt="Higuera" width="83" height="30"><div class="by"><span>Propuesta para Higuera · </span>por <b>Code Nova</b></div></div></nav>
-
-<header class="hero"><div class="wrap">
-  <div>
-    <span class="k">Lista de espera virtual</span>
-    <h1>Walk ins only, <em>sin la fila en la banqueta</em></h1>
-    <p class="lead">Tus clientes se anotan con un QR en la entrada, ven su turno en vivo y les avisamos cuando su mesa está lista. El equipo maneja toda la lista desde un celular.</p>
-    <div class="cta"><a class="btn btn-ink" href="#probar">Pruébala ahora</a><a class="btn btn-ghost" href="#numeros">Lo que se recupera</a></div>
-    <div class="ticks">
-      <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2d7a4b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Sin app que descargar</span>
-      <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2d7a4b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Sigue siendo walk ins only</span>
-      <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2d7a4b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Aviso al celular aunque cierren la página</span>
-    </div>
-  </div>
-  <div class="stage">
-    <div class="film"><img src="img/sopa-h.webp" alt="Grilled cheese y sopa de tomate de Higuera" width="772" height="488"></div>
-    <span class="cap">Foto: @higuera_mx</span>
-    <div class="phone" aria-hidden="true"><div class="scr">
-      <img src="img/logo-dark.png" alt="">
-      <div class="tk"><small>Tu turno</small><b>H-014</b></div>
-      <div class="row"><div><strong id="ph1">3</strong><span>grupos antes que tú</span></div><div><strong id="ph2">~18</strong><span>min aprox.</span></div></div>
-      <div class="ok">Te avisamos cuando tu mesa esté lista</div>
-    </div></div>
-  </div>
+<header class="top"><div class="wrap">
+  <img class="logo" src="img/logo-sm.png" alt="Higuera" width="83" height="30">
+  <div class="by">Propuesta preparada para Higuera<br>por <b>Code Nova</b></div>
 </div></header>
 
 <main>
-<section class="try" id="probar"><div class="wrap">
+<section class="hero"><div class="wrap">
   <div>
-    <span class="k">Pruébala aquí mismo</span>
-    <h2 style="margin:12px 0 14px">Anótate como cliente y <em>yo te llamo a la mesa</em></h2>
-    <p>No es una maqueta: es la lista funcionando. Lo que hagas en tu celular aparece al instante en el panel del equipo.</p>
-    <div class="steps3">
-      <div><b>1</b><p><strong>Escanea el código</strong><span>Con la cámara de tu celular, como lo haría un cliente en la entrada.</span></p></div>
-      <div><b>2</b><p><strong>Anótate en la lista</strong><span>Tu nombre, cuántos son y dónde prefieren. Ves tu turno y la espera en vivo.</span></p></div>
-      <div><b>3</b><p><strong>Te llamo desde el panel</strong><span>Toco «Llamar mesa» y te llega la notificación con sonido y vibración, aunque hayas cerrado la página.</span></p></div>
-    </div>
+    <span class="k">Sistema de mesa para Higuera</span>
+    <h1>Tu mesa pide, tu barra recibe, <em>tu cliente regresa</em></h1>
+    <p class="lead">Un QR en cada mesa. El cliente ve la carta, pide, llama al mesero o pide la cuenta desde su celular, sin descargar nada. La comanda llega directo a la barra y cada visita se suma a su tarjeta del Club Higuera.</p>
+    <div class="acts"><a class="btn btn-terra" href="demo/">Ver la demostración</a><a class="btn btn-ghost" href="#como">Cómo funciona</a></div>
+    <ul class="checks"><li>Sin app que descargar</li><li>Funciona con cualquier celular</li><li>Sigue siendo walk ins only</li></ul>
   </div>
-  <div class="qrcard">
-    <span class="k" style="color:var(--mut)">Escanea para anotarte</span>
-    <div class="q" id="q"></div>
-    <div class="lv"><span class="dot" id="ldot"></span><span id="lv">Conectando…</span></div>
-    <div class="btns"><a class="btn btn-ink btn-block" href="fila/" target="_blank" rel="noopener">Abrir como cliente</a></div>
-    <a class="host" href="host/" target="_blank" rel="noopener">Abrir el panel del equipo</a>
+  <div class="phones" aria-hidden="true">
+    <div class="ph a"><img src="img/sis-inicio.webp" alt="" width="585" height="1266"></div>
+    <div class="ph b"><img src="img/sis-pedido.webp" alt="" width="585" height="1266" loading="lazy"></div>
+  </div>
+</div></section>
+
+<section class="sec alt" id="como"><div class="wrap">
+  <div class="hd"><span class="k">Así funciona</span><h2>Cuatro momentos, <em>un solo sistema</em></h2><p class="lead">Del momento en que se sientan al momento en que regresan la siguiente semana.</p></div>
+  <div class="steps">
+    <div class="stp"><span class="n">01</span><h3>Escanea</h3><p>Cada mesa tiene su QR. Al escanearlo se abre la carta de Higuera con el número de su mesa, sin descargar nada.</p></div>
+    <div class="stp"><span class="n">02</span><h3>Pide o llama</h3><p>Manda su pedido directo a la barra, con notas como "sin cebolla". O toca la campana para llamar al mesero o pedir la cuenta.</p></div>
+    <div class="stp"><span class="n">03</span><h3>Califica</h3><p>Al pedir la cuenta califica su visita del 1 al 5. Si algo salió mal, el gerente se entera antes de que se vaya.</p></div>
+    <div class="stp"><span class="n">04</span><h3>Regresa</h3><p>Su visita se suma sola al Club Higuera. Al llegar al premio, se lo canjean. Y le pueden llegar promociones a su celular.</p></div>
   </div>
 </div></section>
 
 <section class="sec"><div class="wrap">
-  <div class="sh"><span class="k">Un fin de semana</span><h2>La misma fila, <em>vivida de otra forma</em></h2><p>Higuera sigue sin reservaciones. Lo que cambia es dónde y cómo espera la gente.</p></div>
-  <div class="vs">
-    <div class="col a"><h3>Hoy</h3><ul>
-      <li><span>—</span>La gente espera parada afuera sin saber cuánto falta.</li>
-      <li><span>—</span>Alguien del equipo lleva la lista en papel o de memoria y contesta "¿cuánto falta?" una y otra vez.</li>
-      <li><span>—</span>Quien ve la fila desde el coche se sigue de largo, y nadie sabe cuántos fueron.</li>
-      <li><span>—</span>Al final del día no queda registro de cuánta gente llegó ni a qué hora.</li>
-    </ul></div>
-    <div class="col b"><h3>Con la lista virtual</h3><ul>
-      <li><span>+</span>Se anotan con un QR y esperan donde quieran: un café en la barra, una vuelta por Tampiquito.</li>
-      <li><span>+</span>El turno y la espera se ven en vivo en su celular; nadie tiene que preguntar.</li>
-      <li><span>+</span>El equipo llama la mesa con un toque: les llega una notificación al celular y, si hace falta, un WhatsApp ya escrito.</li>
-      <li><span>+</span>Cada día queda el resumen: cuántos se anotaron, espera promedio, hora más llena.</li>
-    </ul></div>
+  <div class="who">
+    <div class="tx"><span class="k">Para el cliente</span><h3>Todo desde su mesa, <em>sin esperar</em> a que lo vean</h3>
+      <ul>
+        <li><span><b>La carta con fotos</b>, buscador y lo que se agotó hoy marcado al instante.</span></li>
+        <li><span><b>Su pedido en vivo:</b> recibido, preparando, listo y en su mesa. Le vibra el celular cuando está listo.</span></li>
+        <li><span><b>Llamar al mesero o pedir la cuenta</b> con un toque.</span></li>
+        <li><span><b>Su tarjeta del club</b> en el celular: ve cuántas visitas le faltan para su premio.</span></li>
+      </ul></div>
+    <div class="duo" aria-hidden="true"><div class="ph"><img src="img/sis-carta.webp" alt="" width="585" height="1266" loading="lazy"></div><div class="ph"><img src="img/sis-club.webp" alt="" width="585" height="700" loading="lazy"></div></div>
   </div>
-  <div class="reel">
-    <div class="film"><img src="img/chilaquiles.webp" alt="Chilaquiles verdes de Higuera" loading="lazy"></div>
-    <div class="film"><img src="img/shakshouka.webp" alt="Huevos en salsa de jitomate de Higuera" loading="lazy"></div>
-    <div class="film"><img src="img/barra.webp" alt="La barra de café de Higuera" loading="lazy"></div>
-    <div class="film"><img src="img/enfrijoladas.webp" alt="Enfrijoladas de Higuera" loading="lazy"></div>
+</div></section>
+
+<section class="sec dark"><div class="wrap">
+  <div class="who rev">
+    <div class="tx"><span class="k">Para barra, cocina y meseros</span><h3>Comandas claras y <em>cero vueltas</em> de más</h3>
+      <ul>
+        <li><span><b>Las comandas llegan solas</b> a una tablet, con sonido, número de mesa y notas resaltadas.</span></li>
+        <li><span><b>Tres columnas:</b> nuevos, preparando y listos para llevar. El tiempo se pone en amarillo y rojo si se tarda.</span></li>
+        <li><span><b>Llamados al momento:</b> qué mesa llama al mesero y cuál pide la cuenta.</span></li>
+        <li><span><b>Alerta al gerente</b> si una mesa califica su visita con 3 o menos, con su comentario.</span></li>
+      </ul></div>
+    <div class="shot"><img src="img/sis-barra.webp" alt="Pantalla de pedidos y llamados para la barra" width="1366" height="860" loading="lazy"></div>
+  </div>
+</div></section>
+
+<section class="sec"><div class="wrap">
+  <div class="who">
+    <div class="tx"><span class="k">Para el gerente y el dueño</span><h3>Saber qué pasa <em>en cada mesa</em></h3>
+      <ul>
+        <li><span><b>Resumen del día:</b> pedidos, lo más pedido, cuánto tarda la cocina y cuánto tardan en atender un llamado.</span></li>
+        <li><span><b>El club:</b> cuántos socios hay, quién vino hoy y quién ya tiene su premio.</span></li>
+        <li><span><b>Promociones a su celular</b> en un minuto, por ejemplo: "hoy la cookie va por la casa".</span></li>
+        <li><span><b>Calificaciones y comentarios</b> de cada mesa, y una invitación a dejar reseña en Google.</span></li>
+        <li><span><b>Sin depender de nadie:</b> el equipo cambia el destacado, marca lo agotado y pausa pedidos desde su panel.</span></li>
+      </ul></div>
+    <div class="shot"><img src="img/sis-gerente.webp" alt="Panel del gerente: club, pedidos y calificaciones" width="1366" height="1300" loading="lazy"></div>
+  </div>
+</div></section>
+
+<section class="sec alt"><div class="wrap">
+  <div class="hd"><span class="k">Lo que gana Higuera</span><h2>Más que un menú <em>con QR</em></h2></div>
+  <div class="wins">
+    <div class="win"><h3>Clientes que regresan</h3><p>El club convierte una visita en un hábito. Y como los socios aceptan recibir promociones, Higuera les puede hablar directo sin depender del algoritmo de Instagram.</p></div>
+    <div class="win"><h3>Meseros con más tiempo</h3><p>Menos vueltas para tomar órdenes, traer la carta o ver quién quiere la cuenta. Llegan a la mesa cuando de verdad los necesitan.</p></div>
+    <div class="win"><h3>Pedidos sin errores</h3><p>La comanda llega escrita por el propio cliente, con sus notas. Nada de "creí que había dicho sin cebolla".</p></div>
+    <div class="win"><h3>Problemas resueltos a tiempo</h3><p>Una mala experiencia se atiende en la mesa, antes de que se convierta en una mala reseña.</p></div>
+    <div class="win"><h3>Datos para decidir</h3><p>Qué se vende, a qué hora, cuánto tarda la cocina y qué opinan los clientes, día por día.</p></div>
+    <div class="win"><h3>La fila del fin de semana, resuelta</h3><p>Incluye la lista de espera con QR en la entrada. Cuando sientan a un socio desde la lista, su visita también se cuenta.</p></div>
   </div>
 </div></section>
 
 <section class="sec" id="numeros"><div class="wrap">
-  <div class="sh"><span class="k">Los números</span><h2>Lo que se va <em>caminando</em> cada mes</h2><p>Mueve los valores con lo que ves un sábado o domingo en la entrada. Durante la prueba lo medimos con datos reales.</p></div>
+  <div class="hd"><span class="k">Tu diagnóstico</span><h2>¿Cuánto podría <em>regresar</em>?</h2><p class="lead">Mueve los valores con los números reales de Higuera. Los valores iniciales son solo de ejemplo.</p></div>
   <div class="calc">
-    <div class="inputs">
-      <div class="rng"><div class="rl"><label for="r1">Grupos que se van sin entrar, por hora llena</label> <output id="o1" for="r1">3</output></div><input type="range" id="r1" min="0" max="15" value="3"><small>Los que ven la fila y se siguen de largo.</small></div>
-      <div class="rng"><div class="rl"><label for="r2">Horas llenas por día de fin de semana</label> <output id="o2" for="r2">3</output></div><input type="range" id="r2" min="1" max="8" value="3"></div>
-      <div class="rng"><div class="rl"><label for="r3">Personas por grupo</label> <output id="o3" for="r3">2</output></div><input type="range" id="r3" min="1" max="6" value="2"></div>
-      <div class="rng"><div class="rl"><label for="r4">Consumo por persona</label> <output id="o4" for="r4">$300</output></div><input type="range" id="r4" min="150" max="600" step="10" value="300"><small>Un platillo de la carta más una bebida.</small></div>
-      <div class="rng"><div class="rl"><label for="r5">Días con fila al mes</label> <output id="o5" for="r5">8</output></div><input type="range" id="r5" min="2" max="30" value="8"><small>8 = sábados y domingos.</small></div>
+    <div class="cbox">
+      <h3>Con el club</h3><p class="sub">Clientes que regresan una vez más al mes.</p>
+      <div class="rng"><div class="rl"><label for="c1">Clientes por semana</label><output id="o1" for="c1">600</output></div><input type="range" id="c1" min="100" max="2500" step="50" value="600"><small>Personas que comen en Higuera en una semana normal.</small></div>
+      <div class="rng"><div class="rl"><label for="c2">Consumo promedio por persona</label><output id="o2" for="c2">$250</output></div><input type="range" id="c2" min="80" max="700" step="10" value="250"><small>Lo que gasta una persona en promedio.</small></div>
+      <div class="rng"><div class="rl"><label for="c3">Clientes que regresan una vez más al mes gracias al club</label><output id="o3" for="c3">5%</output></div><input type="range" id="c3" min="1" max="20" step="1" value="5"><small>Un número conservador: 1 de cada 20.</small></div>
+      <h3 style="margin-top:22px">Con la lista de espera</h3><p class="sub">Grupos que ven la fila y se van.</p>
+      <div class="rng"><div class="rl"><label for="c4">Grupos que se van por hora llena</label><output id="o4" for="c4">3</output></div><input type="range" id="c4" min="0" max="12" step="1" value="3"></div>
+      <div class="rng"><div class="rl"><label for="c5">Horas llenas por fin de semana</label><output id="o5" for="c5">6</output></div><input type="range" id="c5" min="0" max="16" step="1" value="6"></div>
+      <div class="rng"><div class="rl"><label for="c6">Grupos que la lista logra quedarse</label><output id="o6" for="c6">1 de cada 3</output></div><input type="range" id="c6" min="1" max="3" step="1" value="2"><small>De los que antes se iban.</small></div>
     </div>
-    <div class="res">
-      <div><span class="k">Se va sin entrar</span><div class="big" id="loss">$43,200</div><div class="sub">al mes, con los valores de la izquierda.</div></div>
-      <div class="rec"><b id="rec">$14,400</b><span>al mes si la lista recupera solo 1 de cada 3 de esos grupos.</span></div>
-      <div class="fine">Es una estimación con tus propios números; no incluye que los clientes regresen ni las recomendaciones.</div>
+    <div class="res" aria-live="polite">
+      <span class="k">Lo que podría regresar al mes</span>
+      <div class="big" id="tot">$0</div>
+      <p>Una estimación con los números de arriba, para darte una idea del tamaño de la oportunidad.</p>
+      <div class="row"><span>Visitas extra del club</span><b id="r1">$0</b></div>
+      <div class="row"><span>Grupos que ya no se van de la fila</span><b id="r2">$0</b></div>
+      <div class="row"><span>Personas que regresan al mes</span><b id="r3">0</b></div>
+      <p class="note">Calculado con 4.3 semanas por mes y 2.6 personas por grupo. No es una promesa de resultados: depende de la operación, la temporada y cuánto se promueva el club.</p>
     </div>
   </div>
 </div></section>
 
-<section class="sec"><div class="wrap">
-  <div class="sh"><span class="k">Para el equipo</span><h2>Todo en <em>un celular</em> en la entrada</h2><p>Quien recibe en la puerta no necesita capacitación: ve la lista, llama la mesa y la marca como sentada. La lista se cierra sola antes de la hora de cierre y marca en rojo a quien pasó la tolerancia.</p></div>
-  <div class="feat">
-    <div class="f"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2e3527" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M10 18h4"/></svg></div><h3>Panel en vivo</h3><p>Los que se anotan con el QR aparecen al instante, con sonido. También se puede anotar a alguien en la puerta.</p></div>
-    <div class="f"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2e3527" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 21l2.1-5.6A8.4 8.4 0 1 1 21 11.5z"/></svg></div><h3>Aviso en un toque</h3><p>«Llamar mesa» le manda una notificación a su celular aunque haya cerrado la página, y al siguiente le avisa que ya casi. Si dejó WhatsApp, el mensaje ya sale escrito.</p></div>
-    <div class="f"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2e3527" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div><h3>Resumen y clientes</h3><p>Cuántos se anotaron, espera promedio y hora más llena. Y una lista de clientes que aceptaron recibir novedades de Higuera.</p></div>
-  </div>
-  <div class="mock" aria-hidden="true">
-    <div class="mrow c"><div class="p">1</div><div><b>Mariana · H-012</b><small>2 personas · Terraza · llamado hace 1:24 · va en camino</small></div><div style="display:flex;gap:6px"><span class="bt g">Sentar</span><span class="bt w">WhatsApp</span></div></div>
-    <div class="mrow"><div class="p">2</div><div><b>Diego · H-013</b><small>4 personas · Interior · espera 14 min</small></div><span class="bt">Llamar mesa</span></div>
-    <div class="mrow"><div class="p">3</div><div><b>Sofía · H-014</b><small>3 personas · Lo primero que se libere · espera 9 min</small></div><span class="bt">Llamar mesa</span></div>
+<section class="sec alt"><div class="wrap">
+  <div class="hd"><span class="k">El arranque</span><h2>Qué incluye y <em>qué necesitamos</em></h2></div>
+  <div class="cols3">
+    <div class="col"><h3>Incluye</h3><ul><li>App de la mesa con la carta, pedido, llamados y cuenta</li><li>Club Higuera con visitas automáticas, premio y promociones</li><li>Calificación al pedir la cuenta y alerta al gerente</li><li>Lista de espera con QR para la entrada</li><li>Pantallas para barra, entrada y gerente</li><li>QR de todas las mesas listos para imprimir</li></ul></div>
+    <div class="col"><h3>Cómo se instala</h3><ul><li>Cargamos la carta con fotos y precios</li><li>Imprimimos y colocamos los QR en cada mesa</li><li>Capacitamos al equipo: es un recorrido de 20 minutos</li><li>Funciona en las tablets o celulares que ya tienen</li><li>Un periodo de prueba con acompañamiento</li></ul></div>
+    <div class="col"><h3>Lo que necesitamos de Higuera</h3><ul><li>La carta con precios y, si se puede, fotos</li><li>Número de mesas y cómo se reparten</li><li>El premio del club que quieren dar</li><li>La liga de reseñas de su perfil de Google</li><li>Razón social y contacto para el aviso de privacidad</li><li>Qué sistema usan para cobrar hoy</li></ul></div>
   </div>
 </div></section>
 
-<section class="sec"><div class="wrap">
-  <div class="sh"><span class="k">Y de paso</span><h2>Una página que <em>sí vende la mesa</em></h2><p>Su sitio actual muestra el menú como una sola imagen de fotos pequeñas, sin nombres ni precios. Esta versión integra la lista de espera desde el inicio.</p></div>
-  <div class="vs">
-    <div class="col a"><h3>La página de hoy</h3><ul>
-      <li><span>—</span>"menu - 2026" es una imagen de miniaturas de diciembre de 2024: en el celular no se lee y Google no la entiende.</li>
-      <li><span>—</span>Nada dice cuánto se espera ni que pueden anotarse antes de llegar.</li>
-      <li><span>—</span>"order here" son solo dos logotipos; el horario se repite en cada página.</li>
-    </ul></div>
-    <div class="col b"><h3>La propuesta</h3><ul>
-      <li><span>+</span>Páginas separadas: Inicio, Menú, La casa, Lista de espera y Visítanos, en español e inglés.</li>
-      <li><span>+</span>Menú en texto, por categorías, que se lee en el celular y aparece en Google.</li>
-      <li><span>+</span>"Abierto ahora" y la espera en vivo arriba, con botón para anotarse en la lista.</li>
-      <li><span>+</span>Horario, cómo llegar, Rappi y Uber Eats en un solo lugar, con sus fotos.</li>
-    </ul></div>
-  </div>
-  <div style="margin-top:18px"><a class="btn btn-ink" href="sitio/" target="_blank" rel="noopener">Ver la página propuesta</a></div>
-</div></section>
-
-<section class="sec"><div class="wrap">
-  <div class="sh"><span class="k">La prueba</span><h2>Dos fines de semana, <em>sin costo</em></h2><p>Antes de hablar de dinero, que los números de Higuera digan si sirve.</p></div>
-  <div class="pilot">
-    <div><h3>Ponemos el QR en la entrada</h3><p>Te llevo el letrero impreso con el código y dejo la lista lista para el equipo, con el PIN que ustedes elijan.</p></div>
-    <div><h3>El equipo la usa sábado y domingo</h3><p>Desde un celular o tablet en la puerta. Estoy disponible por WhatsApp esos días por cualquier detalle.</p></div>
-    <div><h3>Te enseño los números</h3><p>Cuántos se anotaron, cuánto esperaron, a qué hora se llenó y cuántos dejaron su WhatsApp. Con eso decides.</p></div>
-  </div>
-  <div class="close">
-    <div><h3>¿Arrancamos este fin de semana?</h3><p>Juan Manuel Galván · Code Nova · Monterrey</p></div>
-    <a class="btn btn-terra" id="wa" href="#" target="_blank" rel="noopener">Agendar la prueba por WhatsApp</a>
+<section class="sec dark"><div class="wrap">
+  <div class="hd"><span class="k">Preguntas frecuentes</span><h2>Lo que <em>suelen preguntar</em></h2></div>
+  <div class="faq">
+    <details><summary>¿Y si un cliente no quiere usar su celular?</summary><p>Lo atiende el mesero como siempre. El QR es una opción más, no reemplaza al equipo. Además, desde el panel se puede poner en modo "solo llamar al mesero" para que el cliente vea la carta y el mesero tome la orden.</p></details>
+    <details><summary>¿Se conecta con el sistema con el que cobramos?</summary><p>Por ahora el sistema toma pedidos, llamados y el club, pero no cobra. Si Higuera usa un punto de venta, revisamos juntos cómo conectarlo o cómo pasar los pedidos sin capturarlos dos veces. Es lo primero que platicamos.</p></details>
+    <details><summary>¿Qué pasa si se va el internet?</summary><p>Los clientes usan los datos de su propio celular, así que pueden seguir pidiendo. La pantalla de la barra sí necesita internet: recomendamos tener un respaldo con datos móviles en la tablet de la barra.</p></details>
+    <details><summary>¿Alguien puede mandar pedidos falsos?</summary><p>Cada QR tiene una clave propia, así que no se puede inventar una mesa. Se puede limitar a que solo se acepten pedidos en horario, y si un QR se filtra, se cambia desde el panel en un segundo.</p></details>
+    <details><summary>¿Los datos de los clientes de quién son?</summary><p>De Higuera. Cada cliente acepta el aviso de privacidad al unirse al club, las promociones son opcionales y puede borrar su tarjeta y sus datos cuando quiera.</p></details>
+    <details><summary>¿Las reseñas de Google se filtran?</summary><p>No. Todos los clientes reciben la invitación a dejar su reseña. Lo que cambia es que, si alguien califica bajo, el gerente se entera al momento y puede arreglarlo en la mesa.</p></details>
   </div>
 </div></section>
 
+<section class="cta"><div class="wrap">
+  <span class="k">Pruébalo</span><h2>Velo funcionar <em>en dos minutos</em></h2>
+  <p class="lead">En la demostración pides desde un celular y ves la comanda llegar a la barra al mismo tiempo.</p>
+  <div class="acts"><a class="btn btn-terra" href="demo/">Abrir la demostración</a><a class="btn btn-wa" href="https://wa.me/528262613262?text=Hola%2C%20vi%20la%20propuesta%20del%20sistema%20de%20mesa%20para%20Higuera" target="_blank" rel="noopener">Escribir a Code Nova</a></div>
+</div></section>
 </main>
-<footer><div class="wrap"><span>Propuesta preparada por <b>Code Nova</b> para Higuera · Plutarco Elías Calles 419, Tampiquito</span><a href="letrero/" style="font-weight:700;color:var(--terra-d)">Ver el letrero de la entrada</a></div></footer>
 
-<script src="../_engine/qrcode.js"></script>
-<script src="fila.js"></script>
+<footer><div class="wrap"><span>Propuesta preparada por <b>Code Nova</b> para Higuera · Plutarco Elías Calles 419, Tampiquito</span><span>Las capturas son del sistema funcionando con datos de ejemplo.</span></div></footer>
+
 <script>
 (() => {
-const $ = (s) => document.querySelector(s);
-$("#q").innerHTML = HG.qrSvg(location.origin + "/higuera/fila/", { margin: 1 });
-const fmt = (n) => "$" + Math.round(n).toLocaleString("es-MX");
-function calc() {
-  const v = [1, 2, 3, 4, 5].map((i) => +$("#r" + i).value);
-  $("#o1").textContent = v[0]; $("#o2").textContent = v[1]; $("#o3").textContent = v[2]; $("#o4").textContent = fmt(v[3]); $("#o5").textContent = v[4];
-  const loss = v[0] * v[1] * v[2] * v[3] * v[4];
-  $("#loss").textContent = fmt(loss); $("#rec").textContent = fmt(loss / 3);
-}
-document.querySelectorAll(".rng input").forEach((i) => i.addEventListener("input", calc)); calc();
-$("#wa").href = "https://wa.me/528262613262?text=" + encodeURIComponent("Hola Juan Manuel, vi la propuesta de la lista de espera para Higuera. Me interesa hacer la prueba.");
-HG.live({ role: "guest", onData(d) {
-  if (!d || d.authError) return;
-  $("#lv").textContent = d.waiting ? `${d.waiting} ${d.waiting === 1 ? "grupo" : "grupos"} en la lista ahora · ~${d.estWait} min` : "Lista abierta · sin espera ahorita";
-  if (d.waiting) { $("#ph1").textContent = Math.max(0, d.waiting - 1); $("#ph2").textContent = "~" + d.estWait; }
-}, onStatus(s) { $("#ldot").className = "dot" + (s === "off" ? " off" : ""); } });
+  const $ = (s) => document.getElementById(s);
+  const peso = (n) => "$" + Math.round(n).toLocaleString("es-MX");
+  const ret = ["", "1 de cada 4", "1 de cada 3", "1 de cada 2"], retV = [0, 0.25, 1 / 3, 0.5];
+  function calc() {
+    const c1 = +$("c1").value, c2 = +$("c2").value, c3 = +$("c3").value, c4 = +$("c4").value, c5 = +$("c5").value, c6 = +$("c6").value;
+    $("o1").textContent = c1.toLocaleString("es-MX"); $("o2").textContent = peso(c2); $("o3").textContent = c3 + "%"; $("o4").textContent = c4; $("o5").textContent = c5; $("o6").textContent = ret[c6];
+    const month = c1 * 4.3;
+    const clubPeople = month * (c3 / 100);
+    const club = clubPeople * c2;
+    const lineGroups = c4 * c5 * 4.3 * retV[c6];
+    const line = lineGroups * 2.6 * c2;
+    $("r1").textContent = peso(club); $("r2").textContent = peso(line); $("r3").textContent = Math.round(clubPeople + lineGroups * 2.6).toLocaleString("es-MX");
+    $("tot").textContent = peso(club + line);
+  }
+  ["c1", "c2", "c3", "c4", "c5", "c6"].forEach((id) => $(id).addEventListener("input", calc));
+  calc();
 })();
 </script>
 </body>

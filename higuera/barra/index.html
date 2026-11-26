@@ -68,10 +68,15 @@ body{background:#1f231b;color:#f4f1ea;min-height:100vh}
 .box h2{font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,241,234,.7);margin-bottom:12px;display:flex;justify-content:space-between}
 .call{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;background:#f0c7a6;color:#1f231b;margin-bottom:10px;animation:ring 1.6s ease-in-out infinite}
 .call.cuenta{background:#fbfaf6}
+.call.alerta{background:#9a3624;color:#fff;animation:ring2 1.2s ease-in-out infinite}
+.call.alerta .tx small{color:rgba(255,255,255,.8)}
+.call.alerta .btn{background:#fff;color:#9a3624}
+@keyframes ring2{0%,100%{box-shadow:0 0 0 0 rgba(154,54,36,.6)}50%{box-shadow:0 0 0 9px rgba(154,54,36,0)}}
+.tb.bad{background:#9a3624;color:#fff}.tb.bad small{color:#fff}
 @keyframes ring{0%,100%{box-shadow:0 0 0 0 rgba(240,199,166,.5)}50%{box-shadow:0 0 0 8px rgba(240,199,166,0)}}
 .call .m{font:400 32px/1 var(--serif);min-width:54px;text-align:center}
 .call .tx{flex:1;font-size:14px;font-weight:800;line-height:1.25}
-.call .tx small{display:block;font-weight:600;font-size:12px;color:rgba(31,35,27,.65)}
+.call .tx small{display:block;font-weight:600;font-size:12px;color:rgba(31,35,27,.82)}
 .call .btn{height:42px;padding:0 14px;font-size:13.5px}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .tb{aspect-ratio:1;border-radius:14px;background:rgba(244,241,234,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#f4f1ea;position:relative;transition:transform .12s}
@@ -154,7 +159,7 @@ body{background:#1f231b;color:#f4f1ea;min-height:100vh}
   <aside class="side">
     <section class="box" id="bxCalls"><h2>Llamados <span id="cC"></span></h2><div id="calls"></div></section>
     <section class="box" id="bxMesas"><h2>Mesas <span>Toca para ver o cerrar</span></h2><div class="grid" id="tables"></div>
-      <div class="legend"><span><i style="background:rgba(244,241,234,.12)"></i>Libre</span><span><i style="background:#4f5b41"></i>Con pedido</span><span><i style="background:#f0c7a6"></i>Llamando</span></div></section>
+      <div class="legend"><span><i style="background:rgba(244,241,234,.12)"></i>Libre</span><span><i style="background:#4f5b41"></i>Con pedido</span><span><i style="background:#f0c7a6"></i>Llamando</span><span><i style="background:#9a3624"></i>Gerente</span></div></section>
     <section class="box" id="bxStats"><h2>Hoy</h2><div class="stats" id="stats"></div></section>
   </aside>
 </main>
@@ -208,7 +213,7 @@ function paint() {
   const firstPaint = seenO === null;
   const newO = act.filter((o) => o.status === "nuevo" && seenO && !seenO.has(o.id));
   const newC = H.calls.filter((c) => seenC && !seenC.has(c.id));
-  if (!firstPaint && (newO.length || newC.length)) { beep(newC.length ? 3 : 2); if (newO.length) toast(`Nuevo pedido · Mesa ${newO[0].m}`); else toast(`Mesa ${newC[0].m}: ${newC[0].kind === "cuenta" ? "pide la cuenta" : "llama al mesero"}`); }
+  if (!firstPaint && (newO.length || newC.length)) { beep(newC.length ? 3 : 2); if (newO.length) toast(`Nuevo pedido · Mesa ${newO[0].m}`); else toast(`Mesa ${newC[0].m}: ${newC[0].kind === "cuenta" ? "pide la cuenta" : newC[0].kind === "alerta" ? "calificación baja, que pase el gerente" : "llama al mesero"}`); }
   seenO = new Set(H.orders.map((o) => o.id)); seenC = new Set(H.calls.map((c) => c.id));
   const by = (s) => act.filter((o) => o.status === s).sort((a, b) => a.t0 - b.t0);
   const fill = (id, list, empty) => { $(id).innerHTML = list.length ? list.map((o) => ticket(o, newO.includes(o))).join("") : `<div class="none">${empty}</div>`; };
@@ -219,10 +224,11 @@ function paint() {
   $("#nP").textContent = act.length; $("#nC").textContent = H.calls.length;
   const calls = H.calls.slice().sort((a, b) => a.t0 - b.t0);
   $("#cC").textContent = calls.length ? calls.length + " abiertos" : "";
-  $("#calls").innerHTML = calls.length ? calls.map((c) => `<div class="call ${c.kind}"><span class="m">${c.m}</span><span class="tx">${c.kind === "cuenta" ? "Pide la cuenta" : "Llama al mesero"}<small data-t="${c.t0}">hace ${ago(c.t0)}</small></span><button class="btn btn-ink" type="button" data-c="${c.id}">Atendido</button></div>`).join("") : `<div class="none">Ninguna mesa está llamando</div>`;
-  $("#tables").innerHTML = H.tables.map((t) => { const al = t.mesero || t.cuenta; return `<button type="button" class="tb ${al ? "al" : t.orders ? "oc" : ""}" data-m="${t.m}" aria-label="Mesa ${t.m}"><b>${t.m}</b><small>${t.cuenta ? "Cuenta" : t.mesero ? "Llama" : t.pending ? t.pending + " en curso" : t.orders ? "Servida" : "Libre"}</small>${t.pending && !al ? '<span class="dt"></span>' : ""}</button>`; }).join("");
+  const lbl = (c) => c.kind === "cuenta" ? "Pide la cuenta" : c.kind === "alerta" ? `Calificó ${c.stars} de 5: que pase el gerente` : "Llama al mesero";
+  $("#calls").innerHTML = calls.length ? calls.sort((a, b) => (a.kind === "alerta" ? 0 : 1) - (b.kind === "alerta" ? 0 : 1)).map((c) => `<div class="call ${c.kind}"><span class="m">${c.m}</span><span class="tx">${lbl(c)}${c.text ? `<small>"${esc(c.text)}"</small>` : ""}<small data-t="${c.t0}">hace ${ago(c.t0)}</small></span><button class="btn btn-ink" type="button" data-c="${c.id}">${c.kind === "alerta" ? "Ya pasé" : "Atendido"}</button></div>`).join("") : `<div class="none">Ninguna mesa está llamando</div>`;
+  $("#tables").innerHTML = H.tables.map((t) => { const al = t.mesero || t.cuenta; return `<button type="button" class="tb ${t.alerta ? "bad" : al ? "al" : t.orders ? "oc" : ""}" data-m="${t.m}" aria-label="Mesa ${t.m}"><b>${t.m}</b><small>${t.alerta ? "Gerente" : t.cuenta ? "Cuenta" : t.mesero ? "Llama" : t.pending ? t.pending + " en curso" : t.orders ? "Servida" : "Libre"}</small>${t.pending && !al ? '<span class="dt"></span>' : ""}</button>`; }).join("");
   const T = H.mesaToday;
-  $("#stats").innerHTML = `<div><b>${T.orders}</b><small>Pedidos desde la mesa</small></div><div><b>${T.prepAvg ? T.prepAvg + "'" : "–"}</b><small>Tiempo promedio a "listo"</small></div><div><b>${T.calls}</b><small>Llamados</small></div><div><b>${T.callAvg ? T.callAvg + "'" : "–"}</b><small>Tiempo en atender</small></div>`;
+  $("#stats").innerHTML = `<div><b>${T.orders}</b><small>Pedidos desde la mesa</small></div><div><b>${T.prepAvg ? T.prepAvg + "'" : "–"}</b><small>Tiempo promedio a "listo"</small></div><div><b>${T.calls}</b><small>Llamados</small></div><div><b>${T.callAvg ? T.callAvg + "'" : "–"}</b><small>Tiempo en atender</small></div><div><b>${T.reviews ? T.rating : "–"}</b><small>Calificación del día (de 5)</small></div><div><b>${T.reviews}</b><small>Calificaciones</small></div>`;
   if (sheetM) tableSheet(sheetM);
 }
 function tableSheet(m) {
