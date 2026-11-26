@@ -57,7 +57,7 @@
 <header class="top" id="top"></header>
 
 <section class="phero">
-  <div class="bg" style="background-image:url(/higuera/img/chilaquiles.webp)" role="img" aria-label="Chilaquiles verdes de Higuera"></div>
+  <div class="bg" style="background-image:url(/higuera/img/chilaquiles-xl.webp)" role="img" aria-label="Chilaquiles verdes de Higuera"></div>
   <div class="grain"></div>
   <div class="wrap">
     <div class="crumb"><a href="/higuera/sitio/">Higuera</a><span>/</span><span data-i="m.crumb">Menú</span></div>
@@ -95,12 +95,12 @@ const { L, esc, onLang, reveal, peek, onScroll } = SITE;
 const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
 // [nombre, etiqueta, foto]
 const MENU = [
-  { id: "desayunos", es: "Desayunos", en: "Breakfast", pes: "Lo clásico de la mañana, de lo salado a lo dulce.", pen: "Morning classics, savory to sweet.", img: "chilaquiles", items: [
-    ["Chilaquiles verdes", "Clásico", "chilaquiles"], ["Chilaquiles rojos", "", "chilaquiles"], ["Chilaquiles divorciados", "", "chilaquiles"], ["Enfrijoladas", "", "enfrijoladas"], ["Enchiladas poblanas", ""], ["Buttermilk waffles", "Dulce"], ["French toast", "Dulce"], ["Morning bun", "Dulce", "bun"], ["Mollete", ""], ["Bowl de fruta con yoghurt", ""]] },
+  { id: "desayunos", es: "Desayunos", en: "Breakfast", pes: "Lo clásico de la mañana, de lo salado a lo dulce.", pen: "Morning classics, savory to sweet.", img: "chilaquiles-xl", items: [
+    ["Chilaquiles verdes", "Clásico", "chilaquiles-xl"], ["Chilaquiles rojos", "", "chilaquiles-xl"], ["Chilaquiles divorciados", "", "chilaquiles-xl"], ["Enfrijoladas", "", "enfrijoladas"], ["Enchiladas poblanas", ""], ["Buttermilk waffles", "Dulce", "waffle"], ["French toast", "Dulce"], ["Morning bun", "Dulce", "bun"], ["Mollete", ""], ["Bowl de fruta con yoghurt", ""]] },
   { id: "toasts", es: "Toasts y sándwiches", en: "Toasts & sandwiches", pes: "Pan dorado a la plancha y la sopa de tomate que todos piden.", pen: "Griddled bread and the tomato soup everyone orders.", img: "sandwich", items: [
     ["Sopa de tomate", "Con grilled cheese", "sopa"], ["Scrambled toast", ""], ["Kale avo toast", ""], ["Tostado de pimiento asado con salmón", ""], ["Sándwich de jamones", "", "sandwich"], ["Sándwich de pastrami", "", "sandwich"], ["Cheeseburger", ""]] },
-  { id: "cafe", es: "Café", en: "Coffee", pes: "Café de especialidad preparado en barra.", pen: "Specialty coffee made at the bar.", img: "barra", items: [
-    ["Americano", "", "barra"], ["Cappuccino", "", "barra"], ["Flat white", "", "barra"], ["Latte", "", "barra"], ["Mocha", "", "barra"], ["Cold brew", "", "barra"], ["Honey lavender latte", "De la casa", "barra"], ["Horchata latte", "De la casa", "barra"], ["Salted caramel latte", "", "barra"]] },
+  { id: "cafe", es: "Café", en: "Coffee", pes: "Café de especialidad preparado en barra.", pen: "Specialty coffee made at the bar.", img: "latte", items: [
+    ["Americano", "", "barra-xl"], ["Cappuccino", "", "latte"], ["Flat white", "", "latte"], ["Latte", "", "latte"], ["Mocha", "", "latte"], ["Cold brew", "", "barra-xl"], ["Honey lavender latte", "De la casa", "latte"], ["Horchata latte", "De la casa", "latte"], ["Salted caramel latte", "", "latte"]] },
   { id: "bebidas", es: "Otras bebidas", en: "Other drinks", pes: "Para quien no toma café.", pen: "For non-coffee days.", img: "postre", items: [
     ["Matcha", ""], ["Matcha horchata", "De la casa"], ["Chai", ""], ["Chocolate", ""], ["Jugo cold press", ""]] },
 ];

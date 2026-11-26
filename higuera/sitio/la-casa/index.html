@@ -74,7 +74,7 @@
 <header class="top" id="top"></header>
 
 <section class="phero">
-  <div class="bg" style="background-image:url(/higuera/img/interior.webp)" role="img" aria-label="Interior de Higuera"></div>
+  <div class="bg" style="background-image:url(/higuera/img/interior-xl.webp)" role="img" aria-label="Interior de Higuera"></div>
   <div class="grain"></div>
   <div class="wrap">
     <div class="crumb"><a href="/higuera/sitio/">Higuera</a><span>/</span><span data-i="h.crumb">La casa</span></div>
@@ -84,7 +84,7 @@
 </section>
 
 <section class="about"><div class="wrap">
-  <div class="film rv"><img src="/higuera/img/barra.webp" alt="La barra de café de Higuera" loading="lazy"></div>
+  <div class="film rv"><img src="/higuera/img/latte.webp" alt="Un latte en la barra de Higuera" loading="lazy"></div>
   <div>
     <span class="k rv" data-i="a.k">Higuera</span>
     <h2 class="rv d1" data-i="a.h">Cocina y <em>sobremesa</em></h2>
@@ -143,8 +143,8 @@ const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelect
 const STORY = [
   ["La comanda", "The ticket", "Cada pedido entra en papel, directo a la cocina.", "Every order goes in on paper, straight to the kitchen.", "comandas"],
   ["La plancha", "The griddle", "Pan dorado a la plancha, crujiente por fuera.", "Bread toasted golden on the griddle.", "sandwich"],
-  ["La salsa", "The salsa", "Chilaquiles verdes con crema y queso, recién servidos.", "Green chilaquiles with cream and cheese, just served.", "chilaquiles"],
-  ["La sobremesa", "The lingering", "Y después, un café de barra para quedarse un rato más.", "And then, a coffee from the bar to stay a little longer.", "barra"],
+  ["La salsa", "The salsa", "Chilaquiles verdes con crema y queso, recién servidos.", "Green chilaquiles with cream and cheese, just served.", "chilaquiles-xl"],
+  ["La sobremesa", "The lingering", "Y después, un café de barra para quedarse un rato más.", "And then, a coffee from the bar to stay a little longer.", "barra-xl"],
 ];
 let cur = 0;
 function steps() {
@@ -160,7 +160,7 @@ onScroll(() => {
   const i = Math.min(3, Math.floor(p * 4 * 0.999));
   if (i !== cur) { cur = i; $$("#steps li").forEach((li, k) => li.classList.toggle("on", k === i)); $$("#frames figure").forEach((f, k) => f.classList.toggle("on", k === i)); }
 });
-const ROLL = [["chilaquiles", "Chilaquiles verdes"], ["sopa", "Sopa de tomate"], ["comandas", "Comandas"], ["shakshouka", "Huevos con pan tostado"], ["barra", "La barra"], ["sandwich", "Sándwich a la plancha"], ["enfrijoladas", "Enfrijoladas"], ["bun", "Algo dulce"], ["sopa-bn", "Sopa, en blanco y negro"], ["postre", "Postre"]];
+const ROLL = [["chilaquiles-xl", "Chilaquiles verdes"], ["waffle", "Buttermilk waffle con moras"], ["sopa", "Sopa de tomate"], ["latte", "Latte"], ["comandas", "Comandas"], ["shakshouka", "Huevos con pan tostado"], ["barra-xl", "La barra"], ["sandwich", "Sándwich a la plancha"], ["enfrijoladas", "Enfrijoladas"], ["bun", "Algo dulce"], ["sopa-bn", "Sopa, en blanco y negro"], ["postre", "Postre"]];
 $("#reel").innerHTML = ROLL.map(([f, n], i) => `<div class="fr"><div class="film"><img src="/higuera/img/${f}.webp" alt="${esc(n)}" loading="lazy" draggable="false"></div><span>${String(i + 1).padStart(2, "0")}A · HIGUERA</span><b>${esc(n)}</b></div>`).join("");
 const reel = $("#reel"); let down = false, sx = 0, sl = 0;
 reel.addEventListener("pointerdown", (e) => { if (e.pointerType !== "mouse") return; down = true; sx = e.clientX; sl = reel.scrollLeft; reel.classList.add("drag"); });

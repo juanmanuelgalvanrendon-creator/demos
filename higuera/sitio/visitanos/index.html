@@ -55,7 +55,7 @@
 <header class="top" id="top"></header>
 
 <section class="phero">
-  <div class="bg" style="background-image:url(/higuera/img/barra.webp)" role="img" aria-label="La barra de Higuera"></div>
+  <div class="bg" style="background-image:url(/higuera/img/barra-xl.webp)" role="img" aria-label="La barra de Higuera"></div>
   <div class="grain"></div>
   <div class="wrap">
     <div class="crumb"><a href="/higuera/sitio/">Higuera</a><span>/</span><span data-i="v.crumb">Visítanos</span></div>
@@ -75,7 +75,7 @@
     </div>
     <div class="map rv d1">
       <iframe title="Mapa de Higuera" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Plutarco+El%C3%ADas+Calles+419,+Tampiquito,+San+Pedro+Garza+Garc%C3%ADa&output=embed"></iframe>
-      <div class="over"><div><b>Barrio Tampiquito</b><span>66240 San Pedro Garza García, N.L.</span></div><a class="btn btn-ink" style="height:46px" href="https://www.google.com/maps/search/?api=1&query=Higuera+Plutarco+El%C3%ADas+Calles+419+Tampiquito+San+Pedro" target="_blank" rel="noopener" data-i="v.maps">Abrir en Maps</a></div>
+      <div class="over"><div><b>Barrio Tampiquito</b><span>66240 San Pedro Garza García, N.L.</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-ghost" style="height:46px" type="button" id="copy" data-i="v.copy">Copiar dirección</button><a class="btn btn-ink" style="height:46px" href="https://www.google.com/maps/search/?api=1&query=Higuera+Plutarco+El%C3%ADas+Calles+419+Tampiquito+San+Pedro" target="_blank" rel="noopener" data-i="v.maps">Abrir en Maps</a></div></div>
     </div>
   </div>
 </div></section>
@@ -105,7 +105,7 @@
 
 <script>
 window.T_EN = {
-  "v.crumb": "Visit us", "v.p": "Barrio Tampiquito, San Pedro Garza García. See you soon.", "v.hours": "Hours", "v.fest": "Holidays: 8 am to 4 pm.", "v.maps": "Open in Maps",
+  "v.crumb": "Visit us", "v.p": "Barrio Tampiquito, San Pedro Garza García. See you soon.", "v.hours": "Hours", "v.fest": "Holidays: 8 am to 4 pm.", "v.maps": "Open in Maps", "v.copy": "Copy address",
   "t.k": "Before you come", "t.h": "Make your visit <em>flow</em>", "t.1": "Check the wait", "t.1p": "At the top of the site you can see how many parties are waiting, live.", "t.2": "Join on your way", "t.2p": "No reservations: join the list when you're on your way and arrive at your turn.", "t.3": "Take a walk", "t.3p": "Tampiquito is walkable. We'll let you know on your phone when your table is ready.",
   "o.k": "If you can't come", "o.h": "Higuera <em>at home</em>", "o.d": "Delivery", "np.k": "Back to", "np.b": "The menu",
 };
@@ -123,6 +123,11 @@ function paint() {
   el.innerHTML = `<span class="dot"></span><span>${s.open ? L(`Abierto ahora · cierra a las ${hr(s.c)}`, `Open now · closes at ${hr(s.c)}`) : L("Cerrado ahora · abre a las 8 am", "Closed now · opens at 8 am")}</span>`;
 }
 paint(); onLang(paint); setInterval(paint, 60000);
+$("#copy").addEventListener("click", async () => {
+  const txt = "Higuera, Plutarco Elías Calles 419, Barrio Tampiquito, 66240 San Pedro Garza García, N.L.";
+  try { await navigator.clipboard.writeText(txt); } catch (e) { const t = document.createElement("textarea"); t.value = txt; document.body.append(t); t.select(); document.execCommand("copy"); t.remove(); }
+  const b = $("#copy"); b.textContent = L("Dirección copiada", "Address copied"); setTimeout(() => (b.textContent = L("Copiar dirección", "Copy address")), 2200);
+});
 onLive((d) => { const w = d.waiting; $("#wbtn").textContent = w ? L(`Anotarme · ${w} ${w === 1 ? "grupo" : "grupos"} esperando`, `Join · ${w} waiting`) : L("Anotarme en la lista", "Join the waitlist"); });
 })();
 </script>

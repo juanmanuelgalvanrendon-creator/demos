@@ -2,6 +2,8 @@
 :root{--ease:cubic-bezier(.2,.8,.2,1);--peach:#efc3a1}
 body{background:var(--bg)}
 ::selection{background:var(--terra);color:#fff}
+:focus-visible{outline:2px solid var(--terra);outline-offset:3px;border-radius:6px}
+.marq:hover .track{animation-play-state:paused}
 .wrap{max-width:1240px;margin:0 auto;padding:0 28px}
 .k{font-size:11.5px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:var(--terra)}
 h1,h2,h3{font-weight:400}
