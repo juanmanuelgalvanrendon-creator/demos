@@ -1,4 +1,4 @@
-/* Higuera · service worker de la lista de espera: recibe el aviso "tu mesa está lista" */
+/* Higuera · service worker: avisos de la lista de espera y promociones del Club */
 const API = "/api/fila/higuera";
 self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", (e) => e.waitUntil(self.clients.claim()));
@@ -24,7 +24,9 @@ self.addEventListener("notificationclick", (event) => {
   const url = (event.notification.data && event.notification.data.url) || "/higuera/fila/";
   event.waitUntil((async () => {
     const all = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
-    for (const c of all) if (c.url.includes("/higuera/fila/")) { await c.focus(); try { await c.navigate(url); } catch (e) {} return; }
+    // reusar una ventana abierta de la misma sección (lista de espera o club)
+    const sec = new URL(url, self.location.origin).pathname.split("/").slice(0, 3).join("/");
+    for (const c of all) if (new URL(c.url).pathname.startsWith(sec)) { await c.focus(); try { await c.navigate(url); } catch (e) {} return; }
     await self.clients.openWindow(url);
   })());
 });

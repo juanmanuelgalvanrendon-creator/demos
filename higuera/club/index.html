@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Higuera · Club y mesas</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#2e3527">
+<link rel="icon" href="../img/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../hg.css">
+<style>
+.hide{display:none!important}
+.gate{position:fixed;inset:0;z-index:90;background:var(--olive);display:grid;place-items:center;padding:20px}
+.gate .box{width:100%;max-width:360px;background:var(--bg);border-radius:26px;padding:28px;display:flex;flex-direction:column;gap:12px;text-align:center}
+.gate h1{font:400 32px/1.05 var(--serif)}
+.gate p{font-size:14px;color:var(--mut)}
+.gate .err{color:var(--red);font-weight:700;font-size:13.5px;min-height:18px}
+.gate .in{text-align:center;font-size:24px;letter-spacing:.4em}
+.bar{background:var(--olive);color:#f4f1ea;display:flex;align-items:center;gap:14px;padding:14px 20px}
+.bar .logo{height:24px;filter:invert(1) brightness(2)}
+.bar h1{font:400 24px/1 var(--serif)}
+.bar .sp{flex:1}
+.panels{display:flex;gap:6px}
+.panels a{font-size:12.5px;font-weight:800;color:rgba(244,241,234,.65);text-decoration:none;padding:8px 10px;border-radius:10px}
+.panels a.cur{background:rgba(244,241,234,.12);color:#f4f1ea}
+.conn{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:rgba(244,241,234,.75)}
+.wrap{max-width:1100px;margin:0 auto;padding:20px}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:18px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:0 0 auto;height:42px;padding:0 16px;border-radius:99px;font-weight:800;font-size:14px;box-shadow:inset 0 0 0 1.5px var(--line2)}
+.tabs button.on{background:var(--ink);color:#fff;box-shadow:none}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi{background:var(--paper);border-radius:20px;padding:16px;box-shadow:var(--sh)}
+.kpi b{display:block;font:400 40px/1 var(--serif)}
+.kpi span{font-size:12.5px;font-weight:700;color:var(--mut)}
+.kpi.d{background:var(--olive);color:#f4f1ea}
+.kpi.d span{color:rgba(244,241,234,.75)}
+.card{background:var(--paper);border-radius:22px;box-shadow:var(--sh);padding:20px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.card h2{font:400 26px/1.1 var(--serif)}
+.card h2 em{font-style:italic;color:var(--terra)}
+.card .sub{font-size:13.5px;color:var(--mut);margin-top:3px}
+.barl{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+.barl div{display:grid;grid-template-columns:150px 1fr 34px;gap:10px;align-items:center;font-size:13.5px;font-weight:700}
+.barl i{display:block;height:10px;border-radius:9px;background:var(--terra)}
+.barl em{font:600 12.5px var(--mono);font-style:normal;text-align:right}
+.minis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.minis div{background:var(--bg);border-radius:14px;padding:12px}
+.minis b{display:block;font:400 26px/1 var(--serif)}
+.minis span{font-size:12px;color:var(--mut);font-weight:700}
+.chart{display:flex;align-items:flex-end;gap:6px;height:120px;margin-top:16px}
+.chart div{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+.chart i{display:block;width:100%;border-radius:6px 6px 2px 2px;background:var(--olive2);min-height:3px}
+.chart div.t i{background:var(--terra)}
+.chart span{font:600 10px var(--mono);color:var(--mut)}
+.empty{font-size:13.5px;color:var(--mut);padding:18px 0}
+/* socios */
+.srch{width:100%;height:48px;border-radius:14px;border:0;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--line);padding:0 16px;font-size:15px;outline:none}
+.mem{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.mem b{font:400 22px/1.1 var(--serif)}
+.mem .meta{font-size:12.5px;color:var(--mut);margin-top:3px;display:flex;gap:10px;flex-wrap:wrap}
+.mem .tag{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:99px;background:var(--sage);color:var(--olive2)}
+.mem .tag.r{background:#f0c7a6;color:var(--olive)}
+.mem .tag.g{background:var(--line);color:var(--mut)}
+.dots{display:flex;gap:4px;margin-top:8px}
+.dots i{width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--line2)}
+.dots i.on{background:var(--terra);box-shadow:none}
+.mact{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.mact button{height:36px;padding:0 12px;border-radius:99px;font-size:12.5px;font-weight:800;box-shadow:inset 0 0 0 1.5px var(--line2)}
+.mact button.p{background:var(--terra);color:#fff;box-shadow:none}
+.mact button.dg{color:var(--red)}
+.code{font:600 22px var(--mono);letter-spacing:.2em;background:var(--ink);color:#fff;border-radius:12px;padding:8px 14px;display:inline-block;margin-top:8px}
+/* promos */
+.pf label{display:block;font-size:11.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:14px 0 8px}
+.pf .cnt{float:right;letter-spacing:0;font-family:var(--mono)}
+.ta{width:100%;min-height:90px;border:0;border-radius:16px;background:var(--bg);box-shadow:inset 0 0 0 1.5px var(--line);padding:12px 14px;font-size:15px;outline:none;resize:vertical}
+.pf .in{background:var(--bg)}
+.ideas{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.ideas button{height:34px;padding:0 12px;border-radius:99px;font-size:12.5px;font-weight:700;box-shadow:inset 0 0 0 1.5px var(--line2);background:var(--paper)}
+.phone{background:#1c1b17;border-radius:34px;padding:16px;max-width:340px;margin:0 auto}
+.notif{background:rgba(244,241,234,.92);border-radius:18px;padding:12px 14px;display:grid;grid-template-columns:38px 1fr;gap:10px}
+.notif img{width:38px;height:38px;border-radius:10px}
+.notif b{font-size:14px;display:block}
+.notif p{font-size:13.5px;color:var(--ink2);line-height:1.35}
+.notif small{font-size:11px;color:var(--mut)}
+.reach{margin-top:14px;font-size:14px;font-weight:700;background:var(--sage);color:var(--olive);border-radius:14px;padding:12px 14px}
+.hist{margin-top:10px}
+.hist div{padding:10px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.hist b{display:block}
+.hist span{color:var(--mut);font-size:12.5px}
+/* ajustes */
+.set{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.set>div:first-child{flex:1;min-width:0}
+.seg,.num{flex:0 0 auto;white-space:nowrap}
+@media (max-width:520px){.set{flex-direction:column;align-items:flex-start}}
+.set b{display:block;font-size:15px}
+.set span{font-size:13px;color:var(--mut)}
+.seg{display:inline-flex;background:var(--bg);border-radius:99px;padding:4px;box-shadow:inset 0 0 0 1.5px var(--line)}
+.seg button{height:38px;padding:0 14px;border-radius:99px;font-size:13px;font-weight:800}
+.seg button.on{background:var(--ink);color:#fff}
+.num{display:inline-flex;align-items:center;gap:4px;background:var(--bg);border-radius:99px;padding:4px;box-shadow:inset 0 0 0 1.5px var(--line)}
+.num button{width:36px;height:36px;border-radius:50%;font-size:18px;font-weight:700;background:var(--paper)}
+.num b{min-width:34px;text-align:center;font-size:16px}
+.qrs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:14px}
+.qrs a{display:block;background:var(--bg);border-radius:14px;padding:10px;text-align:center;text-decoration:none;font-size:12.5px;font-weight:800}
+.qrs svg{width:100%;height:auto;border-radius:8px}
+.links{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+@media (max-width:820px){.kpis{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}.panels{display:none}.mem{grid-template-columns:1fr}.mact{justify-content:flex-start}.barl div{grid-template-columns:110px 1fr 30px}}
+/* impresión de QR */
+#print{display:none}
+@media print{
+  body>*:not(#print){display:none!important}
+  #print{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  .pc{height:12.5cm;padding:1cm;border:1px dashed #bbb;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;page-break-inside:avoid;font-family:var(--sans);color:#1c1b17}
+  .pc img{height:28px;margin-bottom:10px}
+  .pc h3{font:400 40px/1 var(--serif);margin-bottom:6px}
+  .pc svg{width:5.4cm;height:5.4cm}
+  .pc p{font-size:12px;margin-top:8px;max-width:7cm}
+  .pc small{font-size:10px;color:#6b665b;margin-top:6px}
+}
+</style>
+</head>
+<body>
+<div class="gate" id="gate">
+  <form class="box" id="gf" aria-labelledby="gt">
+    <img src="../img/logo-sm.png" alt="Higuera" width="110" height="40" style="height:40px;width:auto;margin:0 auto">
+    <h1 id="gt">Club y mesas</h1>
+    <p>Panel del gerente. Escribe el PIN del equipo.</p>
+    <input type="password" class="in" id="pin" inputmode="numeric" autocomplete="current-password" maxlength="6" placeholder="····" aria-label="PIN del equipo">
+    <p class="err" id="gerr" role="alert"></p>
+    <button class="btn btn-ink btn-block" type="submit">Entrar</button>
+  </form>
+</div>
+
+<header class="bar">
+  <img class="logo" src="../img/logo-sm.png" alt="Higuera" width="66" height="24">
+  <h1>Club y mesas</h1>
+  <nav class="panels" aria-label="Paneles"><a href="../host/">Entrada</a><a href="../barra/">Pedidos</a><a href="./" class="cur" aria-current="page">Club y mesas</a></nav>
+  <div class="sp"></div>
+  <div class="conn"><span class="dot off" id="cdot"></span><span id="ctxt">…</span></div>
+</header>
+
+<main class="wrap">
+  <nav class="tabs" aria-label="Secciones"><button type="button" class="on" data-t="resumen">Resumen</button><button type="button" data-t="socios">Socios</button><button type="button" data-t="promos">Promociones</button><button type="button" data-t="mesas">Mesas y QR</button></nav>
+
+  <section id="v-resumen">
+    <div class="kpis" id="kpis"></div>
+    <div class="g2">
+      <div class="card"><h2>Hoy en las <em>mesas</em></h2><p class="sub">Pedidos hechos desde el QR de cada mesa.</p><div class="minis" id="today"></div><div class="barl" id="top"></div></div>
+      <div class="card"><h2>Últimos <em>14 días</em></h2><p class="sub">Pedidos desde la mesa por día.</p><div class="chart" id="chart"></div><div class="minis" id="hist"></div></div>
+    </div>
+  </section>
+
+  <section id="v-socios" class="hide">
+    <div class="card"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap"><h2>Socios del <em>club</em></h2><span class="sub" id="memCount"></span></div>
+      <input class="srch" id="ms" type="search" placeholder="Buscar por nombre o últimos dígitos del WhatsApp" aria-label="Buscar socio" style="margin-top:14px">
+      <div id="mems"></div></div>
+  </section>
+
+  <section id="v-promos" class="hide">
+    <div class="g2" style="margin-top:0">
+      <div class="card pf"><h2>Mandar una <em>promoción</em></h2><p class="sub">Les llega como notificación en su celular a los socios que aceptaron promociones.</p>
+        <div class="ideas" id="ideas"></div>
+        <label for="pt">Título <span class="cnt" id="ptc">0/60</span></label><input type="text" class="in" id="pt" maxlength="60" placeholder="Ej.: Hoy la cookie va por la casa">
+        <label for="pb">Mensaje <span class="cnt" id="pbc">0/160</span></label><textarea class="ta" id="pb" maxlength="160" placeholder="Ej.: Pide cualquier café antes de las 11 y te regalamos una cookie. Solo hoy."></textarea>
+        <div class="reach" id="reach"></div>
+        <p class="err" id="perr" style="color:var(--red);font-weight:700;font-size:13.5px;min-height:18px;margin-top:8px"></p>
+        <button class="btn btn-terra btn-block" type="button" id="psend">Enviar promoción</button></div>
+      <div><div class="card" style="background:var(--bg);box-shadow:none"><p class="sub" style="text-align:center;margin-bottom:12px">Así se ve en su celular</p>
+        <div class="phone"><div class="notif"><img src="../img/icon-192.png" alt=""><div><b id="nvT">Higuera</b><p id="nvB">Escribe tu promoción para verla aquí.</p><small>ahora</small></div></div></div></div>
+        <div class="card" style="margin-top:14px"><h2 style="font-size:22px">Enviadas</h2><div class="hist" id="phist"></div></div></div>
+    </div>
+  </section>
+
+  <section id="v-mesas" class="hide">
+    <div class="g2" style="margin-top:0">
+      <div class="card"><h2>Cómo <em>funcionan</em></h2>
+        <div class="set"><div><b>Pedidos desde la mesa</b><span>Si lo pausas, los clientes solo pueden ver la carta y llamar.</span></div><div class="seg" data-k="on"><button type="button" data-v="1">Activos</button><button type="button" data-v="0">Pausa</button></div></div>
+        <div class="set"><div><b>Modo</b><span>"Piden solos" manda el pedido directo a barra. "Llaman al mesero" deja que el mesero tome la orden.</span></div><div class="seg" data-k="mode"><button type="button" data-v="pedir">Piden solos</button><button type="button" data-v="llamar">Llaman al mesero</button></div></div>
+        <div class="set"><div><b>Número de mesas</b><span>Cada una tiene su propio QR.</span></div><div class="num"><button type="button" data-n="count" data-d="-1" aria-label="Menos mesas">−</button><b id="vCount">12</b><button type="button" data-n="count" data-d="1" aria-label="Más mesas">+</button></div></div>
+      </div>
+      <div class="card"><h2>La <em>recompensa</em></h2>
+        <div class="set"><div><b>Visitas para ganarla</b><span>Se cuenta una visita por día: al pedir desde la mesa o al sentarse desde la lista.</span></div><div class="num"><button type="button" data-n="rewardVisits" data-d="-1" aria-label="Menos visitas">−</button><b id="vRV">5</b><button type="button" data-n="rewardVisits" data-d="1" aria-label="Más visitas">+</button></div></div>
+        <div class="set" style="display:block"><b>Premio</b><div style="display:flex;gap:8px;margin-top:10px"><input type="text" class="in" id="rwT" maxlength="60" aria-label="Premio"><button class="btn btn-ink" type="button" id="rwS" style="height:54px">Guardar</button></div></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><div><h2>Códigos QR de las <em>mesas</em></h2><p class="sub">Imprímelos y pégalos en cada mesa. Toca uno para probarlo como cliente.</p></div><button class="btn btn-ink" type="button" id="printBtn">Imprimir todos</button></div>
+      <div class="qrs" id="qrs"></div>
+      <div class="links"><a class="btn btn-ghost" href="../barra/">Abrir pantalla de pedidos</a><button class="btn btn-ghost" type="button" id="demoBtn">Cargar pedidos de ejemplo</button><button class="btn btn-ghost" type="button" id="resetBtn">Borrar datos de ejemplo</button></div></div>
+  </section>
+</main>
+
+<div id="print" aria-hidden="true"></div>
+
+<script src="/_engine/qrcode.js"></script>
+<script src="../fila.js"></script>
+<script>
+(() => {
+const { api, live, store, esc, ago, toast, unlockAudio, qrSvg } = HG;
+const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
+let pin = store.get("pin") || "", H = null, conn = null, tab = "resumen", MEM = null, memQ = "", codes = {}, delArm = "", sendArm = false, qrSig = "";
+const DAYS = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
+const IDEAS = [["Cookie de la casa", "Hoy la cookie va por la casa", "Pide cualquier café antes de las 11 y te regalamos una cookie. Solo hoy."], ["Destacado nuevo", "Llegó el destacado de la semana", "Ya está en la carta. Ven a probarlo antes de que se acabe."], ["Sin fila", "Ahorita no hay fila", "Si vienes en la próxima hora te sentamos al llegar."], ["Te extrañamos", "Te guardamos tu mesa", "Hace mucho que no vienes. Esta semana tu visita cuenta doble en el club."]];
+
+async function login(p, silent) {
+  try {
+    const r = await api("/host/claim", { body: { pin: p } });
+    pin = p; store.set("pin", p); $("#gate").classList.add("hide");
+    H = r.state; paint(); start(); loadMem();
+  } catch (e) { if (!silent) $("#gerr").textContent = e.message; store.set("pin", null); }
+}
+$("#gf").addEventListener("submit", (e) => { e.preventDefault(); unlockAudio(); const p = $("#pin").value.replace(/\D/g, ""); if (p.length < 4) { $("#gerr").textContent = "Escribe al menos 4 números."; return; } login(p); });
+let memT = null;
+function start() {
+  conn && conn.stop();
+  conn = live({ role: "host", pin, onData(d) { if (d.authError) { store.set("pin", null); location.reload(); return; } const ch = !H || JSON.stringify(H.club) !== JSON.stringify(d.club); H = d; paint(); if (ch && tab === "socios") { clearTimeout(memT); memT = setTimeout(loadMem, 400); } }, onStatus(s) { $("#cdot").className = "dot" + (s === "off" ? " off" : ""); $("#ctxt").textContent = s === "live" ? "En vivo" : s === "poll" ? "En línea" : "Reconectando"; } });
+}
+async function loadMem() { try { MEM = await api("/host/club", { pin }); paintMem(); } catch (e) {} }
+
+function paint() {
+  if (!H) return;
+  const c = H.club, T = H.mesaToday;
+  $("#kpis").innerHTML = `<div class="kpi d"><b>${c.members}</b><span>Socios del club</span></div><div class="kpi"><b>${c.today}</b><span>Socios que vinieron hoy</span></div><div class="kpi"><b>${c.ready}</b><span>Con recompensa lista</span></div><div class="kpi"><b>${c.reachable}</b><span>Reciben promociones en su celular</span></div>`;
+  $("#today").innerHTML = `<div><b>${T.orders}</b><span>Pedidos</span></div><div><b>${T.items}</b><span>Productos</span></div><div><b>${T.prepAvg ? T.prepAvg + " min" : "–"}</b><span>A "listo", promedio</span></div><div><b>${T.calls}</b><span>Llamados al mesero o cuenta</span></div><div><b>${T.callAvg ? T.callAvg + " min" : "–"}</b><span>En atender un llamado</span></div><div><b>${T.byMember}</b><span>Pedidos de socios</span></div>`;
+  const mx = Math.max(1, ...T.top.map((x) => x[1]));
+  $("#top").innerHTML = T.top.length ? `<p class="sub" style="margin-top:6px">Lo más pedido hoy</p>` + T.top.map(([n, q]) => `<div><span>${esc(n)}</span><i style="width:${Math.round((q / mx) * 100)}%"></i><em>${q}</em></div>`).join("") : `<p class="empty">Todavía no hay pedidos hoy.</p>`;
+  const hist = (H.history || []).slice(-13).map((h) => ({ d: h.day, n: h.orders || 0, c: h.calls || 0, p: h.prepAvg || 0 }));
+  hist.push({ d: "hoy", n: T.orders, c: T.calls, p: T.prepAvg, t: true });
+  const hm = Math.max(1, ...hist.map((x) => x.n));
+  $("#chart").innerHTML = hist.map((x) => `<div class="${x.t ? "t" : ""}" title="${x.n} pedidos"><i style="height:${Math.round((x.n / hm) * 100)}%"></i><span>${x.t ? "hoy" : DAYS[new Date(x.d + "T12:00:00").getDay()]}</span></div>`).join("");
+  const past = hist.filter((x) => !x.t && x.n);
+  $("#hist").innerHTML = past.length ? `<div><b>${Math.round(past.reduce((a, x) => a + x.n, 0) / past.length)}</b><span>Pedidos por día</span></div><div><b>${(past.reduce((a, x) => a + x.p, 0) / past.length).toFixed(1)} min</b><span>Preparación promedio</span></div><div><b>${past.reduce((a, x) => a + x.c, 0)}</b><span>Llamados en total</span></div>` : `<p class="empty" style="grid-column:1/-1">Aquí aparece el historial desde el primer día de uso.</p>`;
+  // mesas
+  const M = H.mesas;
+  $$(".seg").forEach((sg) => { const k = sg.dataset.k; const v = k === "on" ? (M.on ? "1" : "0") : M[k]; sg.querySelectorAll("button").forEach((b) => b.classList.toggle("on", b.dataset.v === v)); });
+  $("#vCount").textContent = M.count; $("#vRV").textContent = M.rewardVisits;
+  if (document.activeElement !== $("#rwT")) $("#rwT").value = M.rewardText;
+  const sig = JSON.stringify(M.keys) + M.count;
+  if (sig !== qrSig) { qrSig = sig; paintQr(); }
+  paintReach(); paintHist();
+}
+const tUrl = (m) => location.origin + "/higuera/mesa/?m=" + m + "&k=" + H.mesas.keys[m];
+function paintQr() {
+  const M = H.mesas, list = [];
+  for (let m = 1; m <= M.count; m++) list.push(m);
+  $("#qrs").innerHTML = list.map((m) => `<a href="${tUrl(m)}" target="_blank" rel="noopener">${qrSvg(tUrl(m), { margin: 1 })}Mesa ${m}</a>`).join("");
+  $("#print").innerHTML = list.map((m) => `<div class="pc"><img src="../img/logo-dark.png" alt=""><h3>Mesa ${m}</h3>${qrSvg(tUrl(m), { margin: 1 })}<p>Escanea para ver la carta, pedir, llamar al mesero, pedir la cuenta y sumar visitas al Club Higuera.</p><small>Sin descargar ninguna app</small></div>`).join("");
+}
+function paintReach() {
+  const c = H.club;
+  $("#reach").textContent = c.reachable ? `Le llegará a ${c.reachable} ${c.reachable === 1 ? "persona" : "personas"}. ${c.optin - c.reachable > 0 ? `Otros ${c.optin - c.reachable} aceptaron promociones pero no activaron las notificaciones.` : ""}` : `Todavía nadie tiene notificaciones activadas. Los socios las activan desde su tarjeta del club.`;
+}
+function paintHist() {
+  const ps = H.promos || [];
+  $("#phist").innerHTML = ps.length ? ps.map((p) => `<div><b>${esc(p.title)}</b>${esc(p.body)}<br><span>${new Date(p.t).toLocaleString("es-MX", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })} · llegó a ${p.ok} de ${p.sent}</span></div>`).join("") : `<p class="empty">Aún no se manda ninguna promoción.</p>`;
+}
+function paintMem() {
+  if (!MEM) return;
+  const q = memQ.trim().toLowerCase();
+  const need = H ? H.mesas.rewardVisits : 5;
+  const rows = MEM.rows.filter((r) => !q || r.name.toLowerCase().includes(q) || r.phone.endsWith(q.replace(/\D/g, "") || "~"));
+  $("#memCount").textContent = `${MEM.rows.length} ${MEM.rows.length === 1 ? "socio" : "socios"}`;
+  const today = H ? new Intl.DateTimeFormat("en-CA", { timeZone: "America/Monterrey" }).format(new Date()) : "";
+  $("#mems").innerHTML = rows.length ? rows.map((r) => {
+    const ready = r.visits >= need;
+    const dots = Array.from({ length: need }, (_, i) => `<i class="${i < r.visits ? "on" : ""}"></i>`).join("");
+    return `<div class="mem"><div><b>${esc(r.name)}</b> ${ready ? `<span class="tag r">Recompensa lista</span>` : ""} ${r.lastDay === today ? `<span class="tag">Vino hoy</span>` : ""} ${r.demo ? `<span class="tag g">Ejemplo</span>` : ""}
+      <div class="meta"><span>WhatsApp ···${esc(r.phone.slice(-4))}</span><span>${r.total} ${r.total === 1 ? "visita" : "visitas"} en total</span>${r.rewards ? `<span>${r.rewards} canjeadas</span>` : ""}<span>${r.optin ? (r.push ? "Recibe promos" : "Aceptó promos, sin notificaciones") : "Sin promos"}</span></div>
+      <div class="dots" aria-label="${r.visits} de ${need} visitas">${dots}</div>${codes[r.id] ? `<div><span class="code">${codes[r.id]}</span><div class="meta">Dáselo para recuperar su tarjeta en otro celular. Vence en 15 min.</div></div>` : ""}</div>
+      <div class="mact">${ready ? `<button type="button" class="p" data-ma="redeem" data-id="${r.id}">Canjear recompensa</button>` : ""}<button type="button" data-ma="visit" data-id="${r.id}">+ Visita</button><button type="button" data-ma="code" data-id="${r.id}">Código de recuperación</button><button type="button" class="dg" data-ma="delete" data-id="${r.id}">${delArm === r.id ? "¿Seguro? Toca otra vez" : "Borrar"}</button></div></div>`;
+  }).join("") : `<p class="empty">${MEM.rows.length ? "Nadie coincide con la búsqueda." : "Todavía no hay socios. Se registran desde el QR de su mesa, en la pestaña Club."}</p>`;
+}
+
+async function setM(body) { try { H = await api("/host/mesas", { pin, body }); paint(); } catch (e) { toast(e.message); } }
+document.addEventListener("click", async (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.t) { tab = b.dataset.t; $$(".tabs button").forEach((x) => x.classList.toggle("on", x === b)); ["resumen", "socios", "promos", "mesas"].forEach((k) => $("#v-" + k).classList.toggle("hide", k !== tab)); if (tab === "socios") loadMem(); return; }
+  const sg = b.closest(".seg"); if (sg && b.dataset.v != null) { const k = sg.dataset.k; setM({ [k]: k === "on" ? b.dataset.v === "1" : b.dataset.v }); return; }
+  if (b.dataset.n) { const k = b.dataset.n; setM({ [k]: H.mesas[k] + +b.dataset.d }); return; }
+  if (b.id === "rwS") { setM({ rewardText: $("#rwT").value }); toast("Premio guardado"); return; }
+  if (b.id === "printBtn") { window.print(); return; }
+  if (b.id === "demoBtn") { try { H = await api("/host/mesas/demo", { pin, body: {} }); paint(); loadMem(); toast("Listo: hay pedidos, llamados y socios de ejemplo"); } catch (x) { toast(x.message); } return; }
+  if (b.id === "resetBtn") { try { H = await api("/host/reset", { pin, body: { only: "mesas" } }); paint(); loadMem(); toast("Datos de ejemplo borrados"); } catch (x) { toast(x.message); } return; }
+  if (b.dataset.idea != null) { const [, t, m] = IDEAS[+b.dataset.idea]; $("#pt").value = t; $("#pb").value = m; prev(); return; }
+  if (b.id === "psend") {
+    const title = $("#pt").value.trim(), body = $("#pb").value.trim();
+    if (!title || !body) { $("#perr").textContent = "Escribe el título y el mensaje."; return; }
+    if (!sendArm) { sendArm = true; b.textContent = `Confirmar envío a ${H.club.reachable} ${H.club.reachable === 1 ? "persona" : "personas"}`; setTimeout(() => { sendArm = false; b.textContent = "Enviar promoción"; }, 5000); return; }
+    sendArm = false; b.disabled = true; b.textContent = "Enviando…"; $("#perr").textContent = "";
+    try { const r = await api("/host/club/promo", { pin, body: { title, body } }); H = r.state; paint(); toast(`Promoción enviada: llegó a ${r.promo.ok} de ${r.promo.sent}`); $("#pt").value = ""; $("#pb").value = ""; prev(); }
+    catch (x) { $("#perr").textContent = x.message; }
+    b.disabled = false; b.textContent = "Enviar promoción"; return;
+  }
+  if (b.dataset.ma) {
+    const id = b.dataset.id, a = b.dataset.ma;
+    if (a === "delete" && delArm !== id) { delArm = id; paintMem(); setTimeout(() => { if (delArm === id) { delArm = ""; paintMem(); } }, 4000); return; }
+    try {
+      const r = await api("/host/club/member", { pin, body: { id, action: a } });
+      if (a === "code") codes[id] = r.code;
+      toast({ visit: "Visita sumada", redeem: "Recompensa canjeada", code: "Código generado", delete: "Socio borrado" }[a]);
+      delArm = ""; await loadMem();
+    } catch (x) { toast(x.message); }
+  }
+});
+function prev() { const t = $("#pt").value, m = $("#pb").value; $("#ptc").textContent = t.length + "/60"; $("#pbc").textContent = m.length + "/160"; $("#nvT").textContent = t || "Higuera"; $("#nvB").textContent = m || "Escribe tu promoción para verla aquí."; }
+$("#pt").addEventListener("input", prev); $("#pb").addEventListener("input", prev);
+$("#ms").addEventListener("input", (e) => { memQ = e.target.value; paintMem(); });
+$("#ideas").innerHTML = IDEAS.map(([l], i) => `<button type="button" data-idea="${i}">${l}</button>`).join("");
+if (pin) login(pin, true);
+})();
+</script>
+</body>
+</html>

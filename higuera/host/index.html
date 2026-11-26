@@ -136,6 +136,7 @@ td{padding:9px 6px;border-bottom:1px dashed var(--line)}
   .bar .t{display:none}
 }
 @media (max-width:400px){.sw span{display:none}.big4{grid-template-columns:1fr 1fr}}
+.pnav{display:flex;gap:4px;margin-left:10px}.pnav a{font-size:12.5px;font-weight:800;color:rgba(244,241,234,.65);text-decoration:none;padding:8px 10px;border-radius:10px}.pnav a.cur{background:rgba(244,241,234,.12);color:#f4f1ea}@media (max-width:700px){.pnav{display:none}}
 </style>
 </head>
 <body>
@@ -153,6 +154,7 @@ td{padding:9px 6px;border-bottom:1px dashed var(--line)}
 <header class="bar">
   <img class="logo" src="../img/logo-light.png" alt="Higuera" width="72" height="26">
   <div class="t">Panel<br>del equipo</div>
+  <nav class="pnav" aria-label="Paneles"><a href="./" class="cur" aria-current="page">Entrada</a><a href="../barra/">Pedidos</a><a href="../club/">Club y mesas</a></nav>
   <div class="sp"></div>
   <div class="conn"><span class="dot off" id="cdot"></span><span id="ctxt">…</span></div>
   <button class="sw on" id="openSw" type="button" aria-label="Abrir o pausar la lista"><span id="openTxt">Lista abierta</span><i></i></button>

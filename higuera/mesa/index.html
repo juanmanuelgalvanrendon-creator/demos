@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Higuera · Tu mesa</title>
+<meta name="description" content="Carta, pedido desde la mesa y Club Higuera.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f4f1ea">
+<link rel="icon" href="../img/icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Higuera">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../hg.css">
+<style>
+:root{--top:62px;--tabs:68px}
+body{background:var(--bg);padding-bottom:calc(var(--tabs) + env(safe-area-inset-bottom))}
+.app{max-width:560px;margin:0 auto;min-height:100vh}
+/* barra superior */
+.top{position:sticky;top:0;z-index:30;height:var(--top);display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 16px;background:rgba(244,241,234,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .2s}
+.top.sc{border-color:var(--line)}
+.top .logo{height:26px}
+.tchip{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px;border-radius:99px;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--line);font-weight:800;font-size:13.5px}
+.tchip .dot{width:7px;height:7px}
+.bell{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:#fff;position:relative}
+.bell.on::after{content:"";position:absolute;top:6px;right:7px;width:9px;height:9px;border-radius:50%;background:#e8a06d;box-shadow:0 0 0 2px var(--ink)}
+.tr{display:flex;align-items:center;gap:8px}
+/* vistas */
+.view{display:none;padding:16px 16px 28px;animation:vin .35s cubic-bezier(.2,.8,.2,1)}
+.view.on{display:block}
+@keyframes vin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.h2{font:400 34px/1.02 var(--serif);letter-spacing:-.015em}
+.h2 em{font-style:italic;color:var(--terra)}
+.k{font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+.sec{margin-top:26px}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.sec-h a,.sec-h button{font-weight:800;font-size:13px;color:var(--terra);text-decoration:none}
+.card{background:var(--paper);border-radius:var(--r);box-shadow:var(--sh)}
+/* inicio */
+.hero{position:relative;border-radius:26px;overflow:hidden;min-height:250px;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:22px;background:#2a2620}
+.hero>*{position:relative;z-index:2}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.hero::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(20,18,14,.1) 10%,rgba(20,18,14,.55) 50%,rgba(20,18,14,.9))}
+.hero .k{color:rgba(255,255,255,.85)}
+.hero h1{font:400 40px/.98 var(--serif);margin:8px 0 8px;letter-spacing:-.02em}
+.hero h1 em{font-style:italic;color:#f0c7a6}
+.hero p{font-size:14.5px;color:rgba(255,255,255,.88);max-width:330px}
+.calls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.callb{border-radius:20px;background:var(--paper);box-shadow:var(--sh);padding:16px 14px;text-align:left;display:flex;flex-direction:column;gap:10px;min-height:118px;transition:transform .12s,background .2s}
+.callb:active{transform:scale(.98)}
+.callb .ic{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:var(--sage);color:var(--olive)}
+.callb b{font-size:15.5px;line-height:1.2}
+.callb small{font-size:12.5px;color:var(--mut);line-height:1.3}
+.callb.act{background:var(--olive);color:#f4f1ea}
+.callb.act .ic{background:rgba(255,255,255,.12);color:#f4f1ea}
+.callb.act small{color:rgba(244,241,234,.78)}
+.callb.act .x{margin-top:auto;font-size:12.5px;font-weight:800;text-decoration:underline;text-underline-offset:3px;color:#f0c7a6;align-self:flex-start}
+.club{border-radius:24px;background:var(--olive);color:#f4f1ea;padding:20px;position:relative;overflow:hidden}
+.club::before{content:"";position:absolute;right:-90px;top:-90px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(239,195,161,.2),transparent 70%)}
+.club>*{position:relative}
+.club .k{color:rgba(244,241,234,.75)}
+.club h3{font:400 28px/1.05 var(--serif);margin:6px 0 6px}
+.club h3 em{font-style:italic;color:#f0c7a6}
+.club p{font-size:14px;color:rgba(244,241,234,.85)}
+.club .btn{margin-top:14px;height:48px;background:#f4f1ea;color:var(--olive)}
+.stamps{display:flex;gap:8px;margin:14px 0 10px;flex-wrap:wrap}
+.stamp{width:40px;height:40px;border-radius:50%;box-shadow:inset 0 0 0 1.5px rgba(244,241,234,.35);display:grid;place-items:center;font:600 13px var(--mono);color:rgba(244,241,234,.5)}
+.stamp.on{background:#f0c7a6;color:var(--olive);box-shadow:none}
+.stamp.gift{box-shadow:inset 0 0 0 1.5px #f0c7a6;color:#f0c7a6}
+.stamp.gift.on{background:#f0c7a6;color:var(--olive)}
+.ready{margin-top:10px;background:#f0c7a6;color:var(--olive);border-radius:14px;padding:12px 14px;font-weight:800;font-size:14px}
+.dest{display:grid;grid-template-columns:116px 1fr;gap:14px;align-items:center;padding:12px;border-radius:22px}
+.dest img{width:116px;height:116px;object-fit:cover;border-radius:16px}
+.dest .tg{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--terra);margin-bottom:4px}
+.dest h4{font:400 23px/1.05 var(--serif)}
+.dest p{font-size:13px;color:var(--mut);margin:4px 0 10px;line-height:1.4}
+.rail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:2px 16px 6px;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.pk{flex:0 0 156px;scroll-snap-align:start;background:var(--paper);border-radius:20px;box-shadow:var(--sh);overflow:hidden;position:relative}
+.pk .im{height:150px;background:#ddd5c5}
+.pk .im img{width:100%;height:100%;object-fit:cover}
+.pk .tx{padding:10px 12px 12px}
+.pk b{display:block;font:400 19px/1.08 var(--serif)}
+.pk small{font-size:11.5px;color:var(--mut)}
+.pk .add{position:absolute;right:10px;top:110px}
+.mini{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:18px;background:var(--ink);color:#fff;margin-top:12px;width:100%;text-align:left}
+.mini .st{margin-left:auto;font-size:12.5px;font-weight:800;padding:6px 10px;border-radius:99px;background:rgba(255,255,255,.12)}
+.mini.ok .st{background:#2d7a4b}
+/* botón agregar y contador */
+.add{width:36px;height:36px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:20px;font-weight:600;line-height:1;box-shadow:0 8px 16px -8px rgba(0,0,0,.5);flex:0 0 auto}
+.add.has{background:var(--terra)}
+.qs{display:inline-flex;align-items:center;gap:2px;background:var(--ink);color:#fff;border-radius:99px;height:36px;padding:0 3px;flex:0 0 auto}
+.qs button{width:30px;height:30px;border-radius:50%;color:#fff;font-size:18px;font-weight:700;display:grid;place-items:center;line-height:1}
+.qs button:active{background:rgba(255,255,255,.15)}
+.qs span{min-width:18px;text-align:center;font-weight:800;font-size:14px}
+/* carta */
+.ctools{position:sticky;top:var(--top);z-index:20;background:var(--bg);margin:0 -16px;padding:4px 16px 10px}
+.srch{display:flex;align-items:center;gap:10px;height:46px;border-radius:14px;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--line);padding:0 14px;color:var(--mut)}
+.srch input{border:0;background:none;outline:none;flex:1;font-size:15px;color:var(--ink);min-width:0}
+.cats{display:flex;gap:8px;overflow-x:auto;margin-top:10px;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cats button{flex:0 0 auto;height:36px;padding:0 15px;border-radius:99px;font-weight:700;font-size:13.5px;box-shadow:inset 0 0 0 1.5px var(--line2);white-space:nowrap}
+.cats button.on{background:var(--ink);color:#fff;box-shadow:none}
+.cat-h{margin:22px 0 4px}
+.cat-h h3{font:400 28px/1 var(--serif)}
+.cat-h p{font-size:13px;color:var(--mut);margin-top:3px}
+.row{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);width:100%;text-align:left}
+.row .th{width:64px;height:64px;border-radius:14px;overflow:hidden;flex:0 0 auto;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line);display:grid;place-items:center;font:400 22px var(--serif);color:var(--mut)}
+.row .th img{width:100%;height:100%;object-fit:cover}
+.row .tx{flex:1;min-width:0}
+.row b{display:block;font:400 21px/1.1 var(--serif)}
+.row small{display:block;font-size:12.5px;color:var(--mut);margin-top:2px}
+.row .tag{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--olive2);background:var(--sage);padding:3px 7px;border-radius:99px;margin-top:5px}
+.row.sold{opacity:.55}
+.row .so{font-size:11px;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:.1em}
+.empty{padding:40px 10px;text-align:center;color:var(--mut)}
+/* pedido */
+.cart{padding:6px 16px}
+.ci{display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line)}
+.ci:last-child{border-bottom:0}
+.ci .tx{flex:1;min-width:0}
+.ci b{font:400 20px/1.1 var(--serif);display:block}
+.ci .nt{font-size:12.5px;color:var(--terra);margin-top:3px}
+.ci .ed{font-size:12.5px;font-weight:700;color:var(--mut);text-decoration:underline;text-underline-offset:3px;margin-top:4px}
+.ta{width:100%;min-height:76px;border:0;border-radius:16px;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--line);padding:12px 14px;font-size:15px;outline:none;resize:vertical}
+.ta:focus,.in:focus{box-shadow:inset 0 0 0 2px var(--ink)}
+.send{position:sticky;bottom:calc(var(--tabs) + env(safe-area-inset-bottom) + 10px);margin-top:16px;z-index:5}
+.send .btn{width:100%;height:58px;font-size:16px;box-shadow:0 18px 30px -14px rgba(0,0,0,.55)}
+.note{font-size:12.5px;color:var(--mut);margin-top:10px;line-height:1.45}
+.ord{padding:16px;margin-top:12px}
+.ord .hd{display:flex;justify-content:space-between;align-items:baseline}
+.ord .hd b{font:600 13px var(--mono)}
+.ord .hd span{font-size:12.5px;color:var(--mut)}
+.trk{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:14px 0 12px}
+.trk div{height:5px;border-radius:9px;background:var(--line)}
+.trk div.on{background:var(--ok)}
+.trk div.now{background:linear-gradient(90deg,var(--ok),#8fc5a2,var(--ok));background-size:200% 100%;animation:sh 1.6s linear infinite}
+@keyframes sh{to{background-position:-200% 0}}
+.ord .st{font:400 24px/1.05 var(--serif)}
+.ord .st em{font-style:italic;color:var(--ok)}
+.ord ul{list-style:none;margin-top:10px;font-size:14px;color:var(--ink2)}
+.ord li{padding:3px 0}
+.ord li i{font-style:normal;color:var(--terra);font-size:12.5px}
+.ord.x{opacity:.6}
+/* club */
+.mcard{border-radius:26px;background:var(--olive);color:#f4f1ea;padding:22px;position:relative;overflow:hidden;box-shadow:0 30px 50px -30px rgba(46,53,39,.9)}
+.mcard::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 100% 0,rgba(239,195,161,.22),transparent 55%)}
+.mcard>*{position:relative}
+.mcard .hd{display:flex;justify-content:space-between;align-items:center}
+.mcard .hd img{height:24px;filter:invert(1) brightness(2)}
+.mcard .hd span{font:600 11px var(--mono);letter-spacing:.12em;color:rgba(244,241,234,.7)}
+.mcard h3{font:400 34px/1 var(--serif);margin:26px 0 2px}
+.mcard .sub{font-size:13.5px;color:rgba(244,241,234,.8)}
+.mcard .stamps{margin-top:18px}
+.mcard .ft{display:flex;justify-content:space-between;font-size:12px;color:rgba(244,241,234,.7);margin-top:12px;font-weight:600}
+.blk{padding:18px;margin-top:14px}
+.blk h4{font:400 23px/1.1 var(--serif)}
+.blk p{font-size:14px;color:var(--ink2);margin-top:4px}
+.blk .btn{margin-top:14px;width:100%}
+.lab{margin-top:14px}
+.chk{display:flex;gap:12px;align-items:flex-start;margin-top:14px;font-size:13.5px;color:var(--ink2);line-height:1.45}
+.chk input{width:22px;height:22px;flex:0 0 auto;accent-color:var(--ink);margin-top:1px}
+.err{color:var(--red);font-size:13.5px;font-weight:700;min-height:20px;margin-top:10px}
+.lnk{font-weight:800;font-size:13.5px;text-decoration:underline;text-underline-offset:3px;color:var(--ink2)}
+.sw{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}
+.sw input{appearance:none;-webkit-appearance:none;width:50px;height:30px;border-radius:99px;background:var(--line2);position:relative;transition:background .2s;flex:0 0 auto;cursor:pointer}
+.sw input::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 2px 4px rgba(0,0,0,.2)}
+.sw input:checked{background:var(--ok)}
+.sw input:checked::after{transform:translateX(20px)}
+.pst{display:flex;gap:10px;align-items:center;font-size:14px;font-weight:700;margin-top:10px}
+.pst.ok{color:var(--ok)}
+.danger{color:var(--red);font-weight:800;font-size:13px;text-decoration:underline;text-underline-offset:3px;margin-top:22px;display:block}
+/* barra inferior */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(251,250,246,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+.tabs nav{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);height:var(--tabs)}
+.tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:11.5px;font-weight:700;color:var(--mut);position:relative}
+.tabs button svg{width:23px;height:23px}
+.tabs button.on{color:var(--ink)}
+.tabs button.on::before{content:"";position:absolute;top:0;width:28px;height:3px;border-radius:0 0 4px 4px;background:var(--terra)}
+.tabs .bd{position:absolute;top:8px;left:calc(50% + 6px);min-width:18px;height:18px;border-radius:99px;background:var(--terra);color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center;padding:0 5px}
+.tabs .bd[hidden]{display:none}
+/* hoja inferior */
+.scrim{position:fixed;inset:0;z-index:60;background:rgba(20,18,14,.45);opacity:0;pointer-events:none;transition:opacity .25s}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:61;max-width:560px;margin:0 auto;background:var(--bg);border-radius:26px 26px 0 0;transform:translateY(105%);transition:transform .32s cubic-bezier(.2,.8,.2,1);max-height:90vh;overflow:auto;padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+.sheet.on{transform:none}
+.sheet .grab{width:42px;height:5px;border-radius:9px;background:var(--line2);margin:10px auto 0}
+.sheet .ph{height:240px;margin:12px 16px 0;border-radius:20px;overflow:hidden;background:#ddd5c5}
+.sheet .ph img{width:100%;height:100%;object-fit:cover}
+.sheet .bd2{padding:16px}
+.sheet h3{font:400 32px/1.02 var(--serif)}
+.sheet .pair{font-size:13.5px;color:var(--mut);margin:6px 0 14px}
+.sheet .pair b{color:var(--ink)}
+.sheet .row2{display:flex;gap:12px;align-items:center;margin-top:16px}
+.sheet .row2 .btn{flex:1}
+.big-step{display:inline-flex;align-items:center;height:54px;border-radius:99px;box-shadow:inset 0 0 0 1.5px var(--line2)}
+.big-step button{width:48px;height:54px;font-size:22px;font-weight:700}
+.big-step span{min-width:26px;text-align:center;font-weight:800;font-size:17px}
+.bar-no{background:var(--terra-l);color:var(--terra-d);border-radius:16px;padding:14px 16px;font-size:14px;font-weight:600;margin-bottom:14px}
+.ios{background:var(--paper);border-radius:16px;padding:14px;margin-top:12px;font-size:13.5px;color:var(--ink2);box-shadow:inset 0 0 0 1px var(--line)}
+.ios ol{margin:8px 0 0 18px}
+.toast{top:auto;bottom:calc(var(--tabs) + env(safe-area-inset-bottom) + 14px);transform:translate(-50%,180%)}
+.toast.show{transform:translate(-50%,0)}
+.foot{text-align:center;font-size:12px;color:var(--mut);margin-top:30px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top" id="top">
+    <img class="logo" src="../img/logo-sm.png" alt="Higuera" width="72" height="26">
+    <div class="tr">
+      <span class="tchip" id="tchip"><span class="dot" id="ldot"></span><span id="tlabel">Club Higuera</span></span>
+      <button class="bell" id="bell" type="button" aria-label="Llamar al mesero o pedir la cuenta" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></button>
+    </div>
+  </header>
+
+  <main>
+    <section class="view on" id="v-inicio" aria-label="Inicio"></section>
+    <section class="view" id="v-carta" aria-label="Carta"></section>
+    <section class="view" id="v-pedido" aria-label="Tu pedido"></section>
+    <section class="view" id="v-club" aria-label="Club Higuera"></section>
+  </main>
+</div>
+
+<div class="tabs"><nav aria-label="Secciones">
+  <button type="button" data-tab="inicio" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Inicio</button>
+  <button type="button" data-tab="carta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>Carta</button>
+  <button type="button" data-tab="pedido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 3h12l-1 18H7z"/><path d="M9 7h6M9 11h6"/></svg><span id="tabPedLbl">Pedido</span><span class="bd" id="bdg" hidden>0</span></button>
+  <button type="button" data-tab="club"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 10h18M7 15h4"/></svg>Club</button>
+</nav></div>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Detalle"></div>
+
+<script src="../fila.js"></script>
+<script src="../carta.js"></script>
+<script>
+(() => {
+const { api, store, esc, ago, toast, beep, unlockAudio } = HG;
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const Q = new URLSearchParams(location.search);
+const M = parseInt(Q.get("m"), 10) || 0, K = Q.get("k") || "";
+const C = window.CARTA, BY = Object.fromEntries(C.ITEMS.map((i) => [i.id, i])), BYN = Object.fromEntries(C.ITEMS.map((i) => [i.n, i]));
+const img = (n) => `../img/${n}.webp`;
+const S = {
+  tab: ["inicio", "carta", "pedido", "club"].includes(Q.get("tab")) ? Q.get("tab") : "inicio",
+  st: null, bad: false, cat: "todo", q: "",
+  cart: JSON.parse(store.get("cart_" + M) || "[]"), note: "",
+  club: JSON.parse(store.get("club") || "null"), me: null,
+  lastStatus: {}, recover: false, leaving: false, sending: false,
+};
+const hasTable = () => M && !S.bad;
+const canOrder = () => hasTable() && S.st && S.st.on && S.st.mode === "pedir";
+const saveCart = () => store.set("cart_" + M, JSON.stringify(S.cart));
+const cartCount = () => S.cart.reduce((a, x) => a + x.q, 0);
+const soldList = () => (S.st && S.st.site && S.st.site.soldout) || [];
+const isSold = (n) => soldList().includes(n);
+const srvNow = () => (S.st ? Date.now() + (S.st.now - S.st.nowLocal) : Date.now());
+const hello = () => { const h = new Date().getHours(); return h < 12 ? "Buenos días" : h < 19 ? "Buenas tardes" : "Buenas noches"; };
+
+/* ---------- íconos ---------- */
+const IC = {
+  mesero: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>',
+  cuenta: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>',
+  gift: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18M12 8S10.5 3 8 3a2.5 2.5 0 0 0 0 5M12 8s1.5-5 4-5a2.5 2.5 0 0 1 0 5"/></svg>',
+  check: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>',
+  search: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
+};
+
+/* ---------- conexión en vivo con la mesa ---------- */
+function live() {
+  if (!M) return;
+  let ws, alive = false, retry = 0, pollT;
+  const dot = (on) => { const d = $("#ldot"); if (d) d.className = "dot" + (on ? "" : " off"); };
+  const poll = async () => {
+    if (alive) return;
+    try { onState(await api(`/mesa/state?m=${M}&k=${encodeURIComponent(K)}`)); dot(true); }
+    catch (e) { dot(false); if (e.status === 404) { S.bad = true; render(); return; } }
+    pollT = setTimeout(poll, document.hidden ? 15000 : 4000);
+  };
+  const open = () => {
+    try { ws = new WebSocket((location.protocol === "https:" ? "wss://" : "ws://") + location.host + `/api/fila/${HG.ROOM}/ws?role=mesa&m=${M}&k=${encodeURIComponent(K)}`); } catch (e) { poll(); return; }
+    const t = setTimeout(() => { if (!alive) try { ws.close(); } catch (e) {} }, 6000);
+    ws.onopen = () => { clearTimeout(t); alive = true; retry = 0; clearTimeout(pollT); dot(true); };
+    ws.onmessage = (ev) => { let m; try { m = JSON.parse(ev.data); } catch (e) { return; } if (m.t === "mesa") onState(m.d); else if (m.t === "err") { S.bad = true; render(); } };
+    ws.onclose = () => { clearTimeout(t); const was = alive; alive = false; dot(false); retry++; if (!was) poll(); if (!S.bad) setTimeout(open, Math.min(15000, 800 * retry)); };
+  };
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && !alive) { clearTimeout(pollT); poll(); } });
+  open();
+}
+function onState(d) {
+  d.nowLocal = Date.now();
+  const first = !S.st;
+  // avisar cuando un pedido cambia a "listo"
+  d.orders.forEach((o) => {
+    const prev = S.lastStatus[o.id];
+    if (!first && prev && prev !== o.status && o.status === "listo") { beep(2); if (navigator.vibrate) navigator.vibrate([200, 100, 200]); toast("Tu pedido #" + o.n + " está listo, ya va a tu mesa"); }
+    S.lastStatus[o.id] = o.status;
+  });
+  S.st = d;
+  render();
+}
+
+/* ---------- club ---------- */
+async function loadMe() {
+  if (!S.club) return;
+  try { S.me = (await api("/club/me", { body: { id: S.club.id, tok: S.club.tok } })).member; }
+  catch (e) { if (e.status === 404) { S.club = null; S.me = null; store.set("club", null); } }
+  render();
+}
+
+/* ---------- vistas ---------- */
+function render() {
+  const t = $("#tlabel");
+  t.textContent = S.bad ? "QR no válido" : M ? "Mesa " + M : "Club Higuera";
+  $("#bell").hidden = !hasTable();
+  const open = S.st ? S.st.calls.length : 0;
+  $("#bell").classList.toggle("on", !!open);
+  $("#tabPedLbl").textContent = canOrder() || !hasTable() ? "Pedido" : "Mi lista";
+  const n = cartCount(), b = $("#bdg"); b.hidden = !n; b.textContent = n;
+  $$(".tabs [data-tab]").forEach((x) => { x.classList.toggle("on", x.dataset.tab === S.tab); x.setAttribute("aria-current", x.dataset.tab === S.tab ? "page" : "false"); });
+  $$(".view").forEach((v) => v.classList.toggle("on", v.id === "v-" + S.tab));
+  ({ inicio: rInicio, carta: rCarta, pedido: rPedido, club: rClub })[S.tab]();
+}
+
+function callState(kind) { return S.st && S.st.calls.find((c) => c.kind === kind); }
+function callBtn(kind) {
+  const c = callState(kind);
+  const L = kind === "mesero" ? ["Llamar al mesero", "Te atendemos en un momento", "Avisamos a tu mesero"] : ["Pedir la cuenta", "Te la llevamos a la mesa", "Tu cuenta va en camino"];
+  return c
+    ? `<button class="callb act" type="button" data-cancel="${c.id}" aria-label="${L[2]}. Toca para cancelar"><span class="ic">${IC[kind]}</span><b>${L[2]}</b><small>${ago(c.t0, srvNow()) === "ahora" ? "Hace un momento" : "Hace " + ago(c.t0, srvNow())}</small><span class="x">Cancelar</span></button>`
+    : `<button class="callb" type="button" data-call="${kind}"><span class="ic">${IC[kind]}</span><b>${L[0]}</b><small>${L[1]}</small></button>`;
+}
+function stampsHtml(v, need) {
+  let h = "";
+  for (let i = 1; i <= need; i++) h += `<span class="stamp${i === need ? " gift" : ""}${i <= v ? " on" : ""}" aria-hidden="true">${i === need ? IC.gift : i <= v ? IC.check : i}</span>`;
+  return `<div class="stamps" role="img" aria-label="${Math.min(v, need)} de ${need} visitas">${h}</div>`;
+}
+function clubCard() {
+  const rw = S.st ? S.st.reward : { visits: 5, text: "Tu latte va por la casa" };
+  if (!S.me) return `<div class="club"><span class="k">Club Higuera</span><h3>A la ${rw.visits}.ª visita, <em>${esc(rw.text.toLowerCase())}</em></h3><p>Te registras en 20 segundos con tu nombre y WhatsApp. Cada visita se suma sola.</p><button class="btn btn-block" type="button" data-tab="club">Unirme al club</button></div>`;
+  const m = S.me, left = Math.max(0, m.need - m.visits);
+  return `<div class="club"><span class="k">Club Higuera · ${esc(m.first)}</span><h3>${m.ready ? "Ya tienes tu <em>recompensa</em>" : `Te ${left === 1 ? "falta" : "faltan"} <em>${left} ${left === 1 ? "visita" : "visitas"}</em>`}</h3>${stampsHtml(m.visits, m.need)}<p>${m.ready ? "" : "Premio: " + esc(m.rewardText) + "."}${m.today ? " La visita de hoy ya está contada." : ""}</p>${m.ready ? `<div class="ready">${esc(m.rewardText)}. Muéstrale esta pantalla a tu mesero.</div>` : ""}</div>`;
+}
+function photoOf(it) { return it && it.photos && it.photos.length ? img(it.photos[0]) : ""; }
+function qtyOf(id) { return S.cart.filter((x) => x.id === id).reduce((a, x) => a + x.q, 0); }
+function addBtn(it) {
+  if (!hasTable()) return "";
+  if (isSold(it.n)) return `<span class="so">Agotado hoy</span>`;
+  const q = qtyOf(it.id);
+  return q ? `<span class="qs"><button type="button" data-minus="${it.id}" aria-label="Quitar uno de ${esc(it.n)}">−</button><span aria-live="polite">${q}</span><button type="button" data-plus="${it.id}" aria-label="Agregar otro ${esc(it.n)}">+</button></span>` : `<button class="add" type="button" data-plus="${it.id}" aria-label="Agregar ${esc(it.n)}">+</button>`;
+}
+
+function rInicio() {
+  const v = $("#v-inicio");
+  if (S.bad) { v.innerHTML = `<div class="bar-no">Este QR no corresponde a una mesa activa. Pide ayuda a alguien del equipo.</div>${clubCard()}`; return; }
+  const se = S.st && S.st.site && S.st.site.season;
+  const destIt = se ? C.ITEMS.find((i) => se.title.toLowerCase().includes(i.n.toLowerCase().split(" ")[0])) : null;
+  const active = S.st ? S.st.orders.filter((o) => o.status !== "cancelado") : [];
+  const lastO = active.slice(-1)[0];
+  const picks = C.ITEMS.filter((i) => i.photos.length).concat(C.ITEMS.filter((i) => i.tag === "De la casa"));
+  const subtitle = !hasTable() ? "Tu tarjeta del club y la carta de Higuera." : canOrder() ? "Pide desde aquí y te lo llevamos a la mesa. Si necesitas algo, toca la campana." : "Revisa la carta y llama a tu mesero cuando estés listo para ordenar.";
+  v.innerHTML = `
+    <div class="hero"><img src="../img/chilaquiles-md.webp" alt="" fetchpriority="high"><span class="k">${hello()}${hasTable() ? " · Mesa " + M : ""}</span><h1>Bienvenido a <em>Higuera</em></h1><p>${subtitle}</p></div>
+    ${lastO ? `<button class="mini${lastO.status === "listo" || lastO.status === "entregado" ? " ok" : ""}" type="button" data-tab="pedido"><span><span class="k" style="color:rgba(255,255,255,.7)">Tu pedido #${lastO.n}</span><br><b style="font:400 20px var(--serif)">${statusTxt(lastO.status)[0]}</b></span><span class="st">Ver</span></button>` : ""}
+    ${hasTable() ? `<div class="calls">${callBtn("mesero")}${callBtn("cuenta")}</div>` : ""}
+    <div class="sec">${clubCard()}</div>
+    ${se ? `<div class="sec"><div class="sec-h"><span class="k">El destacado</span></div><div class="card dest"><img src="${img(se.img)}" alt="" loading="lazy"><div><span class="tg">De la semana</span><h4>${esc(se.title)}</h4><p>${esc(se.text)}</p>${destIt ? addBtn(destIt) : ""}</div></div></div>` : ""}
+    <div class="sec"><div class="sec-h"><span class="k">${canOrder() ? "Para pedir" : "De la carta"}</span><button type="button" data-tab="carta">Ver toda la carta</button></div>
+      <div class="rail">${picks.map((it) => `<div class="pk"><div class="im">${photoOf(it) ? `<img src="${photoOf(it)}" alt="" loading="lazy">` : `<div style="height:100%;display:grid;place-items:center;font:400 46px var(--serif);color:#b9ae98">${it.no}</div>`}</div><div class="tx"><b>${esc(it.n)}</b><small>${esc(it.tag || C.CATS.find((c) => c.id === it.cat).es)}</small></div><div class="add-w" style="position:absolute;right:10px;top:110px">${addBtn(it)}</div><button type="button" data-open="${it.id}" style="position:absolute;inset:0 0 auto 0;height:104px" aria-label="Ver ${esc(it.n)}"></button></div>`).join("")}</div>
+    </div>
+    <p class="foot">Higuera · Plutarco Elías Calles 419, Tampiquito<br>Sistema de mesa preparado por Code Nova</p>`;
+}
+
+function rCarta() {
+  const v = $("#v-carta");
+  const keep = document.activeElement && document.activeElement.id === "q";
+  const q = S.q.trim().toLowerCase();
+  const list = C.ITEMS.filter((i) => (S.cat === "todo" || i.cat === S.cat) && (!q || (i.n + " " + i.tag).toLowerCase().includes(q)));
+  const groups = C.CATS.map((c) => ({ c, items: list.filter((i) => i.cat === c.id) })).filter((g) => g.items.length);
+  v.innerHTML = `
+    <h2 class="h2">La <em>carta</em></h2>
+    <div class="ctools"><label class="srch">${IC.search}<input id="q" type="search" placeholder="Busca un platillo o bebida" value="${esc(S.q)}" aria-label="Buscar en la carta"></label>
+      <div class="cats" role="tablist" aria-label="Categorías">${[{ id: "todo", es: "Todo" }, ...C.CATS].map((c) => `<button type="button" role="tab" aria-selected="${S.cat === c.id}" class="${S.cat === c.id ? "on" : ""}" data-cat="${c.id}">${c.es}</button>`).join("")}</div></div>
+    ${!hasTable() ? `<div class="bar-no" style="background:var(--sage);color:var(--olive)">Para pedir, escanea el QR de tu mesa.</div>` : !canOrder() ? `<div class="bar-no" style="background:var(--sage);color:var(--olive)">Arma tu lista y muéstrasela a tu mesero, o tócale la campana.</div>` : ""}
+    ${groups.length ? groups.map((g) => `<div class="cat-h"><h3>${g.c.es}</h3><p>${g.c.pes}</p></div>${g.items.map((it) => `<div class="row${isSold(it.n) ? " sold" : ""}"><button type="button" class="th" data-open="${it.id}" aria-label="Ver ${esc(it.n)}">${photoOf(it) ? `<img src="${photoOf(it)}" alt="" loading="lazy">` : it.no}</button><button type="button" class="tx" data-open="${it.id}" style="text-align:left"><b>${esc(it.n)}</b>${it.tag ? `<span class="tag">${esc(it.tag)}</span>` : ""}</button>${addBtn(it)}</div>`).join("")}`).join("") : `<div class="empty">No encontramos "${esc(S.q)}" en la carta.</div>`}
+    <p class="foot">Los precios se cargan con la carta oficial de Higuera.</p>`;
+  if (keep) { const i = $("#q"); i.focus(); i.setSelectionRange(i.value.length, i.value.length); }
+}
+
+function statusTxt(s) {
+  return ({ nuevo: ["Recibido", 1], prep: ["Lo estamos preparando", 2], listo: ["Listo, va a tu mesa", 3], entregado: ["En tu mesa", 4], cancelado: ["Cancelado", 0] })[s] || ["", 0];
+}
+function rPedido() {
+  const v = $("#v-pedido");
+  if (!hasTable()) { v.innerHTML = `<h2 class="h2">Tu <em>pedido</em></h2><div class="card blk"><h4>Escanea el QR de tu mesa</h4><p>Cada mesa de Higuera tiene su código. Al escanearlo puedes pedir, llamar al mesero o pedir la cuenta desde aquí.</p></div>`; return; }
+  const orders = S.st ? S.st.orders.slice().reverse() : [];
+  const cart = S.cart.map((x, i) => { const it = BY[x.id]; return it ? `<div class="ci"><div class="tx"><b>${esc(it.n)}</b>${x.note ? `<div class="nt">${esc(x.note)}</div>` : ""}<button class="ed" type="button" data-edit="${i}">${x.note ? "Cambiar nota" : "Agregar nota"}</button>${isSold(it.n) ? `<div class="so" style="margin-top:4px">Se agotó hoy</div>` : ""}</div><span class="qs"><button type="button" data-cminus="${i}" aria-label="Quitar uno de ${esc(it.n)}">−</button><span>${x.q}</span><button type="button" data-cplus="${i}" aria-label="Agregar otro ${esc(it.n)}">+</button></span></div>` : ""; }).join("");
+  v.innerHTML = `
+    <h2 class="h2">${canOrder() ? "Tu <em>pedido</em>" : "Mi <em>lista</em>"}</h2>
+    ${S.cart.length ? `<div class="sec" style="margin-top:16px"><div class="sec-h"><span class="k">${canOrder() ? "Por enviar" : "Para mostrar al mesero"}</span><button type="button" id="clr">Vaciar</button></div>
+      <div class="card cart">${cart}</div>
+      ${canOrder() ? `<label class="k" for="gnote" style="display:block;margin-top:16px">Nota para cocina (opcional)</label><textarea class="ta" id="gnote" style="margin-top:8px" maxlength="120" placeholder="Ej.: traer todo al mismo tiempo">${esc(S.note)}</textarea>` : ""}
+      ${!S.me ? `<p class="note">${IC.gift} <button type="button" class="lnk" data-tab="club">Únete al Club Higuera</button> antes de enviar y esta visita cuenta para tu recompensa.</p>` : `<p class="note">Este pedido suma tu visita de hoy al Club, ${esc(S.me.first)}.</p>`}
+      <div class="send">${canOrder() ? `<button class="btn btn-terra" type="button" id="send"${S.sending ? " disabled" : ""}>${S.sending ? "Enviando…" : `Enviar a cocina · ${cartCount()} ${cartCount() === 1 ? "producto" : "productos"}`}</button>` : `<button class="btn btn-ink" type="button" data-call="mesero">${callState("mesero") ? "Tu mesero ya viene" : "Llamar al mesero para ordenar"}</button>`}</div></div>`
+    : `<div class="card blk" style="margin-top:16px"><h4>${orders.length ? "¿Algo más?" : "Aún no agregas nada"}</h4><p>Agrega platillos y bebidas desde la carta${canOrder() ? " y envíalos directo a cocina" : ""}.</p><button class="btn btn-ink" type="button" data-tab="carta">Ver la carta</button></div>`}
+    ${orders.length ? `<div class="sec"><span class="k">Enviados de esta mesa</span>${orders.map((o) => { const [t, n] = statusTxt(o.status); return `<div class="card ord${o.status === "cancelado" ? " x" : ""}" aria-live="polite"><div class="hd"><b>#${String(o.n).padStart(3, "0")}${o.who ? " · " + esc(o.who) : ""}</b><span>${ago(o.t0, srvNow()) === "ahora" ? "Hace un momento" : "Hace " + ago(o.t0, srvNow())}</span></div>${o.status !== "cancelado" ? `<div class="trk">${[1, 2, 3, 4].map((k) => `<div class="${k < n || (k === n && n === 4) ? "on" : k === n ? "now" : ""}"></div>`).join("")}</div>` : ""}<div class="st">${o.status === "listo" || o.status === "entregado" ? `<em>${t}</em>` : t}</div><ul>${o.items.map((it) => `<li>${it.q} × ${esc(it.n)}${it.note ? ` <i>· ${esc(it.note)}</i>` : ""}</li>`).join("")}</ul>${o.note ? `<p class="note">Nota: ${esc(o.note)}</p>` : ""}</div>`; }).join("")}</div>` : ""}
+    ${hasTable() ? `<div class="calls" style="margin-top:22px">${callBtn("mesero")}${callBtn("cuenta")}</div>` : ""}`;
+}
+
+function rClub() {
+  const v = $("#v-club");
+  const rw = S.st ? S.st.reward : null;
+  if (S.me) {
+    const m = S.me, left = Math.max(0, m.need - m.visits);
+    const ios = /iphone|ipad|ipod/i.test(navigator.userAgent), standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+    const pushOk = "serviceWorker" in navigator && "PushManager" in window;
+    const perm = window.Notification ? Notification.permission : "default";
+    let pblk;
+    if (m.hasPush && perm === "granted") pblk = `<div class="pst ok">${IC.check} Notificaciones activadas en este celular</div>`;
+    else if (ios && !standalone) pblk = `<div class="ios"><b>En iPhone, primero agrega Higuera a tu inicio:</b><ol><li>Toca el botón de compartir de Safari.</li><li>Elige "Agregar a inicio".</li><li>Abre Higuera desde el ícono y activa aquí las notificaciones.</li></ol></div>`;
+    else if (!pushOk) pblk = `<p class="note">Este navegador no permite notificaciones. Tu tarjeta funciona igual.</p>`;
+    else if (perm === "denied") pblk = `<p class="note">Bloqueaste las notificaciones para este sitio. Puedes activarlas en los ajustes del navegador.</p>`;
+    else pblk = `<button class="btn btn-ink" type="button" id="pushOn">Activar notificaciones</button>`;
+    v.innerHTML = `
+      <div class="mcard"><div class="hd"><img src="../img/logo-sm.png" alt="Higuera" width="66" height="24"><span>CLUB · ${m.id.slice(0, 4).toUpperCase()}</span></div>
+        <h3>${esc(m.name)}</h3><div class="sub">${m.ready ? "Tu recompensa está lista" : `Te ${left === 1 ? "falta" : "faltan"} ${left} ${left === 1 ? "visita" : "visitas"} para: ${esc(m.rewardText.toLowerCase())}`}</div>
+        ${stampsHtml(m.visits, m.need)}
+        <div class="ft"><span>${m.total} ${m.total === 1 ? "visita" : "visitas"} en total${m.rewards ? " · " + m.rewards + " canjeadas" : ""}</span><span>${m.today ? "Hoy ya contó" : ""}</span></div></div>
+      ${m.ready ? `<div class="ready" style="margin-top:14px;font-size:15px">${esc(m.rewardText)}. Muéstrale esta pantalla a tu mesero para canjearla.</div>` : ""}
+      <div class="card blk"><h4>¿Cómo se suman las visitas?</h4><p>Solas: cuando pides desde tu mesa o cuando te sientan desde la lista de espera con este número. Se cuenta una por día.</p></div>
+      <div class="card blk"><h4>Promociones y avisos</h4><p>Te avisamos de recompensas y promos de Higuera, como el café de la casa o el destacado de la semana.</p>
+        <label class="sw"><span style="font-weight:700;font-size:14.5px">Quiero recibir promociones</span><input type="checkbox" id="optin" ${m.optin ? "checked" : ""}></label>
+        ${m.optin ? pblk : ""}</div>
+      <button class="danger" type="button" id="leave">${S.leaving ? "Toca otra vez para borrar tu tarjeta y tus datos" : "Salir del club y borrar mis datos"}</button>`;
+    return;
+  }
+  if (S.recover) {
+    v.innerHTML = `<h2 class="h2">Recupera tu <em>tarjeta</em></h2><div class="card blk"><p>Pide en barra un código de 6 dígitos. Vence en 15 minutos.</p>
+      <label class="lab" for="rph">WhatsApp</label><input class="in" id="rph" type="tel" inputmode="numeric" autocomplete="tel" maxlength="14" placeholder="10 dígitos">
+      <label class="lab" for="rcd">Código</label><input class="in" id="rcd" type="text" inputmode="numeric" maxlength="6" placeholder="000000">
+      <p class="err" id="rerr" role="alert"></p><button class="btn btn-ink" type="button" id="recGo">Recuperar</button></div>
+      <button class="lnk" type="button" id="toJoin" style="margin-top:16px">Mejor crear una tarjeta nueva</button>`;
+    return;
+  }
+  v.innerHTML = `
+    <div class="club" style="margin-bottom:6px"><span class="k">Club Higuera</span><h3>A la ${rw ? rw.visits : 5}.ª visita, <em>${esc((rw ? rw.text : "tu latte va por la casa").toLowerCase())}</em></h3><p>Sin app y sin tarjeta de papel. Tus visitas se suman solas.</p>${stampsHtml(0, rw ? rw.visits : 5)}</div>
+    <div class="card blk"><h4>Únete en 20 segundos</h4>
+      <label class="lab" for="jn">Tu nombre</label><input class="in" id="jn" type="text" autocomplete="name" maxlength="40" placeholder="Como quieres que te llamemos">
+      <label class="lab" for="jp">WhatsApp</label><input class="in" id="jp" type="tel" inputmode="numeric" autocomplete="tel" maxlength="14" placeholder="10 dígitos">
+      <label class="chk"><input type="checkbox" id="jpriv"><span>Acepto el <a href="../sitio/privacidad/" target="_blank" rel="noopener">aviso de privacidad</a>. Higuera usa mis datos solo para el club.</span></label>
+      <label class="chk"><input type="checkbox" id="jopt"><span>Quiero recibir promociones de Higuera. Es opcional y lo puedo quitar cuando quiera.</span></label>
+      <p class="err" id="jerr" role="alert"></p><button class="btn btn-terra" type="button" id="joinGo">Unirme al club</button></div>
+    <button class="lnk" type="button" id="toRec" style="margin-top:16px">¿Ya tienes tarjeta en otro celular? Recupérala</button>`;
+}
+
+/* ---------- hoja de detalle ---------- */
+let sheetCtx = null;
+function openSheet(html, ctx) { sheetCtx = ctx || null; const sh = $("#sheet"); sh.innerHTML = `<div class="grab"></div>` + html; sh.classList.add("on"); $("#scrim").classList.add("on"); setTimeout(() => { const f = sh.querySelector("button,textarea,input"); f && f.focus({ preventScroll: true }); }, 50); }
+function closeSheet() { $("#sheet").classList.remove("on"); $("#scrim").classList.remove("on"); sheetCtx = null; }
+function itemSheet(id, editIdx) {
+  const it = BY[id]; if (!it) return;
+  const ed = editIdx != null ? S.cart[editIdx] : null;
+  let q = ed ? ed.q : 1;
+  const pair = BY[it.pair];
+  openSheet(`${photoOf(it) ? `<div class="ph"><img src="${photoOf(it)}" alt=""></div>` : ""}<div class="bd2"><span class="k">${esc(C.CATS.find((c) => c.id === it.cat).es)}${it.tag ? " · " + esc(it.tag) : ""}</span><h3>${esc(it.n)}</h3>${pair ? `<p class="pair">Va bien con <b>${esc(pair.n)}</b></p>` : ""}
+    ${isSold(it.n) ? `<div class="bar-no">Se agotó por hoy. Pregúntale a tu mesero por otra opción.</div>` : hasTable() ? `<label class="k" for="inote">¿Algo especial?</label><textarea class="ta" id="inote" style="margin-top:8px" maxlength="80" placeholder="Ej.: sin cebolla, leche de avena">${esc(ed ? ed.note : "")}</textarea>
+    <div class="row2"><span class="big-step"><button type="button" id="sm" aria-label="Menos">−</button><span id="sq" aria-live="polite">${q}</span><button type="button" id="sp" aria-label="Más">+</button></span><button class="btn btn-ink" type="button" id="sAdd">${ed ? "Guardar" : "Agregar"}</button></div>
+    ${pair && !ed ? `<button class="lnk" type="button" id="sPair" style="margin-top:14px">También agregar ${esc(pair.n)}</button>` : ""}` : `<p class="note">Para pedir, escanea el QR de tu mesa.</p>`}</div>`);
+  const sh = $("#sheet");
+  const upd = () => { $("#sq", sh).textContent = q; };
+  $("#sm", sh) && ($("#sm", sh).onclick = () => { q = Math.max(1, q - 1); upd(); });
+  $("#sp", sh) && ($("#sp", sh).onclick = () => { q = Math.min(20, q + 1); upd(); });
+  $("#sAdd", sh) && ($("#sAdd", sh).onclick = () => {
+    const note = $("#inote", sh).value.trim().slice(0, 80);
+    if (ed) { ed.q = q; ed.note = note; } else addToCart(id, q, note);
+    saveCart(); closeSheet(); render(); if (!ed) toast(it.n + " en tu " + (canOrder() ? "pedido" : "lista"));
+  });
+  $("#sPair", sh) && ($("#sPair", sh).onclick = () => { addToCart(pair.id, 1, ""); saveCart(); toast(pair.n + " agregado"); $("#sPair", sh).remove(); render(); });
+}
+function addToCart(id, q = 1, note = "") {
+  const ex = S.cart.find((x) => x.id === id && x.note === note);
+  if (ex) ex.q = Math.min(20, ex.q + q); else S.cart.push({ id, q, note });
+}
+function callSheet() {
+  openSheet(`<div class="bd2"><span class="k">Mesa ${M}</span><h3>¿En qué te ayudamos?</h3><div class="calls" style="margin-top:16px">${callBtn("mesero")}${callBtn("cuenta")}</div><p class="note">Le llega un aviso al equipo al instante.</p></div>`, "calls");
+}
+
+/* ---------- acciones ---------- */
+async function doCall(kind) {
+  unlockAudio();
+  try {
+    await api("/mesa/call", { body: { m: M, k: K, kind } });
+    toast(kind === "mesero" ? "Listo, avisamos a tu mesero" : "Listo, te llevamos la cuenta");
+    if (navigator.vibrate) navigator.vibrate(60);
+  } catch (e) { toast(e.message); }
+}
+async function cancelCall(id) { try { await api("/mesa/call", { body: { m: M, k: K, cancel: id } }); toast("Aviso cancelado"); } catch (e) { toast(e.message); } }
+async function sendOrder() {
+  if (S.sending || !S.cart.length) return;
+  S.sending = true; render();
+  const items = S.cart.map((x) => ({ n: BY[x.id].n, q: x.q, note: x.note }));
+  try {
+    const r = await api("/mesa/order", { body: { m: M, k: K, items, note: S.note, mid: S.club && S.club.id, mt: S.club && S.club.tok } });
+    S.cart = []; S.note = ""; saveCart();
+    if (r.member) S.me = r.member;
+    S.lastStatus[r.order.id] = r.order.status;
+    if (S.st && !S.st.orders.find((o) => o.id === r.order.id)) S.st.orders.push(r.order);
+    toast(r.visit ? "Pedido enviado. Sumaste una visita al Club." : "Pedido enviado a cocina");
+    if (navigator.vibrate) navigator.vibrate(80);
+  } catch (e) { toast(e.message); }
+  S.sending = false; render(); window.scrollTo({ top: 0, behavior: "smooth" });
+}
+async function join() {
+  const name = $("#jn").value.trim(), phone = $("#jp").value.replace(/\D/g, ""), err = $("#jerr");
+  if (name.length < 2) { err.textContent = "Escribe tu nombre."; $("#jn").focus(); return; }
+  if (phone.length !== 10) { err.textContent = "Escribe tu WhatsApp a 10 dígitos."; $("#jp").focus(); return; }
+  if (!$("#jpriv").checked) { err.textContent = "Acepta el aviso de privacidad para unirte."; return; }
+  err.textContent = ""; const b = $("#joinGo"); b.disabled = true; b.textContent = "Creando tu tarjeta…";
+  try {
+    const r = await api("/club/join", { body: { name, phone, optin: $("#jopt").checked, privacy: true, m: M, k: K } });
+    S.club = { id: r.id, tok: r.tok }; store.set("club", JSON.stringify(S.club)); S.me = r.member;
+    toast(r.member.visits ? "Bienvenido al club. Ya llevas tu primera visita." : "Bienvenido al Club Higuera");
+    render();
+  } catch (e) { err.textContent = e.message; b.disabled = false; b.textContent = "Unirme al club"; if (e.message.includes("ya tiene tarjeta")) { const a = document.createElement("button"); a.className = "lnk"; a.type = "button"; a.textContent = "Recuperar mi tarjeta"; a.onclick = () => { S.recover = true; render(); }; err.append(document.createElement("br"), a); } }
+}
+async function recover() {
+  const phone = $("#rph").value.replace(/\D/g, ""), code = $("#rcd").value.replace(/\D/g, ""), err = $("#rerr");
+  if (phone.length !== 10 || code.length !== 6) { err.textContent = "Escribe tu WhatsApp y el código de 6 dígitos."; return; }
+  try {
+    const r = await api("/club/recover", { body: { phone, code } });
+    S.club = { id: r.id, tok: r.tok }; store.set("club", JSON.stringify(S.club)); S.me = r.member; S.recover = false;
+    toast("Tarjeta recuperada"); render();
+  } catch (e) { err.textContent = e.message; }
+}
+const b64ToU8 = (b) => { const p = "=".repeat((4 - (b.length % 4)) % 4); const s = atob((b + p).replace(/-/g, "+").replace(/_/g, "/")); return Uint8Array.from([...s].map((c) => c.charCodeAt(0))); };
+async function pushOn() {
+  const b = $("#pushOn"); if (b) { b.disabled = true; b.textContent = "Activando…"; }
+  try {
+    const reg = await navigator.serviceWorker.register("/higuera/sw.js", { scope: "/higuera/" });
+    await navigator.serviceWorker.ready;
+    const perm = await Notification.requestPermission();
+    if (perm !== "granted") { render(); return; }
+    const { key } = await api("/push/key");
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToU8(key) });
+    const r = await api("/club/push", { body: { id: S.club.id, tok: S.club.tok, sub: sub.toJSON() } });
+    S.me = r.member; toast("Notificaciones activadas");
+  } catch (e) { toast("No se pudieron activar: " + (e.message || "intenta de nuevo")); }
+  render();
+}
+
+document.addEventListener("click", async (e) => {
+  const t = e.target.closest("button, [data-tab]"); if (!t) return;
+  if (t.dataset.tab) { S.tab = t.dataset.tab; closeSheet(); history.replaceState(null, "", location.pathname + location.search.replace(/([?&])tab=[^&]*&?/, "$1").replace(/[?&]$/, "")); render(); window.scrollTo(0, 0); return; }
+  if (t.dataset.plus) { const it = BY[t.dataset.plus]; if (!qtyOf(it.id)) { addToCart(it.id); toast(it.n + " en tu " + (canOrder() ? "pedido" : "lista")); } else { const x = S.cart.filter((c) => c.id === it.id).slice(-1)[0]; x.q = Math.min(20, x.q + 1); } saveCart(); render(); return; }
+  if (t.dataset.minus) { const xs = S.cart.filter((c) => c.id === t.dataset.minus); const x = xs[xs.length - 1]; if (x) { x.q--; if (x.q <= 0) S.cart.splice(S.cart.indexOf(x), 1); } saveCart(); render(); return; }
+  if (t.dataset.cplus) { const x = S.cart[+t.dataset.cplus]; x.q = Math.min(20, x.q + 1); saveCart(); render(); return; }
+  if (t.dataset.cminus) { const i = +t.dataset.cminus; S.cart[i].q--; if (S.cart[i].q <= 0) S.cart.splice(i, 1); saveCart(); render(); return; }
+  if (t.dataset.edit) { const x = S.cart[+t.dataset.edit]; itemSheet(x.id, +t.dataset.edit); return; }
+  if (t.dataset.open) { itemSheet(t.dataset.open); return; }
+  if (t.dataset.cat) { S.cat = t.dataset.cat; render(); return; }
+  if (t.dataset.call) { await doCall(t.dataset.call); if (sheetCtx === "calls") closeSheet(); return; }
+  if (t.dataset.cancel) { await cancelCall(t.dataset.cancel); if (sheetCtx === "calls") closeSheet(); return; }
+  if (t.id === "bell") { callSheet(); return; }
+  if (t.id === "send") { sendOrder(); return; }
+  if (t.id === "clr") { S.cart = []; saveCart(); render(); return; }
+  if (t.id === "joinGo") { join(); return; }
+  if (t.id === "recGo") { recover(); return; }
+  if (t.id === "toRec") { S.recover = true; render(); return; }
+  if (t.id === "toJoin") { S.recover = false; render(); return; }
+  if (t.id === "pushOn") { pushOn(); return; }
+  if (t.id === "leave") {
+    if (!S.leaving) { S.leaving = true; render(); setTimeout(() => { S.leaving = false; if (S.tab === "club") render(); }, 4000); return; }
+    try { await api("/club/leave", { body: { id: S.club.id, tok: S.club.tok } }); } catch (x) {}
+    S.club = null; S.me = null; S.leaving = false; store.set("club", null); toast("Borramos tu tarjeta y tus datos"); render(); return;
+  }
+});
+document.addEventListener("change", async (e) => {
+  if (e.target.id === "optin") {
+    try { S.me = (await api("/club/me", { body: { id: S.club.id, tok: S.club.tok, optin: e.target.checked } })).member; } catch (x) { toast(x.message); }
+    render();
+  }
+});
+document.addEventListener("input", (e) => {
+  if (e.target.id === "q") { S.q = e.target.value; rCarta(); }
+  if (e.target.id === "gnote") S.note = e.target.value;
+});
+$("#scrim").onclick = closeSheet;
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeSheet(); });
+addEventListener("scroll", () => $("#top").classList.toggle("sc", scrollY > 6), { passive: true });
+// re-pintar los "hace X min" cada 30 s
+setInterval(() => { if (S.st && (S.tab === "inicio" || S.tab === "pedido") && !$("#sheet").classList.contains("on") && document.activeElement.tagName !== "TEXTAREA") render(); }, 30000);
+
+render(); live(); loadMe();
+})();
+</script>
+</body>
+</html>
