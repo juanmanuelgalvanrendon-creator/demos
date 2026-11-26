@@ -55,7 +55,7 @@ function chrome() {
     <div class="cn"><span>${L("Sitio de muestra preparado por Code Nova para Higuera.", "Sample site prepared by Code Nova for Higuera.")}</span><a href="#" id="toTop">${L("Volver arriba", "Back to top")}</a></div>
   </div>`;
   let mb = $("#mbar");
-  if (!mb && page !== "lista") { mb = document.createElement("div"); mb.id = "mbar"; mb.className = "mbar"; document.body.append(mb); }
+  if (!mb && page !== "lista" && page !== "menu") { mb = document.createElement("div"); mb.id = "mbar"; mb.className = "mbar"; document.body.append(mb); }
   if (mb) mb.innerHTML = `<div><b id="mW">${L("Lista de espera", "Waitlist")}</b><span>${L("Te avisamos cuando tu mesa esté lista", "We'll let you know when your table is ready")}</span></div><a href="/higuera/fila/">${L("Anotarme", "Join")}</a>`;
   paintLive();
 }
