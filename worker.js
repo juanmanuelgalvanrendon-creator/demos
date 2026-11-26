@@ -11,6 +11,9 @@ const ROOMS = {
   },
 };
 
+// Cambiar este valor borra el PIN del equipo una vez (para cuando se olvida)
+const PIN_RESET = "2026-11-26-1";
+
 // Servicios de notificaciones push a los que sí se permite enviar
 const PUSH_HOSTS = [/\.googleapis\.com$/, /\.push\.apple\.com$/, /^updates\.push\.services\.mozilla\.com$/, /\.notify\.windows\.com$/, /\.push\.services\.mozilla\.com$/];
 
@@ -107,6 +110,9 @@ export class Fila {
     };
     this.s = { ...base, ...((await this.ctx.storage.get("s")) || {}) };
     this.cfg = cfg;
+    // restablecer el PIN del equipo: al cambiar esta marca, el PIN se borra una sola vez
+    // y el siguiente que entre al panel crea uno nuevo
+    if (this.s.pinReset !== PIN_RESET) { this.s.pinHash = null; this.s.pinReset = PIN_RESET; this.lockUntil = 0; this.fails = 0; await this.ctx.storage.put("s", this.s); }
     this.s.mesas = { ...base.mesas, ...(this.s.mesas || {}) };
     this.ensureKeys();
     this.rollDay();
