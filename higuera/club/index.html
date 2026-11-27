@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Higuera · Club y mesas</title>
+<title>Higuera · Gerencia</title>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#2e3527">
 <link rel="icon" href="../img/icon-192.png">
@@ -116,6 +116,28 @@
 .qrs svg{width:100%;height:auto;border-radius:8px}
 .links{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 @media (max-width:820px){.kpis{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}.panels{display:none}.mem{grid-template-columns:1fr}.mact{justify-content:flex-start}.barl div{grid-template-columns:110px 1fr 30px}}
+.ur{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.ur b{font:400 22px/1.1 var(--serif)}
+.ur .meta{font-size:12.5px;color:var(--mut);margin-top:3px}
+.ur .tag{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:99px;background:var(--sage);color:var(--olive2);margin-left:6px;vertical-align:middle}
+.ur .tag.d{background:var(--olive);color:#f4f1ea}
+.ur .tag.off{background:var(--line);color:var(--mut)}
+.ur.off b{color:var(--mut)}
+.uact{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.uact button,.uact select{height:34px;padding:0 10px;border-radius:99px;font-size:12px;font-weight:800;box-shadow:inset 0 0 0 1.5px var(--line2);background:var(--paper)}
+.uact button.dg{color:var(--red)}
+.pinrow{display:flex;gap:6px;margin-top:8px;grid-column:1/-1}
+.pinrow input{height:40px;border-radius:12px;border:0;box-shadow:inset 0 0 0 1.5px var(--line2);padding:0 12px;font-size:15px;width:140px;background:var(--bg)}
+.pinrow button{height:40px;padding:0 14px;border-radius:99px;background:var(--ink);color:#fff;font-weight:800;font-size:13px}
+.tbl{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px}
+.tbl th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:800;padding:8px 6px;border-bottom:1px solid var(--line)}
+.tbl td{padding:9px 6px;border-bottom:1px solid var(--line)}
+.tbl td.n{font-family:var(--mono);text-align:center}
+.act{display:grid;grid-template-columns:86px 1fr;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.act time{font:600 12px var(--mono);color:var(--mut)}
+.act b{font-weight:800}
+.act span{color:var(--mut);font-size:12px}
+@media (max-width:820px){.ur{grid-template-columns:1fr}.uact{justify-content:flex-start}.tbl{font-size:12.5px}}
 /* impresión de QR */
 #print{display:none}
 @media print{
@@ -134,9 +156,9 @@
 <div class="gate" id="gate">
   <form class="box" id="gf" aria-labelledby="gt">
     <img src="../img/logo-sm.png" alt="Higuera" width="110" height="40" style="height:40px;width:auto;margin:0 auto">
-    <h1 id="gt">Club y mesas</h1>
-    <p>Panel del gerente. Escribe el PIN del equipo.</p>
-    <input type="password" class="in" id="pin" inputmode="numeric" autocomplete="current-password" maxlength="6" placeholder="····" aria-label="PIN del equipo">
+    <h1 id="gt">Gerencia</h1>
+    <p>Panel del gerente. Escribe tu PIN personal.</p>
+    <input type="password" class="in" id="pin" inputmode="numeric" autocomplete="current-password" maxlength="6" placeholder="····" aria-label="Tu PIN">
     <p class="err" id="gerr" role="alert"></p>
     <button class="btn btn-ink btn-block" type="submit">Entrar</button>
   </form>
@@ -144,14 +166,14 @@
 
 <header class="bar">
   <img class="logo" src="../img/logo-sm.png" alt="Higuera" width="66" height="24">
-  <h1>Club y mesas</h1>
-  <nav class="panels" aria-label="Paneles"><a href="../host/">Entrada</a><a href="../cocina/">Cocina</a><a href="../meseros/">Meseros</a><a href="./" class="cur" aria-current="page">Club y mesas</a></nav>
+  <h1>Gerencia</h1>
+  <nav class="panels" aria-label="Paneles"><a href="../host/">Entrada</a><a href="../cocina/">Cocina</a><a href="../meseros/">Meseros</a><a href="./" class="cur" aria-current="page">Gerencia</a></nav>
   <div class="sp"></div>
   <div class="conn"><span class="dot off" id="cdot"></span><span id="ctxt">…</span></div>
 </header>
 
 <main class="wrap">
-  <nav class="tabs" aria-label="Secciones"><button type="button" class="on" data-t="resumen">Resumen</button><button type="button" data-t="socios">Socios</button><button type="button" data-t="promos">Promociones</button><button type="button" data-t="mesas">Mesas y QR</button></nav>
+  <nav class="tabs" aria-label="Secciones"><button type="button" class="on" data-t="resumen">Resumen</button><button type="button" data-t="socios">Socios</button><button type="button" data-t="promos">Promociones</button><button type="button" data-t="mesas">Mesas y QR</button><button type="button" data-t="equipo">Equipo</button></nav>
 
   <section id="v-resumen">
     <div class="kpis" id="kpis"></div>
@@ -201,6 +223,23 @@
       <div class="qrs" id="qrs"></div>
       <div class="links"><a class="btn btn-ghost" href="../cocina/">Abrir pantalla de cocina</a><a class="btn btn-ghost" href="../meseros/">Abrir pantalla de meseros</a><button class="btn btn-ghost" type="button" id="demoBtn">Cargar pedidos de ejemplo</button><button class="btn btn-ghost" type="button" id="resetBtn">Borrar datos de ejemplo</button></div></div>
   </section>
+  <section id="v-equipo" class="hide">
+    <div class="g2" style="margin-top:0">
+      <div class="card"><h2>Tu <em>equipo</em></h2><p class="sub">Cada persona entra con su propio PIN y solo ve las pantallas de su puesto.</p><div id="users"></div></div>
+      <div>
+        <div class="card"><h2>Agregar <em>persona</em></h2>
+          <label class="lab" for="un" style="margin-top:12px">Nombre</label><input type="text" class="in" id="un" maxlength="40" placeholder="Ej.: Ana López">
+          <label class="lab" for="ur">Puesto</label><select class="in" id="ur"></select>
+          <p class="sub" id="urHelp" style="margin-top:6px"></p>
+          <label class="lab" for="up">PIN de 4 a 6 números</label><input type="text" class="in" id="up" inputmode="numeric" maxlength="6" placeholder="Ej.: 4821" autocomplete="off">
+          <p class="err" id="uerr" style="color:var(--red);font-weight:700;font-size:13.5px;min-height:18px;margin-top:8px"></p>
+          <button class="btn btn-terra btn-block" type="button" id="uadd">Dar de alta</button>
+          <p class="sub" style="margin-top:10px">Dale el PIN en persona. Si alguien deja de trabajar en Higuera, desactívalo: su PIN deja de servir al instante.</p></div>
+        <div class="card" style="margin-top:14px"><h2>Hoy, por <em>persona</em></h2><div id="perDay"></div></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px"><h2>Quién hizo <em>qué</em></h2><p class="sub">Las últimas acciones del equipo. Se guardan 90 días.</p><div id="acts"></div></div>
+  </section>
 </main>
 
 <div id="print" aria-hidden="true"></div>
@@ -212,16 +251,18 @@
 const { api, live, store, esc, ago, toast, unlockAudio, qrSvg } = HG;
 const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
 let rekeyArm = "";
+const ROLES_OK = ["dueno", "gerente"];
+let ME = null;
 let pin = store.get("pin") || "", H = null, conn = null, tab = "resumen", MEM = null, memQ = "", codes = {}, delArm = "", sendArm = false, qrSig = "";
 const DAYS = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
 const IDEAS = [["Cookie de la casa", "Hoy la cookie va por la casa", "Pide cualquier café antes de las 11 y te regalamos una cookie. Solo hoy."], ["Destacado nuevo", "Llegó el destacado de la semana", "Ya está en la carta. Ven a probarlo antes de que se acabe."], ["Sin fila", "Ahorita no hay fila", "Si vienes en la próxima hora te sentamos al llegar."], ["Te extrañamos", "Te guardamos tu mesa", "Hace mucho que no vienes. Esta semana tu visita cuenta doble en el club."]];
 
 async function login(p, silent) {
   try {
-    const r = await api("/host/claim", { body: { pin: p } });
-    pin = p; store.set("pin", p); $("#gate").classList.add("hide");
+    const r = await HG.signin(p, silent, ROLES_OK);
+    pin = r.tok; ME = r.user; document.body.dataset.me = r.user.role; $("#gate").classList.add("hide");
     H = r.state; paint(); start(); loadMem();
-  } catch (e) { if (!silent) $("#gerr").textContent = e.message; store.set("pin", null); }
+  } catch (e) { if (e.denied) return; if (!silent) $("#gerr").textContent = e.message; store.set("pin", null); }
 }
 $("#gf").addEventListener("submit", (e) => { e.preventDefault(); unlockAudio(); const p = $("#pin").value.replace(/\D/g, ""); if (p.length < 4) { $("#gerr").textContent = "Escribe al menos 4 números."; return; } login(p); });
 let memT = null;
@@ -289,10 +330,58 @@ function paintMem() {
   }).join("") : `<p class="empty">${MEM.rows.length ? "Nadie coincide con la búsqueda." : "Todavía no hay socios. Se registran desde el QR de su mesa, en la pestaña Club."}</p>`;
 }
 
+/* ---------- equipo ---------- */
+const RN = { dueno: "Dueño", gerente: "Gerente", mesero: "Mesero", cocina: "Cocina", entrada: "Entrada" };
+const RH = { dueno: "Ve y controla todo, incluido el equipo y los gerentes.", gerente: "Todo lo del día: pedidos, club, promociones, mesas y alta de meseros y cocina.", mesero: "Pantalla de meseros (platillos listos, llamados, cerrar mesas) y la entrada.", cocina: "Solo la pantalla de cocina.", entrada: "Solo la entrada: la fila de espera y las mesas que se liberan." };
+let USERS = null, ACT = null, pinOpen = "", nameOpen = "", uDelArm = "";
+const canTouch = (role) => ME && (ME.role === "dueno" || ["mesero", "cocina", "entrada"].includes(role));
+const myRoles = () => (ME && ME.role === "dueno" ? ["mesero", "cocina", "entrada", "gerente", "dueno"] : ["mesero", "cocina", "entrada"]);
+function agoTxt(t) { if (!t) return "nunca ha entrado"; const m = Math.floor((Date.now() - t) / 60000); return m < 2 ? "activo ahora" : m < 60 ? "hace " + m + " min" : m < 1440 ? "hace " + Math.floor(m / 60) + " h" : "hace " + Math.floor(m / 1440) + " días"; }
+async function loadTeam() {
+  try { const [u, a] = await Promise.all([api("/host/users", { pin }), api("/host/activity", { pin })]); USERS = u.rows; ACT = a; paintTeam(); } catch (e) { toast(e.message); }
+}
+function paintTeam() {
+  if (!USERS) return;
+  const sel = $("#ur"); if (!sel.options.length) { sel.innerHTML = myRoles().map((r) => `<option value="${r}">${RN[r]}</option>`).join(""); $("#urHelp").textContent = RH[sel.value]; }
+  $("#users").innerHTML = USERS.map((u) => {
+    const t = canTouch(u.role) && u.id !== ME.id;
+    return `<div class="ur ${u.active ? "" : "off"}"><div><b>${esc(u.name)}</b><span class="tag ${u.role === "dueno" ? "d" : ""}">${RN[u.role]}</span>${u.active ? "" : `<span class="tag off">Desactivado</span>`}${u.id === ME.id ? `<span class="tag">Tú</span>` : ""}<div class="meta">${agoTxt(u.last)}</div></div>
+      <div class="uact">${t ? `<select data-urole="${u.id}" aria-label="Puesto de ${esc(u.name)}">${myRoles().map((r) => `<option value="${r}" ${r === u.role ? "selected" : ""}>${RN[r]}</option>`).join("")}</select>` : ""}${t || u.id === ME.id ? `<button type="button" data-uname="${u.id}">Nombre</button><button type="button" data-upin="${u.id}">Nuevo PIN</button>` : ""}${t ? `<button type="button" data-uact="${u.id}">${u.active ? "Desactivar" : "Reactivar"}</button><button type="button" class="dg" data-udel="${u.id}">${uDelArm === u.id ? "¿Seguro?" : "Borrar"}</button>` : ""}</div>
+      ${nameOpen === u.id ? `<div class="pinrow"><input type="text" maxlength="40" id="nname" value="${esc(u.name)}" aria-label="Nombre de ${esc(u.name)}" style="width:200px"><button type="button" data-unsave="${u.id}">Guardar</button></div>` : ""}
+      ${pinOpen === u.id ? `<div class="pinrow"><input type="text" inputmode="numeric" maxlength="6" id="npin" placeholder="Nuevo PIN" aria-label="Nuevo PIN de ${esc(u.name)}" autocomplete="off"><button type="button" data-usave="${u.id}">Guardar</button></div>` : ""}</div>`;
+  }).join("");
+  const per = (ACT && ACT.today) || [];
+  $("#perDay").innerHTML = per.length ? `<table class="tbl"><tr><th>Persona</th><th>Listos</th><th>Entregados</th><th>Llamados</th><th>Mesas</th><th>Sentados</th></tr>${per.map((x) => `<tr><td><b>${esc(x.who)}</b><br><span style="font-size:11.5px;color:var(--mut)">${esc(x.roleName)}</span></td><td class="n">${x.listo}</td><td class="n">${x.entregado}</td><td class="n">${x.llamados}</td><td class="n">${x.mesas}</td><td class="n">${x.sentados}</td></tr>`).join("")}</table>` : `<p class="empty">Aquí verás cuántos pedidos marcó listos cada cocinero, cuántas mesas atendió cada mesero, etcétera.</p>`;
+  const rows = (ACT && ACT.rows) || [];
+  $("#acts").innerHTML = rows.length ? rows.slice(0, 60).map((r) => `<div class="act"><time>${new Date(r.t).toLocaleString("es-MX", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" })}</time><div><b>${esc(r.who)}</b> <span>${esc(r.roleName)}</span><br>${esc(r.txt)}</div></div>`).join("") : `<p class="empty">Todavía no hay actividad.</p>`;
+}
+async function uPost(body, ok) {
+  try { await api("/host/users", { pin, body }); if (ok) toast(ok); await loadTeam(); return true; } catch (e) { toast(e.message); return false; }
+}
+$("#ur").addEventListener("change", (e) => { $("#urHelp").textContent = RH[e.target.value]; });
+document.addEventListener("change", async (e) => {
+  const sl = e.target.closest("[data-urole]"); if (!sl) return;
+  const u = USERS.find((x) => x.id === sl.dataset.urole);
+  if (!(await uPost({ action: "update", id: u.id, role: sl.value }, `${u.name} ahora es ${RN[sl.value]}`))) paintTeam();
+});
 async function setM(body) { try { H = await api("/host/mesas", { pin, body }); paint(); } catch (e) { toast(e.message); } }
 document.addEventListener("click", async (e) => {
   const b = e.target.closest("button"); if (!b) return;
-  if (b.dataset.t) { tab = b.dataset.t; $$(".tabs button").forEach((x) => x.classList.toggle("on", x === b)); ["resumen", "socios", "promos", "mesas"].forEach((k) => $("#v-" + k).classList.toggle("hide", k !== tab)); if (tab === "socios") loadMem(); return; }
+  if (b.dataset.t) { tab = b.dataset.t; $$(".tabs button").forEach((x) => x.classList.toggle("on", x === b)); ["resumen", "socios", "promos", "mesas", "equipo"].forEach((k) => $("#v-" + k).classList.toggle("hide", k !== tab)); if (tab === "socios") loadMem(); if (tab === "equipo") loadTeam(); return; }
+  if (b.id === "uadd") {
+    const name = $("#un").value.trim(), role = $("#ur").value, pn = $("#up").value.replace(/\D/g, "");
+    if (name.length < 2) { $("#uerr").textContent = "Escribe el nombre."; return; }
+    if (pn.length < 4) { $("#uerr").textContent = "El PIN debe ser de 4 a 6 números."; return; }
+    $("#uerr").textContent = "";
+    try { await api("/host/users", { pin, body: { action: "create", name, role, pin: pn } }); toast(`${name} quedó dado de alta como ${RN[role]}`); $("#un").value = ""; $("#up").value = ""; loadTeam(); } catch (x) { $("#uerr").textContent = x.message; }
+    return;
+  }
+  if (b.dataset.uname) { nameOpen = nameOpen === b.dataset.uname ? "" : b.dataset.uname; pinOpen = ""; paintTeam(); setTimeout(() => $("#nname") && $("#nname").focus(), 30); return; }
+  if (b.dataset.unsave) { const v = ($("#nname").value || "").trim(); if (v.length < 2) { toast("Escribe el nombre"); return; } if (await uPost({ action: "update", id: b.dataset.unsave, name: v }, "Nombre guardado")) nameOpen = ""; paintTeam(); return; }
+  if (b.dataset.upin) { pinOpen = pinOpen === b.dataset.upin ? "" : b.dataset.upin; paintTeam(); setTimeout(() => $("#npin") && $("#npin").focus(), 30); return; }
+  if (b.dataset.usave) { const v = ($("#npin").value || "").replace(/\D/g, ""); if (v.length < 4) { toast("El PIN debe ser de 4 a 6 números"); return; } if (await uPost({ action: "pin", id: b.dataset.usave, pin: v }, "PIN cambiado")) pinOpen = ""; paintTeam(); return; }
+  if (b.dataset.uact) { const u = USERS.find((x) => x.id === b.dataset.uact); uPost({ action: "update", id: u.id, active: !u.active }, u.active ? `${u.name} desactivado: su PIN ya no sirve` : `${u.name} reactivado`); return; }
+  if (b.dataset.udel) { const id = b.dataset.udel; if (uDelArm !== id) { uDelArm = id; paintTeam(); setTimeout(() => { if (uDelArm === id) { uDelArm = ""; paintTeam(); } }, 4000); return; } uDelArm = ""; const u = USERS.find((x) => x.id === id); uPost({ action: "delete", id }, `${u.name} borrado`); return; }
   const sg = b.closest(".seg"); if (sg && b.dataset.v != null) { const k = sg.dataset.k; setM({ [k]: k === "on" || k === "onlyHours" ? b.dataset.v === "1" : b.dataset.v }); return; }
   if (b.dataset.n) { const k = b.dataset.n; setM({ [k]: H.mesas[k] + +b.dataset.d }); return; }
   if (b.id === "rwS") { setM({ rewardText: $("#rwT").value }); toast("Premio guardado"); return; }

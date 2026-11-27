@@ -45,3 +45,6 @@ img{display:block;max-width:100%}
 .film{position:relative;overflow:hidden;background:#1c1b17}
 .film img{width:100%;height:100%;object-fit:cover}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* encabezados del equipo: el título se recorta antes que desbordar */
+.bar h1{min-width:0;overflow:hidden;text-overflow:ellipsis}

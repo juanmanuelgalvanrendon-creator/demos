@@ -147,5 +147,45 @@
     return sub;
   }
 
-  window.HG = { api, live, store, esc, ago, mmss, ZONES, toast, beep, alarm, say, wake: () => { wake._on = true; return wake(); }, unlockAudio, qrSvg, pushSubscribe, ROOM };
+  /* ----- acceso del equipo: cada persona entra con su PIN y tiene su sesión ----- */
+  const ROLE_NAMES = { dueno: "Dueño", gerente: "Gerente", mesero: "Mesero", cocina: "Cocina", entrada: "Entrada" };
+  const ACCESS = "/higuera/acceso/";
+  function goAccess() { location.href = ACCESS + "?next=" + encodeURIComponent(location.pathname + location.search); }
+  async function logout() {
+    const t = store.get("pin");
+    try { if (t) await api("/auth/logout", { pin: t, body: {} }); } catch (e) {}
+    store.set("pin", null); location.href = ACCESS;
+  }
+  function mountUser(u) {
+    if (document.getElementById("hgUser")) return;
+    const host = document.querySelector("[data-user-slot]") || document.querySelector("header");
+    if (!host) return;
+    const el = document.createElement("span");
+    el.id = "hgUser";
+    el.style.cssText = "display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 6px 0 12px;border-radius:99px;background:rgba(127,127,127,.18);font-size:12.5px;font-weight:700;white-space:nowrap;flex:0 0 auto";
+    const small = innerWidth < 760;
+    el.innerHTML = `<span><b style="font-weight:800">${esc(small ? u.name.split(" ")[0] : u.name)}</b>${small ? "" : " · " + esc(u.roleName || ROLE_NAMES[u.role] || "")}</span>${small ? "" : `<a href="${ACCESS}" style="color:inherit;text-decoration:underline;text-underline-offset:3px">Mis pantallas</a>`}<button type="button" style="height:28px;padding:0 10px;border-radius:99px;background:rgba(127,127,127,.28);color:inherit;font-weight:800;font-size:12px">Salir</button>`;
+    el.querySelector("button").onclick = logout;
+    host.appendChild(el);
+  }
+  function denied(u) {
+    const d = document.createElement("div");
+    d.style.cssText = "position:fixed;inset:0;z-index:200;background:#1f231b;color:#f4f1ea;display:grid;place-items:center;padding:24px;text-align:center;font-family:var(--sans,system-ui)";
+    d.innerHTML = `<div style="max-width:380px"><p style="font:400 34px/1.05 var(--serif,Georgia)">Esta pantalla no es para tu puesto</p><p style="margin:14px 0 22px;color:rgba(244,241,234,.8);font-size:15px">${esc(u.name)}, entraste como ${esc(u.roleName)}. Abre tus pantallas desde el inicio.</p><a href="${ACCESS}" style="display:flex;justify-content:center;align-items:center;height:52px;border-radius:99px;background:#f4f1ea;color:#1f231b;font-weight:800;text-decoration:none">Ir a mis pantallas</a><button type="button" style="margin-top:12px;color:#f4f1ea;font-weight:800;text-decoration:underline;background:none;border:0;font-size:14px;cursor:pointer">Entrar con otro PIN</button></div>`;
+    d.querySelector("button").onclick = logout;
+    document.body.appendChild(d);
+  }
+  // silent = la sesión guardada; si no, p es el PIN que escribió la persona
+  async function signin(p, silent, roles) {
+    let r;
+    try { r = silent ? await api("/auth/me", { pin: p }) : await api("/auth/login", { body: { pin: p } }); }
+    catch (e) { if (e.status === 409 && /no hay cuentas/i.test(e.message)) { location.href = ACCESS; } throw e; }
+    const tok = silent ? p : r.tok;
+    store.set("pin", tok);
+    if (roles && !roles.includes(r.user.role)) { denied(r.user); const x = new Error("denied"); x.denied = true; throw x; }
+    mountUser(r.user);
+    return { tok, user: r.user, state: r.state };
+  }
+
+  window.HG = { signin, logout, goAccess, ROLE_NAMES, api, live, store, esc, ago, mmss, ZONES, toast, beep, alarm, say, wake: () => { wake._on = true; return wake(); }, unlockAudio, qrSvg, pushSubscribe, ROOM };
 })();

@@ -76,8 +76,8 @@ body{background:#1f231b;color:#f4f1ea;overflow:hidden}
   <form class="box" id="gf" aria-labelledby="gt">
     <img src="../img/logo-sm.png" alt="Higuera" width="110" height="40" style="height:40px;width:auto;margin:0 auto">
     <h1 id="gt">Demostración del sistema</h1>
-    <p>Pantalla para presentar en una laptop. Escribe el PIN del equipo.</p>
-    <input type="password" class="in" id="pin" inputmode="numeric" autocomplete="current-password" maxlength="6" placeholder="····" aria-label="PIN del equipo">
+    <p>Pantalla para presentar. Escribe tu PIN personal.</p>
+    <input type="password" class="in" id="pin" inputmode="numeric" autocomplete="current-password" maxlength="6" placeholder="····" aria-label="Tu PIN">
     <p class="err" id="gerr" role="alert"></p>
     <button class="btn btn-ink btn-block" type="submit">Entrar</button>
   </form>
@@ -120,6 +120,8 @@ body{background:#1f231b;color:#f4f1ea;overflow:hidden}
 (() => {
 const { api, live, store, toast, unlockAudio, qrSvg } = HG;
 const $ = (s) => document.querySelector(s);
+const ROLES_OK = ["dueno", "gerente"];
+let ME = null;
 let pin = store.get("pin") || "", H = null, conn = null, base = 0, baseMem = null, view = "cocina", pview = "mesa";
 const STEPS = [
   ["Pide desde la mesa", "En el celular, agrega algo y toca Enviar a cocina"],
@@ -133,10 +135,10 @@ const VIEWS = { cocina: ["../cocina/", "Lo que ve la cocina"], meseros: ["../mes
 
 async function login(p, silent) {
   try {
-    const r = await api("/host/claim", { body: { pin: p } });
-    pin = p; store.set("pin", p); $("#gate").classList.add("hide");
+    const r = await HG.signin(p, silent, ROLES_OK);
+    pin = r.tok; ME = r.user; document.body.dataset.me = r.user.role; $("#gate").classList.add("hide");
     H = r.state; setup(); start();
-  } catch (e) { if (!silent) $("#gerr").textContent = e.message; store.set("pin", null); }
+  } catch (e) { if (e.denied) return; if (!silent) $("#gerr").textContent = e.message; store.set("pin", null); }
 }
 $("#gf").addEventListener("submit", (e) => { e.preventDefault(); unlockAudio(); const p = $("#pin").value.replace(/\D/g, ""); if (p.length < 4) { $("#gerr").textContent = "Escribe al menos 4 números."; return; } login(p); });
 const tUrl = (m) => location.origin + "/higuera/mesa/?m=" + m + "&k=" + H.mesas.keys[m];

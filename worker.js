@@ -14,6 +14,21 @@ const ROOMS = {
 // Cambiar este valor borra el PIN del equipo una vez (para cuando se olvida)
 const PIN_RESET = "2026-11-26-1";
 
+// Puestos del equipo y qué puede hacer cada uno
+const ROLE_NAMES = { dueno: "Dueño", gerente: "Gerente", mesero: "Mesero", cocina: "Cocina", entrada: "Entrada" };
+const MGR = ["dueno", "gerente"];
+const FLOOR = ["dueno", "gerente", "mesero", "entrada"];
+const PERM = {
+  "/host/state": "*", "/host/push/sub": "*", "/host/push/off": "*", "/host/push/test": "*",
+  "/host/action": FLOOR, "/host/add": FLOOR, "/host/freed": FLOOR, "/host/settings": FLOOR,
+  "/host/site": [...MGR, "cocina"], "/host/requests": MGR, "/host/request": MGR, "/host/contacts": MGR,
+  "/host/demo": MGR, "/host/reset": MGR, "/host/mesas": MGR, "/host/mesas/demo": MGR,
+  "/host/order": [...MGR, "cocina", "mesero"], "/host/call": [...MGR, "mesero"], "/host/table": [...MGR, "mesero"],
+  "/host/club": MGR, "/host/club/member": MGR, "/host/club/promo": MGR,
+  "/host/users": MGR, "/host/activity": MGR,
+};
+const SESSION_DAYS = 60;
+
 // Servicios de notificaciones push a los que sí se permite enviar
 const PUSH_HOSTS = [/\.googleapis\.com$/, /\.push\.apple\.com$/, /^updates\.push\.services\.mozilla\.com$/, /\.notify\.windows\.com$/, /\.push\.services\.mozilla\.com$/];
 
@@ -112,7 +127,17 @@ export class Fila {
     this.cfg = cfg;
     // restablecer el PIN del equipo: al cambiar esta marca, el PIN se borra una sola vez
     // y el siguiente que entre al panel crea uno nuevo
-    if (this.s.pinReset !== PIN_RESET) { this.s.pinHash = null; this.s.pinReset = PIN_RESET; this.lockUntil = 0; this.fails = 0; await this.ctx.storage.put("s", this.s); }
+    if (this.s.pinReset !== PIN_RESET) {
+      this.s.pinHash = null; this.s.pinReset = PIN_RESET; this.lockUntil = 0; this.fails = 0;
+      try { this.sql().exec("DELETE FROM users"); this.sql().exec("DELETE FROM sessions"); } catch (e) {}
+      await this.ctx.storage.put("s", this.s);
+    }
+    // antes había un solo PIN para todos: se convierte en la cuenta del dueño
+    if (this.s.pinHash) {
+      if (!this.sql().exec("SELECT COUNT(*) AS n FROM users").one().n) this.sql().exec("INSERT INTO users (id,name,role,pinHash,created,active) VALUES (?,?,?,?,?,1)", rid(), "Dueño", "dueno", this.s.pinHash, Date.now());
+      this.s.pinHash = null;
+      await this.ctx.storage.put("s", this.s);
+    }
     this.s.mesas = { ...base.mesas, ...(this.s.mesas || {}) };
     this.ensureKeys();
     this.rollDay();
@@ -123,6 +148,9 @@ export class Fila {
     if (!this.sqlReady) {
       this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS contacts (phone TEXT PRIMARY KEY, name TEXT, first TEXT, last TEXT, visits INTEGER DEFAULT 1)");
       this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS requests (id TEXT PRIMARY KEY, kind TEXT, created INTEGER, status TEXT, data TEXT, ipH TEXT)");
+      this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, name TEXT, role TEXT, pinHash TEXT UNIQUE, created INTEGER, active INTEGER DEFAULT 1, last INTEGER)");
+      this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS sessions (tok TEXT PRIMARY KEY, uid TEXT, created INTEGER, last INTEGER)");
+      this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS activity (t INTEGER, day TEXT, uid TEXT, who TEXT, role TEXT, kind TEXT, txt TEXT)");
       this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS members (id TEXT PRIMARY KEY, tok TEXT, phone TEXT UNIQUE, name TEXT, created INTEGER, visits INTEGER DEFAULT 0, total INTEGER DEFAULT 0, lastDay TEXT, optin INTEGER DEFAULT 0, push TEXT, pmsg TEXT, rewards INTEGER DEFAULT 0, rcode TEXT, rexp INTEGER, demo INTEGER DEFAULT 0)");
       this.sqlReady = true;
     }
@@ -400,6 +428,38 @@ export class Fila {
     }
   }
 
+  /* ----- usuarios, sesiones y actividad ----- */
+  userCount() { return this.sql().exec("SELECT COUNT(*) AS n FROM users").one().n; }
+  userView(u) { return { id: u.id, name: u.name, role: u.role, roleName: ROLE_NAMES[u.role] || u.role, active: !!u.active, created: u.created, last: u.last || null }; }
+  userByTok(tok) {
+    if (!tok) return null;
+    const r = this.sql().exec("SELECT s.tok, s.last AS sl, u.* FROM sessions s JOIN users u ON u.id = s.uid WHERE s.tok=?", String(tok)).toArray()[0];
+    if (!r || !r.active) return null;
+    if (Date.now() - r.sl > SESSION_DAYS * 86400000) { this.sql().exec("DELETE FROM sessions WHERE tok=?", r.tok); return null; }
+    if (Date.now() - r.sl > 3600000) { this.sql().exec("UPDATE sessions SET last=? WHERE tok=?", Date.now(), r.tok); this.sql().exec("UPDATE users SET last=? WHERE id=?", Date.now(), r.id); }
+    return r;
+  }
+  // cierra las pantallas abiertas de alguien a quien se le quitó el acceso
+  kickUser(uid) {
+    for (const ws of this.ctx.getWebSockets()) {
+      try { const a = ws.deserializeAttachment() || {}; if (a.uid === uid) { ws.send('{"t":"err","d":"Sesión terminada"}'); ws.close(4001, "sesion"); } } catch (e) {}
+    }
+  }
+  async pinHashOf(pin) { return sha(this.s.salt + ":" + String(pin || "")); }
+  async pinTaken(hash, exceptId) { return this.sql().exec("SELECT id FROM users WHERE pinHash=? AND id<>?", hash, exceptId || "").toArray().length > 0; }
+  newSession(u) {
+    const tok = rid() + rid() + rid();
+    this.sql().exec("INSERT INTO sessions (tok,uid,created,last) VALUES (?,?,?,?)", tok, u.id, Date.now(), Date.now());
+    this.sql().exec("UPDATE users SET last=? WHERE id=?", Date.now(), u.id);
+    this.sql().exec("DELETE FROM sessions WHERE last<?", Date.now() - SESSION_DAYS * 86400000);
+    return tok;
+  }
+  logEv(u, kind, txt) {
+    try {
+      this.sql().exec("INSERT INTO activity (t,day,uid,who,role,kind,txt) VALUES (?,?,?,?,?,?,?)", Date.now(), this.s.day, u ? u.id : "", u ? u.name : "Sistema", u ? u.role : "", kind, String(txt).slice(0, 200));
+      this.sql().exec("DELETE FROM activity WHERE t<?", Date.now() - 90 * 86400000);
+    } catch (e) {}
+  }
   async checkPin(pin) {
     const s = this.s;
     if (!s.pinHash) return { ok: false, unset: true };
@@ -740,23 +800,50 @@ export class Fila {
       return json({ title, body: b, url: u, tag: "hg-" + e.code + "-" + kind });
     }
 
-    // ---- host ----
-    if (p.startsWith("/host")) {
-      const pin = request.headers.get("x-pin") || body.pin;
-      if (p === "/host/claim" && method === "POST") {
-        if (this.s.pinHash) {
-          const c = await this.checkPin(pin);
-          return c.ok ? json({ ok: true, state: this.hostState() }) : json({ error: c.locked ? "Demasiados intentos. Espera un minuto." : "PIN incorrecto" }, 401);
-        }
-        const np = String(body.pin || "");
-        if (!/^\d{4,6}$/.test(np)) return json({ error: "El PIN debe ser de 4 a 6 números" }, 400);
-        this.s.pinHash = await sha(this.s.salt + ":" + np);
-        await this.save();
-        return json({ ok: true, created: true, state: this.hostState() });
+    // ---- acceso del equipo: cada persona entra con su propio PIN ----
+    if (p === "/auth/info" && method === "GET") return json({ hasOwner: this.userCount() > 0, name: this.s.name });
+    if (p === "/auth/setup" && method === "POST") {
+      if (this.userCount() > 0) return json({ error: "La cuenta del dueño ya existe. Entra con tu PIN." }, 409);
+      const name = clean(body.name, 40), np = String(body.pin || "");
+      if (name.length < 2) return json({ error: "Escribe tu nombre." }, 400);
+      if (!/^\d{4,6}$/.test(np)) return json({ error: "El PIN debe ser de 4 a 6 números." }, 400);
+      const u = { id: rid(), name, role: "dueno" };
+      this.sql().exec("INSERT INTO users (id,name,role,pinHash,created,active) VALUES (?,?,?,?,?,1)", u.id, name, "dueno", await this.pinHashOf(np), Date.now());
+      const tok = this.newSession(u);
+      this.logEv(u, "cuenta", "Creó la cuenta del dueño");
+      return json({ ok: true, tok, user: this.userView({ ...u, active: 1, created: Date.now() }), state: this.hostState() });
+    }
+    if (p === "/auth/login" && method === "POST") {
+      if (!this.userCount()) return json({ error: "Todavía no hay cuentas. El dueño debe crear la suya primero.", setup: true }, 409);
+      if (Date.now() < this.lockUntil) return json({ error: "Demasiados intentos. Espera un minuto." }, 429);
+      const hash = await this.pinHashOf(String(body.pin || "").replace(/\D/g, ""));
+      const u = this.sql().exec("SELECT * FROM users WHERE pinHash=?", hash).toArray()[0];
+      if (!u || !u.active) {
+        this.fails++; if (this.fails >= 5) { this.lockUntil = Date.now() + 60000; this.fails = 0; }
+        return json({ error: u ? "Tu usuario está desactivado. Habla con tu gerente." : "PIN incorrecto" }, 401);
       }
-      if (p === "/host/info" && method === "GET") return json({ hasPin: !!this.s.pinHash, name: this.s.name });
-      const c = await this.checkPin(pin);
-      if (!c.ok) return json({ error: c.locked ? "Demasiados intentos. Espera un minuto." : "PIN incorrecto" }, 401);
+      this.fails = 0;
+      const tok = this.newSession(u);
+      this.logEv(u, "entrada", "Entró al sistema");
+      return json({ ok: true, tok, user: this.userView(u), state: this.hostState() });
+    }
+    if (p === "/auth/me" && method === "GET") {
+      const u = this.userByTok(request.headers.get("x-pin"));
+      if (!u) return json({ error: "Tu sesión terminó. Entra de nuevo con tu PIN." }, 401);
+      return json({ ok: true, user: this.userView(u), state: this.hostState() });
+    }
+    if (p === "/auth/logout" && method === "POST") {
+      this.sql().exec("DELETE FROM sessions WHERE tok=?", String(request.headers.get("x-pin") || ""));
+      return json({ ok: true });
+    }
+
+    // ---- equipo (requiere sesión y permiso según el puesto) ----
+    if (p.startsWith("/host")) {
+      const me = this.userByTok(request.headers.get("x-pin"));
+      if (!me) return json({ error: "Tu sesión terminó. Entra de nuevo con tu PIN." }, 401);
+      const allowed = PERM[p];
+      if (!allowed || (allowed !== "*" && !allowed.includes(me.role))) return json({ error: "Tu puesto (" + (ROLE_NAMES[me.role] || me.role) + ") no tiene permiso para esto." }, 403);
+      const isMgr = MGR.includes(me.role);
 
       if (p === "/host/state") return json(this.hostState());
       if (p === "/host/action" && method === "POST") {
@@ -767,6 +854,7 @@ export class Fila {
         if (body.action === "call" || body.action === "renotify") {
           if (body.action === "call") {
             e.status = "called"; e.tCalled = now; e.calls = 1;
+            this.logEv(me, "llamar", `Llamó a ${e.name}${parseInt(body.mesa, 10) ? " a la mesa " + parseInt(body.mesa, 10) : ""}`);
             const mm = parseInt(body.mesa, 10);
             if (mm >= 1 && mm <= this.s.mesas.count) { e.mesa = mm; this.s.freed = (this.s.freed || []).filter((f) => f.m !== mm); }
           }
@@ -776,6 +864,7 @@ export class Fila {
         }
         else if (body.action === "seat") {
           e.status = "seated"; e.tDone = now; await this.notifyNext();
+          this.logEv(me, "sentar", `Sentó a ${e.name} (${e.size})${e.mesa ? " en la mesa " + e.mesa : ""}`);
           if (e.phone) { const r = this.sql().exec("SELECT * FROM members WHERE phone=?", e.phone).toArray()[0]; if (r && this.visitFor(r)) e.clubVisit = true; }
         }
         else if (body.action === "noshow") { e.status = "noshow"; e.tDone = now; await this.notifyNext(); }
@@ -791,6 +880,8 @@ export class Fila {
         return json(this.hostState());
       }
       if (p === "/host/settings" && method === "POST") {
+        if (!isMgr && Object.keys(body).some((k) => k !== "open" && k !== "pin")) return json({ error: "Solo el gerente o el dueño cambian estos ajustes." }, 403);
+        if (typeof body.open === "boolean") this.logEv(me, "lista", body.open ? "Abrió la lista de espera" : "Pausó la lista de espera");
         const s = this.s;
         if (typeof body.open === "boolean") s.open = body.open;
         if (typeof body.autoHours === "boolean") s.autoHours = body.autoHours;
@@ -802,6 +893,8 @@ export class Fila {
         return json(this.hostState());
       }
       if (p === "/host/site" && method === "POST") {
+        if (!isMgr && (body.notice !== undefined || body.season !== undefined)) return json({ error: "La cocina solo puede marcar lo agotado." }, 403);
+        if (Array.isArray(body.soldout)) this.logEv(me, "agotado", "Agotados de hoy: " + (body.soldout.join(", ") || "ninguno"));
         const st = this.s.site || (this.s.site = {});
         if (typeof body.notice === "string") st.notice = clean(body.notice, 140);
         if (body.season && typeof body.season === "object") {
@@ -845,6 +938,74 @@ export class Fila {
         await this.save();
         return json(this.hostState());
       }
+      // ---- equipo: usuarios ----
+      if (p === "/host/users" && method === "GET") {
+        const rows = this.sql().exec("SELECT * FROM users ORDER BY CASE role WHEN 'dueno' THEN 0 WHEN 'gerente' THEN 1 WHEN 'mesero' THEN 2 WHEN 'cocina' THEN 3 ELSE 4 END, name").toArray().map((u) => this.userView(u));
+        return json({ rows, me: this.userView(me) });
+      }
+      if (p === "/host/users" && method === "POST") {
+        const a = body.action;
+        // el gerente solo administra meseros, cocina y entrada
+        const canTouch = (role) => me.role === "dueno" || ["mesero", "cocina", "entrada"].includes(role);
+        const role = ROLE_NAMES[body.role] ? body.role : null;
+        if (a === "create") {
+          const name = clean(body.name, 40), np = String(body.pin || "");
+          if (name.length < 2) return json({ error: "Escribe el nombre." }, 400);
+          if (!role) return json({ error: "Elige el puesto." }, 400);
+          if (!canTouch(role)) return json({ error: "Solo el dueño puede crear gerentes o dueños." }, 403);
+          if (!/^\d{4,6}$/.test(np)) return json({ error: "El PIN debe ser de 4 a 6 números." }, 400);
+          const h = await this.pinHashOf(np);
+          if (await this.pinTaken(h)) return json({ error: "Ese PIN ya lo usa otra persona. Elige otro." }, 409);
+          this.sql().exec("INSERT INTO users (id,name,role,pinHash,created,active) VALUES (?,?,?,?,?,1)", rid(), name, role, h, Date.now());
+          this.logEv(me, "equipo", `Dio de alta a ${name} como ${ROLE_NAMES[role]}`);
+          return json({ ok: true });
+        }
+        const u = this.sql().exec("SELECT * FROM users WHERE id=?", String(body.id || "")).toArray()[0];
+        if (!u) return json({ error: "No existe ese usuario." }, 404);
+        // cada quien puede cambiar su propio nombre y PIN
+        const self = u.id === me.id && (a === "pin" || (a === "update" && !body.role && body.active === undefined));
+        if (!canTouch(u.role) && !self) return json({ error: "Solo el dueño puede cambiar a gerentes o dueños." }, 403);
+        const owners = this.sql().exec("SELECT COUNT(*) AS n FROM users WHERE role='dueno' AND active=1").one().n;
+        const lastOwner = u.role === "dueno" && owners <= 1;
+        if (a === "update") {
+          const name = body.name != null ? clean(body.name, 40) : u.name;
+          const nr = role || u.role;
+          if (!canTouch(nr)) return json({ error: "Solo el dueño puede asignar ese puesto." }, 403);
+          if (lastOwner && (nr !== "dueno" || body.active === false)) return json({ error: "Tiene que haber al menos un dueño activo." }, 409);
+          const act = typeof body.active === "boolean" ? (body.active ? 1 : 0) : u.active;
+          this.sql().exec("UPDATE users SET name=?, role=?, active=? WHERE id=?", name.length >= 2 ? name : u.name, nr, act, u.id);
+          if (!act) { this.sql().exec("DELETE FROM sessions WHERE uid=?", u.id); this.kickUser(u.id); }
+          this.logEv(me, "equipo", `Actualizó a ${u.name}${nr !== u.role ? ": ahora es " + ROLE_NAMES[nr] : ""}${act !== u.active ? (act ? " (reactivado)" : " (desactivado)") : ""}`);
+          return json({ ok: true });
+        }
+        if (a === "pin") {
+          const np = String(body.pin || "");
+          if (!/^\d{4,6}$/.test(np)) return json({ error: "El PIN debe ser de 4 a 6 números." }, 400);
+          const h = await this.pinHashOf(np);
+          if (await this.pinTaken(h, u.id)) return json({ error: "Ese PIN ya lo usa otra persona. Elige otro." }, 409);
+          this.sql().exec("UPDATE users SET pinHash=? WHERE id=?", h, u.id);
+          this.sql().exec("DELETE FROM sessions WHERE uid=? AND tok<>?", u.id, String(request.headers.get("x-pin") || ""));
+          this.logEv(me, "equipo", `Cambió el PIN de ${u.name}`);
+          return json({ ok: true });
+        }
+        if (a === "delete") {
+          if (u.id === me.id) return json({ error: "No puedes borrar tu propia cuenta." }, 409);
+          if (lastOwner) return json({ error: "Tiene que haber al menos un dueño." }, 409);
+          this.sql().exec("DELETE FROM users WHERE id=?", u.id);
+          this.sql().exec("DELETE FROM sessions WHERE uid=?", u.id);
+          this.kickUser(u.id);
+          this.logEv(me, "equipo", `Borró a ${u.name} (${ROLE_NAMES[u.role]})`);
+          return json({ ok: true });
+        }
+        return json({ error: "Acción no válida" }, 400);
+      }
+      if (p === "/host/activity" && method === "GET") {
+        const rows = this.sql().exec("SELECT t,who,role,kind,txt FROM activity ORDER BY t DESC LIMIT 150").toArray();
+        const today = this.sql().exec("SELECT uid, who, role, kind, COUNT(*) AS n FROM activity WHERE day=? AND uid<>'' GROUP BY uid, kind", this.s.day).toArray();
+        const per = {};
+        today.forEach((r) => { const x = per[r.uid] || (per[r.uid] = { who: r.who, role: r.role, roleName: ROLE_NAMES[r.role] || r.role, listo: 0, entregado: 0, llamados: 0, mesas: 0, sentados: 0 }); if (r.kind === "pedido-ready") x.listo += r.n; if (r.kind === "pedido-deliver") x.entregado += r.n; if (r.kind === "llamado") x.llamados += r.n; if (r.kind === "mesa") x.mesas += r.n; if (r.kind === "sentar") x.sentados += r.n; });
+        return json({ rows: rows.map((r) => ({ ...r, roleName: ROLE_NAMES[r.role] || "" })), today: Object.values(per) });
+      }
       // ---- avisos en el celular del equipo ----
       if (p === "/host/push/sub" && method === "POST") {
         const role = ["cocina", "meseros", "gerente"].includes(body.role) ? body.role : "meseros";
@@ -875,6 +1036,7 @@ export class Fila {
       // ---- mesas ----
       if (p === "/host/mesas" && method === "POST") {
         const M = this.s.mesas;
+        this.logEv(me, "ajustes", body.rekey ? `Cambió el QR de la mesa ${body.rekey}` : "Cambió los ajustes de mesas o del club");
         if (typeof body.on === "boolean") M.on = body.on;
         if (["pedir", "llamar"].includes(body.mode)) M.mode = body.mode;
         if (body.count != null) M.count = Math.max(1, Math.min(60, parseInt(body.count, 10) || 12));
@@ -891,6 +1053,11 @@ export class Fila {
         const o = this.s.orders.find((x) => x.id === body.id);
         if (!o) return json({ error: "No existe" }, 404);
         const now = Date.now(), a = body.action;
+        if (me.role === "cocina" && (a === "deliver" || (a === "back" && o.status === "entregado"))) return json({ error: "Entregar a la mesa lo marca el mesero." }, 403);
+        if (me.role === "mesero" && !(a === "deliver" || (a === "back" && o.status === "entregado"))) return json({ error: "Eso lo marca la cocina." }, 403);
+        const lbl = { start: "Empezó", ready: "Marcó listo", deliver: "Entregó", cancel: "Canceló", back: "Regresó" }[a];
+        if (lbl) this.logEv(me, "pedido-" + a, `${lbl} el pedido #${o.n} de la mesa ${o.m}`);
+        if (a === "start") o.byPrep = me.name; if (a === "ready") o.byReady = me.name; if (a === "deliver") o.byDel = me.name;
         if (a === "start") o.status = "prep";
         else if (a === "ready") { o.status = "listo"; o.tReady = o.tReady || now; this.notifyStaff(["meseros"], { title: "Listo para llevar · Mesa " + o.m, body: this.itemsTxt(o.items), url: "/higuera/meseros/" }); }
         else if (a === "deliver") { o.status = "entregado"; o.tReady = o.tReady || now; }
@@ -902,13 +1069,14 @@ export class Fila {
       }
       if (p === "/host/call" && method === "POST") {
         const c = this.s.calls.find((x) => x.id === body.id);
-        if (c && c.status === "open") { c.status = "done"; c.tDone = Date.now(); }
+        if (c && c.status === "open") { c.status = "done"; c.tDone = Date.now(); c.by = me.name; this.logEv(me, "llamado", `Atendió ${c.kind === "cuenta" ? "la cuenta" : c.kind === "alerta" ? "la alerta de calificación" : "el llamado"} de la mesa ${c.m}`); }
         await this.save();
         return json(this.hostState());
       }
       if (p === "/host/table" && method === "POST") {
         const m = parseInt(body.m, 10), now = Date.now();
         if (body.action === "close") {
+          this.logEv(me, "mesa", `Cerró la mesa ${m}`);
           this.s.orders.forEach((o) => { if (o.m === m && !o.closed) { o.closed = true; o.tUpd = now; if (["nuevo", "prep", "listo"].includes(o.status)) o.status = "entregado"; } });
           this.s.calls.forEach((c) => { if (c.m === m && c.status === "open") { c.status = "done"; c.tDone = now; } });
           (this.s.reviews || []).forEach((r) => { if (r.m === m) r.closed = true; });
@@ -931,6 +1099,7 @@ export class Fila {
         else if (body.action === "unvisit") this.sql().exec("UPDATE members SET visits=MAX(0,visits-1), total=MAX(0,total-1), lastDay=CASE WHEN lastDay=? THEN '' ELSE lastDay END WHERE id=?", this.s.day, r.id);
         else if (body.action === "redeem") {
           if (r.visits < need) return json({ error: "Todavía no junta las visitas." }, 409);
+          this.logEv(me, "canje", `Canjeó la recompensa de ${r.name}`);
           this.sql().exec("UPDATE members SET visits=visits-?, rewards=rewards+1 WHERE id=?", need, r.id);
           r.visits -= need; r.rewards++;
           if (r.push) await this.pushMember(r, { title: "¡Disfrútalo, " + (r.name || "").split(" ")[0] + "!", body: "Canjeaste tu recompensa del Club " + this.s.name + ". Ya empezaste a juntar visitas para la siguiente.", url: "/higuera/mesa/?tab=club" });
@@ -955,7 +1124,8 @@ export class Fila {
           const res = await Promise.all(rows.slice(i, i + 10).map((r) => this.pushMember(r, { title, body: text, url: "/higuera/mesa/?tab=club" })));
           ok += res.filter(Boolean).length;
         }
-        const pr = { t: Date.now(), title, body: text, sent: rows.length, ok, optin: this.clubSummary().optin };
+        const pr = { t: Date.now(), title, body: text, sent: rows.length, ok, optin: this.clubSummary().optin, by: me.name };
+        this.logEv(me, "promo", `Mandó la promoción "${title}" a ${rows.length} socios`);
         this.s.promos = [...(this.s.promos || []), pr].slice(-30);
         await this.save();
         return json({ ok: true, promo: pr, state: this.hostState() });
@@ -1011,9 +1181,9 @@ export class Fila {
     await this.load(a.room || "higuera");
     this.rollDay();
     if (m.t === "auth" && a.role === "host") {
-      const c = await this.checkPin(m.pin);
-      a.ok = c.ok; ws.serializeAttachment(a);
-      ws.send(JSON.stringify(c.ok ? { t: "host", d: this.hostState() } : { t: "err", d: "PIN incorrecto" }));
+      const u = this.userByTok(m.pin);
+      a.ok = !!u; a.uid = u ? u.id : null; ws.serializeAttachment(a);
+      ws.send(JSON.stringify(u ? { t: "host", d: this.hostState() } : { t: "err", d: "Sesión terminada" }));
     } else if (m.t === "mine") {
       a.mine = m.id || null; ws.serializeAttachment(a);
       ws.send(JSON.stringify({ t: "pub", d: this.publicState(a.mine) }));

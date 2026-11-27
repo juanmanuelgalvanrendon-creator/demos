@@ -144,6 +144,7 @@ td{padding:9px 6px;border-bottom:1px dashed var(--line)}
 }
 @media (max-width:400px){.sw span{display:none}.big4{grid-template-columns:1fr 1fr}}
 .pnav{display:flex;gap:4px;margin-left:10px}.pnav a{font-size:12.5px;font-weight:800;color:rgba(244,241,234,.65);text-decoration:none;padding:8px 10px;border-radius:10px}.pnav a.cur{background:rgba(244,241,234,.12);color:#f4f1ea}@media (max-width:700px){.pnav{display:none}}
+body:not([data-me="dueno"]):not([data-me="gerente"]) .tabs [data-t="clientes"],body:not([data-me="dueno"]):not([data-me="gerente"]) .tabs [data-t="solicitudes"],body:not([data-me="dueno"]):not([data-me="gerente"]) .tabs [data-t="sitio"],body:not([data-me="dueno"]):not([data-me="gerente"]) .tabs [data-t="ajustes"]{display:none}
 </style>
 </head>
 <body>
@@ -151,8 +152,8 @@ td{padding:9px 6px;border-bottom:1px dashed var(--line)}
   <form class="box" id="gf" aria-labelledby="gt">
     <img src="../img/logo-sm.png" alt="Higuera" width="110" height="40" style="height:40px;width:auto;margin:0 auto">
     <h1 id="gt">Panel del equipo</h1>
-    <p id="gp">Escribe el PIN del equipo.</p>
-    <input type="text" class="in" id="pin" inputmode="numeric" autocomplete="off" maxlength="6" placeholder="····" aria-label="PIN del equipo">
+    <p id="gp">Escribe tu PIN personal.</p>
+    <input type="text" class="in" id="pin" inputmode="numeric" autocomplete="off" maxlength="6" placeholder="····" aria-label="Tu PIN">
     <p class="err" id="gerr"></p>
     <button class="btn btn-ink btn-block" type="submit" id="gbtn">Entrar</button>
   </form>
@@ -161,7 +162,7 @@ td{padding:9px 6px;border-bottom:1px dashed var(--line)}
 <header class="bar">
   <img class="logo" src="../img/logo-light.png" alt="Higuera" width="72" height="26">
   <div class="t">Panel<br>del equipo</div>
-  <nav class="pnav" aria-label="Paneles"><a href="./" class="cur" aria-current="page">Entrada</a><a href="../cocina/">Cocina</a><a href="../meseros/">Meseros</a><a href="../club/">Club y mesas</a></nav>
+  <nav class="pnav" aria-label="Paneles"><a href="./" class="cur" aria-current="page">Entrada</a><a href="../cocina/">Cocina</a><a href="../meseros/">Meseros</a><a href="../club/">Gerencia</a></nav>
   <div class="sp"></div>
   <div class="conn"><span class="dot off" id="cdot"></span><span id="ctxt">…</span></div>
   <button class="sw on" id="openSw" type="button" aria-label="Abrir o pausar la lista"><span id="openTxt">Lista abierta</span><i></i></button>
@@ -299,23 +300,25 @@ td{padding:9px 6px;border-bottom:1px dashed var(--line)}
 const { api, live, store, esc, ago, mmss, ZONES, toast, beep, unlockAudio, qrSvg } = HG;
 const $ = (s) => document.querySelector(s);
 const NEEDS = { bebe: "Silla para bebé", mascota: "Con mascota", accesible: "Sin escalones" };
+const ROLES_OK = ["dueno", "gerente", "mesero", "entrada"];
+let ME = null;
 let pin = store.get("pin") || "", H = null, conn = null, known = new Set(), first = true, addSize = 2, view = "lista";
 
 /* ---------- acceso ---------- */
 async function gate() {
   try {
-    const info = await api("/host/info");
-    if (!info.hasPin) { $("#gt").textContent = "Crea el PIN del equipo"; $("#gp").textContent = "Elige de 4 a 6 números. Lo usará quien maneje la entrada."; $("#gbtn").textContent = "Crear PIN y entrar"; }
+    const info = await api("/auth/info");
+    if (!info.hasOwner) { location.href = "/higuera/acceso/"; return; }
   } catch (e) {}
   if (pin) await login(pin, true);
 }
 async function login(p, silent) {
   try {
-    const r = await api("/host/claim", { body: { pin: p } });
-    pin = p; store.set("pin", p); $("#gate").classList.add("hide");
+    const r = await HG.signin(p, silent, ROLES_OK);
+    pin = r.tok; ME = r.user; document.body.dataset.me = r.user.role; $("#gate").classList.add("hide");
     H = r.state; first = true; paint(); start();
-    if (r.created) toast("PIN creado. Ya puedes usar el panel.");
-  } catch (e) { if (!silent) $("#gerr").textContent = e.message; store.set("pin", null); }
+    
+  } catch (e) { if (e.denied) return; if (!silent) $("#gerr").textContent = e.message; store.set("pin", null); }
 }
 $("#gf").addEventListener("submit", (e) => { e.preventDefault(); unlockAudio(); const p = $("#pin").value.replace(/\D/g, ""); if (p.length < 4) { $("#gerr").textContent = "Escribe al menos 4 números."; return; } login(p); });
 
@@ -465,7 +468,7 @@ document.addEventListener("click", async (e) => {
   if (e.target.closest("#demo")) { try { H = await api("/host/demo", { pin, body: {} }); first = true; paint(); toast("Listo: grupos de ejemplo cargados"); } catch (x) { toast(x.message); } return; }
   if (e.target.closest("#reset")) { $("#resetC").classList.remove("hide"); return; }
   if (e.target.closest("#resetY")) { try { H = await api("/host/reset", { pin, body: {} }); $("#resetC").classList.add("hide"); paint(); toast("Lista vacía"); } catch (x) { toast(x.message); } return; }
-  if (e.target.closest("#logout")) { store.set("pin", null); location.reload(); return; }
+  if (e.target.closest("#logout")) { HG.logout(); return; }
   if (e.target.closest("#csv")) {
     const rows = await loadContacts();
     if (!rows.length) { toast("Todavía no hay clientes en la lista"); return; }

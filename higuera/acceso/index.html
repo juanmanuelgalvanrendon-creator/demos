@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Higuera · Entrar al sistema</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#2e3527">
+<link rel="icon" href="/higuera/img/icon-192.png">
+<link rel="apple-touch-icon" href="/higuera/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/higuera/hg.css">
+<style>
+body{background:var(--olive);color:#f4f1ea;min-height:100vh}
+.wrap{max-width:460px;margin:0 auto;padding:28px 20px 40px;min-height:100vh;display:flex;flex-direction:column}
+.logo{height:30px;filter:invert(1) brightness(2);margin:6px auto 0}
+.card{background:var(--bg);color:var(--ink);border-radius:28px;padding:26px 22px;margin-top:26px}
+.card h1{font:400 34px/1.05 var(--serif);text-align:center}
+.card h1 em{font-style:italic;color:var(--terra)}
+.card .sub{font-size:14.5px;color:var(--ink2);text-align:center;margin-top:8px;line-height:1.5}
+.dots{display:flex;justify-content:center;gap:14px;margin:24px 0 8px}
+.dots i{width:16px;height:16px;border-radius:50%;box-shadow:inset 0 0 0 2px var(--line2);transition:background .15s,transform .15s}
+.dots i.on{background:var(--ink);box-shadow:none;transform:scale(1.1)}
+.dots.shake{animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.err{color:var(--red);font-weight:700;font-size:13.5px;min-height:20px;text-align:center;margin-top:6px}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.pad button{height:64px;border-radius:20px;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--line);font:400 30px var(--serif);color:var(--ink);transition:transform .08s,background .15s}
+.pad button:active{transform:scale(.96);background:var(--line)}
+.pad button.k{font:800 14px var(--sans)}
+.pad button.go{background:var(--ink);color:#fff;box-shadow:none;font:800 15px var(--sans)}
+.lab{display:block;font-size:11.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:16px 0 8px}
+.card .btn{width:100%;margin-top:18px}
+.hello{text-align:center;margin-top:26px}
+.hello h1{font:400 38px/1.05 var(--serif)}
+.hello h1 em{font-style:italic;color:#f0c7a6}
+.hello p{color:rgba(244,241,234,.8);font-size:14.5px;margin-top:6px}
+.screens{display:flex;flex-direction:column;gap:10px;margin-top:22px}
+.scr{display:grid;grid-template-columns:52px 1fr auto;gap:14px;align-items:center;padding:16px;border-radius:22px;background:var(--bg);color:var(--ink);text-decoration:none;transition:transform .12s}
+.scr:active{transform:scale(.98)}
+.scr .ic{width:52px;height:52px;border-radius:16px;background:var(--sage);color:var(--olive);display:grid;place-items:center}
+.scr b{display:block;font:400 25px/1.05 var(--serif)}
+.scr span{display:block;font-size:13px;color:var(--ink2);margin-top:3px;line-height:1.35}
+.scr .ar{font-size:22px;color:var(--mut)}
+.out{margin-top:auto;padding-top:26px;text-align:center}
+.out button,.out a{color:#f4f1ea;font-weight:800;font-size:14px;text-decoration:underline;text-underline-offset:3px}
+.note{font-size:12.5px;color:rgba(244,241,234,.65);text-align:center;margin-top:14px;line-height:1.5}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <img class="logo" src="/higuera/img/logo-sm.png" alt="Higuera" width="83" height="30">
+  <div id="view"></div>
+</main>
+<script src="/higuera/fila.js"></script>
+<script>
+(() => {
+const { api, store, esc, toast, unlockAudio } = HG;
+const $ = (s) => document.querySelector(s);
+const NEXT = new URLSearchParams(location.search).get("next") || "";
+const IC = {
+  entrada: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 21h18M5 21V7l7-4 7 4v14"/><path d="M10 21v-6h4v6"/></svg>',
+  cocina: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 13.9A4 4 0 0 1 7 6a5 5 0 0 1 10 0 4 4 0 0 1 1 7.9V20H6z"/><path d="M6 17h12"/></svg>',
+  meseros: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M2 18h20M4 18a8 8 0 0 1 16 0M12 10V7"/></svg>',
+  gerencia: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg>',
+  demo: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
+  todo: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>',
+};
+// pantallas y quién las puede abrir
+const SCREENS = [
+  ["cocina", "/higuera/cocina/", "Cocina", "Aquí llegan los pedidos de las mesas.", ["dueno", "gerente", "cocina"]],
+  ["meseros", "/higuera/meseros/", "Meseros", "Platillos listos, llamados, la cuenta y cerrar mesas.", ["dueno", "gerente", "mesero"]],
+  ["entrada", "/higuera/host/", "Entrada", "La fila de espera y las mesas que se liberan.", ["dueno", "gerente", "mesero", "entrada"]],
+  ["gerencia", "/higuera/club/", "Gerencia", "Resumen, club, promociones, calificaciones, mesas, QR y equipo.", ["dueno", "gerente"]],
+  ["todo", "/higuera/barra/", "Todo en una pantalla", "Pedidos, llamados y mesas juntos, para turnos con poca gente.", ["dueno", "gerente"]],
+  ["demo", "/higuera/demo/", "Demostración", "Cliente y equipo lado a lado, para enseñar el sistema.", ["dueno", "gerente"]],
+];
+
+/* ---------- crear la cuenta del dueño (solo la primera vez) ---------- */
+function setupView() {
+  $("#view").innerHTML = `<div class="card"><h1>Bienvenido al sistema de <em>Higuera</em></h1><p class="sub">Primero, crea la cuenta del dueño. Después, desde Gerencia, das de alta al equipo: cada quien con su propio PIN.</p>
+    <label class="lab" for="sn">Tu nombre</label><input class="in" id="sn" type="text" maxlength="40" autocomplete="name" placeholder="Nombre del dueño">
+    <label class="lab" for="sp">Tu PIN (4 a 6 números)</label><input class="in" id="sp" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" placeholder="····">
+    <label class="lab" for="sp2">Repite tu PIN</label><input class="in" id="sp2" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" placeholder="····">
+    <p class="err" id="serr" role="alert"></p><button class="btn btn-terra" type="button" id="sgo">Crear cuenta del dueño</button></div>
+    <p class="note">El PIN es personal. No lo compartas: el sistema registra qué hace cada persona.</p>`;
+  $("#sgo").onclick = async () => {
+    const name = $("#sn").value.trim(), p1 = $("#sp").value.replace(/\D/g, ""), p2 = $("#sp2").value.replace(/\D/g, "");
+    if (name.length < 2) return ($("#serr").textContent = "Escribe tu nombre.");
+    if (p1.length < 4 || p1.length > 6) return ($("#serr").textContent = "El PIN debe ser de 4 a 6 números.");
+    if (p1 !== p2) return ($("#serr").textContent = "Los dos PIN no coinciden.");
+    try { const r = await api("/auth/setup", { body: { name, pin: p1 } }); store.set("pin", r.tok); home(r.user); toast("Cuenta del dueño creada"); }
+    catch (e) { $("#serr").textContent = e.message; }
+  };
+}
+
+/* ---------- entrar con PIN (teclado grande) ---------- */
+function loginView(msg) {
+  let code = "";
+  $("#view").innerHTML = `<div class="card"><h1>Entra con tu <em>PIN</em></h1><p class="sub">Cada persona del equipo tiene el suyo.</p>
+    <div class="dots" id="dots" aria-hidden="true">${"<i></i>".repeat(6)}</div><p class="err" id="lerr" role="alert">${esc(msg || "")}</p>
+    <label class="hide" for="pinIn">PIN</label><input id="pinIn" class="hide" type="password" inputmode="numeric" autocomplete="current-password">
+    <div class="pad" id="pad">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => `<button type="button" data-n="${n}" aria-label="${n}">${n}</button>`).join("")}<button type="button" class="k" data-k="del" aria-label="Borrar">Borrar</button><button type="button" data-n="0" aria-label="0">0</button><button type="button" class="go" data-k="go">Entrar</button></div></div>`;
+  const paint = () => $$dots().forEach((d, i) => d.classList.toggle("on", i < code.length));
+  const $$dots = () => [...document.querySelectorAll("#dots i")];
+  const go = async () => {
+    if (code.length < 4) { $("#lerr").textContent = "El PIN tiene de 4 a 6 números."; return; }
+    unlockAudio();
+    try { const r = await api("/auth/login", { body: { pin: code } }); store.set("pin", r.tok); after(r.user); }
+    catch (e) { code = ""; paint(); $("#lerr").textContent = e.message; const d = $("#dots"); d.classList.remove("shake"); void d.offsetWidth; d.classList.add("shake"); }
+  };
+  $("#pad").onclick = (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.n != null && code.length < 6) code += b.dataset.n;
+    else if (b.dataset.k === "del") code = code.slice(0, -1);
+    else if (b.dataset.k === "go") return go();
+    $("#lerr").textContent = ""; paint();
+  };
+  document.onkeydown = (e) => {
+    if (/^\d$/.test(e.key) && code.length < 6) { code += e.key; paint(); }
+    else if (e.key === "Backspace") { code = code.slice(0, -1); paint(); }
+    else if (e.key === "Enter") go();
+  };
+}
+
+/* ---------- después de entrar ---------- */
+function mine(u) { return SCREENS.filter((x) => x[4].includes(u.role)); }
+function after(u) {
+  const list = mine(u);
+  // si venía de una pantalla y tiene permiso, regresa ahí
+  if (NEXT && list.some((x) => NEXT.startsWith(x[1]))) { location.href = NEXT; return; }
+  // cocina y entrada solo tienen una pantalla: entran directo
+  if (list.length === 1) { location.href = list[0][1]; return; }
+  home(u);
+}
+function home(u) {
+  document.onkeydown = null;
+  const list = mine(u);
+  const h = new Date().getHours();
+  $("#view").innerHTML = `<div class="hello"><h1>${h < 12 ? "Buenos días" : h < 19 ? "Buenas tardes" : "Buenas noches"}, <em>${esc(u.name.split(" ")[0])}</em></h1><p>Entraste como ${esc(u.roleName)}. Estas son tus pantallas:</p></div>
+    <div class="screens">${list.map(([k, url, t, d]) => `<a class="scr" href="${url}"><span class="ic">${IC[k]}</span><span><b>${t}</b><span>${d}</span></span><span class="ar" aria-hidden="true">›</span></a>`).join("")}</div>
+    <div class="out"><button type="button" id="out">Salir y entrar con otro PIN</button></div>`;
+  $("#out").onclick = () => HG.logout();
+}
+
+/* ---------- arranque ---------- */
+(async () => {
+  const tok = store.get("pin");
+  if (tok) {
+    try { const r = await api("/auth/me", { pin: tok }); after(r.user); return; }
+    catch (e) { store.set("pin", null); }
+  }
+  try { const info = await api("/auth/info"); info.hasOwner ? loginView() : setupView(); }
+  catch (e) { loginView("No se pudo conectar. Revisa tu internet."); }
+})();
+})();
+</script>
+</body>
+</html>

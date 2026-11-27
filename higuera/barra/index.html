@@ -149,8 +149,8 @@ body[data-role="todo"] aside.side,body[data-role="cocina"] aside.side{position:s
   <form class="box" id="gf" aria-labelledby="gt">
     <img src="/higuera/img/logo-sm.png" alt="Higuera" width="110" height="40" style="height:40px;width:auto;margin:0 auto">
     <h1 id="gt">Equipo</h1>
-    <p id="gp">Escribe el PIN del equipo.</p>
-    <input type="password" class="in" id="pin" inputmode="numeric" autocomplete="current-password" maxlength="6" placeholder="····" aria-label="PIN del equipo">
+    <p id="gp">Escribe tu PIN personal.</p>
+    <input type="password" class="in" id="pin" inputmode="numeric" autocomplete="current-password" maxlength="6" placeholder="····" aria-label="Tu PIN">
     <p class="err" id="gerr" role="alert"></p>
     <button class="btn btn-ink btn-block" type="submit">Entrar</button>
   </form>
@@ -159,7 +159,7 @@ body[data-role="todo"] aside.side,body[data-role="cocina"] aside.side{position:s
 <header class="bar">
   <img class="logo" src="/higuera/img/logo-sm.png" alt="Higuera" width="66" height="24">
   <h1 id="title">Equipo</h1>
-  <nav class="panels" aria-label="Paneles"><a href="/higuera/host/">Entrada</a><a href="/higuera/cocina/" data-r="cocina">Cocina</a><a href="/higuera/meseros/" data-r="meseros">Meseros</a><a href="/higuera/club/">Club y mesas</a></nav>
+  <nav class="panels" aria-label="Paneles"><a href="/higuera/host/">Entrada</a><a href="/higuera/cocina/" data-r="cocina">Cocina</a><a href="/higuera/meseros/" data-r="meseros">Meseros</a><a href="/higuera/club/">Gerencia</a></nav>
   <div class="sp"></div>
   <span class="pill" id="modeP"></span>
   <button class="sbtn" type="button" id="cfgBtn" aria-expanded="false" aria-label="Avisos y sonido"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg><span id="cfgTxt">Sonido</span></button>
@@ -190,9 +190,11 @@ const ROLE = location.pathname.includes("/cocina") ? "cocina" : location.pathnam
 const T = { cocina: ["Cocina", "Aquí llegan los pedidos de las mesas."], meseros: ["Meseros", "Platillos listos para llevar, llamados de las mesas y la cuenta."], todo: ["Pedidos y llamados", "Pantalla completa: pedidos, llamados y mesas."] }[ROLE];
 const PUSHROLE = ROLE === "cocina" ? "cocina" : "meseros";
 document.body.dataset.role = ROLE; document.title = "Higuera · " + T[0];
-$("#title").textContent = T[0]; $("#gt").textContent = T[0]; $("#gp").textContent = T[1] + " Escribe el PIN del equipo.";
+$("#title").textContent = T[0]; $("#gt").textContent = T[0]; $("#gp").textContent = T[1] + " Escribe tu PIN personal.";
 $$(".panels a").forEach((a) => { if (a.dataset.r === ROLE) { a.classList.add("cur"); a.setAttribute("aria-current", "page"); } });
 const CFG = Object.assign({ vol: "1", voz: "1", rep: "1" }, JSON.parse(store.get("snd_" + ROLE) || "{}"));
+const ROLES_OK = location.pathname.includes("/cocina") ? ["dueno", "gerente", "cocina"] : location.pathname.includes("/meseros") ? ["dueno", "gerente", "mesero"] : ["dueno", "gerente"];
+let ME = null;
 let pin = store.get("pin") || "", H = null, conn = null, seenO = null, seenC = null, seenL = null, sheetM = 0, closeArm = 0, audioOk = false, sec = "", lastRing = 0;
 
 /* ---------- secciones según el puesto ---------- */
@@ -216,12 +218,12 @@ function showSec() {
 /* ---------- acceso y conexión ---------- */
 async function login(p, silent) {
   try {
-    const r = await api("/host/claim", { body: { pin: p } });
-    if (r.created) toast("PIN creado");
-    pin = p; store.set("pin", p); $("#gate").classList.add("hide");
+    const r = await HG.signin(p, silent, ROLES_OK);
+    
+    pin = r.tok; ME = r.user; document.body.dataset.me = r.user.role; $("#gate").classList.add("hide");
     H = r.state; paint(); start(); wake();
     if (silent && !audioOk) $("#snd").classList.remove("hide");
-  } catch (e) { if (!silent) $("#gerr").textContent = e.message; store.set("pin", null); }
+  } catch (e) { if (e.denied) return; if (!silent) $("#gerr").textContent = e.message; store.set("pin", null); }
 }
 $("#gf").addEventListener("submit", (e) => { e.preventDefault(); unlockAudio(); audioOk = true; const p = $("#pin").value.replace(/\D/g, ""); if (p.length < 4) { $("#gerr").textContent = "Escribe al menos 4 números."; return; } login(p); });
 $("#snd").onclick = () => { unlockAudio(); audioOk = true; $("#snd").classList.add("hide"); wake(); ring("pedido"); };
