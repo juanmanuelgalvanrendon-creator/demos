@@ -408,7 +408,7 @@ export class Fila {
     const job = (async () => {
       let changed = false;
       await Promise.all(subs.map(async (x) => {
-        const st = await this.webPush(x.ep, "hgstaff" + x.role);
+        const st = await this.webPush(x.ep, "hgstaff" + x.role, true);
         if (st === 404 || st === 410) { this.s.staff = this.s.staff.filter((y) => y !== x); changed = true; }
       }));
       await this.ctx.storage.put("s", this.s);
@@ -562,7 +562,7 @@ export class Fila {
     return v;
   }
   // envía un push vacío (el service worker pide el texto a /push/msg); regresa el código HTTP o 0
-  async webPush(endpoint, topic) {
+  async webPush(endpoint, topic, urgent) {
     try {
       const v = await this.vapid();
       const ep = new URL(endpoint);
@@ -572,7 +572,7 @@ export class Fila {
       const jwt = head + "." + body + "." + b64u(sig);
       const ctl = new AbortController();
       const to = setTimeout(() => ctl.abort(), 5000);
-      const r = await fetch(endpoint, { method: "POST", signal: ctl.signal, headers: { TTL: "3600", Urgency: "normal", Topic: topic, Authorization: `vapid t=${jwt}, k=${v.pub}`, "Content-Length": "0" } });
+      const r = await fetch(endpoint, { method: "POST", signal: ctl.signal, headers: { TTL: urgent ? "300" : "3600", Urgency: urgent ? "high" : "normal", Topic: topic, Authorization: `vapid t=${jwt}, k=${v.pub}`, "Content-Length": "0" } });
       clearTimeout(to);
       return r.status;
     } catch (err) { return 0; }
@@ -825,16 +825,30 @@ export class Fila {
       return json({ ok: true });
     }
     if (p === "/push/msg" && method === "POST") {
-      const sx = body.endpoint && (this.s.staff || []).find((x) => x.ep === body.endpoint && x.msg);
-      if (sx) return json({ title: sx.msg.title, body: sx.msg.body, url: sx.msg.url, tag: "hg-staff-" + sx.msg.t });
-      const e = body.endpoint && this.s.entries.filter((x) => x.push && x.push.endpoint === body.endpoint && x.pushMsg).sort((a, b) => b.pushMsg.t - a.pushMsg.t)[0];
-      if (!e || !e.pushMsg) {
-        const r = body.endpoint ? this.sql().exec("SELECT pmsg FROM members WHERE push=? AND pmsg IS NOT NULL", String(body.endpoint)).toArray()[0] : null;
-        if (r) { const pm = JSON.parse(r.pmsg); return json({ title: pm.title, body: pm.body, url: pm.url, tag: "hg-club-" + pm.t }); }
-        return json({ title: this.s.name + " · Lista de espera", body: "Revisa tu turno en la lista.", url: this.cfg.site });
+      // un mismo celular puede estar suscrito como equipo, en la fila y en el club (comparten la misma suscripción):
+      // se muestra el aviso más reciente de cualquiera de los tres, y nunca uno viejo
+      const ep = String(body.endpoint || "");
+      const cand = [];
+      if (ep) {
+        for (const x of this.s.staff || []) if (x.ep === ep && x.msg) cand.push({ title: x.msg.title, body: x.msg.body, url: x.msg.url, tag: "hg-staff-" + x.msg.t, t: x.msg.t });
+        for (const e of this.s.entries) if (e.push && e.push.endpoint === ep && e.pushMsg) cand.push({ title: e.pushMsg.title, body: e.pushMsg.body, url: e.pushMsg.url, tag: "hg-" + e.code + "-" + e.pushMsg.kind, t: e.pushMsg.t });
+        try {
+          const r = this.sql().exec("SELECT pmsg FROM members WHERE push=? AND pmsg IS NOT NULL", ep).toArray()[0];
+          if (r) { const pm = JSON.parse(r.pmsg); cand.push({ title: pm.title, body: pm.body, url: pm.url, tag: "hg-club-" + pm.t, t: pm.t }); }
+        } catch (x) {}
       }
-      const { title, body: b, url: u, kind } = e.pushMsg;
-      return json({ title, body: b, url: u, tag: "hg-" + e.code + "-" + kind });
+      cand.sort((a, b) => b.t - a.t);
+      let out = cand[0] && Date.now() - cand[0].t < 70 * 60000 ? cand[0] : null;
+      if (!out) {
+        // sin aviso reciente: abrir la sección a la que pertenece ese celular
+        let url = "/higuera/fila/";
+        if (ep && (this.s.staff || []).some((x) => x.ep === ep)) url = "/higuera/acceso/";
+        else { try { if (ep && this.sql().exec("SELECT id FROM members WHERE push=?", ep).toArray().length) url = "/higuera/mesa/?tab=club"; } catch (x) {} }
+        out = { title: this.s.name, body: "Tienes un aviso nuevo. Toca para verlo.", url, tag: "hg" };
+      }
+      if (this.cfg.demo) out = { ...out, title: "Demostración · " + out.title, url: String(out.url || "/higuera/").replace(/^\/higuera\//, "/higuera-demo/") };
+      delete out.t;
+      return json(out);
     }
 
     // ---- acceso del equipo: cada persona entra con su propio PIN ----
@@ -1036,7 +1050,8 @@ export class Fila {
         let ep;
         try { ep = new URL(body.sub?.endpoint); } catch (x) { return json({ error: "Suscripción inválida" }, 400); }
         if (ep.protocol !== "https:" || !PUSH_HOSTS.some((rx) => rx.test(ep.hostname))) return json({ error: "Servicio de notificaciones no permitido" }, 400);
-        this.s.staff = (this.s.staff || []).filter((x) => x.ep !== ep.toString());
+        // un mismo celular puede recibir avisos de varios puestos (por ejemplo cocina y meseros)
+        this.s.staff = (this.s.staff || []).filter((x) => !(x.ep === ep.toString() && x.role === role));
         this.s.staff.push({ ep: ep.toString(), role, t: Date.now() });
         this.s.staff = this.s.staff.slice(-40);
         await this.save();
@@ -1049,7 +1064,7 @@ export class Fila {
       }
       if (p === "/host/push/test" && method === "POST") {
         const role = ["cocina", "meseros", "gerente"].includes(body.role) ? body.role : "meseros";
-        this.notifyStaff([role], { title: "Prueba de aviso · " + role, body: "Si ves esto con el celular bloqueado, los avisos funcionan.", url: "/higuera/" + (role === "gerente" ? "club" : role) + "/" });
+        this.notifyStaff([role], { title: "Prueba de aviso · " + ({ cocina: "Cocina", meseros: "Meseros", gerente: "Gerencia" })[role], body: "Si ves esto con el celular bloqueado, los avisos funcionan.", url: "/higuera/" + (role === "gerente" ? "club" : role) + "/" });
         return json({ ok: true });
       }
       if (p === "/host/freed" && method === "POST") {
