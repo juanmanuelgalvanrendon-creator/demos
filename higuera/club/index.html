@@ -81,7 +81,7 @@
 .dots i{width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--line2)}
 .dots i.on{background:var(--terra);box-shadow:none}
 .mact{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-.mact button{height:36px;padding:0 12px;border-radius:99px;font-size:12.5px;font-weight:800;box-shadow:inset 0 0 0 1.5px var(--line2)}
+.mact button{height:40px;padding:0 12px;border-radius:99px;font-size:12.5px;font-weight:800;box-shadow:inset 0 0 0 1.5px var(--line2)}
 .mact button.p{background:var(--terra);color:#fff;box-shadow:none}
 .mact button.dg{color:var(--red)}
 .code{font:600 22px var(--mono);letter-spacing:.2em;background:var(--ink);color:#fff;border-radius:12px;padding:8px 14px;display:inline-block;margin-top:8px}
@@ -131,7 +131,7 @@
 .ur .tag.off{background:var(--line);color:var(--mut)}
 .ur.off b{color:var(--mut)}
 .uact{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-.uact button,.uact select{height:34px;padding:0 10px;border-radius:99px;font-size:12px;font-weight:800;box-shadow:inset 0 0 0 1.5px var(--line2);background:var(--paper)}
+.uact button,.uact select{height:40px;padding:0 10px;border-radius:99px;font-size:12px;font-weight:800;box-shadow:inset 0 0 0 1.5px var(--line2);background:var(--paper)}
 .uact button.dg{color:var(--red)}
 .pinrow{display:flex;gap:6px;margin-top:8px;grid-column:1/-1}
 .pinrow input{height:40px;border-radius:12px;border:0;box-shadow:inset 0 0 0 1.5px var(--line2);padding:0 12px;font-size:15px;width:140px;background:var(--bg)}
@@ -240,7 +240,7 @@
           <label class="lab" for="un" style="margin-top:12px">Nombre</label><input type="text" class="in" id="un" maxlength="40" placeholder="Ej.: Ana López">
           <label class="lab" for="ur">Puesto</label><select class="in" id="ur"></select>
           <p class="sub" id="urHelp" style="margin-top:6px"></p>
-          <label class="lab" for="up">PIN de 4 a 6 números</label><input type="text" class="in" id="up" inputmode="numeric" maxlength="6" placeholder="Ej.: 4821" autocomplete="off">
+          <label class="lab" for="up">PIN de 4 a 6 números (gerente: 6)</label><input type="text" class="in" id="up" inputmode="numeric" maxlength="6" placeholder="Ej.: 4821" autocomplete="off">
           <p class="err" id="uerr" style="color:var(--red);font-weight:700;font-size:13.5px;min-height:18px;margin-top:8px"></p>
           <button class="btn btn-terra btn-block" type="button" id="uadd">Dar de alta</button>
           <p class="sub" style="margin-top:10px">Dale el PIN en persona. Si alguien deja de trabajar en Higuera, desactívalo: su PIN deja de servir al instante.</p></div>
@@ -264,14 +264,18 @@ const ROLES_OK = ["dueno", "gerente"];
 let ME = null;
 let pin = store.get("pin") || "", H = null, conn = null, tab = "resumen", MEM = null, memQ = "", codes = {}, delArm = "", sendArm = false, qrSig = "";
 const DAYS = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
-const IDEAS = [["Cookie de la casa", "Hoy la cookie va por la casa", "Pide cualquier café antes de las 11 y te regalamos una cookie. Solo hoy."], ["Destacado nuevo", "Llegó el destacado de la semana", "Ya está en la carta. Ven a probarlo antes de que se acabe."], ["Sin fila", "Ahorita no hay fila", "Si vienes en la próxima hora te sentamos al llegar."], ["Te extrañamos", "Te guardamos tu mesa", "Hace mucho que no vienes. Esta semana tu visita cuenta doble en el club."]];
+const IDEAS = [["Café de la casa", "Hoy tu americano va por la casa", "Pide cualquier desayuno antes de las 11 y tu americano va por la casa. Solo hoy."], ["Destacado nuevo", "Llegó el destacado de la semana", "Ya está en la carta. Ven a probarlo antes de que se acabe."], ["Sin fila", "Ahorita no hay fila", "Si vienes en la próxima hora te sentamos al llegar."], ["Te extrañamos", "Te guardamos tu mesa", "Hace mucho que no vienes. Te esperamos esta semana con tu café de siempre."]];
 
 async function login(p, silent) {
   try {
     const r = await HG.signin(p, silent, ROLES_OK);
     pin = r.tok; ME = r.user; document.body.dataset.me = r.user.role; $("#gate").classList.add("hide");
     H = r.state; paint(); start(); loadMem();
-  } catch (e) { if (e.denied) return; if (!silent) $("#gerr").textContent = e.message; store.set("pin", null); }
+  } catch (e) {
+    if (e.denied) return;
+    if (e.status === 401 || !silent) { if (!silent) $("#gerr").textContent = e.message; if (e.status === 401) store.set("pin", null); return; }
+    $("#gerr").textContent = "Reconectando…"; setTimeout(() => login(p, true), 3000);
+  }
 }
 $("#gf").addEventListener("submit", (e) => { e.preventDefault(); unlockAudio(); const p = $("#pin").value.replace(/\D/g, ""); if (p.length < 4) { $("#gerr").textContent = "Escribe al menos 4 números."; return; } login(p); });
 let memT = null;
@@ -392,6 +396,7 @@ document.addEventListener("click", async (e) => {
     const name = $("#un").value.trim(), role = $("#ur").value, pn = $("#up").value.replace(/\D/g, "");
     if (name.length < 2) { $("#uerr").textContent = "Escribe el nombre."; return; }
     if (pn.length < 4) { $("#uerr").textContent = "El PIN debe ser de 4 a 6 números."; return; }
+    if ((role === "gerente" || role === "dueno") && pn.length < 6) { $("#uerr").textContent = "Dueño y gerente usan PIN de 6 números."; return; }
     $("#uerr").textContent = "";
     try { await api("/host/users", { pin, body: { action: "create", name, role, pin: pn } }); toast(`${name} quedó dado de alta como ${RN[role]}`); $("#un").value = ""; $("#up").value = ""; loadTeam(); } catch (x) { $("#uerr").textContent = x.message; }
     return;

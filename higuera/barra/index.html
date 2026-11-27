@@ -154,6 +154,8 @@ body[data-role="todo"] aside.side,body[data-role="cocina"] aside.side{position:s
 .sheet .o ul{list-style:none;margin-top:6px;font-size:14.5px}
 .sheet .btn{width:100%;margin-top:14px}
 .sheet .note{font-size:13px;color:var(--mut);margin-top:10px}
+.mini .wb{min-height:40px;padding:0 12px;border-radius:10px;font-weight:800;font-size:13px;background:rgba(244,241,234,.1);color:#f4f1ea;margin-left:8px}
+.call .gnote{font-size:12.5px;font-weight:800;color:#f0c7a6;max-width:110px;text-align:right}
 .snd{position:fixed;inset:0;z-index:50;background:rgba(20,22,18,.94);color:#f4f1ea;display:grid;place-content:center;gap:12px;text-align:center;padding:24px}
 .snd b{font:400 46px/1 var(--serif);color:#f0c7a6}
 .snd span{font-size:16px;max-width:340px;line-height:1.45;opacity:.85}
@@ -238,7 +240,11 @@ async function login(p, silent) {
     pin = r.tok; ME = r.user; document.body.dataset.me = r.user.role; $("#gate").classList.add("hide");
     H = r.state; paint(); start(); wake();
     if (silent && !audioOk) $("#snd").classList.remove("hide");
-  } catch (e) { if (e.denied) return; if (!silent) $("#gerr").textContent = e.message; store.set("pin", null); }
+  } catch (e) {
+    if (e.denied) return;
+    if (e.status === 401 || !silent) { if (!silent) $("#gerr").textContent = e.message; if (e.status === 401) store.set("pin", null); return; }
+    $("#gerr").textContent = "Reconectando…"; setTimeout(() => login(p, true), 3000);
+  }
 }
 $("#gf").addEventListener("submit", (e) => { e.preventDefault(); unlockAudio(); audioOk = true; const p = $("#pin").value.replace(/\D/g, ""); if (p.length < 4) { $("#gerr").textContent = "Escribe al menos 4 números."; return; } login(p); });
 $("#snd").onclick = () => { unlockAudio(); audioOk = true; $("#snd").classList.add("hide"); wake(); ring("pedido"); };
@@ -283,7 +289,7 @@ function ticket(o, isNew) {
     <ul>${o.items.map((it) => `<li><span class="q${it.q > 1 ? " multi" : ""}">${it.q}×</span><span>${esc(it.n)}${it.note ? `<i>${esc(it.note)}</i>` : ""}</span></li>`).join("")}</ul>
     ${o.note ? `<div class="gn">Nota: ${esc(o.note)}</div>` : ""}
     ${can ? `<div class="ac"><button class="btn ${next[2]}" type="button" data-o="${o.id}" data-a="${next[0]}">${next[1]}</button></div>
-    <div class="sm">${o.status !== "nuevo" ? `<button type="button" data-o="${o.id}" data-a="back">Regresar un paso</button>` : "<span></span>"}<button type="button" class="dg" data-o="${o.id}" data-a="cancel">Cancelar</button></div>` : ""}
+    ${ME && ME.role === "mesero" ? "" : `<div class="sm">${o.status !== "nuevo" ? `<button type="button" data-o="${o.id}" data-a="back">Regresar un paso</button>` : "<span></span>"}<button type="button" class="dg" data-o="${o.id}" data-a="cancel">Cancelar</button></div>`}` : ""}
   </article>`;
 }
 const setN = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; $$(`[data-mirror="${id}"]`).forEach((m) => { m.textContent = v; }); };
@@ -306,17 +312,17 @@ function paint() {
   }
   seenO = new Set(H.orders.map((o) => o.id)); seenC = new Set(H.calls.map((c) => c.id)); seenL = new Set(act.filter((o) => o.status === "listo").map((o) => o.id));
   const by = (s) => act.filter((o) => o.status === s).sort((a, b) => a.t0 - b.t0);
-  const fill = (id, list, empty) => { const z = document.getElementById(id); if (!z) return; z.innerHTML = list.length ? list.map((o) => ticket(o, newO.includes(o) || newL.includes(o))).join("") : `<div class="none">${empty}</div>`; setN("c_" + id, list.length); };
+  const fill = (id, list, empty) => { const z = document.getElementById(id); if (!z) return; const html = list.length ? list.map((o) => ticket(o, newO.includes(o) || newL.includes(o))).join("") : `<div class="none">${empty}</div>`; if (z._h !== html) { z.innerHTML = html; z._h = html; z._t = Date.now(); } setN("c_" + id, list.length); };
   fill("zN", by("nuevo"), "Sin pedidos nuevos");
   fill("zP", by("prep"), "Nada en preparación");
   fill("zL", by("listo"), ROLE === "meseros" ? "Nada listo por servir" : "Nada esperando mesero");
   setN("c_all", act.length);
-  if ($("#wait")) { const w = by("listo"); $("#wait").innerHTML = w.length ? w.map((o) => `<div class="mini"><span><b>${o.m}</b>${o.items.reduce((a, i) => a + i.q, 0)} productos</span><span class="t ${mins(o.tUpd) >= 4 ? "r" : ""}" data-t="${o.tUpd}">${ago(o.tUpd)}</span></div>`).join("") : `<div class="none">Nada esperando</div>`; setN("c_wait", w.length); }
+  if ($("#wait")) { const w = by("listo"); $("#wait").innerHTML = w.length ? w.map((o) => `<div class="mini"><span><b>${o.m}</b>${o.items.reduce((a, i) => a + i.q, 0)} productos</span><span class="t ${mins(o.tUpd) >= 4 ? "r" : ""}" data-t="${o.tUpd}">${ago(o.tUpd)}</span>${ROLE === "cocina" ? `<button type="button" class="wb" data-o="${o.id}" data-a="back" aria-label="Regresar el pedido de la mesa ${o.m} a preparación">Regresar</button>` : ""}</div>`).join("") : `<div class="none">Nada esperando</div>`; setN("c_wait", w.length); }
   if ($("#kit")) { const k = act.filter((o) => o.status !== "listo").sort((a, b) => a.t0 - b.t0); $("#kit").innerHTML = k.length ? k.map((o) => `<div class="mini"><span><b>${o.m}</b>${o.status === "prep" ? "Preparando" : "Recibido"}</span><span class="t ${mins(o.t0) >= 15 ? "r" : ""}" data-t="${o.t0}">${ago(o.t0)}</span></div>`).join("") : `<div class="none">Cocina sin pendientes</div>`; setN("c_kit", k.length); }
   if ($("#calls")) {
     const calls = H.calls.slice().sort((a, b) => (a.kind === "alerta" ? 0 : 1) - (b.kind === "alerta" ? 0 : 1) || a.t0 - b.t0);
     const lbl = (c) => c.kind === "cuenta" ? "Pide la cuenta" : c.kind === "alerta" ? `Calificó ${c.stars} de 5: que pase el gerente` : "Llama al mesero";
-    $("#calls").innerHTML = calls.length ? calls.map((c) => `<div class="call ${c.kind}"><span class="m">${c.m}</span><span class="tx">${lbl(c)}${c.text ? `<small>"${esc(c.text)}"</small>` : ""}<small data-t="${c.t0}" data-pre="hace ">hace ${ago(c.t0)}</small></span><button class="btn btn-ink" type="button" data-c="${c.id}">${c.kind === "alerta" ? "Ya pasé" : "Atendido"}</button></div>`).join("") : `<div class="none">Ninguna mesa está llamando</div>`;
+    $("#calls").innerHTML = calls.length ? calls.map((c) => `<div class="call ${c.kind}"><span class="m">${c.m}</span><span class="tx">${lbl(c)}${c.text ? `<small>"${esc(c.text)}"</small>` : ""}<small data-t="${c.t0}" data-pre="hace ">hace ${ago(c.t0)}</small></span>${c.kind === "alerta" && ME && ME.role === "mesero" ? `<span class="gnote">Avísale al gerente</span>` : `<button class="btn btn-ink" type="button" data-c="${c.id}">${c.kind === "alerta" ? "El gerente ya pasó" : "Atendido"}</button>`}</div>`).join("") : `<div class="none">Ninguna mesa está llamando</div>`;
     setN("cC", calls.length);
   }
   if ($("#tables")) $("#tables").innerHTML = H.tables.map((t) => { const al = t.mesero || t.cuenta; return `<button type="button" class="tb ${t.alerta ? "bad" : al ? "al" : t.orders ? "oc" : ""}" data-m="${t.m}" aria-label="Mesa ${t.m}"><b>${t.m}</b><small>${t.alerta ? "Gerente" : t.cuenta ? "Cuenta" : t.mesero ? "Llama" : t.pending ? t.pending + " en curso" : t.orders ? "Servida" : "Libre"}</small>${t.pending && !al && !t.alerta ? '<span class="dt"></span>' : ""}</button>`; }).join("");
@@ -329,12 +335,14 @@ function paint() {
 function tableSheet(m) {
   sheetM = m;
   const os = H.orders.filter((o) => o.m === m && !o.closed);
+  const pendM = os.filter((o) => ["nuevo", "prep", "listo"].includes(o.status)).length;
   const cs = H.calls.filter((c) => c.m === m);
   const st = { nuevo: "Nuevo", prep: "Preparando", listo: "Listo", entregado: "Entregado", cancelado: "Cancelado" };
   $("#sheet").innerHTML = `<button class="x" type="button" id="sx" aria-label="Cerrar">×</button><h3>Mesa ${m}</h3>
     ${cs.length ? `<p class="note" style="color:var(--terra-d);font-weight:800">${cs.map((c) => (c.kind === "cuenta" ? "Pidió la cuenta" : c.kind === "alerta" ? `Calificó ${c.stars} de 5` : "Llamó al mesero") + " hace " + ago(c.t0)).join(" · ")}</p>` : ""}
     ${os.length ? os.map((o) => `<div class="o"><b>#${String(o.n).padStart(3, "0")}</b><span>${st[o.status]} · hace ${ago(o.t0)}${o.who ? " · " + esc(o.who) : ""}</span><ul>${o.items.map((it) => `<li>${it.q} × ${esc(it.n)}${it.note ? " · " + esc(it.note) : ""}</li>`).join("")}</ul></div>`).join("") : `<p class="note">Sin pedidos abiertos en esta mesa.</p>`}
-    <button class="btn ${closeArm === m ? "btn-terra" : "btn-ink"}" type="button" id="closeT">${closeArm === m ? "Toca otra vez para liberar la mesa" : "Cerrar mesa (ya pagaron)"}</button>
+    ${pendM ? `<p class="note" style="color:#9a3624;font-weight:800">Ojo: ${pendM} ${pendM === 1 ? "pedido no se ha entregado" : "pedidos no se han entregado"}. Si cierras, se quitan de cocina.</p>` : ""}
+    <button class="btn ${closeArm === m ? "btn-terra" : "btn-ink"}" type="button" id="closeT">${closeArm === m ? (pendM ? "Toca otra vez para cerrar de todos modos" : "Toca otra vez para liberar la mesa") : "Cerrar mesa (ya pagaron)"}</button>
     <p class="note">Al cerrarla, la mesa queda libre: la entrada la ve para llamar al siguiente de la lista de espera, y el QR empieza desde cero.</p>`;
   $("#scrim").classList.add("on");
 }
@@ -373,13 +381,13 @@ document.addEventListener("click", async (e) => {
       setTimeout(() => { if (b.isConnected) { b.classList.remove("sure"); b.textContent = "Cancelar"; } }, 4000);
       return;
     }
-    if (b.dataset.o) { H = await api("/host/order", { pin, body: { id: b.dataset.o, action: b.dataset.a } }); paint(); }
+    if (b.dataset.o) { const z = b.closest("[id]"); if (z && z._t && Date.now() - z._t < 500) return; H = await api("/host/order", { pin, body: { id: b.dataset.o, action: b.dataset.a } }); paint(); }
     else if (b.dataset.c) { H = await api("/host/call", { pin, body: { id: b.dataset.c } }); paint(); }
     else if (b.dataset.m) tableSheet(+b.dataset.m);
     else if (b.id === "sx") closeSheet();
     else if (b.id === "closeT") {
       if (closeArm !== sheetM) { closeArm = sheetM; tableSheet(sheetM); setTimeout(() => { if (closeArm) { closeArm = 0; if (sheetM) tableSheet(sheetM); } }, 4000); return; }
-      const m = sheetM; H = await api("/host/table", { pin, body: { m, action: "close" } }); closeSheet(); paint(); toast(`Mesa ${m} libre`);
+      const m = sheetM; H = await api("/host/table", { pin, body: { m, action: "close", force: true } }); closeSheet(); paint(); toast(`Mesa ${m} libre`);
     }
   } catch (x) { toast(x.message); }
 });

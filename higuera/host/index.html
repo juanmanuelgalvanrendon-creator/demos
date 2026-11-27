@@ -63,6 +63,8 @@ body{min-height:100vh;min-height:100dvh;padding-bottom:40px}
 .card .acts .btn{height:44px;padding:0 16px;font-size:14px}
 .card .more{grid-column:2/-1;display:flex;gap:14px;font-size:12.5px;font-weight:700;color:var(--mut);flex-wrap:wrap}
 .card .more button{min-height:40px;padding:0 6px;text-decoration:underline;text-underline-offset:3px;color:var(--mut);font-weight:700}
+.drow .undo,.cdel{min-height:36px;padding:0 10px;margin-left:6px;border-radius:10px;font-weight:800;font-size:13px;box-shadow:inset 0 0 0 1.5px var(--line2)}
+.cdel.sure{background:#9a3624;color:#fff;box-shadow:none}
 .card .more button.sure{background:#9a3624;color:#fff;text-decoration:none;border-radius:10px;padding:0 12px}
 .tag{font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:99px;background:var(--ok-l);color:var(--ok);white-space:nowrap}
 .tag.w{background:var(--terra-l);color:var(--terra-d)}
@@ -147,8 +149,8 @@ body:not([data-me="dueno"]):not([data-me="gerente"]) .tabs [data-t="clientes"],b
     <img src="../img/logo-sm.png" alt="Higuera" width="110" height="40" style="height:40px;width:auto;margin:0 auto">
     <h1 id="gt">Panel del equipo</h1>
     <p id="gp">Escribe tu PIN personal.</p>
-    <input type="text" class="in" id="pin" inputmode="numeric" autocomplete="off" maxlength="6" placeholder="····" aria-label="Tu PIN">
-    <p class="err" id="gerr"></p>
+    <input type="password" class="in" id="pin" inputmode="numeric" autocomplete="off" maxlength="6" placeholder="····" aria-label="Tu PIN">
+    <p class="err" id="gerr" role="alert"></p>
     <button class="btn btn-ink btn-block" type="submit" id="gbtn">Entrar</button>
   </form>
 </div>
@@ -270,8 +272,8 @@ body:not([data-me="dueno"]):not([data-me="gerente"]) .tabs [data-t="clientes"],b
           <li><span><b>Si la cocina se satura</b>, apaga «Lista abierta» arriba: nadie nuevo puede anotarse en línea hasta que la vuelvas a abrir.</span></li>
           <li><span><b>La lista se cierra sola</b> antes de la hora de cierre y se vacía al día siguiente; el resumen de cada día se queda guardado.</span></li>
           <li><span><b>Los números del día</b> están en «Resumen»: cuántos se anotaron, espera promedio y a qué hora se llenó.</span></li>
-          <li><span><b>La carta del QR se maneja desde aquí:</b> en «Carta y avisos» pones un aviso del día, cambias el platillo destacado y marcas lo que se acabó. Todo aparece al instante en el celular de los clientes en su mesa. Los pedidos y llamados se atienden en la pantalla «Pedidos» y el club en «Club y mesas».</span></li>
-          <li><span><b>El PIN</b> lo comparte el equipo. Si alguien lo escribe mal 5 veces, el panel espera un minuto.</span></li>
+          <li><span><b>La carta del QR se maneja desde aquí:</b> en «Carta y avisos» pones un aviso del día, cambias el platillo destacado y marcas lo que se acabó. Todo aparece al instante en el celular de los clientes en su mesa. Los pedidos y llamados se atienden en «Cocina» y «Meseros», y el club en «Gerencia».</span></li>
+          <li><span><b>Cada persona entra con su propio PIN.</b> Si alguien lo escribe mal varias veces, ese aparato espera unos minutos antes de dejar intentar otra vez.</span></li>
         </ol>
       </div>
     </div>
@@ -305,7 +307,11 @@ async function login(p, silent) {
     pin = r.tok; ME = r.user; document.body.dataset.me = r.user.role; $("#gate").classList.add("hide");
     H = r.state; first = true; paint(); start();
     
-  } catch (e) { if (e.denied) return; if (!silent) $("#gerr").textContent = e.message; store.set("pin", null); }
+  } catch (e) {
+    if (e.denied) return;
+    if (e.status === 401 || !silent) { if (!silent) $("#gerr").textContent = e.message; if (e.status === 401) store.set("pin", null); return; }
+    $("#gerr").textContent = "Reconectando…"; setTimeout(() => login(p, true), 3000);
+  }
 }
 $("#gf").addEventListener("submit", (e) => { e.preventDefault(); unlockAudio(); const p = $("#pin").value.replace(/\D/g, ""); if (p.length < 4) { $("#gerr").textContent = "Escribe al menos 4 números."; return; } login(p); });
 
@@ -400,13 +406,15 @@ function paint() {
 
   const fresh = q.filter((e) => !known.has(e.id) && e.src === "qr");
   if (!first && fresh.length) { beep(1); toast("Nuevo en la lista: " + fresh.map((e) => e.name + " · " + e.size).join(", ")); try { navigator.vibrate && navigator.vibrate(120); } catch (x) {} }
-  $("#list").innerHTML = q.length ? q.map(card).join("") : `<div class="empty"><b>Sin espera</b>Cuando alguien escanee el QR aparecerá aquí al instante.</div>`;
+  // repintar solo si algo cambió, para no borrar una confirmación a medio tocar
+  const lh = q.length ? q.map(card).join("") : `<div class="empty"><b>Sin espera</b>Cuando alguien escanee el QR aparecerá aquí al instante.</div>`;
+  const L0 = $("#list"); if (L0._h !== lh) { L0.innerHTML = lh; L0._h = lh; }
   known = new Set(q.map((e) => e.id));
   if (view === "sitio") siteForm(false);
   first = false;
 
   const stt = { seated: "Se sentó", noshow: "No llegó", cancelled: "Salió de la lista" };
-  $("#done").innerHTML = H.done.length ? `<h3>Hace rato</h3>` + H.done.slice(0, 8).map((e) => `<div class="drow"><span>${esc(e.code)} · ${esc(e.name)} · ${e.size}p</span><span>${stt[e.status] || e.status}${e.status === "seated" ? " tras " + Math.max(1, Math.round((e.tDone - e.t0) / 60000)) + " min" : ""}</span></div>`).join("") : "";
+  $("#done").innerHTML = H.done.length ? `<h3>Hace rato</h3>` + H.done.slice(0, 8).map((e) => `<div class="drow"><span>${esc(e.code)} · ${esc(e.name)} · ${e.size}p</span><span>${stt[e.status] || e.status}${e.status === "seated" ? " tras " + Math.max(1, Math.round((e.tDone - e.t0) / 60000)) + " min" : ""}${(e.status === "seated" || e.status === "noshow") && Date.now() - e.tDone < 10 * 60000 ? ` <button type="button" class="undo" data-a="back" data-id="${e.id}">Deshacer</button>` : ""}</span></div>`).join("") : "";
 
   const t = H.today;
   $("#today").innerHTML = [[t.joined, "Grupos se anotaron"], [t.people, "Personas sentadas"], [t.avgWait ? t.avgWait + "′" : "–", "Espera promedio"], [t.seated, "Mesas sentadas"], [t.lost, "Se fueron"], [t.pushed || 0, "Activaron el aviso"]].map(([n, l]) => `<div><div class="n">${n}</div><div class="l">${l}</div></div>`).join("");
@@ -430,14 +438,23 @@ setInterval(() => {
 async function loadContacts() {
   try {
     const { rows } = await api("/host/contacts", { pin });
-    $("#cTable").innerHTML = rows.length ? `<table><tr><th>Nombre</th><th>WhatsApp</th><th>Visitas</th><th>Última</th></tr>${rows.slice(0, 50).map((r) => `<tr><td>${esc(r.name)}</td><td>${r.phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3")}</td><td>${r.visits}</td><td>${r.last.slice(5).split("-").reverse().join("/")}</td></tr>`).join("")}</table>${rows.length > 50 ? `<p class="s">Se muestran los 50 más recientes; el CSV trae a todos.</p>` : ""}` : "";
+    $("#cTable").innerHTML = rows.length ? `<table><tr><th>Nombre</th><th>WhatsApp</th><th>Visitas</th><th>Última</th><th></th></tr>${rows.slice(0, 50).map((r) => `<tr><td>${esc(r.name)}</td><td>${esc(r.phone).replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3")}</td><td>${r.visits}</td><td>${esc(r.last).slice(5).split("-").reverse().join("/")}</td><td><button type="button" class="cdel" data-cdel="${esc(r.phone)}">Borrar</button></td></tr>`).join("")}</table>${rows.length > 50 ? `<p class="s">Se muestran los 50 más recientes; el CSV trae a todos.</p>` : ""}` : "";
     return rows;
   } catch (e) { toast(e.message); return []; }
 }
 
 /* ---------- eventos ---------- */
 async function setting(body, msg) { try { H = await api("/host/settings", { pin, body }); paint(); if (msg) toast(msg); } catch (x) { toast(x.message); } }
+let cdelArm = "";
 document.addEventListener("click", async (e) => {
+  const cd = e.target.closest("[data-cdel]");
+  if (cd) {
+    const ph = cd.dataset.cdel;
+    if (cdelArm !== ph) { cdelArm = ph; cd.textContent = "¿Borrar? Toca otra vez"; cd.classList.add("sure"); setTimeout(() => { if (cdelArm === ph) { cdelArm = ""; loadContacts(); } }, 4000); return; }
+    cdelArm = "";
+    try { await api("/host/contacts", { pin, body: { action: "delete", phone: ph } }); toast("Contacto borrado"); H.contacts = Math.max(0, (H.contacts || 1) - 1); loadContacts(); } catch (x) { toast(x.message); }
+    return;
+  }
   const cn = e.target.closest("[data-callnext]"); if (cn) { cn.disabled = true; await act(cn.dataset.callnext, "call", +cn.dataset.mesa); return; }
   const dm = e.target.closest("[data-dismiss]"); if (dm) { try { H = await api("/host/freed", { pin, body: { m: +dm.dataset.dismiss } }); paint(); } catch (x) { toast(x.message); } return; }
   const b = e.target.closest("[data-a]");
@@ -462,7 +479,8 @@ document.addEventListener("click", async (e) => {
   if (e.target.closest("#csv")) {
     const rows = await loadContacts();
     if (!rows.length) { toast("Todavía no hay clientes en la lista"); return; }
-    const csv = "﻿nombre,whatsapp,visitas,primera_visita,ultima_visita\n" + rows.map((x) => `"${x.name.replace(/"/g, "'")}",${x.phone},${x.visits},${x.first},${x.last}`).join("\n");
+    const cell = (v) => '"' + String(v ?? "").replace(/"/g, "'").replace(/^([=+\-@\t\r])/, "'$1") + '"';
+    const csv = "﻿nombre,whatsapp,visitas,primera_visita,ultima_visita\n" + rows.map((x) => [x.name, x.phone, x.visits, x.first, x.last].map(cell).join(",")).join("\n");
     const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" })); a.download = "higuera-clientes.csv"; a.click();
     return;
   }
@@ -487,7 +505,7 @@ function siteForm(force) {
   $("#sSeasonSw").classList.toggle("on", SF.on); $("#sSeasonTxt").textContent = SF.on ? "Visible" : "Oculto";
   $("#sPhotos").innerHTML = CARTA.PHOTOS.map(([k, n]) => `<button type="button" data-ph="${k}" class="${SF.img === k ? "on" : ""}" aria-label="${n}" title="${n}"><img src="../img/${k}.webp" alt=""></button>`).join("");
   $("#sPrevImg").src = "../img/" + SF.img + ".webp"; $("#sPrevT").textContent = $("#sTitle").value || "Nombre del platillo"; $("#sPrevP").textContent = $("#sText").value;
-  $("#sSold").innerHTML = CARTA.CATS.map((c) => `<div><h4>${c.es}</h4><div class="chips">${CARTA.ITEMS.filter((x) => x.cat === c.id).map((x) => `<button type="button" data-sold="${x.id}" class="${soldSel.includes(x.id) ? "on" : ""}" aria-pressed="${soldSel.includes(x.id)}">${esc(x.n)}</button>`).join("")}</div></div>`).join("");
+  $("#sSold").innerHTML = CARTA.CATS.map((c) => `<div><h4>${c.es}</h4><div class="chips">${CARTA.ITEMS.filter((x) => x.cat === c.id).map((x) => `<button type="button" data-sold="${esc(x.n)}" class="${soldSel.includes(x.n) ? "on" : ""}" aria-pressed="${soldSel.includes(x.n)}">${esc(x.n)}</button>`).join("")}</div></div>`).join("");
 }
 async function saveSite(body, msg) { try { H = await api("/host/site", { pin, body }); paint(); siteForm(true); if (msg) toast(msg); } catch (e) { toast(e.message); } }
 document.addEventListener("input", (e) => { if (e.target.id === "sTitle" || e.target.id === "sText") { $("#sPrevT").textContent = $("#sTitle").value || "Nombre del platillo"; $("#sPrevP").textContent = $("#sText").value; } });

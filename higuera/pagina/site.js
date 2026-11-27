@@ -1,5 +1,6 @@
 /* Higuera · página — encabezado, menú móvil, pie, idioma y horario (compartido). Sin lista de espera ni sistema. */
 (() => {
+document.documentElement.classList.add("js");
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const R = "/higuera/pagina/";
@@ -163,5 +164,5 @@ if (lang !== "es") setLang(lang); else hello();
 reveal();
 addEventListener("scroll", onScroll, { passive: true }); addEventListener("resize", onScroll);
 onScroll(); setInterval(hello, 60000);
-const cover = $("#cover"); if (cover) { if (sessionStorage.getItem("hg_intro")) cover.remove(); else { sessionStorage.setItem("hg_intro", "1"); setTimeout(() => cover.classList.add("out"), 1100); } }
+const cover = $("#cover"); if (cover) { try { if (sessionStorage.getItem("hg_intro")) cover.remove(); else { sessionStorage.setItem("hg_intro", "1"); setTimeout(() => cover.classList.add("out"), 1100); } } catch (e) { cover.remove(); } }
 })();

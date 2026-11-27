@@ -153,7 +153,7 @@ export class Fila {
     // restablecer el PIN del equipo: al cambiar esta marca, el PIN se borra una sola vez
     // y el siguiente que entre al panel crea uno nuevo
     if (this.s.pinReset !== PIN_RESET) {
-      this.s.pinHash = null; this.s.pinReset = PIN_RESET; this.lockUntil = 0; this.fails = 0;
+      this.s.pinHash = null; this.s.pinReset = PIN_RESET; this.lockUntil = 0; this.fails = 0; this.s.setupDone = false;
       try { this.sql().exec("DELETE FROM users"); this.sql().exec("DELETE FROM sessions"); } catch (e) {}
       await this.ctx.storage.put("s", this.s);
     }
@@ -163,6 +163,8 @@ export class Fila {
       this.s.pinHash = null;
       await this.ctx.storage.put("s", this.s);
     }
+    // en cuanto existe la cuenta del dueño, el alta queda cerrada para siempre (solo Code Nova la reabre con PIN_RESET)
+    if (!this.s.setupDone && this.sql().exec("SELECT COUNT(*) AS n FROM users").one().n) { this.s.setupDone = true; await this.ctx.storage.put("s", this.s); }
     this.s.mesas = { ...base.mesas, ...(this.s.mesas || {}) };
     if (this.s.site && this.s.site.season && /lo cambia cuando quiera/.test(this.s.site.season.text || "")) this.s.site.season.text = base.site.season.text;
     this.ensureKeys();
@@ -175,6 +177,7 @@ export class Fila {
     if (!this.sqlReady) {
       this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS contacts (phone TEXT PRIMARY KEY, name TEXT, first TEXT, last TEXT, visits INTEGER DEFAULT 1)");
       this.ctx.storage.sql.exec("DROP TABLE IF EXISTS requests");
+      this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS hits (k TEXT, t INTEGER)");
       this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, name TEXT, role TEXT, pinHash TEXT UNIQUE, created INTEGER, active INTEGER DEFAULT 1, last INTEGER)");
       this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS sessions (tok TEXT PRIMARY KEY, uid TEXT, created INTEGER, last INTEGER)");
       this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS activity (t INTEGER, day TEXT, uid TEXT, who TEXT, role TEXT, kind TEXT, txt TEXT)");
@@ -190,6 +193,21 @@ export class Fila {
       "INSERT INTO contacts (phone,name,first,last,visits) VALUES (?,?,?,?,1) ON CONFLICT(phone) DO UPDATE SET name=excluded.name, visits=visits+(CASE WHEN last<>excluded.last THEN 1 ELSE 0 END), last=excluded.last",
       e.phone, e.name, d, d,
     );
+  }
+  // cuántas veces pasó algo (por clave) en una ventana de tiempo; se guarda en SQL
+  hitCount(k, ms) { try { return this.sql().exec("SELECT COUNT(*) AS n FROM hits WHERE k=? AND t>?", k, Date.now() - ms).one().n; } catch (e) { return 0; } }
+  hitAdd(k) { try { this.sql().exec("INSERT INTO hits (k,t) VALUES (?,?)", k, Date.now()); if (Math.random() < 0.05) this.sql().exec("DELETE FROM hits WHERE t<?", Date.now() - 86400000); } catch (e) {} }
+  hitClear(k) { try { this.sql().exec("DELETE FROM hits WHERE k=?", k); } catch (e) {} }
+  // nombres de la carta (para no aceptar platillos inventados); si no se puede leer, no bloquea
+  async cartaNames() {
+    if (this._carta !== undefined) return this._carta;
+    try {
+      const r = await this.env.ASSETS.fetch(new Request("https://assets.local/higuera/carta.js"));
+      const t = await r.text();
+      const names = [...t.matchAll(/\[\s*"([^"]+)",\s*"(desayunos|toasts|cafe|bebidas)"/g)].map((x) => x[1]);
+      this._carta = names.length > 10 ? new Set(names) : null;
+    } catch (e) { this._carta = null; }
+    return this._carta;
   }
   contactCount() { try { return this.sql().exec("SELECT COUNT(*) AS n FROM contacts").one().n; } catch (e) { return 0; } }
 
@@ -322,7 +340,10 @@ export class Fila {
   hostState(role) {
     const full = this.hostStateFull();
     if (!role || MGR.includes(role)) return full;
-    return { ...full, history: [], contacts: 0, reviews: [], promos: [], club: { members: 0 }, mesas: { ...full.mesas, keys: {} } };
+    const out = { ...full, history: [], contacts: 0, reviews: [], promos: [], club: { members: 0 }, mesas: { ...full.mesas, keys: {} } };
+    if (role === "cocina") { out.queue = []; out.done = []; out.freed = []; out.calls = []; out.today = {}; }
+    if (role === "entrada") { out.orders = []; out.calls = []; }
+    return out;
   }
   hostStateFull() {
     const s = this.s;
@@ -464,8 +485,11 @@ export class Fila {
   seedDemo() {
     const s = this.s, now = Date.now(), M = s.mesas;
     s.entries = []; s.counter = 0; s.open = true; s.orders = []; s.calls = []; s.orderSeq = 0; s.reviews = []; s.freed = []; s.promos = [];
-    M.onlyHours = false; M.on = true; M.mode = "pedir";
-    try { this.sql().exec("DELETE FROM members"); this.sql().exec("DELETE FROM activity"); } catch (e) {}
+    M.onlyHours = false; M.on = true; M.mode = "pedir"; M.rewardText = "Tu latte va por la casa"; M.rewardVisits = 5;
+    M.reviewUrl = "https://www.google.com/maps/search/?api=1&query=Cocina%20Higuera%20San%20Pedro%20Garza%20Garc%C3%ADa";
+    s.site = { notice: "", season: { on: true, title: "Buttermilk waffle con moras", text: "Waffle de buttermilk con moras frescas.", img: "waffle" }, soldout: [], soldDay: "" };
+    s.staff = [];
+    try { this.sql().exec("DELETE FROM members"); this.sql().exec("DELETE FROM activity"); this.sql().exec("DELETE FROM contacts"); } catch (e) {}
     [["Mariana", 2, "terraza", ["bebe"]], ["Diego", 4, "interior", []], ["Sofía", 3, "any", ["mascota"]], ["Rodrigo", 2, "barra", []]].forEach(([n, sz, z, nd], i) => {
       const r = this.newEntry({ name: n, size: sz, zone: z, needs: nd, demo: true }, "demo"); r.e.t0 = now - (4 - i) * 5 * 60000;
     });
@@ -503,6 +527,7 @@ export class Fila {
       try { const a = ws.deserializeAttachment() || {}; if (a.uid === uid) { ws.send('{"t":"err","d":"Sesión terminada"}'); ws.close(4001, "sesion"); } } catch (e) {}
     }
   }
+  dropStaffPush(uid) { const n = (this.s.staff || []).length; this.s.staff = (this.s.staff || []).filter((x) => x.uid !== uid); if (this.s.staff.length !== n) this.ctx.storage.put("s", this.s); }
   async pinHashOf(pin) { return sha(this.s.salt + ":" + String(pin || "")); }
   async pinTaken(hash, exceptId) { return this.sql().exec("SELECT id FROM users WHERE pinHash=? AND id<>?", hash, exceptId || "").toArray().length > 0; }
   newSession(u) {
@@ -537,7 +562,7 @@ export class Fila {
     s.counter++;
     const e = {
       id: rid(), code: (this.cfg.prefix || "H") + "-" + String(s.counter).padStart(3, "0"), name, size,
-      phone: digits(b.phone), zone: zones.includes(b.zone) ? b.zone : "any", optin: !!b.optin,
+      phone: this.cfg.demo ? "" : digits(b.phone), zone: zones.includes(b.zone) ? b.zone : "any", optin: !!b.optin,
       needs: Array.isArray(b.needs) ? b.needs.filter((x) => NEEDS.includes(x)) : [],
       note: clean(b.note, 80),
       status: "waiting", t0: Date.now(), src, demo: !!b.demo,
@@ -620,6 +645,7 @@ export class Fila {
     const room = url.searchParams.get("room");
     await this.load(room);
     this.rollDay();
+    if (this.cfg.demo && this.s.demoSeed !== this.s.day) { this.seedDemo(); await this.ctx.storage.put("s", this.s); }
     const p = url.pathname;
     const method = request.method;
 
@@ -650,14 +676,15 @@ export class Fila {
       const size = parseInt(body.size, 10) || 2;
       if (size > this.s.maxSize) return json({ error: `Para grupos de más de ${this.s.maxSize} personas, pregunta directamente en la entrada.` }, 400);
       // mismo WhatsApp ya en la lista: regresamos su turno en vez de duplicarlo
-      const ph = digits(body.phone);
+      const ph = this.cfg.demo ? "" : digits(body.phone);
+      const ipH = (await sha(this.s.salt + (request.headers.get("x-ip") || ""))).slice(0, 16);
       if (ph) {
         const dup = this.queue().find((e) => e.phone === ph);
-        if (dup) return json({ id: dup.id, code: dup.code, existing: true });
+        if (dup && dup.ipH === ipH) return json({ id: dup.id, code: dup.code, existing: true });
+        if (dup) return json({ error: "Ese WhatsApp ya está en la lista. Pregunta en la entrada." }, 409);
       }
-      // límite por conexión para evitar que alguien llene la lista
-      const ipH = (await sha(this.s.salt + (request.headers.get("x-ip") || ""))).slice(0, 16);
-      if (request.headers.get("x-ip") && this.queue().filter((e) => e.ipH === ipH).length >= 3) return json({ error: "Ya hay varios turnos anotados desde este celular. Pregunta en la entrada." }, 429);
+      // límite por conexión para evitar que alguien llene la lista (el WiFi del lugar lo comparten muchos)
+      if (request.headers.get("x-ip") && this.queue().filter((e) => e.ipH === ipH).length >= 12) return json({ error: "Ya hay varios turnos anotados desde este celular. Pregunta en la entrada." }, 429);
       const r = this.newEntry(body, "qr");
       if (r.error) return json({ error: r.error }, 400);
       r.e.ipH = ipH;
@@ -694,14 +721,18 @@ export class Fila {
       if (!M.on) return json({ error: "Los pedidos desde la mesa están pausados. Llama al mesero, por favor." }, 409);
       if (M.mode !== "pedir") return json({ error: "En este momento el mesero toma tu orden. Usa el botón de llamar al mesero." }, 409);
       const sold = this.siteState().soldout;
-      const items = (Array.isArray(body.items) ? body.items : []).slice(0, 30).map((it) => ({ n: clean(it.n, 60), q: Math.max(1, Math.min(20, parseInt(it.q, 10) || 1)), note: clean(it.note, 80) })).filter((it) => it.n);
+      const cid = clean(body.cid, 24);
+      const dupO = cid && this.s.orders.find((o) => o.cid === cid && o.m === m);
+      if (dupO) return json({ ok: true, order: this.orderView(dupO), member: null, visit: false, again: true });
+      const carta = await this.cartaNames();
+      const items = (Array.isArray(body.items) ? body.items : []).slice(0, 30).map((it) => ({ n: clean(it.n, 60), q: Math.max(1, Math.min(20, parseInt(it.q, 10) || 1)), note: clean(it.note, 80) })).filter((it) => it.n && (!carta || carta.has(it.n)));
       if (!items.length) return json({ error: "Tu pedido está vacío." }, 400);
       const gone = items.find((it) => sold.includes(it.n));
       if (gone) return json({ error: gone.n + " se agotó hoy. Quítalo de tu pedido, por favor." }, 409);
       const ipH = await this.ipHash(request);
-      if (request.headers.get("x-ip") && this.s.orders.filter((o) => o.ipH === ipH && Date.now() - o.t0 < 10 * 60000).length >= 6) return json({ error: "Ya enviaste varios pedidos seguidos. Llama al mesero si necesitas algo más." }, 429);
+      if (this.s.orders.filter((o) => o.m === m && Date.now() - o.t0 < 10 * 60000).length >= 8) return json({ error: "Esta mesa ya envió varios pedidos seguidos. Llama al mesero si necesitas algo más." }, 429);
       this.s.orderSeq++;
-      const o = { id: rid(), n: this.s.orderSeq, m, items, note: clean(body.note, 120), status: "nuevo", t0: Date.now(), tUpd: Date.now(), ipH };
+      const o = { id: rid(), n: this.s.orderSeq, m, items, note: clean(body.note, 120), status: "nuevo", t0: Date.now(), tUpd: Date.now(), ipH, cid: cid || undefined };
       const r = this.memberRow(body.mid, body.mt);
       let visit = false;
       if (r) { o.mid = r.id; o.who = (r.name || "").split(" ")[0]; visit = this.visitFor(r); }
@@ -739,7 +770,7 @@ export class Fila {
       let r = s.reviews.find((x) => x.m === m && !x.closed && x.ipH === ipH);
       const mem = this.memberRow(body.mid, body.mt);
       if (!r) {
-        if (request.headers.get("x-ip") && s.reviews.filter((x) => x.ipH === ipH && Date.now() - x.t < 3600000).length >= 4) return json({ error: "Ya recibimos tu calificación, gracias." }, 429);
+        if (request.headers.get("x-ip") && s.reviews.filter((x) => x.m === m && x.ipH === ipH && Date.now() - x.t < 3600000).length >= 4) return json({ error: "Ya recibimos tu calificación, gracias." }, 429);
         r = { id: rid(), m, t: Date.now(), day: s.day, ipH };
         s.reviews.push(r);
       }
@@ -762,14 +793,15 @@ export class Fila {
       if (name.length < 2) return json({ error: "Escribe tu nombre." }, 400);
       if (phone.length !== 10) return json({ error: "Escribe tu WhatsApp a 10 dígitos." }, 400);
       if (!body.privacy) return json({ error: "Acepta el aviso de privacidad para unirte." }, 400);
-      const ex = this.sql().exec("SELECT id FROM members WHERE phone=?", phone).toArray()[0];
+      const jk = "join:" + (await this.ipHash(request));
+      if (request.headers.get("x-ip") && this.hitCount(jk, 3600000) >= 10) return json({ error: "Demasiados intentos desde este celular. Intenta más tarde." }, 429);
+      this.hitAdd(jk);
+      // en la demostración no se guardan números reales
+      const realPhone = this.cfg.demo ? "81" + String(Math.floor(Math.random() * 1e8)).padStart(8, "0") : phone;
+      const ex = this.sql().exec("SELECT id FROM members WHERE phone=?", realPhone).toArray()[0];
       if (ex) return json({ error: "Ese número ya tiene tarjeta del club. Pide en barra un código para recuperarla en este celular.", exists: true }, 409);
-      const ipH = await this.ipHash(request);
-      this.joinIps = (this.joinIps || []).filter((x) => Date.now() - x.t < 3600000);
-      if (request.headers.get("x-ip") && this.joinIps.filter((x) => x.h === ipH).length >= 5) return json({ error: "Demasiados registros desde este celular. Intenta más tarde." }, 429);
-      this.joinIps.push({ h: ipH, t: Date.now() });
       const id = rid(), tok = rid() + rid();
-      this.sql().exec("INSERT INTO members (id,tok,phone,name,created,visits,total,lastDay,optin) VALUES (?,?,?,?,?,0,0,'',?)", id, tok, phone, name, Date.now(), body.optin ? 1 : 0);
+      this.sql().exec("INSERT INTO members (id,tok,phone,name,created,visits,total,lastDay,optin) VALUES (?,?,?,?,?,0,0,'',?)", id, tok, realPhone, name, Date.now(), body.optin ? 1 : 0);
       const r = this.memberRow(id, tok);
       // si se registra desde una mesa, esa visita ya cuenta
       if (this.tableOk(body.m, body.k)) this.visitFor(r);
@@ -799,7 +831,7 @@ export class Fila {
       const r = this.sql().exec("SELECT * FROM members WHERE phone=?", phone).toArray()[0];
       if (!r || !r.rcode || r.rexp < Date.now() || r.rcode !== code) {
         // tras 5 intentos fallidos el código se invalida y hay que pedir otro
-        if (r && r.rcode) { this.recFails = this.recFails || {}; this.recFails[r.id] = (this.recFails[r.id] || 0) + 1; if (this.recFails[r.id] >= 5) { this.sql().exec("UPDATE members SET rcode=NULL, rexp=NULL WHERE id=?", r.id); this.recFails[r.id] = 0; } }
+        if (r && r.rcode) { this.hitAdd("rec:" + r.id); if (this.hitCount("rec:" + r.id, 15 * 60000) >= 5) { this.sql().exec("UPDATE members SET rcode=NULL, rexp=NULL WHERE id=?", r.id); this.hitClear("rec:" + r.id); } }
         return json({ error: "El código no es correcto o ya venció. Pide uno nuevo en barra." }, 400);
       }
       const tok = rid() + rid();
@@ -861,26 +893,29 @@ export class Fila {
     if (p === "/auth/info" && method === "GET") return json({ hasOwner: this.cfg.demo ? true : this.userCount() > 0, demo: !!this.cfg.demo, name: this.s.name });
     if (this.cfg.demo && method === "POST" && (p === "/auth/setup" || p === "/auth/login" || p === "/host/users")) return json({ error: "En la demostración no se crean cuentas ni se entra con PIN." }, 403);
     if (p === "/auth/setup" && method === "POST") {
-      if (this.userCount() > 0) return json({ error: "La cuenta del dueño ya existe. Entra con tu PIN." }, 409);
+      if (this.userCount() > 0 || this.s.setupDone) return json({ error: "La cuenta del dueño ya existe. Entra con tu PIN. Si se perdió, Code Nova la restablece." }, 409);
       const name = clean(body.name, 40), np = String(body.pin || "");
       if (name.length < 2) return json({ error: "Escribe tu nombre." }, 400);
-      if (!/^\d{4,6}$/.test(np)) return json({ error: "El PIN debe ser de 4 a 6 números." }, 400);
+      if (!/^\d{6}$/.test(np)) return json({ error: "El PIN del dueño es de 6 números." }, 400);
       const u = { id: rid(), name, role: "dueno" };
       this.sql().exec("INSERT INTO users (id,name,role,pinHash,created,active) VALUES (?,?,?,?,?,1)", u.id, name, "dueno", await this.pinHashOf(np), Date.now());
+      this.s.setupDone = true; await this.save();
       const tok = this.newSession(u);
       this.logEv(u, "cuenta", "Creó la cuenta del dueño");
       return json({ ok: true, tok, user: this.userView({ ...u, active: 1, created: Date.now() }), state: this.hostState(u.role) });
     }
     if (p === "/auth/login" && method === "POST") {
       if (!this.userCount()) return json({ error: "Todavía no hay cuentas. El dueño debe crear la suya primero.", setup: true }, 409);
-      if (Date.now() < this.lockUntil) return json({ error: "Demasiados intentos. Espera un minuto." }, 429);
+      const lk = "login:" + (await this.ipHash(request));
+      const f10 = this.hitCount(lk, 10 * 60000), f60 = this.hitCount(lk, 3600000), f24 = this.hitCount(lk, 86400000);
+      if (f24 >= 40 || f60 >= 15 || f10 >= 5) return json({ error: f24 >= 40 ? "Demasiados intentos desde este aparato. Intenta mañana o pide ayuda al gerente." : f60 >= 15 ? "Demasiados intentos. Espera 30 minutos." : "Demasiados intentos. Espera unos minutos." }, 429);
       const hash = await this.pinHashOf(String(body.pin || "").replace(/\D/g, ""));
       const u = this.sql().exec("SELECT * FROM users WHERE pinHash=?", hash).toArray()[0];
       if (!u || !u.active) {
-        this.fails++; if (this.fails >= 5) { this.lockUntil = Date.now() + 60000; this.fails = 0; }
+        this.hitAdd(lk);
         return json({ error: u ? "Tu usuario está desactivado. Habla con tu gerente." : "PIN incorrecto" }, 401);
       }
-      this.fails = 0;
+      this.hitClear(lk);
       const tok = this.newSession(u);
       this.logEv(u, "entrada", "Entró al sistema");
       return json({ ok: true, tok, user: this.userView(u), state: this.hostState(u.role) });
@@ -909,10 +944,12 @@ export class Fila {
         if (!e) return json({ error: "No existe" }, 404);
         const now = Date.now();
         let pushed = null;
+        const FROM = { call: ["waiting"], renotify: ["called"], seat: ACTIVE, noshow: ACTIVE, back: ["called", "seated", "noshow"], remove: null };
+        if (FROM[body.action] && !FROM[body.action].includes(e.status)) return json({ ...this.hostState(me.role), stale: true });
         if (body.action === "call" || body.action === "renotify") {
           if (body.action === "call") {
             e.status = "called"; e.tCalled = now; e.calls = 1;
-            this.logEv(me, "llamar", `Llamó a ${e.name}${parseInt(body.mesa, 10) ? " a la mesa " + parseInt(body.mesa, 10) : ""}`);
+            this.logEv(me, "llamar", `Llamó al turno ${e.code}${parseInt(body.mesa, 10) ? " a la mesa " + parseInt(body.mesa, 10) : ""}`);
             const mm = parseInt(body.mesa, 10);
             if (mm >= 1 && mm <= this.s.mesas.count) { e.mesa = mm; this.s.freed = (this.s.freed || []).filter((f) => f.m !== mm); }
           }
@@ -922,7 +959,7 @@ export class Fila {
         }
         else if (body.action === "seat") {
           e.status = "seated"; e.tDone = now; await this.notifyNext();
-          this.logEv(me, "sentar", `Sentó a ${e.name} (${e.size})${e.mesa ? " en la mesa " + e.mesa : ""}`);
+          this.logEv(me, "sentar", `Sentó al turno ${e.code} (${e.size})${e.mesa ? " en la mesa " + e.mesa : ""}`);
           if (e.phone) { const r = this.sql().exec("SELECT * FROM members WHERE phone=?", e.phone).toArray()[0]; if (r && this.visitFor(r)) e.clubVisit = true; }
         }
         else if (body.action === "noshow") { e.status = "noshow"; e.tDone = now; await this.notifyNext(); }
@@ -963,6 +1000,11 @@ export class Fila {
         await this.save();
         return json(this.hostState(me.role));
       }
+      if (p === "/host/contacts" && method === "POST" && body.action === "delete") {
+        this.sql().exec("DELETE FROM contacts WHERE phone=?", digits(body.phone));
+        this.logEv(me, "clientes", "Borró un contacto de la lista de novedades");
+        return json({ ok: true, rows: this.sql().exec("SELECT phone,name,first,last,visits FROM contacts ORDER BY last DESC").toArray() });
+      }
       if (p === "/host/contacts" && method === "GET") {
         const rows = this.sql().exec("SELECT phone,name,first,last,visits FROM contacts ORDER BY last DESC").toArray();
         return json({ rows });
@@ -998,6 +1040,9 @@ export class Fila {
           if (!role) return json({ error: "Elige el puesto." }, 400);
           if (!canTouch(role)) return json({ error: "Solo el dueño puede crear gerentes o dueños." }, 403);
           if (!/^\d{4,6}$/.test(np)) return json({ error: "El PIN debe ser de 4 a 6 números." }, 400);
+          if (MGR.includes(role) && np.length < 6) return json({ error: "Dueño y gerente usan PIN de 6 números." }, 400);
+          if (this.hitCount("pinset:" + me.id, 3600000) >= 12) return json({ error: "Demasiados cambios de PIN seguidos. Intenta en una hora." }, 429);
+          this.hitAdd("pinset:" + me.id);
           const h = await this.pinHashOf(np);
           if (await this.pinTaken(h)) return json({ error: "Ese PIN ya lo usa otra persona. Elige otro." }, 409);
           this.sql().exec("INSERT INTO users (id,name,role,pinHash,created,active) VALUES (?,?,?,?,?,1)", rid(), name, role, h, Date.now());
@@ -1014,21 +1059,26 @@ export class Fila {
         if (a === "update") {
           const name = body.name != null ? clean(body.name, 40) : u.name;
           const nr = role || u.role;
-          if (!canTouch(nr)) return json({ error: "Solo el dueño puede asignar ese puesto." }, 403);
+          if (nr !== u.role && !canTouch(nr)) return json({ error: "Solo el dueño puede asignar ese puesto." }, 403);
           if (lastOwner && (nr !== "dueno" || body.active === false)) return json({ error: "Tiene que haber al menos un dueño activo." }, 409);
           const act = typeof body.active === "boolean" ? (body.active ? 1 : 0) : u.active;
           this.sql().exec("UPDATE users SET name=?, role=?, active=? WHERE id=?", name.length >= 2 ? name : u.name, nr, act, u.id);
-          if (!act) { this.sql().exec("DELETE FROM sessions WHERE uid=?", u.id); this.kickUser(u.id); }
+          if (!act) { this.sql().exec("DELETE FROM sessions WHERE uid=?", u.id); this.kickUser(u.id); this.dropStaffPush(u.id); }
+          else if (nr !== u.role) { this.kickUser(u.id); this.dropStaffPush(u.id); }
           this.logEv(me, "equipo", `Actualizó a ${u.name}${nr !== u.role ? ": ahora es " + ROLE_NAMES[nr] : ""}${act !== u.active ? (act ? " (reactivado)" : " (desactivado)") : ""}`);
           return json({ ok: true });
         }
         if (a === "pin") {
           const np = String(body.pin || "");
           if (!/^\d{4,6}$/.test(np)) return json({ error: "El PIN debe ser de 4 a 6 números." }, 400);
+          if (MGR.includes(u.role) && np.length < 6) return json({ error: "Dueño y gerente usan PIN de 6 números." }, 400);
+          if (this.hitCount("pinset:" + me.id, 3600000) >= 12) return json({ error: "Demasiados cambios de PIN seguidos. Intenta en una hora." }, 429);
+          this.hitAdd("pinset:" + me.id);
           const h = await this.pinHashOf(np);
           if (await this.pinTaken(h, u.id)) return json({ error: "Ese PIN ya lo usa otra persona. Elige otro." }, 409);
           this.sql().exec("UPDATE users SET pinHash=? WHERE id=?", h, u.id);
           this.sql().exec("DELETE FROM sessions WHERE uid=? AND tok<>?", u.id, String(request.headers.get("x-pin") || ""));
+          if (u.id !== me.id) this.kickUser(u.id);
           this.logEv(me, "equipo", `Cambió el PIN de ${u.name}`);
           return json({ ok: true });
         }
@@ -1037,7 +1087,7 @@ export class Fila {
           if (lastOwner) return json({ error: "Tiene que haber al menos un dueño." }, 409);
           this.sql().exec("DELETE FROM users WHERE id=?", u.id);
           this.sql().exec("DELETE FROM sessions WHERE uid=?", u.id);
-          this.kickUser(u.id);
+          this.kickUser(u.id); this.dropStaffPush(u.id);
           this.logEv(me, "equipo", `Borró a ${u.name} (${ROLE_NAMES[u.role]})`);
           return json({ ok: true });
         }
@@ -1053,12 +1103,13 @@ export class Fila {
       // ---- avisos en el celular del equipo ----
       if (p === "/host/push/sub" && method === "POST") {
         const role = ["cocina", "meseros", "gerente"].includes(body.role) ? body.role : "meseros";
+        if (role === "gerente" && !isMgr) return json({ error: "Las alertas de gerencia son para el gerente o el dueño." }, 403);
         let ep;
         try { ep = new URL(body.sub?.endpoint); } catch (x) { return json({ error: "Suscripción inválida" }, 400); }
         if (!this.pushHostOk(ep)) return json({ error: "Servicio de notificaciones no permitido" }, 400);
         // un mismo celular puede recibir avisos de varios puestos (por ejemplo cocina y meseros)
         this.s.staff = (this.s.staff || []).filter((x) => !(x.ep === ep.toString() && x.role === role));
-        this.s.staff.push({ ep: ep.toString(), role, t: Date.now() });
+        this.s.staff.push({ ep: ep.toString(), role, uid: me.id, t: Date.now() });
         this.s.staff = this.s.staff.slice(-40);
         await this.save();
         return json({ ok: true, count: this.s.staff.filter((x) => x.role === role).length });
@@ -1070,6 +1121,7 @@ export class Fila {
       }
       if (p === "/host/push/test" && method === "POST") {
         const role = ["cocina", "meseros", "gerente"].includes(body.role) ? body.role : "meseros";
+        if (role === "gerente" && !isMgr) return json({ error: "Solo gerencia." }, 403);
         this.notifyStaff([role], { title: "Prueba de aviso · " + ({ cocina: "Cocina", meseros: "Meseros", gerente: "Gerencia" })[role], body: "Si ves esto con el celular bloqueado, los avisos funcionan.", url: "/higuera/" + (role === "gerente" ? "club" : role) + "/" });
         return json({ ok: true });
       }
@@ -1088,7 +1140,12 @@ export class Fila {
         if (body.rewardVisits != null) M.rewardVisits = Math.max(2, Math.min(20, parseInt(body.rewardVisits, 10) || 5));
         if (typeof body.rewardText === "string" && clean(body.rewardText, 60)) M.rewardText = clean(body.rewardText, 60);
         if (typeof body.onlyHours === "boolean") M.onlyHours = body.onlyHours;
-        if (typeof body.reviewUrl === "string") { const u = body.reviewUrl.trim(); if (/^https:\/\/[^\s<>"]{6,400}$/.test(u)) M.reviewUrl = u; else return json({ error: "La liga de reseñas debe empezar con https://" }, 400); }
+        if (typeof body.reviewUrl === "string") {
+          if (this.cfg.demo) return json({ error: "En la demostración no se cambia la liga de reseñas." }, 403);
+          const u = body.reviewUrl.trim();
+          if (/^https:\/\/(g\.page|maps\.app\.goo\.gl|goo\.gl|(www\.|search\.|maps\.)?google\.com(\.mx)?)\/[^\s<>"]{0,400}$/.test(u)) M.reviewUrl = u;
+          else return json({ error: "La liga de reseñas debe ser de Google (google.com, g.page o maps.app.goo.gl)." }, 400);
+        }
         if (body.rekey) { const n = parseInt(body.rekey, 10); if (n >= 1 && n <= M.count) M.keys[n] = rid().slice(0, 6); }
         this.ensureKeys();
         await this.save();
@@ -1100,6 +1157,9 @@ export class Fila {
         const now = Date.now(), a = body.action;
         if (me.role === "cocina" && (a === "deliver" || (a === "back" && o.status === "entregado"))) return json({ error: "Entregar a la mesa lo marca el mesero." }, 403);
         if (me.role === "mesero" && !(a === "deliver" || (a === "back" && o.status === "entregado"))) return json({ error: "Eso lo marca la cocina." }, 403);
+        const OKFROM = { start: ["nuevo"], ready: ["nuevo", "prep"], deliver: ["listo", "prep", "nuevo"], cancel: ["nuevo", "prep", "listo"], back: ["prep", "listo", "entregado", "cancelado"] };
+        if (!OKFROM[a]) return json({ error: "Acción no válida" }, 400);
+        if (!OKFROM[a].includes(o.status) || o.closed) return json({ ...this.hostState(me.role), stale: true }); // ya lo cambió otra persona
         const lbl = { start: "Empezó", ready: "Marcó listo", deliver: "Entregó", cancel: "Canceló", back: "Regresó" }[a];
         if (lbl) this.logEv(me, "pedido-" + a, `${lbl} el pedido #${o.n} de la mesa ${o.m}`);
         if (a === "start") o.byPrep = me.name; if (a === "ready") o.byReady = me.name; if (a === "deliver") o.byDel = me.name;
@@ -1107,13 +1167,14 @@ export class Fila {
         else if (a === "ready") { o.status = "listo"; o.tReady = o.tReady || now; this.notifyStaff(["meseros"], { title: "Listo para servir · Mesa " + o.m, body: this.itemsTxt(o.items), url: "/higuera/meseros/" }); }
         else if (a === "deliver") { o.status = "entregado"; o.tReady = o.tReady || now; }
         else if (a === "cancel") o.status = "cancelado";
-        else if (a === "back") o.status = o.status === "entregado" ? "listo" : o.status === "listo" ? "prep" : "nuevo";
+        else if (a === "back") o.status = o.status === "entregado" ? "listo" : o.status === "listo" ? "prep" : o.status === "cancelado" ? "nuevo" : "nuevo";
         o.tUpd = now;
         await this.save();
         return json(this.hostState(me.role));
       }
       if (p === "/host/call" && method === "POST") {
         const c = this.s.calls.find((x) => x.id === body.id);
+        if (c && c.kind === "alerta" && !isMgr) return json({ error: "La alerta la cierra el gerente cuando pasa a la mesa." }, 403);
         if (c && c.status === "open") { c.status = "done"; c.tDone = Date.now(); c.by = me.name; this.logEv(me, "llamado", `Atendió ${c.kind === "cuenta" ? "la cuenta" : c.kind === "alerta" ? "la alerta de calificación" : "el llamado"} de la mesa ${c.m}`); }
         await this.save();
         return json(this.hostState(me.role));
@@ -1123,6 +1184,8 @@ export class Fila {
         if (body.action === "close") {
           // solo se anuncia en la entrada si de verdad había clientes en la mesa
           const busy = this.s.orders.some((o) => o.m === m && !o.closed) || this.s.calls.some((c) => c.m === m && c.status === "open");
+          const pend = this.s.orders.filter((o) => o.m === m && !o.closed && ["nuevo", "prep", "listo"].includes(o.status)).length;
+          if (pend && !body.force) return json({ error: `La mesa ${m} tiene ${pend} ${pend === 1 ? "pedido" : "pedidos"} sin entregar.`, pending: pend }, 409);
           this.logEv(me, "mesa", `Cerró la mesa ${m}`);
           this.s.orders.forEach((o) => { if (o.m === m && !o.closed) { o.closed = true; o.tUpd = now; if (["nuevo", "prep", "listo"].includes(o.status)) o.status = "entregado"; } });
           this.s.calls.forEach((c) => { if (c.m === m && c.status === "open") { c.status = "done"; c.tDone = now; } });
@@ -1152,7 +1215,7 @@ export class Fila {
           if (r.push) await this.pushMember(r, { title: "¡Disfrútalo, " + (r.name || "").split(" ")[0] + "!", body: "Canjeaste tu recompensa del Club " + this.s.name + ". Ya empezaste a juntar visitas para la siguiente.", url: "/higuera/mesa/?tab=club" });
         }
         else if (body.action === "code") {
-          const code = String(Math.floor(100000 + Math.random() * 900000));
+          const code = String(100000 + (crypto.getRandomValues(new Uint32Array(1))[0] % 900000));
           this.sql().exec("UPDATE members SET rcode=?, rexp=? WHERE id=?", code, Date.now() + 15 * 60000, r.id);
           extra = { code };
         }
@@ -1165,7 +1228,8 @@ export class Fila {
         if (!title || !text) return json({ error: "Escribe el título y el mensaje." }, 400);
         const last = (this.s.promos || []).slice(-1)[0];
         if (last && Date.now() - last.t < 60000) return json({ error: "Espera un minuto antes de mandar otra promoción." }, 429);
-        const rows = this.sql().exec("SELECT * FROM members WHERE optin=1 AND push IS NOT NULL").toArray();
+        // en la demostración la promoción se registra pero no se manda a celulares de desconocidos
+        const rows = this.cfg.demo ? [] : this.sql().exec("SELECT * FROM members WHERE optin=1 AND push IS NOT NULL").toArray();
         let ok = 0;
         for (let i = 0; i < rows.length; i += 10) {
           const res = await Promise.all(rows.slice(i, i + 10).map((r) => this.pushMember(r, { title, body: text, url: "/higuera/mesa/?tab=club" })));

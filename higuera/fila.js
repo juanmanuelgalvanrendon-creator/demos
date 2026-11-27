@@ -9,7 +9,9 @@
   async function api(path, opt = {}) {
     const h = { "content-type": "application/json" };
     if (opt.pin) h["x-pin"] = opt.pin;
-    const r = await fetch(BASE + path, { method: opt.body ? "POST" : opt.method || "GET", headers: h, body: opt.body ? JSON.stringify(opt.body) : undefined, cache: "no-store" });
+    let r;
+    try { r = await fetch(BASE + path, { method: opt.body ? "POST" : opt.method || "GET", headers: h, body: opt.body ? JSON.stringify(opt.body) : undefined, cache: "no-store" }); }
+    catch (e) { const err = new Error("Sin conexión. Revisa tu internet e intenta de nuevo."); err.status = 0; throw err; }
     let d = {};
     try { d = await r.json(); } catch (e) {}
     if (!r.ok) { const err = new Error(d.error || "No se pudo conectar"); err.status = r.status; throw err; }
@@ -18,15 +20,18 @@
 
   // Conexión en vivo: WebSocket con reconexión y, si falla, consulta cada pocos segundos.
   function live({ role = "guest", mine = null, pin = null, onData, onStatus }) {
-    let ws = null, alive = false, stopped = false, retry = 0, pollT = null, pingT = null;
+    let ws = null, alive = false, stopped = false, retry = 0, pollT = null, pingT = null, polling = false;
     const status = (s) => onStatus && onStatus(s);
+    // una sola cadena de consultas a la vez (antes se multiplicaba con cada reconexión fallida)
     const poll = async () => {
-      if (stopped || alive) return;
+      if (stopped || alive || polling) return;
+      polling = true; clearTimeout(pollT);
       try {
         const d = role === "host" ? await api("/host/state", { pin }) : await api("/state" + (mine ? "?mine=" + mine : ""));
         onData(d); status("poll");
       } catch (e) { status("off"); if (e.status === 401) onData({ authError: true }); }
-      pollT = setTimeout(poll, document.hidden ? 15000 : 4000);
+      polling = false;
+      if (!stopped && !alive) pollT = setTimeout(poll, document.hidden ? 15000 : 4000);
     };
     const open = () => {
       if (stopped) return;
@@ -76,7 +81,7 @@
 
   function toast(msg) {
     let t = document.getElementById("toast");
-    if (!t) { t = document.createElement("div"); t.id = "toast"; t.className = "toast"; document.body.append(t); }
+    if (!t) { t = document.createElement("div"); t.id = "toast"; t.className = "toast"; t.setAttribute("role", "status"); t.setAttribute("aria-live", "polite"); document.body.append(t); }
     t.textContent = msg; t.classList.add("show");
     clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2600);
   }
@@ -144,14 +149,17 @@
     const ios = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
     const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
     if (ios && !standalone) throw new Error("En iPhone los avisos solo funcionan desde el ícono de la pantalla de inicio: toca Compartir, elige «Agregar a inicio», abre Higuera desde ese ícono, entra con tu PIN y activa aquí los avisos.");
-    if (!("serviceWorker" in navigator) || !("PushManager" in window)) throw new Error("Este navegador no permite notificaciones. Usa Chrome en Android o Safari en iPhone (desde el ícono de inicio).");
+    if (!("serviceWorker" in navigator) || !("PushManager" in window) || !("Notification" in window)) throw new Error("Este navegador no permite notificaciones. Usa Chrome en Android o Safari en iPhone (desde el ícono de inicio).");
+    const perm = await Notification.requestPermission();
     const reg = await navigator.serviceWorker.register("/higuera/sw.js", { scope: "/higuera/" });
     await navigator.serviceWorker.ready;
-    const perm = await Notification.requestPermission();
     if (perm !== "granted") throw new Error(perm === "denied" ? "Las notificaciones están bloqueadas en este navegador" : "No se dio permiso");
     const { key } = await api("/push/key");
     let sub = await reg.pushManager.getSubscription();
-    if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToU8(key) });
+    if (!sub) {
+      try { sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToU8(key) }); }
+      catch (e) { throw new Error("Este celular no permite avisos con la pantalla bloqueada (pasa en algunos Huawei sin servicios de Google). La pantalla sigue sonando mientras esté abierta."); }
+    }
     return sub;
   }
 
@@ -161,6 +169,11 @@
   function goAccess() { location.href = ACCESS + "?next=" + encodeURIComponent(location.pathname + location.search); }
   async function logout() {
     const t = store.get("pin");
+    try {
+      const reg = "serviceWorker" in navigator && (await navigator.serviceWorker.getRegistration("/higuera/"));
+      const sub = reg && reg.pushManager && (await reg.pushManager.getSubscription());
+      if (t && sub) await api("/host/push/off", { pin: t, body: { endpoint: sub.endpoint } });
+    } catch (e) {}
     try { if (t) await api("/auth/logout", { pin: t, body: {} }); } catch (e) {}
     store.set("pin", null); location.href = ACCESS;
   }

@@ -139,7 +139,7 @@ async function login(p, silent) {
     const r = await HG.signin(p, silent, ROLES_OK);
     pin = r.tok; ME = r.user; document.body.dataset.me = r.user.role; $("#gate").classList.add("hide");
     H = r.state; setup(); start();
-  } catch (e) { if (e.denied) return; if (!silent) $("#gerr").textContent = e.message; store.set("pin", null); }
+  } catch (e) { if (e.denied) return; if (!silent) $("#gerr").textContent = e.message; if (e.status === 401) store.set("pin", null); else if (silent) setTimeout(() => login(p, true), 3000); }
 }
 $("#gf").addEventListener("submit", (e) => { e.preventDefault(); unlockAudio(); const p = $("#pin").value.replace(/\D/g, ""); if (p.length < 4) { $("#gerr").textContent = "Escribe al menos 4 números."; return; } login(p); });
 const tUrl = (m) => location.origin + "/higuera/mesa/?m=" + m + "&k=" + H.mesas.keys[m];

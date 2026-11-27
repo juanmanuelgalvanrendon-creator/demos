@@ -8,3 +8,5 @@ package-lock.json
 node_modules
 .wrangler
 README.md
+.dev.vars
+.gitignore

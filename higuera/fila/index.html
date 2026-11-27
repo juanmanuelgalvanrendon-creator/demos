@@ -156,7 +156,7 @@ let pushState = "idle"; // idle | on | denied | unsupported | ios-home | busy
 function computePush(m) {
   if (m && m.hasPush && (!("Notification" in window) || Notification.permission === "granted")) return "on";
   if (isIOS && !standalone) return "ios-home";
-  if (!pushSupported) return "unsupported";
+  if (!pushSupported || pushState === "unsupported") return "unsupported";
   if (Notification.permission === "denied") return "denied";
   return pushState === "busy" ? "busy" : "idle";
 }
@@ -164,16 +164,14 @@ const b64ToU8 = (b) => { const p = "=".repeat((4 - (b.length % 4)) % 4); const s
 async function enablePush() {
   pushState = "busy"; render();
   try {
-    const reg = await navigator.serviceWorker.register("/higuera/sw.js", { scope: "/higuera/" });
-    const perm = await Notification.requestPermission();
-    if (perm !== "granted") { pushState = perm === "denied" ? "denied" : "idle"; render(); return; }
-    await navigator.serviceWorker.ready;
-    const { key } = await api("/push/key");
-    let sub = await reg.pushManager.getSubscription();
-    if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToU8(key) });
+    const sub = await HG.pushSubscribe();
     await api("/push/sub", { body: { id: mine, sub: sub.toJSON() } });
     pushState = "on"; toast("Listo: te avisamos en este celular"); conn.refresh();
-  } catch (e) { pushState = "idle"; toast("No se pudo activar el aviso: " + (e.message || "intenta otra vez")); render(); }
+  } catch (e) {
+    const perm = window.Notification ? Notification.permission : "default";
+    pushState = perm === "denied" ? "denied" : /no permite|Huawei|navegador/.test(e.message || "") ? "unsupported" : "idle";
+    toast(e.message || "No se pudo activar el aviso. Intenta otra vez."); render();
+  }
 }
 function notifCard(m) {
   const st = computePush(m);
@@ -228,7 +226,7 @@ function renderJoin(app) {
       <div><span class="lab">¿Necesitan algo? (opcional)</span><div class="needs">${nd}</div></div>
       <div><label class="lab" for="phone">WhatsApp (opcional)</label><input class="in" id="phone" inputmode="tel" autocomplete="tel" maxlength="14" placeholder="10 dígitos" value="${esc(form.phone)}"><p class="hint">Por si no ves la notificación, el equipo te puede escribir.</p></div>
       <label class="check"><input type="checkbox" id="optin" ${form.optin ? "checked" : ""}><span>Quiero enterarme de temporadas y novedades de Higuera por WhatsApp.</span></label>
-      <p class="err" id="err"></p>
+      <p class="err" id="err" role="alert"></p>
       <button class="btn btn-ink btn-block" id="go" type="submit">Anotarme en la lista</button>
       <p class="legal">Al anotarte aceptas el <a href="../privacidad/">aviso de privacidad</a>.</p>
     </form>`;
@@ -242,6 +240,7 @@ function queueLine(m) {
 }
 
 function renderTicket(app, m) {
+  if (app.querySelector("#conf.on")) { calledLayer(m); return; }
   const ahead = m.ahead, eta = m.eta;
   const waited = Math.max(1, Math.round((Date.now() - m.t0) / 60000));
   const pct = Math.min(96, Math.max(6, Math.round((waited / Math.max(1, waited + eta)) * 100)));
@@ -268,8 +267,11 @@ function renderTicket(app, m) {
 function leftMs(m) { return (S.tolerance || 10) * 60000 - (Date.now() - (m.tCalled || Date.now())); }
 function calledLayer(m) {
   const L = $("#calledLayer");
-  if (m.status !== "called") { L.innerHTML = ""; stopAlert(); return; }
+  if (m.status !== "called") { L.innerHTML = ""; L._k = ""; stopAlert(); return; }
   const left = leftMs(m);
+  const key = [m.code, m.tCalled, m.mesa, !!m.otw, !!m.here, left <= 0].join("|");
+  if (L._k === key && L.innerHTML) return;
+  L._k = key;
   const status = m.here ? `<p class="ok">Perfecto, ${esc(m.name)}. El equipo ya sabe que estás en la entrada.</p>`
     : m.otw ? `<p class="ok">Listo, ${esc(m.name)}. Le avisamos al equipo que vas en camino. Dile tu código en la entrada.</p><button class="btn btn-block sec" id="here" type="button">Ya estoy en la entrada</button>`
     : `<button class="btn btn-block" id="otw" type="button">Voy en camino</button><button class="btn btn-block sec" id="here" type="button">Ya estoy en la entrada</button>`;
@@ -293,7 +295,7 @@ function startAlert() {
 function stopAlert() { clearInterval(vibT); clearInterval(document._t); document.title = "Higuera · Lista de espera"; try { navigator.vibrate && navigator.vibrate(0); } catch (e) {} }
 
 function renderEnd(app, m) {
-  $("#calledLayer").innerHTML = ""; stopAlert();
+  $("#calledLayer").innerHTML = ""; $("#calledLayer")._k = ""; stopAlert();
   const seated = m.status === "seated";
   app.innerHTML = `<section class="end">
     <img src="../img/logo-dark.png" alt="Higuera" style="height:44px;margin:0 auto">

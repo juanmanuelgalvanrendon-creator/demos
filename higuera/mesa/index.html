@@ -93,8 +93,8 @@ body{background:var(--bg);padding-bottom:calc(var(--tabs) + env(safe-area-inset-
 /* botón agregar y contador */
 .add{width:44px;height:44px;font-size:22px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:20px;font-weight:600;line-height:1;box-shadow:0 8px 16px -8px rgba(0,0,0,.5);flex:0 0 auto}
 .add.has{background:var(--terra)}
-.qs{display:inline-flex;align-items:center;gap:2px;background:var(--ink);color:#fff;border-radius:99px;height:36px;padding:0 3px;flex:0 0 auto}
-.qs button{width:30px;height:30px;border-radius:50%;color:#fff;font-size:18px;font-weight:700;display:grid;place-items:center;line-height:1}
+.qs{display:inline-flex;align-items:center;gap:2px;background:var(--ink);color:#fff;border-radius:99px;height:44px;padding:0 2px;flex:0 0 auto}
+.qs button{width:40px;height:40px;border-radius:50%;color:#fff;font-size:18px;font-weight:700;display:grid;place-items:center;line-height:1}
 .qs button:active{background:rgba(255,255,255,.15)}
 .qs span{min-width:18px;text-align:center;font-weight:800;font-size:14px}
 /* carta */
@@ -103,7 +103,7 @@ body{background:var(--bg);padding-bottom:calc(var(--tabs) + env(safe-area-inset-
 .srch input{border:0;background:none;outline:none;flex:1;font-size:15px;color:var(--ink);min-width:0}
 .cats{display:flex;gap:8px;overflow-x:auto;margin-top:10px;scrollbar-width:none}
 .cats::-webkit-scrollbar{display:none}
-.cats button{flex:0 0 auto;height:36px;padding:0 15px;border-radius:99px;font-weight:700;font-size:13.5px;box-shadow:inset 0 0 0 1.5px var(--line2);white-space:nowrap}
+.cats button{flex:0 0 auto;height:42px;padding:0 15px;border-radius:99px;font-weight:700;font-size:13.5px;box-shadow:inset 0 0 0 1.5px var(--line2);white-space:nowrap}
 .cats button.on{background:var(--ink);color:#fff;box-shadow:none}
 .cat-h{margin:22px 0 4px}
 .cat-h h3{font:400 28px/1 var(--serif)}
@@ -115,7 +115,7 @@ body{background:var(--bg);padding-bottom:calc(var(--tabs) + env(safe-area-inset-
 .row b{display:block;font:400 21px/1.1 var(--serif)}
 .row small{display:block;font-size:12.5px;color:var(--mut);margin-top:2px}
 .row .tag{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--olive2);background:var(--sage);padding:3px 7px;border-radius:99px;margin-top:5px}
-.row.sold{opacity:.55}
+.row.sold .th,.row.sold b{opacity:.5}
 .row .so{font-size:11px;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:.1em}
 .empty{padding:40px 10px;text-align:center;color:var(--mut)}
 /* pedido */
@@ -296,10 +296,11 @@ const img = (n) => `../img/${n}.webp`;
 const S = {
   tab: ["carta", "pedido", "club"].includes(Q.get("tab")) ? Q.get("tab") : "carta",
   st: null, bad: false, cat: "todo", q: "",
-  cart: JSON.parse(store.get("cart_" + M) || "[]"), note: "",
-  club: JSON.parse(store.get("club") || "null"), me: null,
+  cart: (() => { try { return JSON.parse(store.get("cart_" + M) || "[]").filter((x) => x && BY[x.id]); } catch (e) { return []; } })(), note: "",
+  club: (() => { try { return JSON.parse(store.get("club") || "null"); } catch (e) { return null; } })(), me: null, cid: store.get("cid_" + M) || "",
   lastStatus: {}, recover: false, leaving: false, sending: false, howSeen: !!store.get("w_" + (parseInt(new URLSearchParams(location.search).get("m"), 10) || 0) + "_" + new Date().toDateString()),
 };
+(() => { const c = Q.get("c"); if (c && !S.club && /^[a-z0-9]+\.[a-z0-9]+$/i.test(c)) { const [id, tok] = c.split("."); S.club = { id, tok }; store.set("club", JSON.stringify(S.club)); } })();
 const hasTable = () => M && !S.bad;
 const canOrder = () => hasTable() && S.st && S.st.on && S.st.mode === "pedir";
 const saveCart = () => store.set("cart_" + M, JSON.stringify(S.cart));
@@ -321,13 +322,15 @@ const IC = {
 /* ---------- conexión en vivo con la mesa ---------- */
 function live() {
   if (!M) return;
-  let ws, alive = false, retry = 0, pollT;
+  let ws, alive = false, retry = 0, pollT, polling = false;
   const dot = (on) => { const d = $("#ldot"); if (d) d.className = "dot" + (on ? "" : " off"); };
   const poll = async () => {
-    if (alive) return;
+    if (alive || polling) return;
+    polling = true; clearTimeout(pollT);
     try { onState(await api(`/mesa/state?m=${M}&k=${encodeURIComponent(K)}`)); dot(true); }
-    catch (e) { dot(false); if (e.status === 404) { S.bad = true; render(); return; } }
-    pollT = setTimeout(poll, document.hidden ? 15000 : 4000);
+    catch (e) { dot(false); if (e.status === 404) { polling = false; S.bad = true; render(); return; } }
+    polling = false;
+    if (!alive) pollT = setTimeout(poll, document.hidden ? 15000 : 4000);
   };
   const open = () => {
     try { ws = new WebSocket((location.protocol === "https:" ? "wss://" : "ws://") + location.host + `/api/fila/${HG.ROOM}/ws?role=mesa&m=${M}&k=${encodeURIComponent(K)}`); } catch (e) { poll(); return; }
@@ -361,9 +364,15 @@ function onState(d) {
     S.lastStatus[o.id] = o.status;
   });
   if (S.st && S.st.orders.length && !d.orders.length && !d.calls.length) S.rated = false; // la mesa se cerró
-  S.st = d;
+  const sig = JSON.stringify([d.on, d.mode, d.orders, d.calls, d.site, d.closed, d.reviewed, d.reward, d.reviewUrl]);
+  const same = !first && sig === S.sig;
+  S.sig = sig; S.st = d;
+  if (same) return;
+  if (typing()) { S.pendRender = true; return; }
   render();
 }
+const typing = () => { const a = document.activeElement; return !!a && /^(INPUT|TEXTAREA)$/.test(a.tagName) && a.type !== "checkbox"; };
+document.addEventListener("focusout", () => setTimeout(() => { if (S.pendRender && !typing()) { S.pendRender = false; render(); } }, 60));
 
 /* ---------- club ---------- */
 async function loadMe() {
@@ -488,7 +497,7 @@ function rClub() {
     const perm = window.Notification ? Notification.permission : "default";
     let pblk;
     if (m.hasPush && perm === "granted") pblk = `<div class="pst ok">${IC.check} Notificaciones activadas en este celular</div>`;
-    else if (ios && !standalone) pblk = `<div class="ios"><b>En iPhone, primero agrega Higuera a tu inicio:</b><ol><li>Toca el botón de compartir de Safari.</li><li>Elige "Agregar a inicio".</li><li>Abre Higuera desde el ícono y activa aquí las notificaciones.</li></ol></div>`;
+    else if (ios && !standalone && (history.replaceState(null, "", location.pathname + "?tab=club&c=" + S.club.id + "." + S.club.tok), true)) pblk = `<div class="ios"><b>En iPhone, primero agrega Higuera a tu inicio:</b><ol><li>Toca el botón de compartir de Safari.</li><li>Elige "Agregar a inicio".</li><li>Abre Higuera desde el ícono y activa aquí las notificaciones.</li></ol></div>`;
     else if (!pushOk) pblk = `<p class="note">Este navegador no permite notificaciones. Tu tarjeta funciona igual.</p>`;
     else if (perm === "denied") pblk = `<p class="note">${m.optin ? "Aceptaste recibir promociones, pero este navegador tiene bloqueadas las notificaciones, así que por ahora no te llegan." : "Este navegador tiene bloqueadas las notificaciones."} Para recibirlas, permítelas en los ajustes del navegador para este sitio.</p>`;
     else pblk = `<button class="btn btn-ink" type="button" id="pushOn">Activar notificaciones</button>`;
@@ -596,10 +605,11 @@ async function cancelCall(id) { try { await api("/mesa/call", { body: { m: M, k:
 async function sendOrder() {
   if (S.sending || !S.cart.length) return;
   S.sending = true; render();
-  const items = S.cart.map((x) => ({ n: BY[x.id].n, q: x.q, note: x.note }));
+  const items = S.cart.filter((x) => BY[x.id]).map((x) => ({ n: BY[x.id].n, q: x.q, note: x.note }));
+  if (!S.cid) { S.cid = Math.random().toString(36).slice(2, 12) + Date.now().toString(36); store.set("cid_" + M, S.cid); }
   try {
-    const r = await api("/mesa/order", { body: { m: M, k: K, items, note: S.note, mid: S.club && S.club.id, mt: S.club && S.club.tok } });
-    S.cart = []; S.note = ""; saveCart();
+    const r = await api("/mesa/order", { body: { m: M, k: K, items, note: S.note, cid: S.cid, mid: S.club && S.club.id, mt: S.club && S.club.tok } });
+    S.cart = []; S.note = ""; saveCart(); S.cid = ""; store.set("cid_" + M, null);
     if (r.member) S.me = r.member;
     S.lastStatus[r.order.id] = r.order.status;
     if (S.st && !S.st.orders.find((o) => o.id === r.order.id)) S.st.orders.push(r.order);
@@ -634,16 +644,10 @@ const b64ToU8 = (b) => { const p = "=".repeat((4 - (b.length % 4)) % 4); const s
 async function pushOn() {
   const b = $("#pushOn"); if (b) { b.disabled = true; b.textContent = "Activando…"; }
   try {
-    const reg = await navigator.serviceWorker.register("/higuera/sw.js", { scope: "/higuera/" });
-    await navigator.serviceWorker.ready;
-    const perm = await Notification.requestPermission();
-    if (perm !== "granted") { render(); return; }
-    const { key } = await api("/push/key");
-    let sub = await reg.pushManager.getSubscription();
-    if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToU8(key) });
+    const sub = await HG.pushSubscribe();
     const r = await api("/club/push", { body: { id: S.club.id, tok: S.club.tok, sub: sub.toJSON() } });
     S.me = r.member; toast("Notificaciones activadas");
-  } catch (e) { toast("No se pudieron activar: " + (e.message || "intenta de nuevo")); }
+  } catch (e) { toast(e.message || "No se pudieron activar. Intenta de nuevo."); }
   render();
 }
 

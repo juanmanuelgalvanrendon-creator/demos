@@ -82,14 +82,14 @@ const SCREENS = [
 function setupView() {
   $("#view").innerHTML = `<div class="card"><h1>Bienvenido al sistema de <em>Higuera</em></h1><p class="sub">Primero, crea la cuenta del dueño. Después, desde Gerencia, das de alta al equipo: cada quien con su propio PIN.</p>
     <label class="lab" for="sn">Tu nombre</label><input class="in" id="sn" type="text" maxlength="40" autocomplete="name" placeholder="Nombre del dueño">
-    <label class="lab" for="sp">Tu PIN (4 a 6 números)</label><input class="in" id="sp" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" placeholder="····">
+    <label class="lab" for="sp">Tu PIN (6 números)</label><input class="in" id="sp" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" placeholder="······">
     <label class="lab" for="sp2">Repite tu PIN</label><input class="in" id="sp2" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" placeholder="····">
     <p class="err" id="serr" role="alert"></p><button class="btn btn-terra" type="button" id="sgo">Crear cuenta del dueño</button></div>
     <p class="note">El PIN es personal. No lo compartas: el sistema registra qué hace cada persona.</p>`;
   $("#sgo").onclick = async () => {
     const name = $("#sn").value.trim(), p1 = $("#sp").value.replace(/\D/g, ""), p2 = $("#sp2").value.replace(/\D/g, "");
     if (name.length < 2) return ($("#serr").textContent = "Escribe tu nombre.");
-    if (p1.length < 4 || p1.length > 6) return ($("#serr").textContent = "El PIN debe ser de 4 a 6 números.");
+    if (p1.length !== 6) return ($("#serr").textContent = "El PIN del dueño es de 6 números.");
     if (p1 !== p2) return ($("#serr").textContent = "Los dos PIN no coinciden.");
     try { const r = await api("/auth/setup", { body: { name, pin: p1 } }); store.set("pin", r.tok); home(r.user); toast("Cuenta del dueño creada"); }
     catch (e) { $("#serr").textContent = e.message; }
@@ -150,7 +150,7 @@ function home(u) {
   const tok = store.get("pin");
   if (tok) {
     try { const r = await api("/auth/me", { pin: tok }); after(r.user); return; }
-    catch (e) { store.set("pin", null); }
+    catch (e) { if (e.status === 401) store.set("pin", null); else { loginView("No se pudo conectar. Revisa tu internet; tu sesión sigue guardada."); setTimeout(() => location.reload(), 4000); return; } }
   }
   try { const info = await api("/auth/info"); info.hasOwner ? loginView() : setupView(); }
   catch (e) { loginView("No se pudo conectar. Revisa tu internet."); }
