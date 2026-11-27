@@ -46,6 +46,12 @@ body{background:var(--olive);color:#f4f1ea;min-height:100vh}
 .out{margin-top:auto;padding-top:26px;text-align:center}
 .out button,.out a{color:#f4f1ea;font-weight:800;font-size:14px;text-decoration:underline;text-underline-offset:3px}
 .note{font-size:12.5px;color:rgba(244,241,234,.65);text-align:center;margin-top:14px;line-height:1.5}
+.who{display:grid;gap:8px;margin-top:20px;max-height:52vh;overflow:auto}
+.who button{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:58px;padding:0 18px;border-radius:18px;background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--line);text-align:left}
+.who button:active{transform:scale(.98)}
+.who b{font:400 23px/1.1 var(--serif)}
+.who span{font-size:12.5px;font-weight:800;color:var(--mut);letter-spacing:.06em;text-transform:uppercase}
+.lnk{display:block;margin:18px auto 0;min-height:44px;color:var(--ink2);font-weight:800;font-size:14px;text-decoration:underline;text-underline-offset:3px}
 .hide{display:none!important}
 </style>
 </head>
@@ -91,25 +97,62 @@ function setupView() {
     if (name.length < 2) return ($("#serr").textContent = "Escribe tu nombre.");
     if (p1.length !== 6) return ($("#serr").textContent = "El PIN del dueño es de 6 números.");
     if (p1 !== p2) return ($("#serr").textContent = "Los dos PIN no coinciden.");
-    try { const r = await api("/auth/setup", { body: { name, pin: p1 } }); store.set("pin", r.tok); home(r.user); toast("Cuenta del dueño creada"); }
+    try { const r = await api("/auth/setup", { body: { name, pin: p1 } }); store.set("pin", r.tok); if (r.dev) store.set("dev", r.dev); home(r.user); toast("Cuenta del dueño creada"); }
     catch (e) { $("#serr").textContent = e.message; }
   };
 }
 
-/* ---------- entrar con PIN (teclado grande) ---------- */
-function loginView(msg) {
+/* ---------- entrar: primero tu nombre, luego tu PIN ---------- */
+async function loginView(msg) {
+  document.onkeydown = null;
+  let names = null;
+  try { names = (await api("/auth/names", { dev: store.get("dev") })).names; } catch (e) {}
+  if (names && names.length) {
+    // aparato del equipo ya conocido: toca tu nombre
+    $("#view").innerHTML = `<div class="card"><h1>¿Quién <em>entra</em>?</h1><p class="sub">Toca tu nombre y luego escribe tu PIN.</p>
+      ${msg ? `<p class="err" role="alert">${esc(msg)}</p>` : ""}
+      <div class="who">${names.map((u) => `<button type="button" data-uid="${esc(u.id)}" data-name="${esc(u.name)}"><b>${esc(u.name)}</b><span>${esc(u.roleName)}</span></button>`).join("")}</div>
+      <button type="button" class="lnk" id="typeName">No veo mi nombre</button></div>`;
+    $("#view").onclick = (e) => {
+      const b = e.target.closest("[data-uid]"); if (b) return pinView({ uid: b.dataset.uid, name: b.dataset.name });
+      if (e.target.closest("#typeName")) nameView();
+    };
+    return;
+  }
+  nameView(msg);
+}
+function nameView(msg) {
+  document.onkeydown = null;
+  $("#view").onclick = null;
+  $("#view").innerHTML = `<div class="card"><h1>Entra con tu <em>nombre</em></h1><p class="sub">Escribe tu nombre como te dio de alta el gerente y luego tu PIN.</p>
+    <label class="lab" for="nm">Tu nombre</label><input class="in" id="nm" type="text" maxlength="40" autocomplete="username" autocapitalize="words" placeholder="Ej.: Rosa Lara">
+    <p class="err" id="nerr" role="alert">${esc(msg || "")}</p><button class="btn btn-ink" type="button" id="ngo">Seguir</button></div>
+    <p class="note">En los aparatos donde ya entraste antes, solo tocas tu nombre.</p>`;
+  const go = () => { const n = $("#nm").value.trim(); if (n.length < 2) { $("#nerr").textContent = "Escribe tu nombre."; return; } pinView({ name: n, typed: true }); };
+  $("#ngo").onclick = go;
+  $("#nm").onkeydown = (e) => { if (e.key === "Enter") go(); };
+  setTimeout(() => $("#nm") && $("#nm").focus(), 50);
+}
+function pinView(who) {
   let code = "";
-  $("#view").innerHTML = `<div class="card"><h1>Entra con tu <em>PIN</em></h1><p class="sub">Cada persona del equipo tiene el suyo.</p>
-    <div class="dots" id="dots" aria-hidden="true">${"<i></i>".repeat(6)}</div><p class="err" id="lerr" role="alert">${esc(msg || "")}</p>
+  $("#view").onclick = null;
+  $("#view").innerHTML = `<div class="card"><h1>Hola, <em>${esc(who.name.split(" ")[0])}</em></h1><p class="sub">Escribe tu PIN.</p>
+    <div class="dots" id="dots" aria-hidden="true">${"<i></i>".repeat(6)}</div><p class="err" id="lerr" role="alert"></p>
     <label class="hide" for="pinIn">PIN</label><input id="pinIn" class="hide" type="password" inputmode="numeric" autocomplete="current-password">
-    <div class="pad" id="pad">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => `<button type="button" data-n="${n}" aria-label="${n}">${n}</button>`).join("")}<button type="button" class="k" data-k="del" aria-label="Borrar">Borrar</button><button type="button" data-n="0" aria-label="0">0</button><button type="button" class="go" data-k="go">Entrar</button></div></div>`;
-  const paint = () => $$dots().forEach((d, i) => d.classList.toggle("on", i < code.length));
+    <div class="pad" id="pad">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => `<button type="button" data-n="${n}" aria-label="${n}">${n}</button>`).join("")}<button type="button" class="k" data-k="del" aria-label="Borrar">Borrar</button><button type="button" data-n="0" aria-label="0">0</button><button type="button" class="go" data-k="go">Entrar</button></div>
+    <button type="button" class="lnk" id="back">No soy ${esc(who.name.split(" ")[0])}</button></div>`;
   const $$dots = () => [...document.querySelectorAll("#dots i")];
+  const paint = () => $$dots().forEach((d, i) => d.classList.toggle("on", i < code.length));
+  let busy = false;
   const go = async () => {
+    if (busy) return;
     if (code.length < 4) { $("#lerr").textContent = "El PIN tiene de 4 a 6 números."; return; }
-    unlockAudio();
-    try { const r = await api("/auth/login", { body: { pin: code } }); store.set("pin", r.tok); after(r.user); }
-    catch (e) { code = ""; paint(); $("#lerr").textContent = e.message; const d = $("#dots"); d.classList.remove("shake"); void d.offsetWidth; d.classList.add("shake"); }
+    unlockAudio(); busy = true;
+    try {
+      const r = await api("/auth/login", { body: { uid: who.uid, name: who.uid ? undefined : who.name, pin: code, dev: store.get("dev") } });
+      store.set("pin", r.tok); if (r.dev) store.set("dev", r.dev); after(r.user);
+    } catch (e) { code = ""; paint(); $("#lerr").textContent = e.message; const d = $("#dots"); d.classList.remove("shake"); void d.offsetWidth; d.classList.add("shake"); }
+    busy = false;
   };
   $("#pad").onclick = (e) => {
     const b = e.target.closest("button"); if (!b) return;
@@ -118,6 +161,7 @@ function loginView(msg) {
     else if (b.dataset.k === "go") return go();
     $("#lerr").textContent = ""; paint();
   };
+  $("#back").onclick = () => (who.typed ? nameView() : loginView());
   document.onkeydown = (e) => {
     if (/^\d$/.test(e.key) && code.length < 6) { code += e.key; paint(); }
     else if (e.key === "Backspace") { code = code.slice(0, -1); paint(); }
@@ -141,7 +185,7 @@ function home(u) {
   const h = new Date().getHours();
   $("#view").innerHTML = `<div class="hello"><h1>${h < 12 ? "Buenos días" : h < 19 ? "Buenas tardes" : "Buenas noches"}, <em>${esc(u.name.split(" ")[0])}</em></h1><p>Entraste como ${esc(u.roleName)}. Estas son tus pantallas:</p></div>
     <div class="screens">${list.map(([k, url, t, d]) => `<a class="scr" href="${url}"><span class="ic">${IC[k]}</span><span><b>${t}</b><span>${d}</span></span><span class="ar" aria-hidden="true">›</span></a>`).join("")}</div>
-    <div class="out"><button type="button" id="out">Salir y entrar con otro PIN</button></div>`;
+    <div class="out"><button type="button" id="out">Salir y entrar con otro nombre</button></div>`;
   $("#out").onclick = () => HG.logout();
 }
 
@@ -149,7 +193,7 @@ function home(u) {
 (async () => {
   const tok = store.get("pin");
   if (tok) {
-    try { const r = await api("/auth/me", { pin: tok }); after(r.user); return; }
+    try { const r = await api("/auth/me", { pin: tok, dev: store.get("dev") }); if (r.dev) store.set("dev", r.dev); after(r.user); return; }
     catch (e) { if (e.status === 401) store.set("pin", null); else { loginView("No se pudo conectar. Revisa tu internet; tu sesión sigue guardada."); setTimeout(() => location.reload(), 4000); return; } }
   }
   try { const info = await api("/auth/info"); info.hasOwner ? loginView() : setupView(); }

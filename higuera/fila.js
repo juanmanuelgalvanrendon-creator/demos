@@ -9,6 +9,7 @@
   async function api(path, opt = {}) {
     const h = { "content-type": "application/json" };
     if (opt.pin) h["x-pin"] = opt.pin;
+    if (opt.dev) h["x-dev"] = opt.dev;
     let r;
     try { r = await fetch(BASE + path, { method: opt.body ? "POST" : opt.method || "GET", headers: h, body: opt.body ? JSON.stringify(opt.body) : undefined, cache: "no-store" }); }
     catch (e) { const err = new Error("Sin conexión. Revisa tu internet e intenta de nuevo."); err.status = 0; throw err; }
@@ -215,8 +216,11 @@
   // silent = la sesión guardada; si no, p es el PIN que escribió la persona
   async function signin(p, silent, roles) {
     let r;
-    try { r = silent ? await api("/auth/me", { pin: p }) : await api("/auth/login", { body: { pin: p } }); }
-    catch (e) { if (e.status === 409 && /no hay cuentas/i.test(e.message)) { location.href = ACCESS; } throw e; }
+    // las pantallas del equipo ya no piden PIN por su cuenta: se entra en Acceso con nombre y PIN
+    if (!silent) { goAccess(); const x = new Error("acceso"); x.denied = true; throw x; }
+    try { r = await api("/auth/me", { pin: p, dev: store.get("dev") }); }
+    catch (e) { if (e.status === 401) { store.set("pin", null); goAccess(); const x = new Error("acceso"); x.denied = true; throw x; } throw e; }
+    if (r.dev) store.set("dev", r.dev);
     const tok = silent ? p : r.tok;
     store.set("pin", tok);
     if (roles && !roles.includes(r.user.role)) { denied(r.user); const x = new Error("denied"); x.denied = true; throw x; }
@@ -231,6 +235,19 @@
       navigator.vibrate = (pt) => { try { if (!navigator.userActivation || navigator.userActivation.hasBeenActive) return vib(pt); } catch (e) {} return false; };
     }
   } catch (e) {}
+
+  // pantalla del equipo sin sesión: directo a Acceso (nombre y PIN)
+  document.addEventListener("DOMContentLoaded", () => {
+    const gf = document.getElementById("gf");
+    if (!gf) return;
+    const h = gf.querySelector("h1"), img = gf.querySelector("img");
+    gf.innerHTML = "";
+    if (img) gf.append(img); if (h) gf.append(h);
+    const pp = document.createElement("p"); pp.textContent = "Entra con tu nombre y tu PIN."; gf.append(pp);
+    const a = document.createElement("a"); a.className = "btn btn-ink btn-block"; a.href = ACCESS + "?next=" + encodeURIComponent(location.pathname + location.search); a.textContent = "Entrar"; gf.append(a);
+    const er = document.createElement("p"); er.className = "err"; er.id = "gerr"; er.setAttribute("role", "alert"); gf.append(er);
+    if (!DEMO && !store.get("pin")) goAccess();
+  });
 
   window.HG = { DEMO, signin, logout, goAccess, ROLE_NAMES, api, live, store, esc, ago, mmss, ZONES, toast, beep, alarm, say, wake: () => { wake._on = true; return wake(); }, unlockAudio, qrSvg, pushSubscribe, ROOM };
 })();

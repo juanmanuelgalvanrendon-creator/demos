@@ -106,6 +106,8 @@ async function sha(s) {
   return [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join("");
 }
 const rid = () => crypto.randomUUID().replace(/-/g, "").slice(0, 16);
+// para comparar nombres sin importar mayúsculas ni acentos
+const normName = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9ñ ]/g, " ").replace(/\s+/g, " ").trim();
 const clean = (s, n) => String(s ?? "").replace(/[\u0000-\u001f<>]/g, "").trim().slice(0, n);
 const digits = (s) => String(s ?? "").replace(/\D/g, "").slice(-10);
 const b64u = (buf) => btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
@@ -178,10 +180,21 @@ export class Fila {
       this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS contacts (phone TEXT PRIMARY KEY, name TEXT, first TEXT, last TEXT, visits INTEGER DEFAULT 1)");
       this.ctx.storage.sql.exec("DROP TABLE IF EXISTS requests");
       this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS hits (k TEXT, t INTEGER)");
+      this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS devices (tok TEXT PRIMARY KEY, created INTEGER, last INTEGER)");
       this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, name TEXT, role TEXT, pinHash TEXT UNIQUE, created INTEGER, active INTEGER DEFAULT 1, last INTEGER)");
       this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS sessions (tok TEXT PRIMARY KEY, uid TEXT, created INTEGER, last INTEGER)");
       this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS activity (t INTEGER, day TEXT, uid TEXT, who TEXT, role TEXT, kind TEXT, txt TEXT)");
       this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS members (id TEXT PRIMARY KEY, tok TEXT, phone TEXT UNIQUE, name TEXT, created INTEGER, visits INTEGER DEFAULT 0, total INTEGER DEFAULT 0, lastDay TEXT, optin INTEGER DEFAULT 0, push TEXT, pmsg TEXT, rewards INTEGER DEFAULT 0, rcode TEXT, rexp INTEGER, demo INTEGER DEFAULT 0)");
+      // antes el PIN tenía que ser único (se entraba solo con PIN); ahora se entra con nombre y PIN
+      try {
+        const def = this.ctx.storage.sql.exec("SELECT sql FROM sqlite_master WHERE type='table' AND name='users'").toArray()[0];
+        if (def && /pinHash TEXT UNIQUE/i.test(def.sql)) {
+          this.ctx.storage.sql.exec("CREATE TABLE users_n (id TEXT PRIMARY KEY, name TEXT, role TEXT, pinHash TEXT, created INTEGER, active INTEGER DEFAULT 1, last INTEGER)");
+          this.ctx.storage.sql.exec("INSERT INTO users_n (id,name,role,pinHash,created,active,last) SELECT id,name,role,pinHash,created,active,last FROM users");
+          this.ctx.storage.sql.exec("DROP TABLE users");
+          this.ctx.storage.sql.exec("ALTER TABLE users_n RENAME TO users");
+        }
+      } catch (e) {}
       this.sqlReady = true;
     }
     return this.ctx.storage.sql;
@@ -528,8 +541,23 @@ export class Fila {
     }
   }
   dropStaffPush(uid) { const n = (this.s.staff || []).length; this.s.staff = (this.s.staff || []).filter((x) => x.uid !== uid); if (this.s.staff.length !== n) this.ctx.storage.put("s", this.s); }
-  async pinHashOf(pin) { return sha(this.s.salt + ":" + String(pin || "")); }
-  async pinTaken(hash, exceptId) { return this.sql().exec("SELECT id FROM users WHERE pinHash=? AND id<>?", hash, exceptId || "").toArray().length > 0; }
+  async pinHashOf(pin, uid) { return uid ? sha(this.s.salt + ":" + uid + ":" + String(pin || "")) : sha(this.s.salt + ":" + String(pin || "")); }
+  // compara el PIN de una persona; si estaba guardado a la manera vieja, lo actualiza
+  async pinMatches(u, pin) {
+    if (u.pinHash === (await this.pinHashOf(pin, u.id))) return true;
+    if (u.pinHash === (await this.pinHashOf(pin))) { this.sql().exec("UPDATE users SET pinHash=? WHERE id=?", await this.pinHashOf(pin, u.id), u.id); return true; }
+    return false;
+  }
+  sameName(name, exceptId) { const n = normName(name); return this.sql().exec("SELECT id,name FROM users WHERE id<>?", exceptId || "").toArray().some((x) => normName(x.name) === n); }
+  // aparato del equipo ya conocido: puede ver la lista de nombres para entrar más rápido
+  deviceOk(tok) {
+    if (!tok || !/^[a-z0-9]{10,40}$/i.test(tok)) return false;
+    const r = this.sql().exec("SELECT last FROM devices WHERE tok=?", String(tok)).toArray()[0];
+    if (!r || Date.now() - r.last > 180 * 86400000) return false;
+    if (Date.now() - r.last > 86400000) this.sql().exec("UPDATE devices SET last=? WHERE tok=?", Date.now(), String(tok));
+    return true;
+  }
+  deviceNew() { const t = rid() + rid(); this.sql().exec("INSERT INTO devices (tok,created,last) VALUES (?,?,?)", t, Date.now(), Date.now()); return t; }
   newSession(u) {
     const tok = rid() + rid() + rid();
     this.sql().exec("INSERT INTO sessions (tok,uid,created,last) VALUES (?,?,?,?)", tok, u.id, Date.now(), Date.now());
@@ -898,32 +926,54 @@ export class Fila {
       if (name.length < 2) return json({ error: "Escribe tu nombre." }, 400);
       if (!/^\d{6}$/.test(np)) return json({ error: "El PIN del dueño es de 6 números." }, 400);
       const u = { id: rid(), name, role: "dueno" };
-      this.sql().exec("INSERT INTO users (id,name,role,pinHash,created,active) VALUES (?,?,?,?,?,1)", u.id, name, "dueno", await this.pinHashOf(np), Date.now());
+      this.sql().exec("INSERT INTO users (id,name,role,pinHash,created,active) VALUES (?,?,?,?,?,1)", u.id, name, "dueno", await this.pinHashOf(np, u.id), Date.now());
       this.s.setupDone = true; await this.save();
       const tok = this.newSession(u);
       this.logEv(u, "cuenta", "Creó la cuenta del dueño");
-      return json({ ok: true, tok, user: this.userView({ ...u, active: 1, created: Date.now() }), state: this.hostState(u.role) });
+      return json({ ok: true, tok, dev: this.deviceNew(), user: this.userView({ ...u, active: 1, created: Date.now() }), state: this.hostState(u.role) });
     }
     if (p === "/auth/login" && method === "POST") {
       if (!this.userCount()) return json({ error: "Todavía no hay cuentas. El dueño debe crear la suya primero.", setup: true }, 409);
       const lk = "login:" + (await this.ipHash(request));
       const f10 = this.hitCount(lk, 10 * 60000), f60 = this.hitCount(lk, 3600000), f24 = this.hitCount(lk, 86400000);
       if (f24 >= 40 || f60 >= 15 || f10 >= 5) return json({ error: f24 >= 40 ? "Demasiados intentos desde este aparato. Intenta mañana o pide ayuda al gerente." : f60 >= 15 ? "Demasiados intentos. Espera 30 minutos." : "Demasiados intentos. Espera unos minutos." }, 429);
-      const hash = await this.pinHashOf(String(body.pin || "").replace(/\D/g, ""));
-      const u = this.sql().exec("SELECT * FROM users WHERE pinHash=?", hash).toArray()[0];
+      const pinIn = String(body.pin || "").replace(/\D/g, "");
+      const all = this.sql().exec("SELECT * FROM users").toArray();
+      let cands = [];
+      if (body.uid) cands = all.filter((x) => x.id === String(body.uid));
+      else if (body.name) {
+        const n = normName(body.name);
+        if (n.length < 2) return json({ error: "Escribe tu nombre." }, 400);
+        cands = all.filter((x) => normName(x.name) === n);
+        if (!cands.length) cands = all.filter((x) => normName(x.name).split(" ")[0] === n);
+      } else return json({ error: "Elige tu nombre y escribe tu PIN." }, 400);
+      // límite por persona además del límite por aparato
+      for (const c of cands) if (this.hitCount("ufail:" + c.id, 15 * 60000) >= 8) return json({ error: "Demasiados intentos con este nombre. Espera 15 minutos o pide ayuda al gerente." }, 429);
+      let u = null;
+      for (const c of cands) if (await this.pinMatches(c, pinIn)) { u = c; break; }
       if (!u || !u.active) {
-        this.hitAdd(lk);
-        return json({ error: u ? "Tu usuario está desactivado. Habla con tu gerente." : "PIN incorrecto" }, 401);
+        this.hitAdd(lk); cands.forEach((c) => this.hitAdd("ufail:" + c.id));
+        return json({ error: u ? "Tu usuario está desactivado. Habla con tu gerente." : "Nombre o PIN incorrecto" }, 401);
       }
-      this.hitClear(lk);
+      this.hitClear(lk); this.hitClear("ufail:" + u.id);
       const tok = this.newSession(u);
+      const dev = this.deviceOk(body.dev) ? body.dev : this.deviceNew();
       this.logEv(u, "entrada", "Entró al sistema");
-      return json({ ok: true, tok, user: this.userView(u), state: this.hostState(u.role) });
+      return json({ ok: true, tok, dev, user: this.userView(u), state: this.hostState(u.role) });
     }
     if (p === "/auth/me" && method === "GET") {
       const u = this.userByTok(request.headers.get("x-pin"));
-      if (!u) return json({ error: "Tu sesión terminó. Entra de nuevo con tu PIN." }, 401);
-      return json({ ok: true, user: this.userView(u), state: this.hostState(u.role) });
+      if (!u) return json({ error: "Tu sesión terminó. Entra de nuevo con tu nombre y PIN." }, 401);
+      // un aparato con sesión abierta queda como conocido del equipo
+      const dv = request.headers.get("x-dev");
+      const dev = this.cfg.demo ? null : this.deviceOk(dv) ? dv : this.deviceNew();
+      return json({ ok: true, dev, user: this.userView(u), state: this.hostState(u.role) });
+    }
+    if (p === "/auth/names" && method === "GET") {
+      if (!this.deviceOk(request.headers.get("x-dev"))) return json({ names: null });
+      const order = { dueno: 0, gerente: 1, cocina: 2, mesero: 3, entrada: 4 };
+      const names = this.sql().exec("SELECT id,name,role FROM users WHERE active=1").toArray().sort((a, b) => (order[a.role] - order[b.role]) || a.name.localeCompare(b.name, "es")).map((x) => ({ id: x.id, name: x.name, role: x.role, roleName: ROLE_NAMES[x.role] }));
+      return json({ names });
     }
     if (p === "/auth/logout" && method === "POST") {
       this.sql().exec("DELETE FROM sessions WHERE tok=?", String(request.headers.get("x-pin") || ""));
@@ -1043,9 +1093,9 @@ export class Fila {
           if (MGR.includes(role) && np.length < 6) return json({ error: "Dueño y gerente usan PIN de 6 números." }, 400);
           if (this.hitCount("pinset:" + me.id, 3600000) >= 12) return json({ error: "Demasiados cambios de PIN seguidos. Intenta en una hora." }, 429);
           this.hitAdd("pinset:" + me.id);
-          const h = await this.pinHashOf(np);
-          if (await this.pinTaken(h)) return json({ error: "Ese PIN ya lo usa otra persona. Elige otro." }, 409);
-          this.sql().exec("INSERT INTO users (id,name,role,pinHash,created,active) VALUES (?,?,?,?,?,1)", rid(), name, role, h, Date.now());
+          if (this.sameName(name)) return json({ error: "Ya hay alguien con ese nombre en el equipo. Agrega su apellido o una inicial." }, 409);
+          const nid = rid();
+          this.sql().exec("INSERT INTO users (id,name,role,pinHash,created,active) VALUES (?,?,?,?,?,1)", nid, name, role, await this.pinHashOf(np, nid), Date.now());
           this.logEv(me, "equipo", `Dio de alta a ${name} como ${ROLE_NAMES[role]}`);
           return json({ ok: true });
         }
@@ -1058,6 +1108,7 @@ export class Fila {
         const lastOwner = u.role === "dueno" && owners <= 1;
         if (a === "update") {
           const name = body.name != null ? clean(body.name, 40) : u.name;
+          if (name !== u.name && name.length >= 2 && this.sameName(name, u.id)) return json({ error: "Ya hay alguien con ese nombre en el equipo. Agrega su apellido o una inicial." }, 409);
           const nr = role || u.role;
           if (nr !== u.role && !canTouch(nr)) return json({ error: "Solo el dueño puede asignar ese puesto." }, 403);
           if (lastOwner && (nr !== "dueno" || body.active === false)) return json({ error: "Tiene que haber al menos un dueño activo." }, 409);
@@ -1074,9 +1125,7 @@ export class Fila {
           if (MGR.includes(u.role) && np.length < 6) return json({ error: "Dueño y gerente usan PIN de 6 números." }, 400);
           if (this.hitCount("pinset:" + me.id, 3600000) >= 12) return json({ error: "Demasiados cambios de PIN seguidos. Intenta en una hora." }, 429);
           this.hitAdd("pinset:" + me.id);
-          const h = await this.pinHashOf(np);
-          if (await this.pinTaken(h, u.id)) return json({ error: "Ese PIN ya lo usa otra persona. Elige otro." }, 409);
-          this.sql().exec("UPDATE users SET pinHash=? WHERE id=?", h, u.id);
+          this.sql().exec("UPDATE users SET pinHash=? WHERE id=?", await this.pinHashOf(np, u.id), u.id);
           this.sql().exec("DELETE FROM sessions WHERE uid=? AND tok<>?", u.id, String(request.headers.get("x-pin") || ""));
           if (u.id !== me.id) this.kickUser(u.id);
           this.logEv(me, "equipo", `Cambió el PIN de ${u.name}`);
