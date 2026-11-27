@@ -58,11 +58,17 @@ body{background:#1f231b;color:#f4f1ea;overflow:hidden}
 .vseg button.on{background:#f4f1ea;color:#1f231b}
 .frame{flex:1;border-radius:22px;overflow:hidden;background:#1f231b;box-shadow:inset 0 0 0 1px rgba(244,241,234,.1);min-height:0}
 .frame iframe{width:100%;height:100%;border:0;display:block}
-.small-screen{display:none;padding:30px 22px;text-align:center}
-.small-screen h2{font:400 30px/1.1 var(--serif);margin-bottom:10px}
-.small-screen p{color:rgba(244,241,234,.75);font-size:14.5px;margin-bottom:18px}
-.small-screen a{display:flex;margin:8px auto;max-width:320px}
-@media (max-width:980px){body{overflow:auto}.app{display:none}.small-screen{display:block}}
+.mob{display:none;height:100vh;height:100dvh;flex-direction:column}
+.mbar{display:flex;align-items:center;gap:10px;padding:10px 14px}
+.mbar img{height:20px;filter:invert(1) brightness(2)}
+.mbar span{flex:1;font:400 20px var(--serif)}
+.mseg{display:flex;gap:6px;overflow-x:auto;padding:0 14px 8px;scrollbar-width:none;flex:0 0 auto}
+.mseg::-webkit-scrollbar{display:none}
+.mseg button{flex:0 0 auto;height:38px;padding:0 14px;border-radius:99px;background:rgba(244,241,234,.08);color:#f4f1ea;font-weight:800;font-size:13px;white-space:nowrap}
+.mseg button.on{background:#f4f1ea;color:#1f231b}
+.mhint{font-size:12.5px;color:rgba(244,241,234,.75);padding:0 16px 8px;flex:0 0 auto}
+.mob iframe{flex:1;width:100%;border:0;background:var(--bg);border-radius:18px 18px 0 0;min-height:0}
+@media (max-width:980px){.app{display:none}.mob{display:flex}}
 </style>
 </head>
 <body>
@@ -99,11 +105,13 @@ body{background:#1f231b;color:#f4f1ea;overflow:hidden}
   </div>
 </div>
 
-<div class="small-screen">
-  <h2>Abre la demostración en una laptop</h2>
-  <p>Esta pantalla muestra al mismo tiempo el celular del cliente y la pantalla del equipo. En un celular, abre cada parte por separado:</p>
-  <a class="btn btn-terra" href="../club/">Club y mesas (ahí están los QR)</a>
-  <a class="btn btn-ghost" style="color:#f4f1ea;box-shadow:inset 0 0 0 1.5px rgba(244,241,234,.3)" href="../barra/">Pedidos y llamados</a>
+<div class="mob" id="mob">
+  <div class="mbar"><img src="../img/logo-sm.png" alt="Higuera" width="60" height="22"><span>Demostración</span><button type="button" class="bbtn" id="mrestart">Reiniciar</button></div>
+  <nav class="mseg" id="mseg" aria-label="Qué pantalla ver">
+    <button type="button" class="on" data-m="mesa">Cliente en la mesa</button><button type="button" data-m="fila">Cliente en la fila</button><button type="button" data-m="cocina">Cocina</button><button type="button" data-m="meseros">Meseros</button><button type="button" data-m="club">Gerente</button><button type="button" data-m="host">Entrada</button>
+  </nav>
+  <p class="mhint" id="mhint">Así lo ve el cliente al escanear el QR de la mesa 1.</p>
+  <iframe id="mf" title="Pantalla de la demostración"></iframe>
 </div>
 
 <script src="/_engine/qrcode.js"></script>
@@ -142,10 +150,28 @@ function fit() {
 }
 function phoneSrc() { return pview === "fila" ? location.origin + "/higuera/fila/" : tUrl(1); }
 function setup() {
+  if (innerWidth <= 980) { setMob(mview); return; }
   $("#pf").src = phoneSrc();
   $("#qr2").innerHTML = qrSvg(tUrl(2), { margin: 1 });
   setView(view); fit();
 }
+const MOBV = {
+  mesa: [() => tUrl(1), "Así lo ve el cliente al escanear el QR de la mesa 1. Pide algo y luego cambia a Cocina."],
+  fila: [() => location.origin + "/higuera/fila/", "Así lo ve el cliente al escanear el QR de la entrada para anotarse en la fila."],
+  cocina: [() => "../cocina/", "La tablet de la cocina: aquí llegan los pedidos."],
+  meseros: [() => "../meseros/", "El celular del mesero: platillos listos, llamados y la cuenta."],
+  club: [() => "../club/", "El panel del gerente: club, promociones, calificaciones y QR de las mesas."],
+  host: [() => "../host/", "La entrada: la fila de espera y las mesas que se liberan."],
+};
+let mview = "mesa";
+function setMob(v) {
+  mview = v;
+  document.querySelectorAll("#mseg button").forEach((b) => b.classList.toggle("on", b.dataset.m === v));
+  $("#mhint").textContent = MOBV[v][1];
+  if (H) $("#mf").src = MOBV[v][0]();
+}
+$("#mseg").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) setMob(b.dataset.m); });
+$("#mrestart").onclick = () => $("#restart").click();
 function setView(v) {
   view = v; $("#rf").src = VIEWS[v][0]; $("#rlbl").textContent = VIEWS[v][1];
   document.querySelectorAll("#seg button").forEach((b) => b.classList.toggle("on", b.dataset.v === v));
