@@ -24,7 +24,7 @@ const FLOOR = ["dueno", "gerente", "mesero", "entrada"];
 const PERM = {
   "/host/state": "*", "/host/push/sub": "*", "/host/push/off": "*", "/host/push/test": "*",
   "/host/action": FLOOR, "/host/add": FLOOR, "/host/freed": FLOOR, "/host/settings": FLOOR,
-  "/host/site": [...MGR, "cocina"], "/host/requests": MGR, "/host/request": MGR, "/host/contacts": MGR,
+  "/host/site": [...MGR, "cocina"], "/host/contacts": MGR,
   "/host/demo": MGR, "/host/reset": MGR, "/host/demo/restart": MGR, "/host/mesas": MGR, "/host/mesas/demo": MGR,
   "/host/order": [...MGR, "cocina", "mesero"], "/host/call": [...MGR, "mesero"], "/host/table": [...MGR, "mesero"],
   "/host/club": MGR, "/host/club/member": MGR, "/host/club/promo": MGR,
@@ -174,7 +174,7 @@ export class Fila {
   sql() {
     if (!this.sqlReady) {
       this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS contacts (phone TEXT PRIMARY KEY, name TEXT, first TEXT, last TEXT, visits INTEGER DEFAULT 1)");
-      this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS requests (id TEXT PRIMARY KEY, kind TEXT, created INTEGER, status TEXT, data TEXT, ipH TEXT)");
+      this.ctx.storage.sql.exec("DROP TABLE IF EXISTS requests");
       this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, name TEXT, role TEXT, pinHash TEXT UNIQUE, created INTEGER, active INTEGER DEFAULT 1, last INTEGER)");
       this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS sessions (tok TEXT PRIMARY KEY, uid TEXT, created INTEGER, last INTEGER)");
       this.ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS activity (t INTEGER, day TEXT, uid TEXT, who TEXT, role TEXT, kind TEXT, txt TEXT)");
@@ -274,7 +274,6 @@ export class Fila {
       soldout: st.soldDay === this.s.day ? st.soldout || [] : [],
     };
   }
-  newRequests() { try { return this.sql().exec("SELECT COUNT(*) AS n FROM requests WHERE status='nuevo'").one().n; } catch (e) { return 0; } }
   hoursStats() {
     const days = [0, 0, 0, 0, 0, 0, 0], sum = Array.from({ length: 7 }, () => ({}));
     for (const h of this.s.history || []) {
@@ -319,7 +318,13 @@ export class Fila {
     return { ...rest, hasPush: !!push, pushFail: !!e.pushFail };
   }
 
-  hostState() {
+  // el estado completo solo lo reciben gerente y dueño; los demás puestos no ven cifras del día, clientes, reseñas ni club
+  hostState(role) {
+    const full = this.hostStateFull();
+    if (!role || MGR.includes(role)) return full;
+    return { ...full, history: [], contacts: 0, reviews: [], promos: [], club: { members: 0 }, mesas: { ...full.mesas, keys: {} } };
+  }
+  hostStateFull() {
     const s = this.s;
     const hi = this.hoursInfo();
     return {
@@ -329,7 +334,7 @@ export class Fila {
       queue: this.queue().map((e) => this.hostEntry(e)),
       done: s.entries.filter((e) => !ACTIVE.includes(e.status)).sort((a, b) => b.tDone - a.tDone).slice(0, 30).map((e) => this.hostEntry(e)),
       today: this.statsFor(s.entries, s.day), history: s.history.slice(-14), contacts: this.contactCount(),
-      site: { ...(s.site || {}), soldout: this.siteState().soldout }, newRequests: this.newRequests(),
+      site: { ...(s.site || {}), soldout: this.siteState().soldout },
       mesas: s.mesas, tables: this.tablesView(),
       orders: s.orders.filter((o) => !o.closed || Date.now() - o.tUpd < 3600000).map((o) => ({ ...this.orderView(o), closed: !!o.closed, tReady: o.tReady || null })),
       calls: s.calls.filter((c) => c.status === "open").map((c) => ({ id: c.id, m: c.m, kind: c.kind, t0: c.t0, demo: !!c.demo, stars: c.stars || 0, text: c.text || "" })),
@@ -448,7 +453,7 @@ export class Fila {
     for (const ws of this.ctx.getWebSockets()) {
       try {
         const a = ws.deserializeAttachment() || {};
-        if (a.role === "host") { if (a.ok) ws.send(JSON.stringify({ t: "host", d: this.hostState() })); }
+        if (a.role === "host") { if (a.ok) ws.send(JSON.stringify({ t: "host", d: this.hostState(a.urole || "entrada") })); }
         else if (a.role === "mesa") { if (a.m) ws.send(JSON.stringify({ t: "mesa", d: this.mesaState(a.m) })); }
         else ws.send(JSON.stringify({ t: "pub", d: this.publicState(a.mine) }));
       } catch (e) {}
@@ -460,7 +465,7 @@ export class Fila {
     const s = this.s, now = Date.now(), M = s.mesas;
     s.entries = []; s.counter = 0; s.open = true; s.orders = []; s.calls = []; s.orderSeq = 0; s.reviews = []; s.freed = []; s.promos = [];
     M.onlyHours = false; M.on = true; M.mode = "pedir";
-    try { this.sql().exec("DELETE FROM members"); this.sql().exec("DELETE FROM requests"); this.sql().exec("DELETE FROM activity"); } catch (e) {}
+    try { this.sql().exec("DELETE FROM members"); this.sql().exec("DELETE FROM activity"); } catch (e) {}
     [["Mariana", 2, "terraza", ["bebe"]], ["Diego", 4, "interior", []], ["Sofía", 3, "any", ["mascota"]], ["Rodrigo", 2, "barra", []]].forEach(([n, sz, z, nd], i) => {
       const r = this.newEntry({ name: n, size: sz, zone: z, needs: nd, demo: true }, "demo"); r.e.t0 = now - (4 - i) * 5 * 60000;
     });
@@ -668,27 +673,6 @@ export class Fila {
     // ---- datos para "la mejor hora" ----
     if (p === "/stats/hours" && method === "GET") return json(this.hoursStats());
 
-    // ---- solicitudes: eventos y oficinas, empleo ----
-    if (p === "/request" && method === "POST") {
-      const kind = body.kind === "empleo" ? "empleo" : body.kind === "evento" ? "evento" : null;
-      if (!kind) return json({ error: "Solicitud inválida" }, 400);
-      if (clean(body.website, 50)) return json({ ok: true }); // trampa para robots
-      const name = clean(body.name, 60), phone = digits(body.phone);
-      if (!name) return json({ error: "Escribe tu nombre" }, 400);
-      if (phone.length !== 10) return json({ error: "Escribe un WhatsApp de 10 dígitos" }, 400);
-      const ipH = (await sha(this.s.salt + (request.headers.get("x-ip") || ""))).slice(0, 16);
-      const since = Date.now() - 24 * 3600 * 1000;
-      const recent = this.sql().exec("SELECT COUNT(*) AS n FROM requests WHERE ipH=? AND created>?", ipH, since).one().n;
-      if (recent >= 5) return json({ error: "Ya recibimos varias solicitudes desde este celular. Te contactamos pronto." }, 429);
-      const data = kind === "evento"
-        ? { name, phone, company: clean(body.company, 80), type: clean(body.type, 40), date: clean(body.date, 20), time: clean(body.time, 20), people: Math.max(1, Math.min(500, parseInt(body.people, 10) || 0)), notes: clean(body.notes, 500) }
-        : { name, phone, role: clean(body.role, 40), availability: clean(body.availability, 60), experience: clean(body.experience, 500) };
-      const id = rid();
-      this.sql().exec("INSERT INTO requests (id,kind,created,status,data,ipH) VALUES (?,?,?,?,?,?)", id, kind, Date.now(), "nuevo", JSON.stringify(data), ipH);
-      this.sql().exec("DELETE FROM requests WHERE created<?", Date.now() - 120 * 24 * 3600 * 1000);
-      this.broadcast();
-      return json({ ok: true, id });
-    }
 
     // ---- mesa: carta, pedido, llamar mesero, pedir la cuenta ----
     if (p === "/mesa/state" && method === "GET") {
@@ -865,7 +849,7 @@ export class Fila {
       this.sql().exec("INSERT INTO users (id,name,role,pinHash,created,active) VALUES (?,?,?,?,?,1)", u.id, name, "dueno", await this.pinHashOf(np), Date.now());
       const tok = this.newSession(u);
       this.logEv(u, "cuenta", "Creó la cuenta del dueño");
-      return json({ ok: true, tok, user: this.userView({ ...u, active: 1, created: Date.now() }), state: this.hostState() });
+      return json({ ok: true, tok, user: this.userView({ ...u, active: 1, created: Date.now() }), state: this.hostState(u.role) });
     }
     if (p === "/auth/login" && method === "POST") {
       if (!this.userCount()) return json({ error: "Todavía no hay cuentas. El dueño debe crear la suya primero.", setup: true }, 409);
@@ -879,12 +863,12 @@ export class Fila {
       this.fails = 0;
       const tok = this.newSession(u);
       this.logEv(u, "entrada", "Entró al sistema");
-      return json({ ok: true, tok, user: this.userView(u), state: this.hostState() });
+      return json({ ok: true, tok, user: this.userView(u), state: this.hostState(u.role) });
     }
     if (p === "/auth/me" && method === "GET") {
       const u = this.userByTok(request.headers.get("x-pin"));
       if (!u) return json({ error: "Tu sesión terminó. Entra de nuevo con tu PIN." }, 401);
-      return json({ ok: true, user: this.userView(u), state: this.hostState() });
+      return json({ ok: true, user: this.userView(u), state: this.hostState(u.role) });
     }
     if (p === "/auth/logout" && method === "POST") {
       this.sql().exec("DELETE FROM sessions WHERE tok=?", String(request.headers.get("x-pin") || ""));
@@ -899,7 +883,7 @@ export class Fila {
       if (!allowed || (allowed !== "*" && !allowed.includes(me.role))) return json({ error: "Tu puesto (" + (ROLE_NAMES[me.role] || me.role) + ") no tiene permiso para esto." }, 403);
       const isMgr = MGR.includes(me.role);
 
-      if (p === "/host/state") return json(this.hostState());
+      if (p === "/host/state") return json(this.hostState(me.role));
       if (p === "/host/action" && method === "POST") {
         const e = this.s.entries.find((x) => x.id === body.id);
         if (!e) return json({ error: "No existe" }, 404);
@@ -925,13 +909,13 @@ export class Fila {
         else if (body.action === "back") { e.status = "waiting"; delete e.tCalled; delete e.tDone; delete e.otw; delete e.here; }
         else if (body.action === "remove") { this.s.entries = this.s.entries.filter((x) => x.id !== e.id); await this.notifyNext(); }
         await this.save();
-        return json({ ...this.hostState(), pushed });
+        return json({ ...this.hostState(me.role), pushed });
       }
       if (p === "/host/add" && method === "POST") {
         const r = this.newEntry(body, "host");
         if (r.error) return json({ error: r.error }, 400);
         await this.save();
-        return json(this.hostState());
+        return json(this.hostState(me.role));
       }
       if (p === "/host/settings" && method === "POST") {
         if (!isMgr && Object.keys(body).some((k) => k !== "open" && k !== "pin")) return json({ error: "Solo el gerente o el dueño cambian estos ajustes." }, 403);
@@ -944,7 +928,7 @@ export class Fila {
         if (body.tolerance != null) s.tolerance = Math.max(3, Math.min(30, parseInt(body.tolerance, 10) || 10));
         if (body.maxSize != null) s.maxSize = Math.max(2, Math.min(30, parseInt(body.maxSize, 10) || 10));
         await this.save();
-        return json(this.hostState());
+        return json(this.hostState(me.role));
       }
       if (p === "/host/site" && method === "POST") {
         if (!isMgr && (body.notice !== undefined || body.season !== undefined)) return json({ error: "La cocina solo puede marcar lo agotado." }, 403);
@@ -957,17 +941,7 @@ export class Fila {
         }
         if (Array.isArray(body.soldout)) { st.soldout = body.soldout.map((x) => clean(x, 60)).filter(Boolean).slice(0, 60); st.soldDay = this.s.day; }
         await this.save();
-        return json(this.hostState());
-      }
-      if (p === "/host/requests" && method === "GET") {
-        const rows = this.sql().exec("SELECT id,kind,created,status,data FROM requests ORDER BY created DESC LIMIT 200").toArray().map((r) => ({ ...r, data: JSON.parse(r.data) }));
-        return json({ rows });
-      }
-      if (p === "/host/request" && method === "POST") {
-        if (body.action === "delete") this.sql().exec("DELETE FROM requests WHERE id=?", String(body.id));
-        else if (["visto", "nuevo", "archivado"].includes(body.action)) this.sql().exec("UPDATE requests SET status=? WHERE id=?", body.action, String(body.id));
-        this.broadcast();
-        return json({ ok: true, newRequests: this.newRequests() });
+        return json(this.hostState(me.role));
       }
       if (p === "/host/contacts" && method === "GET") {
         const rows = this.sql().exec("SELECT phone,name,first,last,visits FROM contacts ORDER BY last DESC").toArray();
@@ -985,13 +959,8 @@ export class Fila {
           const r = this.newEntry({ name: n, size: sz, demo: true }, "demo");
           r.e.t0 = now - (90 - i * 15) * 60000; r.e.status = "seated"; r.e.tDone = r.e.t0 + w * 60000;
         });
-        const ex = this.sql().exec("SELECT COUNT(*) AS n FROM requests WHERE ipH='demo'").one().n;
-        if (!ex) {
-          this.sql().exec("INSERT INTO requests (id,kind,created,status,data,ipH) VALUES (?,?,?,?,?,?)", rid(), "evento", now - 50 * 60000, "nuevo", JSON.stringify({ name: "Ana Treviño", phone: "8110000000", company: "Despacho Treviño", type: "Desayuno en oficina", date: "", time: "9:00", people: 18, notes: "Ejemplo: junta mensual, chilaquiles y café para todos." }), "demo");
-          this.sql().exec("INSERT INTO requests (id,kind,created,status,data,ipH) VALUES (?,?,?,?,?,?)", rid(), "empleo", now - 3 * 3600000, "nuevo", JSON.stringify({ name: "Luis Garza", phone: "8120000000", role: "Barra", availability: "Fines de semana", experience: "Ejemplo: un año como barista." }), "demo");
-        }
         await this.save();
-        return json(this.hostState());
+        return json(this.hostState(me.role));
       }
       // ---- equipo: usuarios ----
       if (p === "/host/users" && method === "GET") {
@@ -1086,7 +1055,7 @@ export class Fila {
       if (p === "/host/freed" && method === "POST") {
         this.s.freed = (this.s.freed || []).filter((f) => f.m !== parseInt(body.m, 10));
         await this.save();
-        return json(this.hostState());
+        return json(this.hostState(me.role));
       }
       // ---- mesas ----
       if (p === "/host/mesas" && method === "POST") {
@@ -1102,7 +1071,7 @@ export class Fila {
         if (body.rekey) { const n = parseInt(body.rekey, 10); if (n >= 1 && n <= M.count) M.keys[n] = rid().slice(0, 6); }
         this.ensureKeys();
         await this.save();
-        return json(this.hostState());
+        return json(this.hostState(me.role));
       }
       if (p === "/host/order" && method === "POST") {
         const o = this.s.orders.find((x) => x.id === body.id);
@@ -1120,13 +1089,13 @@ export class Fila {
         else if (a === "back") o.status = o.status === "entregado" ? "listo" : o.status === "listo" ? "prep" : "nuevo";
         o.tUpd = now;
         await this.save();
-        return json(this.hostState());
+        return json(this.hostState(me.role));
       }
       if (p === "/host/call" && method === "POST") {
         const c = this.s.calls.find((x) => x.id === body.id);
         if (c && c.status === "open") { c.status = "done"; c.tDone = Date.now(); c.by = me.name; this.logEv(me, "llamado", `Atendió ${c.kind === "cuenta" ? "la cuenta" : c.kind === "alerta" ? "la alerta de calificación" : "el llamado"} de la mesa ${c.m}`); }
         await this.save();
-        return json(this.hostState());
+        return json(this.hostState(me.role));
       }
       if (p === "/host/table" && method === "POST") {
         const m = parseInt(body.m, 10), now = Date.now();
@@ -1140,7 +1109,7 @@ export class Fila {
           if (busy) this.s.freed = [...(this.s.freed || []).filter((f) => f.m !== m && now - f.t < 30 * 60000), { m, t: now }];
         }
         await this.save();
-        return json(this.hostState());
+        return json(this.hostState(me.role));
       }
       // ---- club ----
       if (p === "/host/club" && method === "GET") {
@@ -1185,12 +1154,12 @@ export class Fila {
         this.logEv(me, "promo", `Mandó la promoción "${title}" a ${rows.length} socios`);
         this.s.promos = [...(this.s.promos || []), pr].slice(-30);
         await this.save();
-        return json({ ok: true, promo: pr, state: this.hostState() });
+        return json({ ok: true, promo: pr, state: this.hostState(me.role) });
       }
       if (p === "/host/demo/restart" && method === "POST") {
         if (!this.cfg.demo) return json({ error: "Solo disponible en la demostración." }, 404);
         this.seedDemo(); await this.save();
-        return json(this.hostState());
+        return json(this.hostState(me.role));
       }
       if (p === "/host/mesas/demo" && method === "POST" && !this.cfg.demo) return json({ error: "Los datos de ejemplo solo están en la demostración." }, 404);
       if (p === "/host/mesas/demo" && method === "POST") {
@@ -1213,7 +1182,7 @@ export class Fila {
           });
         }
         await this.save();
-        return json(this.hostState());
+        return json(this.hostState(me.role));
       }
       if (p === "/host/reset" && method === "POST" && body.only === "mesas") {
         // solo borra lo de ejemplo de mesas y club; no toca la lista de espera ni datos reales
@@ -1222,22 +1191,22 @@ export class Fila {
         this.s.reviews = (this.s.reviews || []).filter((r) => !r.demo);
         try { this.sql().exec("DELETE FROM members WHERE demo=1"); } catch (e) {}
         await this.save();
-        return json(this.hostState());
+        return json(this.hostState(me.role));
       }
       if (p === "/host/reset" && method === "POST" && !this.cfg.demo) {
         // en el sistema real "Vaciar la lista" solo borra la fila de hoy
         this.s.entries = this.s.entries.filter((e) => !ACTIVE.includes(e.status));
         this.logEv(me, "lista", "Vació la lista de espera");
         await this.save();
-        return json(this.hostState());
+        return json(this.hostState(me.role));
       }
       if (p === "/host/reset" && method === "POST") {
         this.s.entries = []; this.s.counter = 0; this.s.open = true;
         this.s.orders = []; this.s.calls = []; this.s.orderSeq = 0; this.s.reviews = []; this.s.freed = [];
-        try { this.sql().exec("DELETE FROM requests WHERE ipH='demo'"); this.sql().exec("DELETE FROM members WHERE demo=1"); } catch (e) {}
+        try { this.sql().exec("DELETE FROM members WHERE demo=1"); } catch (e) {}
         if (body.history) this.s.history = [];
         await this.save();
-        return json(this.hostState());
+        return json(this.hostState(me.role));
       }
       return json({ error: "Ruta no encontrada" }, 404);
     }
@@ -1252,8 +1221,8 @@ export class Fila {
     this.rollDay();
     if (m.t === "auth" && a.role === "host") {
       const u = this.userByTok(m.pin);
-      a.ok = !!u; a.uid = u ? u.id : null; ws.serializeAttachment(a);
-      ws.send(JSON.stringify(u ? { t: "host", d: this.hostState() } : { t: "err", d: "Sesión terminada" }));
+      a.ok = !!u; a.uid = u ? u.id : null; a.urole = u ? u.role : null; ws.serializeAttachment(a);
+      ws.send(JSON.stringify(u ? { t: "host", d: this.hostState(a.urole) } : { t: "err", d: "Sesión terminada" }));
     } else if (m.t === "mine") {
       a.mine = m.id || null; ws.serializeAttachment(a);
       ws.send(JSON.stringify({ t: "pub", d: this.publicState(a.mine) }));

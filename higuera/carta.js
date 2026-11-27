@@ -1,4 +1,4 @@
-/* Higuera · carta compartida entre el sitio y el panel del equipo */
+/* Higuera · carta compartida entre la mesa y el panel del equipo */
 window.CARTA = (() => {
   const CATS = [
     { id: "desayunos", es: "Desayunos", en: "Breakfast", pes: "Lo clásico de la mañana, de lo salado a lo dulce.", pen: "Morning classics, savory to sweet." },

@@ -121,17 +121,6 @@ td{padding:9px 6px;border-bottom:1px dashed var(--line)}
 .solds .chips{display:flex;flex-wrap:wrap;gap:6px}
 .solds .chips button{padding:8px 12px;border-radius:999px;background:var(--bg);box-shadow:inset 0 0 0 1.5px var(--line);font-weight:700;font-size:13px}
 .solds .chips button.on{background:var(--red);color:#fff;box-shadow:none;text-decoration:line-through}
-.rq{background:var(--paper);border-radius:20px;padding:16px 18px;box-shadow:var(--sh);display:grid;gap:8px}
-.rq.nuevo{box-shadow:inset 4px 0 0 var(--terra),var(--sh)}
-.rq .hd{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
-.rq .hd b{font-size:17px}
-.rq dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:13.5px}
-.rq dt{color:var(--mut);font-weight:700}
-.rq .acts{display:flex;gap:8px;flex-wrap:wrap}
-.rq .acts .btn{height:40px;font-size:13.5px;padding:0 14px}
-.rqf{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.rqf button{padding:8px 14px;border-radius:999px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line);font-weight:700;font-size:13.5px}
-.rqf button.on{background:var(--ink);color:var(--paper)}
 .hide{display:none!important}
 @media (max-width:760px){
   .kpis{grid-template-columns:repeat(2,1fr)}
@@ -145,7 +134,7 @@ td{padding:9px 6px;border-bottom:1px dashed var(--line)}
 }
 @media (max-width:400px){.sw span{display:none}.big4{grid-template-columns:1fr 1fr}}
 .pnav{display:flex;gap:4px;margin-left:10px}.pnav a{font-size:12.5px;font-weight:800;color:rgba(244,241,234,.65);text-decoration:none;padding:8px 10px;border-radius:10px}.pnav a.cur{background:rgba(244,241,234,.12);color:#f4f1ea}@media (max-width:700px){.pnav{display:none}}
-body:not([data-me="dueno"]):not([data-me="gerente"]) .tabs [data-t="clientes"],body:not([data-me="dueno"]):not([data-me="gerente"]) .tabs [data-t="solicitudes"],body:not([data-me="dueno"]):not([data-me="gerente"]) .tabs [data-t="sitio"],body:not([data-me="dueno"]):not([data-me="gerente"]) .tabs [data-t="ajustes"]{display:none}
+body:not([data-me="dueno"]):not([data-me="gerente"]) .tabs [data-t="clientes"],body:not([data-me="dueno"]):not([data-me="gerente"]) .tabs [data-t="sitio"],body:not([data-me="dueno"]):not([data-me="gerente"]) .tabs [data-t="ajustes"],body:not([data-me="dueno"]):not([data-me="gerente"]) .tabs [data-t="resumen"]{display:none}
 </style>
 </head>
 <body>
@@ -179,7 +168,7 @@ body:not([data-me="dueno"]):not([data-me="gerente"]) .tabs [data-t="clientes"],b
     <div class="kpi"><div class="n" id="kL">0</div><div class="l">Se fueron sin sentarse</div></div>
   </section>
 
-  <nav class="tabs" id="tabs"><button type="button" class="on" data-t="lista">Lista</button><button type="button" data-t="resumen">Resumen del día</button><button type="button" data-t="clientes">Clientes</button><button type="button" data-t="solicitudes">Solicitudes<span class="bdg hide" id="rqn">0</span></button><button type="button" data-t="sitio">Carta y avisos</button><button type="button" data-t="ajustes">Ajustes</button><button type="button" data-t="guia">Guía</button></nav>
+  <nav class="tabs" id="tabs"><button type="button" class="on" data-t="lista">Lista</button><button type="button" data-t="resumen">Resumen del día</button><button type="button" data-t="clientes">Clientes</button><button type="button" data-t="sitio">Carta y avisos</button><button type="button" data-t="ajustes">Ajustes</button><button type="button" data-t="guia">Guía</button></nav>
 
   <section id="v-lista">
     <div class="head"><h2>En espera</h2><button class="btn btn-ink" id="addBtn" type="button" style="height:44px;font-size:14px">+ Anotar en la entrada</button></div>
@@ -236,13 +225,6 @@ body:not([data-me="dueno"]):not([data-me="gerente"]) .tabs [data-t="clientes"],b
     </div>
   </section>
 
-  <section id="v-solicitudes" class="hide">
-    <div class="head"><h2>Solicitudes</h2></div>
-    <div class="rqf" id="rqf"></div>
-    <div class="list" id="rqlist"></div>
-    <p class="s" style="font-size:12.5px;color:var(--mut);margin-top:12px">Llegan desde las páginas «Eventos y oficinas» y «Trabaja con nosotros» del sitio. Se borran solas después de 4 meses.</p>
-  </section>
-
   <section id="v-sitio" class="hide">
     <div class="grid2">
       <div class="panel set">
@@ -250,7 +232,7 @@ body:not([data-me="dueno"]):not([data-me="gerente"]) .tabs [data-t="clientes"],b
         <div><label class="lab" for="sNotice">Aparece al inicio en el celular de los clientes</label><input type="text" class="in" id="sNotice" maxlength="140" placeholder="Ej.: Hoy cerramos a las 2 pm por un evento privado"><div class="notice-prev hide" id="sNoticePrev"></div></div>
         <div class="rowb"><button class="btn btn-ink" type="button" id="sNoticeSave" style="height:44px;font-size:14px">Publicar aviso</button><button class="btn btn-ghost" type="button" id="sNoticeOff" style="height:44px;font-size:14px">Quitar aviso</button></div>
         <h3 style="margin-top:10px">Platillo destacado</h3>
-        <div><span class="lab">Se muestra en el inicio del sitio</span><button class="sw light" id="sSeasonSw" type="button"><span id="sSeasonTxt">Visible</span><i></i></button></div>
+        <div><span class="lab">Se muestra arriba de la carta en el celular de los clientes</span><button class="sw light" id="sSeasonSw" type="button"><span id="sSeasonTxt">Visible</span><i></i></button></div>
         <div><label class="lab" for="sTitle">Nombre</label><input type="text" class="in" id="sTitle" maxlength="60"></div>
         <div><label class="lab" for="sText">Texto corto</label><input type="text" class="in" id="sText" maxlength="160"></div>
         <div><span class="lab">Foto</span><div class="pgrid" id="sPhotos"></div></div>
@@ -259,9 +241,8 @@ body:not([data-me="dueno"]):not([data-me="gerente"]) .tabs [data-t="clientes"],b
       </div>
       <div class="panel set">
         <h3>Agotados de hoy</h3>
-        <p class="s" style="margin-top:-6px">Toca lo que se acabó. En el menú del sitio aparece como «Agotado hoy». Se reinicia solo cada mañana.</p>
+        <p class="s" style="margin-top:-6px">Toca lo que se acabó. En la carta de las mesas aparece como «Agotado hoy» y ya no se puede pedir. Se reinicia solo cada mañana.</p>
         <div class="solds" id="sSold"></div>
-        <a class="btn btn-ghost" href="../sitio/" target="_blank" rel="noopener" style="height:44px;font-size:14px;width:max-content">Ver el sitio</a>
       </div>
     </div>
   </section>
@@ -271,7 +252,7 @@ body:not([data-me="dueno"]):not([data-me="gerente"]) .tabs [data-t="clientes"],b
       <div class="panel">
         <h3>Cómo funciona un turno</h3>
         <ol class="guide">
-          <li><span><b>El cliente se anota</b> con el QR de la entrada o desde el sitio. Aparece aquí al instante con un sonido. Si llega alguien sin celular, usa «Anotar en la entrada».</span></li>
+          <li><span><b>El cliente se anota</b> con el QR de la entrada. Aparece aquí al instante con un sonido. Si llega alguien sin celular, usa «Anotar en la entrada».</span></li>
           <li><span><b>Le pedimos activar el aviso</b> en su celular. Si en su tarjeta ves «Aviso activado», le llegará una notificación aunque cierre la página. Si dice «Sin aviso», usa el botón de WhatsApp al llamarlo.</span></li>
           <li><span><b>Cuando se libere su mesa, toca «Llamar mesa».</b> Su celular suena y vibra, y empieza la cuenta de la tolerancia. Al que queda primero le llega «Eres el siguiente».</span></li>
           <li><span><b>Si responde</b>, verás «Va en camino» o «Ya está en la entrada». Si no, puedes tocar «Avisar otra vez» o mandarle WhatsApp.</span></li>
@@ -417,9 +398,6 @@ function paint() {
   if (!first && fresh.length) { beep(1); toast("Nuevo en la lista: " + fresh.map((e) => e.name + " · " + e.size).join(", ")); try { navigator.vibrate && navigator.vibrate(120); } catch (x) {} }
   $("#list").innerHTML = q.length ? q.map(card).join("") : `<div class="empty"><b>Sin espera</b>Cuando alguien escanee el QR aparecerá aquí al instante.</div>`;
   known = new Set(q.map((e) => e.id));
-  const nr = H.newRequests || 0; $("#rqn").textContent = nr; $("#rqn").classList.toggle("hide", !nr);
-  if (!first && nr > lastNR) { beep(1); toast("Llegó una solicitud nueva: revisa «Solicitudes»"); if (view === "solicitudes") loadReq(); }
-  lastNR = nr;
   if (view === "sitio") siteForm(false);
   first = false;
 
@@ -465,7 +443,7 @@ document.addEventListener("click", async (e) => {
     return;
   }
   if (b) { b.disabled = true; await act(b.dataset.id, b.dataset.a); return; }
-  const t = e.target.closest("[data-t]"); if (t) { view = t.dataset.t; document.querySelectorAll("[data-t]").forEach((x) => x.classList.toggle("on", x === t)); ["lista", "resumen", "clientes", "solicitudes", "sitio", "ajustes", "guia"].forEach((v) => $("#v-" + v).classList.toggle("hide", v !== view)); if (view === "clientes") loadContacts(); if (view === "solicitudes") loadReq(); if (view === "sitio") siteForm(true); return; }
+  const t = e.target.closest("[data-t]"); if (t) { view = t.dataset.t; document.querySelectorAll("[data-t]").forEach((x) => x.classList.toggle("on", x === t)); ["lista", "resumen", "clientes", "sitio", "ajustes", "guia"].forEach((v) => $("#v-" + v).classList.toggle("hide", v !== view)); if (view === "clientes") loadContacts(); if (view === "sitio") siteForm(true); return; }
   if (e.target.closest("#openSw")) { setting({ open: !H.open }, !H.open ? "Lista abierta" : "Lista en pausa: nadie nuevo puede anotarse en línea"); return; }
   if (e.target.closest("#autoSw")) { setting({ autoHours: !H.autoHours }); return; }
   const sv = e.target.closest("[data-sv]"); if (sv) { setting({ [sv.parentElement.dataset.set]: +sv.dataset.sv }); return; }
@@ -491,30 +469,7 @@ $("#addF").addEventListener("submit", async (e) => {
   try { H = await api("/host/add", { pin, body: { name, size: addSize, phone: $("#aP").value } }); known.add("x"); paint(); $("#aN").value = ""; $("#aP").value = ""; addSize = 2; $("#aS").textContent = 2; $("#addF").classList.remove("on"); toast(name + " agregado a la lista"); } catch (x) { toast(x.message); }
 });
 
-/* ---------- solicitudes ---------- */
-let lastNR = 0, RQ = [], rqView = "todas";
-const ago2 = (t) => { const m = Math.round((Date.now() - t) / 60000); return m < 60 ? `hace ${Math.max(1, m)} min` : m < 1440 ? `hace ${Math.round(m / 60)} h` : `hace ${Math.round(m / 1440)} d`; };
-async function loadReq() { try { const r = await api("/host/requests", { pin }); RQ = r.rows; paintReq(); } catch (e) { toast(e.message); } }
-function paintReq() {
-  const f = [["todas", "Todas"], ["evento", "Eventos"], ["empleo", "Empleo"], ["archivado", "Archivadas"]];
-  $("#rqf").innerHTML = f.map(([k, t]) => `<button type="button" data-rqf="${k}" class="${rqView === k ? "on" : ""}">${t}</button>`).join("");
-  const list = RQ.filter((r) => (rqView === "archivado" ? r.status === "archivado" : r.status !== "archivado" && (rqView === "todas" || r.kind === rqView)));
-  $("#rqlist").innerHTML = list.length ? list.map((r) => {
-    const d = r.data, ev = r.kind === "evento";
-    const msg = ev ? `Hola ${d.name.split(" ")[0]}, te escribimos de Higuera por tu solicitud de ${d.type || "evento"} para ${d.people} personas${d.date ? " el " + d.date.split("-").reverse().join("/") : ""}.` : `Hola ${d.name.split(" ")[0]}, te escribimos de Higuera por tu solicitud de empleo en ${d.role || "el equipo"}.`;
-    const rows = ev ? [["Tipo", d.type], ["Empresa", d.company], ["Fecha", d.date ? d.date.split("-").reverse().join("/") : ""], ["Hora", d.time], ["Personas", d.people], ["Detalles", d.notes]] : [["Área", d.role], ["Disponibilidad", d.availability], ["Experiencia", d.experience]];
-    return `<article class="rq ${r.status}"><div class="hd"><b>${esc(d.name)}</b><span class="tag ${ev ? "w" : "i"}">${ev ? "Evento u oficina" : "Empleo"}</span>${r.status === "nuevo" ? `<span class="tag">Nueva</span>` : ""}<span style="font-size:12.5px;color:var(--mut);margin-left:auto">${ago2(r.created)}</span></div>
-      <dl><dt>WhatsApp</dt><dd>${d.phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3")}</dd>${rows.filter(([, v]) => v).map(([k, v]) => `<dt>${k}</dt><dd>${esc(String(v))}</dd>`).join("")}</dl>
-      <div class="acts"><a class="btn btn-wa" href="https://wa.me/52${d.phone}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener" data-rqseen="${r.id}">Responder por WhatsApp</a>${r.status === "nuevo" ? `<button type="button" class="btn btn-ghost" data-rq="${r.id}" data-ra="visto">Marcar como vista</button>` : ""}${r.status !== "archivado" ? `<button type="button" class="btn btn-ghost" data-rq="${r.id}" data-ra="archivado">Archivar</button>` : `<button type="button" class="btn btn-ghost" data-rq="${r.id}" data-ra="visto">Regresar</button>`}<button type="button" class="btn btn-ghost" data-rq="${r.id}" data-ra="delete">Borrar</button></div></article>`;
-  }).join("") : `<div class="empty"><b>Sin solicitudes</b>Cuando alguien pida una cotización o deje sus datos para trabajar, aparecerá aquí.</div>`;
-}
-async function rqAct(id, action) {
-  if (action === "delete" && !confirmDel.has(id)) { confirmDel.add(id); toast("Toca «Borrar» otra vez para confirmar"); setTimeout(() => confirmDel.delete(id), 4000); return; }
-  try { const r = await api("/host/request", { pin, body: { id, action } }); lastNR = r.newRequests; $("#rqn").textContent = r.newRequests; $("#rqn").classList.toggle("hide", !r.newRequests); await loadReq(); } catch (e) { toast(e.message); }
-}
-const confirmDel = new Set();
-
-/* ---------- sitio web ---------- */
+/* ---------- carta y avisos ---------- */
 let SF = null, soldSel = [];
 function siteForm(force) {
   if (!H || !H.site) return;
@@ -533,13 +488,10 @@ function siteForm(force) {
 async function saveSite(body, msg) { try { H = await api("/host/site", { pin, body }); paint(); siteForm(true); if (msg) toast(msg); } catch (e) { toast(e.message); } }
 document.addEventListener("input", (e) => { if (e.target.id === "sTitle" || e.target.id === "sText") { $("#sPrevT").textContent = $("#sTitle").value || "Nombre del platillo"; $("#sPrevP").textContent = $("#sText").value; } });
 document.addEventListener("click", (e) => {
-  const rf = e.target.closest("[data-rqf]"); if (rf) { rqView = rf.dataset.rqf; paintReq(); return; }
-  const ra = e.target.closest("[data-ra]"); if (ra) { rqAct(ra.dataset.rq, ra.dataset.ra); return; }
-  const rs = e.target.closest("[data-rqseen]"); if (rs) { const r = RQ.find((x) => x.id === rs.dataset.rqseen); if (r && r.status === "nuevo") rqAct(r.id, "visto"); return; }
   const ph = e.target.closest("[data-ph]"); if (ph && SF) { SF.img = ph.dataset.ph; SF.title = $("#sTitle").value; SF.text = $("#sText").value; siteForm(false); return; }
   if (e.target.closest("#sSeasonSw") && SF) { SF.on = !SF.on; SF.title = $("#sTitle").value; SF.text = $("#sText").value; siteForm(false); return; }
-  if (e.target.closest("#sSeasonSave")) { const t = $("#sTitle").value.trim(); if (SF.on && !t) { toast("Escribe el nombre del platillo"); return; } saveSite({ season: { on: SF.on, title: t, text: $("#sText").value.trim(), img: SF.img } }, SF.on ? "Destacado publicado en el sitio" : "Destacado oculto"); return; }
-  if (e.target.closest("#sNoticeSave")) { const v = $("#sNotice").value.trim(); if (!v) { toast("Escribe el aviso"); return; } saveSite({ notice: v }, "Aviso publicado en el sitio"); return; }
+  if (e.target.closest("#sSeasonSave")) { const t = $("#sTitle").value.trim(); if (SF.on && !t) { toast("Escribe el nombre del platillo"); return; } saveSite({ season: { on: SF.on, title: t, text: $("#sText").value.trim(), img: SF.img } }, SF.on ? "Destacado publicado en la carta" : "Destacado oculto"); return; }
+  if (e.target.closest("#sNoticeSave")) { const v = $("#sNotice").value.trim(); if (!v) { toast("Escribe el aviso"); return; } saveSite({ notice: v }, "Aviso publicado en la carta"); return; }
   if (e.target.closest("#sNoticeOff")) { saveSite({ notice: "" }, "Aviso quitado"); return; }
   const so = e.target.closest("[data-sold]"); if (so) { const id = so.dataset.sold; soldSel = soldSel.includes(id) ? soldSel.filter((x) => x !== id) : [...soldSel, id]; saveSite({ soldout: soldSel }, soldSel.includes(id) ? "Marcado como agotado" : "Disponible otra vez"); return; }
 });
