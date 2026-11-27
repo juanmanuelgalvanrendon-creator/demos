@@ -854,7 +854,8 @@ export class Fila {
     }
 
     // ---- acceso del equipo: cada persona entra con su propio PIN ----
-    if (p === "/auth/info" && method === "GET") return json({ hasOwner: this.userCount() > 0, name: this.s.name });
+    if (p === "/auth/info" && method === "GET") return json({ hasOwner: this.cfg.demo ? true : this.userCount() > 0, demo: !!this.cfg.demo, name: this.s.name });
+    if (this.cfg.demo && method === "POST" && (p === "/auth/setup" || p === "/auth/login" || p === "/host/users")) return json({ error: "En la demostración no se crean cuentas ni se entra con PIN." }, 403);
     if (p === "/auth/setup" && method === "POST") {
       if (this.userCount() > 0) return json({ error: "La cuenta del dueño ya existe. Entra con tu PIN." }, 409);
       const name = clean(body.name, 40), np = String(body.pin || "");
