@@ -1,0 +1,23 @@
+{
+  "id": "/higuera/meseros/",
+  "name": "Higuera · Meseros",
+  "short_name": "Meseros",
+  "start_url": "/higuera/meseros/",
+  "scope": "/higuera/",
+  "display": "standalone",
+  "background_color": "#1f231b",
+  "theme_color": "#1f231b",
+  "lang": "es-MX",
+  "icons": [
+    {
+      "src": "/higuera/img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/higuera/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

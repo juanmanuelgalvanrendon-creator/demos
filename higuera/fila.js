@@ -141,6 +141,10 @@
   const b64ToU8 = (b) => { const p = "=".repeat((4 - (b.length % 4)) % 4); const x = atob((b + p).replace(/-/g, "+").replace(/_/g, "/")); return Uint8Array.from([...x].map((c) => c.charCodeAt(0))); };
   // suscribe este navegador a notificaciones push y regresa la suscripción
   async function pushSubscribe() {
+    const ios = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+    if (ios && !standalone) throw new Error("En iPhone los avisos solo funcionan desde el ícono de la pantalla de inicio: toca Compartir, elige «Agregar a inicio», abre Higuera desde ese ícono, entra con tu PIN y activa aquí los avisos.");
+    if (!("serviceWorker" in navigator) || !("PushManager" in window)) throw new Error("Este navegador no permite notificaciones. Usa Chrome en Android o Safari en iPhone (desde el ícono de inicio).");
     const reg = await navigator.serviceWorker.register("/higuera/sw.js", { scope: "/higuera/" });
     await navigator.serviceWorker.ready;
     const perm = await Notification.requestPermission();

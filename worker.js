@@ -73,7 +73,7 @@ export default {
         const loc = (r.headers.get("location") || "").replace("/higuera/", "/higuera-demo/");
         return new Response(null, { status: r.status, headers: { location: loc } });
       }
-      if (!/text\/html|javascript/.test(ct)) return r;
+      if (!/text\/html|javascript|manifest\+json/.test(ct) && !path.endsWith(".webmanifest")) return r;
       // las ligas internas apuntan a la demostración, no al sistema real
       const txt = (await r.text()).split("/higuera/").join("/higuera-demo/");
       const h = new Headers(r.headers); h.delete("content-length"); h.set("cache-control", "no-cache");

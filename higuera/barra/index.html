@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" id="mf" href="/higuera/equipo/cocina.webmanifest">
+<link rel="apple-touch-icon" href="/higuera/img/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" id="mt" content="Cocina">
+<script>if(location.pathname.indexOf("/meseros")>=0){document.getElementById("mf").href="/higuera/equipo/meseros.webmanifest";document.getElementById("mt").content="Meseros";}</script>
 <title>Higuera · Equipo</title>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#1f231b">
@@ -181,7 +187,7 @@ body[data-role="todo"] aside.side,body[data-role="cocina"] aside.side{position:s
   <div class="row"><div><b>Repetir hasta atender</b><span>Vuelve a sonar cada 30 segundos mientras haya algo pendiente.</span></div><div class="seg" data-k="rep"><button type="button" data-v="1">Sí</button><button type="button" data-v="0">No</button></div></div>
   <button class="btn btn-terra" type="button" id="testSnd">Probar sonido</button>
   <button class="btn btn-ink" type="button" id="pushOn">Avisarme en este celular aunque esté bloqueado</button>
-  <p class="note" id="pushNote">Llega como notificación con sonido y vibración. En iPhone, primero agrega esta página a la pantalla de inicio.</p>
+  <p class="note" id="pushNote">Llega como notificación con sonido aunque el celular esté bloqueado. En iPhone, primero agrégala a la pantalla de inicio (Compartir, «Agregar a inicio») y actívalos desde ese ícono.</p>
 </div>
 <nav class="mtabs" id="mtabs" aria-label="Secciones"></nav>
 

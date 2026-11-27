@@ -1,0 +1,23 @@
+{
+  "id": "/higuera/club/",
+  "name": "Higuera · Gerencia",
+  "short_name": "Gerencia",
+  "start_url": "/higuera/club/",
+  "scope": "/higuera/",
+  "display": "standalone",
+  "background_color": "#2e3527",
+  "theme_color": "#2e3527",
+  "lang": "es-MX",
+  "icons": [
+    {
+      "src": "/higuera/img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/higuera/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
