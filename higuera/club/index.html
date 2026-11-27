@@ -23,6 +23,8 @@
 .bar h1{font:400 24px/1 var(--serif)}
 .bar .sp{flex:1}
 .panels{display:flex;gap:6px}
+.gpush{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.gpush .btn{height:48px}
 .panels a{font-size:12.5px;font-weight:800;color:rgba(244,241,234,.65);text-decoration:none;padding:8px 10px;border-radius:10px}
 .panels a.cur{background:rgba(244,241,234,.12);color:#f4f1ea}
 .conn{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:rgba(244,241,234,.75)}
@@ -177,11 +179,12 @@
 
   <section id="v-resumen">
     <div class="kpis" id="kpis"></div>
+    <div class="card gpush" style="margin-bottom:14px"><div><h2>Avisos en tu <em>celular</em></h2><p class="sub" id="gpNote">Te llega una notificación cuando un cliente califica con 3 o menos, para que pases a su mesa. Llega aunque el celular esté bloqueado.</p></div><button class="btn btn-ink" type="button" id="gpOn">Avisarme en este celular</button></div>
     <div class="g2">
       <div class="card"><h2>Hoy en las <em>mesas</em></h2><p class="sub">Pedidos hechos desde el QR de cada mesa.</p><div class="minis" id="today"></div><div class="barl" id="top"></div></div>
       <div class="card"><h2>Últimos <em>14 días</em></h2><p class="sub">Pedidos desde la mesa por día.</p><div class="chart" id="chart"></div><div class="minis" id="hist"></div></div>
     </div>
-    <div class="card" style="margin-top:14px"><h2>Lo que dicen al pedir la <em>cuenta</em></h2><p class="sub">Calificación del 1 al 5. Si es de 3 o menos, le llega una alerta al gerente en la pantalla de pedidos para que pase a la mesa.</p><div class="minis" id="rsum"></div><div id="revs" style="margin-top:8px"></div></div>
+    <div class="card" style="margin-top:14px"><h2>Lo que dicen al pedir la <em>cuenta</em></h2><p class="sub">Calificación del 1 al 5. Si es de 3 o menos, le llega una alerta al mesero y al gerente (en pantalla y en su celular, si activó los avisos) para que pase a la mesa.</p><div class="minis" id="rsum"></div><div id="revs" style="margin-top:8px"></div></div>
   </section>
 
   <section id="v-socios" class="hide">
@@ -248,7 +251,7 @@
 <script src="../fila.js"></script>
 <script>
 (() => {
-const { api, live, store, esc, ago, toast, unlockAudio, qrSvg } = HG;
+const { api, live, store, esc, ago, toast, unlockAudio, qrSvg, pushSubscribe } = HG;
 const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
 let rekeyArm = "";
 const ROLES_OK = ["dueno", "gerente"];
@@ -367,6 +370,17 @@ document.addEventListener("change", async (e) => {
 async function setM(body) { try { H = await api("/host/mesas", { pin, body }); paint(); } catch (e) { toast(e.message); } }
 document.addEventListener("click", async (e) => {
   const b = e.target.closest("button"); if (!b) return;
+  if (b.id === "gpOn") {
+    b.disabled = true; b.textContent = "Activando…";
+    try {
+      const sub = await pushSubscribe();
+      await api("/host/push/sub", { pin, body: { sub: sub.toJSON(), role: "gerente" } });
+      await api("/host/push/test", { pin, body: { role: "gerente" } });
+      $("#gpNote").textContent = "Listo: este celular recibe las alertas de calificaciones bajas. Te mandamos una prueba.";
+      b.textContent = "Avisos activados en este celular"; b.classList.add("btn-ok");
+    } catch (x) { $("#gpNote").textContent = x.message || "No se pudieron activar."; b.disabled = false; b.textContent = "Avisarme en este celular"; }
+    return;
+  }
   if (b.dataset.t) { tab = b.dataset.t; $$(".tabs button").forEach((x) => x.classList.toggle("on", x === b)); ["resumen", "socios", "promos", "mesas", "equipo"].forEach((k) => $("#v-" + k).classList.toggle("hide", k !== tab)); if (tab === "socios") loadMem(); if (tab === "equipo") loadTeam(); return; }
   if (b.id === "uadd") {
     const name = $("#un").value.trim(), role = $("#ur").value, pn = $("#up").value.replace(/\D/g, "");

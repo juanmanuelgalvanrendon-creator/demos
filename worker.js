@@ -549,6 +549,12 @@ export class Fila {
   }
 
   /* ----- notificaciones push ----- */
+  // solo servicios de notificaciones reales; PUSH_TEST_HOST existe únicamente en el servidor local de pruebas (.dev.vars)
+  pushHostOk(ep) {
+    const t = this.env && this.env.PUSH_TEST_HOST;
+    if (t && ep.host === t) return true;
+    return ep.protocol === "https:" && PUSH_HOSTS.some((rx) => rx.test(ep.hostname));
+  }
   async vapid() {
     if (this._vapid) return this._vapid;
     let v = await this.ctx.storage.get("vapid");
@@ -781,7 +787,7 @@ export class Fila {
       if (!r) return json({ error: "No encontramos tu tarjeta." }, 404);
       let ep;
       try { ep = new URL(body.sub?.endpoint); } catch (x) { return json({ error: "Suscripción inválida" }, 400); }
-      if (ep.protocol !== "https:" || !PUSH_HOSTS.some((rx) => rx.test(ep.hostname))) return json({ error: "Servicio de notificaciones no permitido" }, 400);
+      if (!this.pushHostOk(ep)) return json({ error: "Servicio de notificaciones no permitido" }, 400);
       this.sql().exec("UPDATE members SET push=NULL WHERE push=? AND id<>?", ep.toString(), r.id);
       this.sql().exec("UPDATE members SET push=? WHERE id=?", ep.toString(), r.id);
       r.push = ep.toString();
@@ -816,7 +822,7 @@ export class Fila {
       if (!e) return json({ error: "No encontramos tu turno" }, 404);
       let ep;
       try { ep = new URL(body.sub?.endpoint); } catch (x) { return json({ error: "Suscripción inválida" }, 400); }
-      if (ep.protocol !== "https:" || !PUSH_HOSTS.some((r) => r.test(ep.hostname))) return json({ error: "Servicio de notificaciones no permitido" }, 400);
+      if (!this.pushHostOk(ep)) return json({ error: "Servicio de notificaciones no permitido" }, 400);
       // un celular solo puede estar ligado a un turno a la vez
       this.s.entries.forEach((x) => { if (x !== e && x.push && x.push.endpoint === ep.toString()) delete x.push; });
       e.push = { endpoint: ep.toString() };
@@ -1049,7 +1055,7 @@ export class Fila {
         const role = ["cocina", "meseros", "gerente"].includes(body.role) ? body.role : "meseros";
         let ep;
         try { ep = new URL(body.sub?.endpoint); } catch (x) { return json({ error: "Suscripción inválida" }, 400); }
-        if (ep.protocol !== "https:" || !PUSH_HOSTS.some((rx) => rx.test(ep.hostname))) return json({ error: "Servicio de notificaciones no permitido" }, 400);
+        if (!this.pushHostOk(ep)) return json({ error: "Servicio de notificaciones no permitido" }, 400);
         // un mismo celular puede recibir avisos de varios puestos (por ejemplo cocina y meseros)
         this.s.staff = (this.s.staff || []).filter((x) => !(x.ep === ep.toString() && x.role === role));
         this.s.staff.push({ ep: ep.toString(), role, t: Date.now() });
