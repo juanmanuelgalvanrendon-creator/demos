@@ -10,6 +10,9 @@ const ROOMS = {
     site: "https://codenova.code-nova-on.workers.dev/higuera/fila/",
   },
 };
+// La demostración usa los mismos archivos, pero su propia base de datos, datos de muestra y entra sin PIN
+ROOMS["higuera-demo"] = { ...ROOMS.higuera, demo: true, site: "https://codenova.code-nova-on.workers.dev/higuera-demo/fila/" };
+const DEMO_USER = { id: "demo", name: "Demostración", role: "dueno", active: 1, last: 0, created: 0 };
 
 // Cambiar este valor borra el PIN del equipo una vez (para cuando se olvida)
 const PIN_RESET = "2026-11-26-1";
@@ -22,7 +25,7 @@ const PERM = {
   "/host/state": "*", "/host/push/sub": "*", "/host/push/off": "*", "/host/push/test": "*",
   "/host/action": FLOOR, "/host/add": FLOOR, "/host/freed": FLOOR, "/host/settings": FLOOR,
   "/host/site": [...MGR, "cocina"], "/host/requests": MGR, "/host/request": MGR, "/host/contacts": MGR,
-  "/host/demo": MGR, "/host/reset": MGR, "/host/mesas": MGR, "/host/mesas/demo": MGR,
+  "/host/demo": MGR, "/host/reset": MGR, "/host/demo/restart": MGR, "/host/mesas": MGR, "/host/mesas/demo": MGR,
   "/host/order": [...MGR, "cocina", "mesero"], "/host/call": [...MGR, "mesero"], "/host/table": [...MGR, "mesero"],
   "/host/club": MGR, "/host/club/member": MGR, "/host/club/promo": MGR,
   "/host/users": MGR, "/host/activity": MGR,
@@ -55,6 +58,28 @@ export default {
       return stub.fetch(req);
     }
     if (url.pathname === "/api/ping") return json({ ok: true, t: Date.now() });
+    // la demostración vieja dentro del sistema real ahora vive aparte
+    if (url.pathname === "/higuera/demo/" || url.pathname === "/higuera/demo") return Response.redirect(url.origin + "/higuera-demo/demo/", 302);
+    if (url.pathname === "/higuera-demo" || url.pathname === "/higuera-demo/") return Response.redirect(url.origin + "/higuera-demo/demo/", 302);
+    if (url.pathname.startsWith("/higuera-demo/")) {
+      let path = "/higuera/" + url.pathname.slice("/higuera-demo/".length);
+      if (path === "/higuera/cocina" || path === "/higuera/meseros") return Response.redirect(url.origin + url.pathname + "/", 301);
+      if (path === "/higuera/cocina/" || path === "/higuera/meseros/") path = "/higuera/barra/";
+      if (path === "/higuera/demo" ) return Response.redirect(url.origin + "/higuera-demo/demo/", 301);
+      if (path === "/higuera/demo/") path = "/higuera/_demo/";
+      const r = await env.ASSETS.fetch(new Request(new URL(path + url.search, url).toString(), request));
+      const ct = r.headers.get("content-type") || "";
+      if (r.status >= 300 && r.status < 400) {
+        const loc = (r.headers.get("location") || "").replace("/higuera/", "/higuera-demo/");
+        return new Response(null, { status: r.status, headers: { location: loc } });
+      }
+      if (!/text\/html|javascript/.test(ct)) return r;
+      // las ligas internas apuntan a la demostración, no al sistema real
+      const txt = (await r.text()).split("/higuera/").join("/higuera-demo/");
+      const h = new Headers(r.headers); h.delete("content-length"); h.set("cache-control", "no-cache");
+      if (path === "/higuera/sw.js") h.set("service-worker-allowed", "/higuera-demo/");
+      return new Response(txt, { status: r.status, headers: h });
+    }
     if (url.pathname === "/higuera/cocina" || url.pathname === "/higuera/meseros") return Response.redirect(url.origin + url.pathname + "/" + url.search, 301);
     if (url.pathname === "/higuera/cocina/" || url.pathname === "/higuera/meseros/") {
       const r = await env.ASSETS.fetch(new Request(new URL("/higuera/barra/", url).toString(), request));
@@ -121,7 +146,7 @@ export class Fila {
       autoHours: true, lastCall: 30, tolerance: 10, maxSize: 10,
       mesas: { on: true, mode: "pedir", count: 12, keys: {}, rewardVisits: 5, rewardText: "Tu latte va por la casa", onlyHours: false, reviewUrl: "https://www.google.com/maps/search/?api=1&query=Cocina%20Higuera%20San%20Pedro%20Garza%20Garc%C3%ADa" },
       orders: [], calls: [], orderSeq: 0, promos: [], reviews: [], staff: [], freed: [],
-      site: { notice: "", season: { on: true, title: "Buttermilk waffle con moras", text: "El destacado de la semana. El equipo lo cambia cuando quiera desde su panel.", img: "waffle" }, soldout: [], soldDay: "" },
+      site: { notice: "", season: { on: true, title: "Buttermilk waffle con moras", text: "Waffle de buttermilk con moras frescas.", img: "waffle" }, soldout: [], soldDay: "" },
     };
     this.s = { ...base, ...((await this.ctx.storage.get("s")) || {}) };
     this.cfg = cfg;
@@ -139,8 +164,10 @@ export class Fila {
       await this.ctx.storage.put("s", this.s);
     }
     this.s.mesas = { ...base.mesas, ...(this.s.mesas || {}) };
+    if (this.s.site && this.s.site.season && /lo cambia cuando quiera/.test(this.s.site.season.text || "")) this.s.site.season.text = base.site.season.text;
     this.ensureKeys();
     this.rollDay();
+    if (cfg.demo && this.s.demoSeed !== this.s.day) { this.seedDemo(); await this.ctx.storage.put("s", this.s); }
     return this.s;
   }
 
@@ -428,11 +455,37 @@ export class Fila {
     }
   }
 
+  /* ----- demostración: datos de muestra ----- */
+  seedDemo() {
+    const s = this.s, now = Date.now(), M = s.mesas;
+    s.entries = []; s.counter = 0; s.open = true; s.orders = []; s.calls = []; s.orderSeq = 0; s.reviews = []; s.freed = []; s.promos = [];
+    M.onlyHours = false; M.on = true; M.mode = "pedir";
+    try { this.sql().exec("DELETE FROM members"); this.sql().exec("DELETE FROM requests"); this.sql().exec("DELETE FROM activity"); } catch (e) {}
+    [["Mariana", 2, "terraza", ["bebe"]], ["Diego", 4, "interior", []], ["Sofía", 3, "any", ["mascota"]], ["Rodrigo", 2, "barra", []]].forEach(([n, sz, z, nd], i) => {
+      const r = this.newEntry({ name: n, size: sz, zone: z, needs: nd, demo: true }, "demo"); r.e.t0 = now - (4 - i) * 5 * 60000;
+    });
+    [["Paola", 2, 21], ["Luis", 4, 33], ["Fer", 3, 26]].forEach(([n, sz, w], i) => {
+      const r = this.newEntry({ name: n, size: sz, demo: true }, "demo"); r.e.t0 = now - (90 - i * 15) * 60000; r.e.status = "seated"; r.e.tDone = r.e.t0 + w * 60000;
+    });
+    const mk = (m, items, status, ago, who) => { s.orderSeq++; s.orders.push({ id: rid(), n: s.orderSeq, m, items, note: "", status, t0: now - ago * 60000, tUpd: now - Math.max(0, ago - 3) * 60000, demo: true, who: who || "", tReady: status === "listo" || status === "entregado" ? now - Math.max(0, ago - 9) * 60000 : undefined }); };
+    mk(5, [{ n: "Buttermilk waffles", q: 1, note: "" }, { n: "Cold brew", q: 1, note: "" }], "prep", 7);
+    mk(7, [{ n: "Enfrijoladas", q: 1, note: "" }, { n: "Honey lavender latte", q: 1, note: "Con leche de avena" }], "listo", 12, "Diego");
+    mk(9, [{ n: "French toast", q: 2, note: "" }, { n: "Americano", q: 2, note: "" }], "entregado", 30);
+    s.calls.push({ id: rid(), m: 9, kind: "cuenta", t0: now - 40000, status: "open", demo: true });
+    const rv = (m, stars, text, ago, who) => s.reviews.push({ id: rid(), m, t: now - ago * 60000, day: s.day, stars, text, who: who || "", demo: true, closed: true });
+    rv(3, 5, "Los chilaquiles increíbles y nos atendieron rapidísimo.", 95, "Sofía"); rv(6, 4, "", 70); rv(8, 5, "", 40, "Rodrigo");
+    [["Ana Treviño", "8110000001", 4, 9], ["Diego Garza", "8110000002", 2, 2], ["Sofía Cantú", "8110000003", 5, 11], ["Rodrigo Leal", "8110000004", 1, 1]].forEach(([n, ph, v, t], i) => {
+      this.sql().exec("INSERT OR IGNORE INTO members (id,tok,phone,name,created,visits,total,lastDay,optin,demo) VALUES (?,?,?,?,?,?,?,?,?,1)", rid(), rid(), ph, n, now - (40 - i * 8) * 86400000, v, t, i < 2 ? s.day : "", i === 3 ? 0 : 1);
+    });
+    s.demoSeed = s.day;
+  }
+
   /* ----- usuarios, sesiones y actividad ----- */
   userCount() { return this.sql().exec("SELECT COUNT(*) AS n FROM users").one().n; }
   userView(u) { return { id: u.id, name: u.name, role: u.role, roleName: ROLE_NAMES[u.role] || u.role, active: !!u.active, created: u.created, last: u.last || null }; }
   userByTok(tok) {
     if (!tok) return null;
+    if (this.cfg && this.cfg.demo && tok === "demo") return { ...DEMO_USER, last: Date.now() };
     const r = this.sql().exec("SELECT s.tok, s.last AS sl, u.* FROM sessions s JOIN users u ON u.id = s.uid WHERE s.tok=?", String(tok)).toArray()[0];
     if (!r || !r.active) return null;
     if (Date.now() - r.sl > SESSION_DAYS * 86400000) { this.sql().exec("DELETE FROM sessions WHERE tok=?", r.tok); return null; }
@@ -689,7 +742,7 @@ export class Fila {
       const m = this.tableOk(body.m, body.k);
       if (!m) return json({ error: "Este QR no es válido. Pide ayuda al equipo." }, 404);
       const stars = Math.max(1, Math.min(5, parseInt(body.stars, 10) || 0));
-      if (!parseInt(body.stars, 10)) return json({ error: "Elige de 1 a 5 estrellas." }, 400);
+      if (!parseInt(body.stars, 10)) return json({ error: "Elige un número del 1 al 5." }, 400);
       const ipH = await this.ipHash(request);
       const s = this.s; s.reviews = s.reviews || [];
       // una calificación por mesa hasta que se cierre; si la cambia, se actualiza
@@ -919,6 +972,7 @@ export class Fila {
         const rows = this.sql().exec("SELECT phone,name,first,last,visits FROM contacts ORDER BY last DESC").toArray();
         return json({ rows });
       }
+      if (p === "/host/demo" && method === "POST" && !this.cfg.demo) return json({ error: "Los datos de ejemplo solo están en la demostración." }, 404);
       if (p === "/host/demo" && method === "POST") {
         const names = [["Mariana", 2, "terraza", ["bebe"]], ["Diego", 4, "interior", []], ["Sofía", 3, "any", ["mascota"]], ["Rodrigo", 2, "barra", []], ["Valeria", 5, "interior", ["accesible"]], ["Andrés", 2, "any", []]];
         const now = Date.now();
@@ -1059,7 +1113,7 @@ export class Fila {
         if (lbl) this.logEv(me, "pedido-" + a, `${lbl} el pedido #${o.n} de la mesa ${o.m}`);
         if (a === "start") o.byPrep = me.name; if (a === "ready") o.byReady = me.name; if (a === "deliver") o.byDel = me.name;
         if (a === "start") o.status = "prep";
-        else if (a === "ready") { o.status = "listo"; o.tReady = o.tReady || now; this.notifyStaff(["meseros"], { title: "Listo para llevar · Mesa " + o.m, body: this.itemsTxt(o.items), url: "/higuera/meseros/" }); }
+        else if (a === "ready") { o.status = "listo"; o.tReady = o.tReady || now; this.notifyStaff(["meseros"], { title: "Listo para servir · Mesa " + o.m, body: this.itemsTxt(o.items), url: "/higuera/meseros/" }); }
         else if (a === "deliver") { o.status = "entregado"; o.tReady = o.tReady || now; }
         else if (a === "cancel") o.status = "cancelado";
         else if (a === "back") o.status = o.status === "entregado" ? "listo" : o.status === "listo" ? "prep" : "nuevo";
@@ -1076,11 +1130,13 @@ export class Fila {
       if (p === "/host/table" && method === "POST") {
         const m = parseInt(body.m, 10), now = Date.now();
         if (body.action === "close") {
+          // solo se anuncia en la entrada si de verdad había clientes en la mesa
+          const busy = this.s.orders.some((o) => o.m === m && !o.closed) || this.s.calls.some((c) => c.m === m && c.status === "open");
           this.logEv(me, "mesa", `Cerró la mesa ${m}`);
           this.s.orders.forEach((o) => { if (o.m === m && !o.closed) { o.closed = true; o.tUpd = now; if (["nuevo", "prep", "listo"].includes(o.status)) o.status = "entregado"; } });
           this.s.calls.forEach((c) => { if (c.m === m && c.status === "open") { c.status = "done"; c.tDone = now; } });
           (this.s.reviews || []).forEach((r) => { if (r.m === m) r.closed = true; });
-          this.s.freed = [...(this.s.freed || []).filter((f) => f.m !== m && now - f.t < 30 * 60000), { m, t: now }];
+          if (busy) this.s.freed = [...(this.s.freed || []).filter((f) => f.m !== m && now - f.t < 30 * 60000), { m, t: now }];
         }
         await this.save();
         return json(this.hostState());
@@ -1130,6 +1186,12 @@ export class Fila {
         await this.save();
         return json({ ok: true, promo: pr, state: this.hostState() });
       }
+      if (p === "/host/demo/restart" && method === "POST") {
+        if (!this.cfg.demo) return json({ error: "Solo disponible en la demostración." }, 404);
+        this.seedDemo(); await this.save();
+        return json(this.hostState());
+      }
+      if (p === "/host/mesas/demo" && method === "POST" && !this.cfg.demo) return json({ error: "Los datos de ejemplo solo están en la demostración." }, 404);
       if (p === "/host/mesas/demo" && method === "POST") {
         const now = Date.now(), M = this.s.mesas;
         const mk = (m, items, status, ago, who) => { this.s.orderSeq++; this.s.orders.push({ id: rid(), n: this.s.orderSeq, m, items, note: "", status, t0: now - ago * 60000, tUpd: now - Math.max(0, ago - 3) * 60000, demo: true, who: who || "", tReady: status === "listo" || status === "entregado" ? now - Math.max(0, ago - 9) * 60000 : undefined }); };
@@ -1158,6 +1220,13 @@ export class Fila {
         this.s.calls = this.s.calls.filter((c) => !c.demo);
         this.s.reviews = (this.s.reviews || []).filter((r) => !r.demo);
         try { this.sql().exec("DELETE FROM members WHERE demo=1"); } catch (e) {}
+        await this.save();
+        return json(this.hostState());
+      }
+      if (p === "/host/reset" && method === "POST" && !this.cfg.demo) {
+        // en el sistema real "Vaciar la lista" solo borra la fila de hoy
+        this.s.entries = this.s.entries.filter((e) => !ACTIVE.includes(e.status));
+        this.logEv(me, "lista", "Vació la lista de espera");
         await this.save();
         return json(this.hostState());
       }

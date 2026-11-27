@@ -59,21 +59,28 @@ body[data-role="cocina"] .cols{grid-template-columns:1fr 1fr}
 .tk.c-listo .hd{background:#d9efe0}
 .tk .ms{font:400 30px/1 var(--serif)}
 .tk .ms small{font:600 12px var(--mono);color:var(--mut);margin-left:6px}
-.tk .tm{font:600 13px var(--mono);padding:4px 9px;border-radius:99px;background:rgba(255,255,255,.7)}
+.tk .tm{font:700 20px var(--mono);padding:5px 12px;border-radius:99px;background:rgba(255,255,255,.75)}
 .tk .tm.w{background:#f3d9a5;color:#7a4e0c}
-.tk .tm.r{background:#9a3624;color:#fff;animation:blink 1.2s infinite}
-@keyframes blink{50%{opacity:.6}}
+.tk .tm.r{background:#9a3624;color:#fff}
+.tk.age-w .hd{background:#f3d9a5}
+.tk.age-r .hd{background:#9a3624;color:#fff}
+.tk.age-r .hd small{color:rgba(255,255,255,.8)}
+.tk.age-r{box-shadow:0 0 0 4px #9a3624;animation:edge 2s ease-in-out infinite}
+@keyframes edge{50%{box-shadow:0 0 0 4px rgba(154,54,36,.45)}}
+@media (prefers-reduced-motion:reduce){.tk.age-r{animation:none}}
 .tk .who{font-size:12px;font-weight:800;color:var(--olive2);padding:8px 14px 0}
 .tk ul{list-style:none;padding:8px 14px 4px;border-bottom:1.5px dashed #d8d1c2}
-.tk li{display:grid;grid-template-columns:34px 1fr;gap:6px;padding:6px 0;font-size:16px;font-weight:700;line-height:1.25}
+.tk li{display:grid;grid-template-columns:auto 1fr;align-items:start;gap:10px;padding:6px 0;font-size:16px;font-weight:700;line-height:1.25}
 body[data-role="cocina"] .tk li{font-size:18px}
-.tk li .q{font:600 16px var(--mono);color:var(--terra)}
-.tk li i{display:block;font-style:normal;font-weight:600;font-size:13px;color:#fff;background:var(--terra);border-radius:7px;padding:2px 7px;margin-top:4px;width:max-content;max-width:100%}
+.tk li .q{font:700 20px var(--mono);color:var(--ink);min-width:34px;text-align:center}
+.tk li .q.multi{background:var(--ink);color:#fff;border-radius:7px;padding:1px 6px;line-height:1.2}
+.tk li i{display:block;font-style:normal;font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:.03em;color:#fff;background:var(--terra);border-radius:7px;padding:2px 7px;margin-top:4px;width:max-content;max-width:100%}
 .tk .gn{margin:8px 14px 0;font-size:13px;font-weight:700;background:var(--terra-l);color:var(--terra-d);border-radius:9px;padding:7px 10px}
 .tk .ac{display:flex;gap:8px;padding:12px 14px}
 .tk .ac .btn{flex:1;height:52px;font-size:16px}
 .tk .sm{display:flex;justify-content:space-between;padding:0 14px 12px}
-.tk .sm button{font-size:12.5px;font-weight:800;color:var(--mut);text-decoration:underline;text-underline-offset:3px}
+.tk .sm button{min-height:44px;padding:0 10px;font-size:13.5px;font-weight:800;color:var(--mut);text-decoration:underline;text-underline-offset:3px}
+.tk .sm button.dg.sure{background:#9a3624;color:#fff;text-decoration:none;border-radius:10px}
 .tk .sm button.dg{color:#9a3624}
 .mini{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:rgba(244,241,234,.06);margin-bottom:8px;font-size:13.5px}
 .mini b{font:400 22px/1 var(--serif);margin-right:8px}
@@ -141,7 +148,9 @@ body[data-role="todo"] aside.side,body[data-role="cocina"] aside.side{position:s
 .sheet .o ul{list-style:none;margin-top:6px;font-size:14.5px}
 .sheet .btn{width:100%;margin-top:14px}
 .sheet .note{font-size:13px;color:var(--mut);margin-top:10px}
-.snd{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:50;background:#f0c7a6;color:#1f231b;border-radius:99px;padding:14px 20px;font-weight:800;font-size:14.5px;box-shadow:0 18px 30px -12px rgba(0,0,0,.6);white-space:nowrap}
+.snd{position:fixed;inset:0;z-index:50;background:rgba(20,22,18,.94);color:#f4f1ea;display:grid;place-content:center;gap:12px;text-align:center;padding:24px}
+.snd b{font:400 46px/1 var(--serif);color:#f0c7a6}
+.snd span{font-size:16px;max-width:340px;line-height:1.45;opacity:.85}
 </style>
 </head>
 <body data-role="todo">
@@ -179,7 +188,7 @@ body[data-role="todo"] aside.side,body[data-role="cocina"] aside.side{position:s
 <main class="lay" id="lay"></main>
 
 <div class="scrim" id="scrim"><div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Mesa"></div></div>
-<button class="snd hide" id="snd" type="button">Toca para activar el sonido de avisos</button>
+<button class="snd hide" id="snd" type="button"><b>Empezar turno</b><span>Toca aquí para activar el sonido de los avisos y que la pantalla no se apague.</span></button>
 
 <script src="/higuera/fila.js"></script>
 <script>
@@ -187,7 +196,7 @@ body[data-role="todo"] aside.side,body[data-role="cocina"] aside.side{position:s
 const { api, live, store, esc, ago, toast, alarm, say, wake, unlockAudio, pushSubscribe } = HG;
 const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
 const ROLE = location.pathname.includes("/cocina") ? "cocina" : location.pathname.includes("/meseros") ? "meseros" : "todo";
-const T = { cocina: ["Cocina", "Aquí llegan los pedidos de las mesas."], meseros: ["Meseros", "Platillos listos para llevar, llamados de las mesas y la cuenta."], todo: ["Pedidos y llamados", "Pantalla completa: pedidos, llamados y mesas."] }[ROLE];
+const T = { cocina: ["Cocina", "Aquí llegan los pedidos de las mesas."], meseros: ["Meseros", "Platillos listos para servir, llamados de las mesas y la cuenta."], todo: ["Pedidos y llamados", "Pantalla completa: pedidos, llamados y mesas."] }[ROLE];
 const PUSHROLE = ROLE === "cocina" ? "cocina" : "meseros";
 document.body.dataset.role = ROLE; document.title = "Higuera · " + T[0];
 $("#title").textContent = T[0]; $("#gt").textContent = T[0]; $("#gp").textContent = T[1] + " Escribe tu PIN personal.";
@@ -204,8 +213,8 @@ const S_MESAS = `<section class="box" data-sec="mesas"><h2>Mesas</h2><div class=
 const S_STATS = `<section class="box" data-sec="hoy"><h2>Hoy</h2><div class="stats" id="stats"></div></section>`;
 const LAYOUT = {
   cocina: { tabs: [["nuevos", "Nuevos", "c_zN"], ["prep", "Preparando", "c_zP"], ["espera", "Listos", "c_wait"]], html: `<div class="cols">${S_ORD("nuevos", "Nuevos", "zN")}${S_ORD("prep", "Preparando", "zP")}</div><aside class="side"><section class="box" data-sec="espera"><h2>Listos, esperando mesero <b id="c_wait">0</b></h2><div id="wait"></div></section>${S_STATS}</aside>` },
-  meseros: { tabs: [["llamados", "Llamados", "cC"], ["listos", "Para llevar", "c_zL"], ["mesas", "Mesas", ""]], html: `<div class="side">${S_CALLS}<section class="box" data-sec="llamados"><h2>En cocina <b id="c_kit">0</b></h2><div id="kit"></div></section></div>${S_ORD("listos", "Listos para llevar", "zL")}<div class="side">${S_MESAS}${S_STATS}</div>` },
-  todo: { tabs: [["pedidos", "Pedidos", "c_all"], ["llamados", "Llamados", "cC"], ["mesas", "Mesas", ""]], html: `<div class="cols" data-sec="pedidos">${S_ORD("pedidos", "Nuevos", "zN")}${S_ORD("pedidos", "Preparando", "zP")}${S_ORD("pedidos", "Listos para llevar", "zL")}</div><aside class="side">${S_CALLS}${S_MESAS}${S_STATS}</aside>` },
+  meseros: { tabs: [["llamados", "Llamados", "cC"], ["listos", "Por servir", "c_zL"], ["mesas", "Mesas", ""]], html: `<div class="side">${S_CALLS}<section class="box" data-sec="llamados"><h2>En cocina <b id="c_kit">0</b></h2><div id="kit"></div></section></div>${S_ORD("listos", "Listos para servir", "zL")}<div class="side">${S_MESAS}${S_STATS}</div>` },
+  todo: { tabs: [["pedidos", "Pedidos", "c_all"], ["llamados", "Llamados", "cC"], ["mesas", "Mesas", ""]], html: `<div class="cols" data-sec="pedidos">${S_ORD("pedidos", "Nuevos", "zN")}${S_ORD("pedidos", "Preparando", "zP")}${S_ORD("pedidos", "Listos para servir", "zL")}</div><aside class="side">${S_CALLS}${S_MESAS}${S_STATS}</aside>` },
 }[ROLE];
 $("#lay").innerHTML = LAYOUT.html;
 $("#mtabs").innerHTML = LAYOUT.tabs.map(([k, l, c], i) => `<button type="button" data-tab="${k}" class="${i ? "" : "on"}">${l}${c ? `<b data-mirror="${c}">0</b>` : ""}</button>`).join("");
@@ -261,13 +270,14 @@ function tmCls(o) { const m = mins(o.t0); return o.status === "listo" ? (mins(o.
 function ticket(o, isNew) {
   const next = { nuevo: ["start", "Empezar", "btn-ink"], prep: ["ready", "Listo", "btn-ok"], listo: ["deliver", "Entregado", "btn-terra"] }[o.status];
   const can = !(ROLE === "cocina" && o.status === "listo") && !(ROLE === "meseros" && o.status !== "listo");
-  return `<article class="tk c-${o.status}${isNew ? " new" : ""}">
+  const age = tmCls(o);
+  return `<article class="tk c-${o.status}${isNew ? " new" : ""}${age ? " age-" + age : ""}">
     <div class="hd"><span class="ms">Mesa ${o.m}<small>#${String(o.n).padStart(3, "0")}</small></span><span class="tm ${tmCls(o)}" data-t="${o.status === "listo" ? o.tUpd : o.t0}" data-pre="${o.status === "listo" ? "listo " : ""}">${o.status === "listo" ? "listo " : ""}${ago(o.status === "listo" ? o.tUpd : o.t0)}</span></div>
     ${o.who ? `<div class="who">${o.member ? "Club · " : ""}${esc(o.who)}</div>` : ""}
-    <ul>${o.items.map((it) => `<li><span class="q">${it.q}×</span><span>${esc(it.n)}${it.note ? `<i>${esc(it.note)}</i>` : ""}</span></li>`).join("")}</ul>
+    <ul>${o.items.map((it) => `<li><span class="q${it.q > 1 ? " multi" : ""}">${it.q}×</span><span>${esc(it.n)}${it.note ? `<i>${esc(it.note)}</i>` : ""}</span></li>`).join("")}</ul>
     ${o.note ? `<div class="gn">Nota: ${esc(o.note)}</div>` : ""}
     ${can ? `<div class="ac"><button class="btn ${next[2]}" type="button" data-o="${o.id}" data-a="${next[0]}">${next[1]}</button></div>
-    <div class="sm">${o.status !== "nuevo" ? `<button type="button" data-o="${o.id}" data-a="back">Regresar</button>` : "<span></span>"}<button type="button" class="dg" data-o="${o.id}" data-a="cancel">Cancelar</button></div>` : ""}
+    <div class="sm">${o.status !== "nuevo" ? `<button type="button" data-o="${o.id}" data-a="back">Regresar un paso</button>` : "<span></span>"}<button type="button" class="dg" data-o="${o.id}" data-a="cancel">Cancelar</button></div>` : ""}
   </article>`;
 }
 const setN = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; $$(`[data-mirror="${id}"]`).forEach((m) => { m.textContent = v; }); };
@@ -286,14 +296,14 @@ function paint() {
     if (ROLE !== "cocina" && al) { ring("alerta", `Mesa ${al.m} calificó ${al.stars} de 5. Que pase el gerente.`); toast(`Mesa ${al.m}: calificación baja`); }
     else if (ROLE !== "cocina" && newC.length) { const c = newC[0]; ring("llamado", `Mesa ${c.m} ${c.kind === "cuenta" ? "pide la cuenta" : "llama al mesero"}`); toast(`Mesa ${c.m}: ${c.kind === "cuenta" ? "pide la cuenta" : "llama al mesero"}`); }
     else if (ROLE !== "meseros" && newO.length) { const o = newO[0]; ring("pedido", `Nuevo pedido, mesa ${o.m}`); toast(`Nuevo pedido · Mesa ${o.m}`); }
-    else if (ROLE === "meseros" && newL.length) { const o = newL[0]; ring("pedido", `Pedido listo, mesa ${o.m}`); toast(`Listo para llevar · Mesa ${o.m}`); }
+    else if (ROLE === "meseros" && newL.length) { const o = newL[0]; ring("pedido", `Pedido listo, mesa ${o.m}`); toast(`Listo para servir · Mesa ${o.m}`); }
   }
   seenO = new Set(H.orders.map((o) => o.id)); seenC = new Set(H.calls.map((c) => c.id)); seenL = new Set(act.filter((o) => o.status === "listo").map((o) => o.id));
   const by = (s) => act.filter((o) => o.status === s).sort((a, b) => a.t0 - b.t0);
   const fill = (id, list, empty) => { const z = document.getElementById(id); if (!z) return; z.innerHTML = list.length ? list.map((o) => ticket(o, newO.includes(o) || newL.includes(o))).join("") : `<div class="none">${empty}</div>`; setN("c_" + id, list.length); };
   fill("zN", by("nuevo"), "Sin pedidos nuevos");
   fill("zP", by("prep"), "Nada en preparación");
-  fill("zL", by("listo"), ROLE === "meseros" ? "Nada listo por llevar" : "Nada esperando mesero");
+  fill("zL", by("listo"), ROLE === "meseros" ? "Nada listo por servir" : "Nada esperando mesero");
   setN("c_all", act.length);
   if ($("#wait")) { const w = by("listo"); $("#wait").innerHTML = w.length ? w.map((o) => `<div class="mini"><span><b>${o.m}</b>${o.items.reduce((a, i) => a + i.q, 0)} productos</span><span class="t ${mins(o.tUpd) >= 4 ? "r" : ""}" data-t="${o.tUpd}">${ago(o.tUpd)}</span></div>`).join("") : `<div class="none">Nada esperando</div>`; setN("c_wait", w.length); }
   if ($("#kit")) { const k = act.filter((o) => o.status !== "listo").sort((a, b) => a.t0 - b.t0); $("#kit").innerHTML = k.length ? k.map((o) => `<div class="mini"><span><b>${o.m}</b>${o.status === "prep" ? "Preparando" : "Recibido"}</span><span class="t ${mins(o.t0) >= 15 ? "r" : ""}" data-t="${o.t0}">${ago(o.t0)}</span></div>`).join("") : `<div class="none">Cocina sin pendientes</div>`; setN("c_kit", k.length); }
@@ -352,6 +362,11 @@ document.addEventListener("click", async (e) => {
       return;
     }
     if (b.dataset.tab) { sec = b.dataset.tab; showSec(); window.scrollTo(0, 0); return; }
+    if (b.dataset.o && b.dataset.a === "cancel" && !b.classList.contains("sure")) {
+      b.classList.add("sure"); b.textContent = "¿Cancelar el pedido? Toca otra vez";
+      setTimeout(() => { if (b.isConnected) { b.classList.remove("sure"); b.textContent = "Cancelar"; } }, 4000);
+      return;
+    }
     if (b.dataset.o) { H = await api("/host/order", { pin, body: { id: b.dataset.o, action: b.dataset.a } }); paint(); }
     else if (b.dataset.c) { H = await api("/host/call", { pin, body: { id: b.dataset.c } }); paint(); }
     else if (b.dataset.m) tableSheet(+b.dataset.m);

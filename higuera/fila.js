@@ -1,6 +1,9 @@
 /* Higuera · fila virtual — cliente de la API (compartido por las páginas) */
 (function () {
-  const ROOM = "higuera";
+  // la demostración vive en /higuera-demo/ con su propia base de datos; el sistema real en /higuera/
+  const DEMO = location.pathname.startsWith("/higuera-demo/");
+  const ROOM = DEMO ? "higuera-demo" : "higuera";
+  const PFX = DEMO ? "hgd_" : "hg_";
   const BASE = "/api/fila/" + ROOM;
 
   async function api(path, opt = {}) {
@@ -61,8 +64,9 @@
   }
 
   const store = {
-    get(k) { try { return localStorage.getItem("hg_" + k); } catch (e) { return null; } },
-    set(k, v) { try { v == null ? localStorage.removeItem("hg_" + k) : localStorage.setItem("hg_" + k, v); } catch (e) {} },
+    // en la demostración el equipo entra sin PIN
+    get(k) { try { return localStorage.getItem(PFX + k) || (DEMO && k === "pin" ? "demo" : null); } catch (e) { return DEMO && k === "pin" ? "demo" : null; } },
+    set(k, v) { try { v == null ? localStorage.removeItem(PFX + k) : localStorage.setItem(PFX + k, v); } catch (e) {} },
   };
 
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -156,7 +160,23 @@
     try { if (t) await api("/auth/logout", { pin: t, body: {} }); } catch (e) {}
     store.set("pin", null); location.href = ACCESS;
   }
+  // en la barra de pantallas, cada quien ve solo las de su puesto
+  const NAV_ROLES = { host: ["dueno", "gerente", "mesero", "entrada"], cocina: ["dueno", "gerente", "cocina"], meseros: ["dueno", "gerente", "mesero"], club: ["dueno", "gerente"] };
+  function trimNav(u) {
+    document.querySelectorAll("nav.panels, nav.pnav").forEach((nav) => {
+      let shown = 0;
+      nav.querySelectorAll("a").forEach((a) => {
+        const k = (a.getAttribute("href") || "").replace(/\/$/, "").split("/").pop() || "";
+        const key = k === "." || k === "" ? null : k === ".." ? null : k;
+        const roles = key && NAV_ROLES[key];
+        const ok = !roles || roles.includes(u.role) || a.classList.contains("cur");
+        a.style.display = ok ? "" : "none"; if (ok) shown++;
+      });
+      if (shown <= 1) nav.style.display = "none";
+    });
+  }
   function mountUser(u) {
+    try { trimNav(u); } catch (e) {}
     if (document.getElementById("hgUser")) return;
     const host = document.querySelector("[data-user-slot]") || document.querySelector("header");
     if (!host) return;
@@ -187,5 +207,13 @@
     return { tok, user: r.user, state: r.state };
   }
 
-  window.HG = { signin, logout, goAccess, ROLE_NAMES, api, live, store, esc, ago, mmss, ZONES, toast, beep, alarm, say, wake: () => { wake._on = true; return wake(); }, unlockAudio, qrSvg, pushSubscribe, ROOM };
+  // vibrar solo después de que la persona tocó la pantalla (si no, el navegador lo bloquea con un aviso)
+  try {
+    if (navigator.vibrate) {
+      const vib = navigator.vibrate.bind(navigator);
+      navigator.vibrate = (pt) => { try { if (!navigator.userActivation || navigator.userActivation.hasBeenActive) return vib(pt); } catch (e) {} return false; };
+    }
+  } catch (e) {}
+
+  window.HG = { DEMO, signin, logout, goAccess, ROLE_NAMES, api, live, store, esc, ago, mmss, ZONES, toast, beep, alarm, say, wake: () => { wake._on = true; return wake(); }, unlockAudio, qrSvg, pushSubscribe, ROOM };
 })();

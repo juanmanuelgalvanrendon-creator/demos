@@ -221,7 +221,7 @@
     </div>
     <div class="card" style="margin-top:14px"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><div><h2>Códigos QR de las <em>mesas</em></h2><p class="sub">Imprímelos y pégalos en cada mesa. Toca uno para probarlo como cliente.</p></div><button class="btn btn-ink" type="button" id="printBtn">Imprimir todos</button></div>
       <div class="qrs" id="qrs"></div>
-      <div class="links"><a class="btn btn-ghost" href="../cocina/">Abrir pantalla de cocina</a><a class="btn btn-ghost" href="../meseros/">Abrir pantalla de meseros</a><button class="btn btn-ghost" type="button" id="demoBtn">Cargar pedidos de ejemplo</button><button class="btn btn-ghost" type="button" id="resetBtn">Borrar datos de ejemplo</button></div></div>
+      <div class="links"><a class="btn btn-ghost" href="../cocina/">Abrir pantalla de cocina</a><a class="btn btn-ghost" href="../meseros/">Abrir pantalla de meseros</a><button class="btn btn-ghost hide" type="button" id="demoBtn">Reiniciar datos de muestra</button></div></div>
   </section>
   <section id="v-equipo" class="hide">
     <div class="g2" style="margin-top:0">
@@ -392,7 +392,7 @@ document.addEventListener("click", async (e) => {
     rekeyArm = ""; setM({ rekey: +m }); toast(`Mesa ${m}: QR nuevo. Imprímelo y reemplaza el anterior.`); return;
   }
   if (b.id === "printBtn") { window.print(); return; }
-  if (b.id === "demoBtn") { try { H = await api("/host/mesas/demo", { pin, body: {} }); paint(); loadMem(); toast("Listo: hay pedidos, llamados y socios de ejemplo"); } catch (x) { toast(x.message); } return; }
+  if (b.id === "demoBtn") { try { H = await api("/host/demo/restart", { pin, body: {} }); paint(); loadMem(); toast("Demostración reiniciada con datos de muestra"); } catch (x) { toast(x.message); } return; }
   if (b.id === "resetBtn") { try { H = await api("/host/reset", { pin, body: { only: "mesas" } }); paint(); loadMem(); toast("Datos de ejemplo borrados"); } catch (x) { toast(x.message); } return; }
   if (b.dataset.idea != null) { const [, t, m] = IDEAS[+b.dataset.idea]; $("#pt").value = t; $("#pb").value = m; prev(); return; }
   if (b.id === "psend") {
@@ -418,6 +418,7 @@ document.addEventListener("click", async (e) => {
 function prev() { const t = $("#pt").value, m = $("#pb").value; $("#ptc").textContent = t.length + "/60"; $("#pbc").textContent = m.length + "/160"; $("#nvT").textContent = t || "Higuera"; $("#nvB").textContent = m || "Escribe tu promoción para verla aquí."; }
 $("#pt").addEventListener("input", prev); $("#pb").addEventListener("input", prev);
 $("#ms").addEventListener("input", (e) => { memQ = e.target.value; paintMem(); });
+if (HG.DEMO) $("#demoBtn").classList.remove("hide");
 $("#ideas").innerHTML = IDEAS.map(([l], i) => `<button type="button" data-idea="${i}">${l}</button>`).join("");
 if (pin) login(pin, true);
 })();

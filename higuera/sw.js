@@ -1,5 +1,5 @@
 /* Higuera · service worker: avisos de la lista de espera y promociones del Club */
-const API = "/api/fila/higuera";
+const API = self.location.pathname.startsWith("/higuera-demo/") ? "/api/fila/higuera-demo" : "/api/fila/higuera";
 self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", (e) => e.waitUntil(self.clients.claim()));
 

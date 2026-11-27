@@ -58,7 +58,8 @@ body{min-height:100vh;min-height:100dvh;padding-bottom:40px}
 .card .acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .card .acts .btn{height:44px;padding:0 16px;font-size:14px}
 .card .more{grid-column:2/-1;display:flex;gap:14px;font-size:12.5px;font-weight:700;color:var(--mut);flex-wrap:wrap}
-.card .more button{text-decoration:underline;text-underline-offset:3px;color:var(--mut);font-weight:700}
+.card .more button{min-height:40px;padding:0 6px;text-decoration:underline;text-underline-offset:3px;color:var(--mut);font-weight:700}
+.card .more button.sure{background:#9a3624;color:#fff;text-decoration:none;border-radius:10px;padding:0 12px}
 .tag{font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:99px;background:var(--ok-l);color:var(--ok);white-space:nowrap}
 .tag.w{background:var(--terra-l);color:var(--terra-d)}
 .tag.g{background:var(--sage);color:var(--olive)}
@@ -222,7 +223,7 @@ body:not([data-me="dueno"]):not([data-me="gerente"]) .tabs [data-t="clientes"],b
       <div class="panel set">
         <h3>Espera</h3>
         <div><span class="lab">Minutos por grupo (para calcular la espera)</span><div class="step"><button type="button" data-mp="-1">−</button><b id="mp">6 min</b><button type="button" class="plus" data-mp="1">+</button></div><p class="s">Cuando ya hay mesas sentadas, la espera se ajusta sola con lo que realmente tardan.</p></div>
-        <div class="rowb"><button class="btn btn-ghost" id="demo" type="button" style="height:44px;font-size:14px">Cargar grupos de ejemplo</button><button class="btn btn-ghost" id="reset" type="button" style="height:44px;font-size:14px">Vaciar la lista</button></div>
+        <div class="rowb"><button class="btn btn-ghost hide" id="demo" type="button" style="height:44px;font-size:14px">Cargar grupos de ejemplo</button><button class="btn btn-ghost" id="reset" type="button" style="height:44px;font-size:14px">Vaciar la lista</button></div>
         <div class="rowb hide" id="resetC"><span style="font-size:14px;font-weight:700;align-self:center">¿Seguro? Se borra la lista de hoy.</span><button class="btn btn-ink" id="resetY" type="button" style="height:44px;font-size:14px">Sí, vaciar</button></div>
         <div style="text-align:center;border-top:1px solid var(--line);padding-top:16px">
           <span class="lab">El QR de la entrada</span>
@@ -302,6 +303,7 @@ const $ = (s) => document.querySelector(s);
 const NEEDS = { bebe: "Silla para bebé", mascota: "Con mascota", accesible: "Sin escalones" };
 const ROLES_OK = ["dueno", "gerente", "mesero", "entrada"];
 let ME = null;
+if (HG.DEMO) $("#demo").classList.remove("hide");
 let pin = store.get("pin") || "", H = null, conn = null, known = new Set(), first = true, addSize = 2, view = "lista";
 
 /* ---------- acceso ---------- */
@@ -456,7 +458,13 @@ async function setting(body, msg) { try { H = await api("/host/settings", { pin,
 document.addEventListener("click", async (e) => {
   const cn = e.target.closest("[data-callnext]"); if (cn) { cn.disabled = true; await act(cn.dataset.callnext, "call", +cn.dataset.mesa); return; }
   const dm = e.target.closest("[data-dismiss]"); if (dm) { try { H = await api("/host/freed", { pin, body: { m: +dm.dataset.dismiss } }); paint(); } catch (x) { toast(x.message); } return; }
-  const b = e.target.closest("[data-a]"); if (b) { b.disabled = true; await act(b.dataset.id, b.dataset.a); return; }
+  const b = e.target.closest("[data-a]");
+  if (b && b.dataset.a === "remove" && !b.classList.contains("sure")) {
+    b.classList.add("sure"); b.textContent = "¿Quitar de la lista? Toca otra vez";
+    setTimeout(() => { if (b.isConnected) { b.classList.remove("sure"); b.textContent = "Quitar"; } }, 4000);
+    return;
+  }
+  if (b) { b.disabled = true; await act(b.dataset.id, b.dataset.a); return; }
   const t = e.target.closest("[data-t]"); if (t) { view = t.dataset.t; document.querySelectorAll("[data-t]").forEach((x) => x.classList.toggle("on", x === t)); ["lista", "resumen", "clientes", "solicitudes", "sitio", "ajustes", "guia"].forEach((v) => $("#v-" + v).classList.toggle("hide", v !== view)); if (view === "clientes") loadContacts(); if (view === "solicitudes") loadReq(); if (view === "sitio") siteForm(true); return; }
   if (e.target.closest("#openSw")) { setting({ open: !H.open }, !H.open ? "Lista abierta" : "Lista en pausa: nadie nuevo puede anotarse en línea"); return; }
   if (e.target.closest("#autoSw")) { setting({ autoHours: !H.autoHours }); return; }
