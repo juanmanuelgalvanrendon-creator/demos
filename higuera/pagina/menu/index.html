@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Menú · Higuera, Tampiquito</title>
+<meta name="description" content="El menú de Higuera: chilaquiles, waffles, enfrijoladas, toasts, sándwiches, sopa de tomate con grilled cheese y café de barra.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1c1b17">
+<link rel="icon" href="/higuera/img/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="/higuera/img/chilaquiles-xl.webp">
+<link rel="preload" as="image" href="/higuera/img/chilaquiles-xl.webp" fetchpriority="high">
+<link rel="stylesheet" href="/higuera/hg.css">
+<link rel="stylesheet" href="/higuera/pagina/site.css">
+<style>
+.phero h1 .rot{display:inline-block;position:relative;min-width:4ch}
+.phero h1 .rot em{display:inline-block;transition:transform .6s var(--ease),opacity .45s}
+.phero h1 .rot em.out{transform:translateY(-40%);opacity:0}
+.phero h1 .rot em.pre{transform:translateY(40%);opacity:0;transition:none}
+.house{padding:110px 0 0}
+.hgrid{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:center}
+.house ol{list-style:none;margin-top:26px;border-top:1px solid var(--line)}
+.house li{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:16px 0;border-bottom:1px solid var(--line);cursor:pointer;transition:color .35s}
+.house li:not(.on) i,.house li:not(.on) b,.house li:not(.on) span{color:var(--mut)}
+.house li i,.house li b,.house li span{transition:color .35s}
+.house li i{font:600 12px var(--mono);font-style:normal;color:var(--terra);padding-top:6px}
+.house li b{display:block;font:400 26px/1.1 var(--serif)}
+.house li span{display:block;font-size:14px;color:var(--ink2);margin-top:3px}
+.hphoto{position:relative;border-radius:30px;overflow:hidden;aspect-ratio:1521/956;box-shadow:0 40px 80px -40px rgba(28,27,23,.7)}
+.hphoto img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.hphoto .grain{opacity:.1}
+.hot{position:absolute;z-index:3;width:38px;height:38px;margin:-19px 0 0 -19px;border-radius:50%;background:rgba(244,241,234,.92);color:var(--ink);font:600 12px var(--mono);display:grid;place-items:center;cursor:pointer;transition:transform .35s var(--ease),background .3s,color .3s;box-shadow:0 8px 20px rgba(0,0,0,.3)}
+.hot::before{content:"";position:absolute;inset:-6px;border-radius:50%;border:1.5px solid rgba(244,241,234,.7);opacity:0;transition:opacity .3s}
+.hot.on{background:var(--terra);color:#fff;transform:scale(1.18)}
+.hot.on::before{opacity:1;animation:pulse 1.6s infinite}
+@keyframes pulse{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.7);opacity:0}}
+.hcap{position:absolute;z-index:3;left:20px;bottom:20px;background:rgba(28,27,23,.82);backdrop-filter:blur(8px);color:#f4f1ea;border-radius:16px;padding:10px 14px;font-size:13px;max-width:70%}
+.hcap b{font:400 20px var(--serif);display:block}
+.hbar{height:2px;background:var(--line);margin-top:18px;border-radius:2px;overflow:hidden}
+.hbar i{display:block;height:100%;width:0;background:var(--terra)}
+.tools{position:sticky;top:var(--hh,74px);z-index:40;background:rgba(244,241,234,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);margin-top:110px}
+.tools .wrap{display:flex;gap:16px;align-items:center;justify-content:space-between;padding-top:12px;padding-bottom:12px}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{padding:10px 16px;border-radius:999px;font-weight:700;font-size:14px;color:var(--ink2);white-space:nowrap;transition:background .25s,color .25s;display:flex;align-items:center;gap:7px}
+.tabs button.on{background:var(--ink);color:var(--paper)}
+.tabs button .n{font:600 11px var(--mono);background:var(--terra);color:#fff;border-radius:99px;padding:2px 7px}
+.search{display:flex;align-items:center;gap:8px;border-bottom:1.5px solid var(--line2);padding:8px 4px;min-width:240px;color:var(--mut)}
+.search input{border:0;background:transparent;outline:none;font:500 14px var(--sans);color:var(--ink);width:100%}
+.search input::placeholder{color:var(--mut)}
+.cat{padding-top:70px;scroll-margin-top:calc(var(--hh,74px) + 80px)}
+.cat .ch{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:24px}
+.cat .ch i{font:600 13px var(--mono);font-style:normal;color:var(--terra)}
+.cat .ch h2{font-size:clamp(42px,5vw,72px);margin:6px 0 0}
+.cat .ch p{color:var(--ink2);max-width:360px;font-size:15px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(150px,auto);grid-auto-flow:dense;gap:18px}
+.card{position:relative;background:var(--paper);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 14px 34px -22px rgba(28,27,23,.45);transition:transform .4s var(--ease),box-shadow .4s;animation:cin .5s var(--ease) both}
+@keyframes cin{from{opacity:0;transform:translateY(14px)}}
+.card:hover{transform:translateY(-5px);box-shadow:0 26px 50px -26px rgba(28,27,23,.55)}
+.card.photo{grid-row:span 2}
+.card .ph{position:relative;flex:1;min-height:250px;overflow:hidden;cursor:zoom-in;background:#1c1b17}
+.card .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s,transform .9s var(--ease)}
+.card .ph img.on{opacity:1}
+.card:hover .ph img{transform:scale(1.05)}
+.card .ph::after{content:"";position:absolute;left:0;right:0;bottom:0;height:42%;z-index:1;background:linear-gradient(rgba(20,19,16,0),rgba(20,19,16,.55));pointer-events:none}
+.card .ph .fr{position:absolute;left:14px;bottom:12px;z-index:2;font:600 10.5px var(--mono);color:#f4f1ea;letter-spacing:.12em;opacity:.85}
+.card .ph .dots{position:absolute;right:14px;bottom:14px;z-index:2;display:flex;gap:4px}
+.card .ph .dots i{width:6px;height:6px;border-radius:50%;background:rgba(244,241,234,.45);transition:all .3s}
+.card .ph .dots i.on{background:#f4f1ea;width:16px;border-radius:4px}
+.tag{position:absolute;left:14px;top:14px;z-index:2;background:#fffdf8;color:var(--terra-d);font-size:9.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:6px 10px;border-radius:6px}
+.add{position:absolute;right:12px;top:12px;z-index:3;width:38px;height:38px;border-radius:50%;background:rgba(255,253,248,.94);color:var(--ink);display:grid;place-items:center;box-shadow:0 4px 14px rgba(0,0,0,.12);transition:transform .2s,background .25s,color .25s}
+.add:hover{transform:scale(1.08)}
+.add.on{background:var(--terra);color:#fff}
+.add svg{transition:transform .3s var(--ease)}
+.add.on svg{transform:rotate(135deg)}
+.card .info{padding:16px 18px 18px;display:flex;flex-direction:column;gap:3px}
+.card .cl{font-size:9.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--terra)}
+.card h3{font:400 27px/1.08 var(--serif)}
+.tl{font:inherit;color:inherit;text-align:left;padding:0;cursor:pointer;letter-spacing:inherit}
+.tl:hover{color:var(--terra)}
+.card .ft{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:12px;border-top:1px solid var(--line);font-size:12.5px;color:var(--mut);font-weight:600}
+.card .ft button{font-weight:800;color:var(--ink);font-size:12.5px;text-decoration:underline;text-underline-offset:3px}
+.card.tk{background:#fbf8f0;border-radius:6px 6px 18px 18px;box-shadow:0 12px 26px -20px rgba(28,27,23,.5);cursor:pointer}
+.card.tk::before{content:"";position:absolute;left:0;right:0;top:0;height:10px;background:radial-gradient(circle at 6px 0,var(--bg) 5px,transparent 5.5px) 0 0/12px 10px repeat-x}
+.card.tk .info{padding:24px 18px 16px;flex:1}
+.card.tk .no{font:600 10.5px var(--mono);color:var(--mut);letter-spacing:.12em;display:flex;justify-content:space-between;gap:8px}
+.card.tk h3{font-size:26px;margin:10px 0 6px}
+.card.tk .ln{border-top:1.5px dashed #d8d1c2;margin-top:auto;padding-top:10px;display:flex;justify-content:space-between;align-items:center;font:600 10.5px var(--mono);color:var(--mut);letter-spacing:.08em}
+.card.tk .chip{font:800 9.5px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--olive2);background:var(--sage);padding:4px 8px;border-radius:99px}
+.card.tk .add{position:static;width:34px;height:34px;box-shadow:inset 0 0 0 1.5px var(--line2);background:transparent}
+.card.tk .add.on{background:var(--terra);box-shadow:none}
+.card.sold .ph img{filter:grayscale(.9) brightness(.85)}
+.card.sold.tk{opacity:.62}
+.soldb{position:absolute;z-index:4;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-6deg);background:var(--red);color:#fff;font:800 11px var(--sans);letter-spacing:.16em;text-transform:uppercase;padding:8px 14px;border-radius:6px;box-shadow:0 8px 20px rgba(0,0,0,.25);white-space:nowrap}
+.card.tk .soldb{top:56%}
+.empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--mut)}
+.empty b{display:block;font:400 32px var(--serif);color:var(--ink)}
+.dlg{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:24px;background:rgba(20,19,16,.55);backdrop-filter:blur(6px);opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+.dlg.on{opacity:1;visibility:visible}
+.dlg .box{width:min(960px,100%);height:min(640px,calc(100dvh - 48px));background:var(--bg);border-radius:30px;overflow:hidden;display:grid;grid-template-columns:46fr 54fr;transform:translateY(20px) scale(.98);transition:transform .45s var(--ease);position:relative}
+.dlg.on .box{transform:none}
+.dlg .pv{position:relative;background:#1c1b17;overflow:hidden;isolation:isolate}
+.dlg .pv .blur{position:absolute;inset:-40px;z-index:-1;background-size:cover;background-position:center;filter:blur(28px) brightness(.6)}
+.dlg .pv > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.dlg .pv .grain{opacity:.1}
+.dlg .pv.paper{background:var(--sage);display:grid;place-items:center}
+.slip{width:72%;max-width:300px;background:#fbf8f0;padding:26px 22px 22px;font:600 13px/1.5 var(--mono);color:#3a362e;box-shadow:0 30px 60px -20px rgba(28,27,23,.5);transform:rotate(-3deg);position:relative}
+.slip::before,.slip::after{content:"";position:absolute;left:0;right:0;height:10px;background:radial-gradient(circle at 6px 0,var(--sage) 5px,transparent 5.5px) 0 0/12px 10px repeat-x}
+.slip::before{top:0}.slip::after{bottom:-1px;transform:rotate(180deg)}
+.slip .lg{height:20px;margin:0 auto 10px;display:block}
+.slip .r{display:flex;justify-content:space-between;border-bottom:1.5px dashed #cfc7b6;padding:6px 0;font-size:11.5px}
+.slip .it{font-size:18px;margin:14px 0 10px;letter-spacing:.02em}
+.slip .it span{color:var(--terra)}
+.slip .ft2{font-size:10px;color:#8a8273;text-align:center;margin-top:12px;letter-spacing:.14em}
+.dlg .bd{padding:42px 40px 28px;overflow-y:auto;display:flex;flex-direction:column}
+.dlg .bd .cl{font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--terra)}
+.dlg .bd h2{font-size:clamp(40px,4.2vw,62px);margin:10px 0 12px;padding-right:40px}
+.dlg .bd .tags{display:flex;gap:6px;flex-wrap:wrap}
+.dlg .bd .tags span{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;background:var(--sage);color:var(--olive);padding:6px 10px;border-radius:99px}
+.dlg .bd .note{color:var(--ink2);font-size:15px;margin-top:16px;line-height:1.6}
+.dlg .pair{margin-top:22px;padding:16px;border-radius:18px;background:var(--paper);display:flex;gap:14px;align-items:center;cursor:pointer}
+.dlg .pair img{width:56px;height:56px;border-radius:14px;object-fit:cover;flex:none}
+.dlg .pair .pp{width:56px;height:56px;border-radius:14px;flex:none;background:var(--sage);display:grid;place-items:center;font:400 26px var(--serif);color:var(--olive)}
+.dlg .pair small{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)}
+.dlg .pair b{display:block;font:400 22px var(--serif)}
+.dlg .acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto;padding-top:26px}
+.dlg .nav{display:flex;gap:8px;margin-top:18px;align-items:center;font-size:12.5px;color:var(--mut);font-weight:600}
+.dlg .nav button{width:42px;height:42px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--line2);display:grid;place-items:center}
+.dlg .x{position:absolute;right:16px;top:16px;z-index:5;width:44px;height:44px;border-radius:50%;background:var(--paper);display:grid;place-items:center;font-size:22px;box-shadow:0 4px 14px rgba(0,0,0,.12)}
+.cpill{position:fixed;left:50%;bottom:22px;z-index:60;transform:translate(-50%,140%);transition:transform .45s var(--ease);background:var(--ink);color:#f4f1ea;border-radius:999px;padding:8px 8px 8px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 20px 40px -14px rgba(0,0,0,.55);font-weight:700;font-size:14px}
+.cpill.on{transform:translate(-50%,0)}
+.cpill b{font:600 12px var(--mono);background:var(--terra);border-radius:99px;padding:3px 9px}
+.cpill button{background:#f4f1ea;color:var(--ink);border-radius:999px;padding:10px 16px;font-weight:800;font-size:13px}
+.sheet{position:fixed;inset:0;z-index:85;display:flex;justify-content:flex-end;background:rgba(20,19,16,.5);opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+.sheet.on{opacity:1;visibility:visible}
+.sheet .pn{width:min(440px,100%);height:100%;background:var(--sage);padding:28px 26px;overflow-y:auto;transform:translateX(30px);transition:transform .45s var(--ease);display:flex;flex-direction:column}
+.sheet.on .pn{transform:none}
+.sheet .hd{display:flex;justify-content:space-between;align-items:center}
+.sheet .hd h3{font:400 38px var(--serif)}
+.sheet .hd button{width:42px;height:42px;border-radius:50%;background:var(--paper);font-size:20px}
+.sheet .slip{width:100%;max-width:none;transform:none;margin-top:20px}
+.sheet .slip .r button{color:var(--mut);font:600 11px var(--mono);text-decoration:underline}
+.sheet .slip .it2{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1.5px dashed #d8d1c2;font-size:13px}
+.sheet .slip .it2 span{flex:1}
+.sheet .slip .it2 button{color:var(--terra-d);font:600 11px var(--mono)}
+.sheet p.s{font-size:13.5px;color:var(--olive);margin-top:16px;line-height:1.55}
+.sheet .acts{display:grid;gap:10px;margin-top:20px}
+.sheet .emp{text-align:center;padding:30px 0;color:#6f6a5c}
+.deliv{margin-top:120px}
+.deliv .box2{background:var(--paper);border-radius:32px;padding:44px;box-shadow:var(--sh);display:flex;justify-content:space-between;align-items:center;gap:30px;flex-wrap:wrap}
+.deliv h3{font:400 clamp(34px,3.6vw,52px)/1 var(--serif)}
+.deliv p{color:var(--ink2);margin-top:8px}
+.deliv .acts{display:flex;gap:10px;flex-wrap:wrap}
+@media (max-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:960px){
+  .house{padding-top:80px}.hgrid{grid-template-columns:1fr;gap:26px}
+  .hphoto{order:-1;border-radius:22px}
+  .house li b{font-size:22px}
+  .tools{margin-top:80px}
+  .tools .wrap{flex-direction:column;align-items:stretch;gap:8px;padding-top:10px;padding-bottom:10px}
+  .search{min-width:0;order:-1}
+  .cat{padding-top:54px}
+  .cat .ch{flex-direction:column;align-items:flex-start;gap:6px}
+  .grid{grid-template-columns:1fr 1fr;gap:10px;grid-auto-rows:minmax(130px,auto)}
+  .card .ph{min-height:200px}
+  .card h3{font-size:21px}
+  .card.tk h3{font-size:20px}
+  .card .info{padding:12px 12px 14px}
+  .card.tk .info{padding:20px 12px 12px}
+  .card .ft{font-size:11px}
+  .dlg{padding:0;align-items:end}
+  .dlg .box{grid-template-columns:1fr;grid-template-rows:42% 58%;height:92dvh;border-radius:26px 26px 0 0;transform:translateY(40px)}
+  .dlg .bd{padding:24px 22px calc(20px + env(safe-area-inset-bottom))}
+  .dlg .bd h2{font-size:40px}
+  .slip{width:76%}
+  .deliv{margin-top:90px}.deliv .box2{padding:28px}
+  .cpill{bottom:calc(16px + env(safe-area-inset-bottom));width:calc(100% - 24px);justify-content:space-between}
+}
+@media (max-width:420px){.card.photo{grid-column:span 2;grid-row:span 1}.card.photo .ph{min-height:230px}}
+</style>
+</head>
+<body data-page="menu">
+<header class="top" id="top"></header>
+
+<section class="phero">
+  <div class="bg" style="background-image:url(/higuera/img/chilaquiles-xl.webp);background-position:center 40%" role="img" aria-label="Chilaquiles verdes de Higuera"></div>
+  <div class="grain"></div>
+  <div class="wrap">
+    <div class="crumb"><a href="/higuera/pagina/">Higuera</a><span>/</span><span data-i="m.crumb">Menú</span></div>
+    <h1><span class="ln"><span data-i="m.h1a">Lo que hay</span></span><span class="ln"><span class="rot"><em id="rot">en la mesa</em></span></span></h1>
+    <p data-i="m.p">Desayunos y comida todo el día, toasts, sándwiches y café de especialidad en barra. Guarda lo que se te antoje con el botón + y enséñaselo al mesero.</p>
+  </div>
+</section>
+
+<section class="house"><div class="wrap hgrid">
+  <div>
+    <span class="k rv" data-i="h.k">El de la casa</span>
+    <h2 class="rv d1" data-i="h.h">El que <em>todos piden</em></h2>
+    <p class="lede rv d2" data-i="h.p">Sopa de tomate con grilled cheese. Así llega a tu mesa.</p>
+    <ol class="rv d2" id="hlist"></ol>
+    <div class="hbar"><i id="hbar"></i></div>
+  </div>
+  <div class="hphoto rv d1" id="hphoto">
+    <img src="/higuera/img/sopa-xl.webp" alt="Sopa de tomate con grilled cheese de Higuera" id="himg">
+    <div class="grain"></div>
+    <div class="hcap" id="hcap"></div>
+  </div>
+</div></section>
+
+<nav class="tools" id="tools" aria-label="Filtros de la carta"><div class="wrap">
+  <div class="tabs" id="tabs" role="tablist"></div>
+  <label class="search"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" autocomplete="off" placeholder="Busca un platillo" aria-label="Buscar en el menú"></label>
+</div></nav>
+
+<div class="wrap" id="menu"></div>
+
+<section class="deliv"><div class="wrap">
+  <div class="box2 rv">
+    <div><h3 data-i="m.dh">¿Mejor en casa?</h3><p data-i="m.dp">Higuera también llega a domicilio.</p></div>
+    <div class="acts"><a class="btn btn-ink" href="https://www.rappi.com.mx/restaurantes/1930063909-cocina-higuera" target="_blank" rel="noopener">Rappi</a><a class="btn btn-ink" href="https://www.ubereats.com/mx/store/cocina-higuera/KLVI_U3pXb20CwlV5h75RQ" target="_blank" rel="noopener">Uber Eats</a></div>
+  </div>
+  <p class="mnote rv" data-i="m.note">Carta tomada de su menú actual. Los precios y descripciones se agregan con la carta del restaurante. Fotos: @higuera_mx.</p>
+</div></section>
+
+<a class="nextp" href="/higuera/pagina/la-casa/"><div class="wrap"><div><small data-i="np.k">Siguiente</small><b data-i="np.b">La casa</b></div><span class="arr"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></a>
+<footer id="foot"></footer>
+
+<div class="dlg" id="dlg" role="dialog" aria-modal="true" aria-label="Detalle del platillo"><div class="box" id="dbox"></div></div>
+<aside class="cpill" id="cpill" aria-label="Mi comanda"><span data-i="c.pill">Tu comanda</span><b id="cn">0</b><button type="button" id="copen" data-i="c.see">Ver</button></aside>
+<div class="sheet" id="sheet"><div class="pn" id="spn"></div></div>
+
+<script>
+window.T_EN = {
+  "m.crumb": "Menu", "m.h1a": "What's", "m.p": "Breakfast and lunch all day, toasts, sandwiches and specialty coffee at the bar. Save what you crave with the + button and show it to your server.",
+  "h.k": "House favorite", "h.h": "The one <em>everyone orders</em>", "h.p": "Tomato soup with grilled cheese. Here's how it arrives at your table.",
+  "m.dh": "Rather at home?", "m.dp": "Higuera also delivers.", "m.note": "Taken from their current menu. Prices and descriptions are added with the restaurant's menu. Photos: @higuera_mx.",
+  "np.k": "Next", "np.b": "The house", "c.pill": "Your order", "c.see": "View",
+};
+</script>
+<script src="/higuera/carta.js"></script>
+<script src="/higuera/pagina/site.js"></script>
+<script>
+(() => {
+const { L, esc, onLang, reveal } = SITE;
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const hh = () => parseInt(getComputedStyle(document.documentElement).getPropertyValue("--hh")) || 74;
+
+/* ---------- carta (compartida con el panel) ---------- */
+const { CATS, ITEMS } = window.CARTA;
+const BY = Object.fromEntries(ITEMS.map((x) => [x.id, x]));
+const TAG_EN = { "Clásico": "Classic", "Dulce": "Sweet", "Con grilled cheese": "With grilled cheese", "De la casa": "House" };
+const catName = (id) => { const c = CATS.find((x) => x.id === id); return L(c.es, c.en); };
+const tagTxt = (t) => L(t, TAG_EN[t] || t);
+
+/* ---------- mi comanda (se guarda en este celular) ---------- */
+let mine = [];
+try { mine = JSON.parse(localStorage.getItem("hg_comanda") || "[]").filter((id) => BY[id]); } catch (e) {}
+const saveMine = () => { try { localStorage.setItem("hg_comanda", JSON.stringify(mine)); } catch (e) {} };
+const has = (id) => mine.includes(id);
+function toggle(id) {
+  mine = has(id) ? mine.filter((x) => x !== id) : [...mine, id];
+  saveMine(); paintAdds(); paintPill(); paintTabs(); if ($("#sheet").classList.contains("on")) sheet();
+  if (view === "mine") render();
+}
+const PLUS = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>`;
+function paintAdds() {
+  $$("[data-add]").forEach((b) => { const on = has(b.dataset.add); b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); b.setAttribute("aria-label", (on ? L("Quitar de mi comanda: ", "Remove from my order: ") : L("Agregar a mi comanda: ", "Add to my order: ")) + BY[b.dataset.add].n); });
+  $$("[data-addtxt]").forEach((b) => (b.textContent = has(b.dataset.addtxt) ? L("Quitar de mi comanda", "Remove from my order") : L("Agregar a mi comanda", "Add to my order")));
+}
+function paintPill() { $("#cn").textContent = mine.length; $("#cpill").classList.toggle("on", mine.length > 0 && !$("#sheet").classList.contains("on") && !$("#dlg").classList.contains("on")); }
+
+/* ---------- filtros ---------- */
+let view = "all", q = "";
+function paintTabs() {
+  const tabs = [["all", L("Todo", "All")], ...CATS.map((c) => [c.id, L(c.es, c.en)]), ["mine", L("Mi comanda", "My order")]];
+  $("#tabs").innerHTML = tabs.map(([id, t]) => `<button type="button" role="tab" data-tab="${id}" class="${view === id ? "on" : ""}" aria-selected="${view === id}">${t}${id === "mine" && mine.length ? `<span class="n">${mine.length}</span>` : ""}</button>`).join("");
+}
+let SOLD = [];
+function cardHTML(x, k) {
+  const add = `<button type="button" class="add" data-add="${x.id}">${PLUS}</button>`;
+  const sold = SOLD.includes(x.id), sb = sold ? `<span class="soldb">${L("Agotado hoy", "Sold out today")}</span>` : "";
+  if (x.photos.length) return `<article class="card photo${sold ? " sold" : ""}" style="animation-delay:${Math.min(k, 8) * 40}ms">
+    <div class="ph" data-open="${x.id}">
+      ${x.photos.map((p, i) => `<img src="/higuera/img/${p}.webp" alt="${i ? "" : esc(x.n)}" loading="lazy" class="${i ? "" : "on"}">`).join("")}
+      ${x.tag ? `<span class="tag">${esc(tagTxt(x.tag))}</span>` : ""}${sb}
+      <span class="fr" aria-hidden="true">${x.no}A · HIGUERA</span>
+      ${x.photos.length > 1 ? `<span class="dots" aria-hidden="true">${x.photos.map((_, i) => `<i class="${i ? "" : "on"}"></i>`).join("")}</span>` : ""}
+    </div>${add}
+    <div class="info"><span class="cl">${esc(catName(x.cat))}</span><h3><button type="button" class="tl" data-open="${x.id}">${esc(x.n)}</button></h3>
+    <div class="ft"><span>${L("Precio en la carta", "Price on the menu")}</span><button type="button" data-open="${x.id}" aria-label="${L("Ver detalle de", "Details for")} ${esc(x.n)}">${L("Ver detalle", "Details")}</button></div></div>
+  </article>`;
+  return `<article class="card tk${sold ? " sold" : ""}" data-open="${x.id}" style="animation-delay:${Math.min(k, 8) * 40}ms">
+    ${sb}<div class="info"><div class="no" aria-hidden="true"><span>N.º ${x.no}</span><span>${esc(catName(x.cat))}</span></div><h3><button type="button" class="tl" data-open="${x.id}">${esc(x.n)}</button></h3>
+    <div class="ln">${x.tag ? `<span class="chip">${esc(tagTxt(x.tag))}</span>` : `<span>HIGUERA</span>`}${add}</div></div>
+  </article>`;
+}
+const norm = (s) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+function render() {
+  const nq = norm(q.trim());
+  const match = (x) => !nq || norm(x.n + " " + catName(x.cat) + " " + (x.tag ? tagTxt(x.tag) : "")).includes(nq);
+  let html = "", k = 0;
+  if (view === "mine") {
+    const list = mine.map((id) => BY[id]).filter(match);
+    html = `<section class="cat"><div class="ch"><div><i>${L("Tu selección", "Your picks")}</i><h2>${L("Mi comanda", "My order")}</h2></div><p>${L("Lo que vas guardando con el botón +. Se queda en este celular.", "What you save with the + button. It stays on this phone.")}</p></div><div class="grid">${list.length ? list.map((x) => cardHTML(x, k++)).join("") : `<div class="empty"><b>${L("Tu comanda está vacía", "Your order is empty")}</b>${L("Toca + en los platillos que se te antojen.", "Tap + on the dishes you'd like.")}</div>`}</div></section>`;
+  } else {
+    CATS.filter((c) => view === "all" || view === c.id).forEach((c) => {
+      const list = ITEMS.filter((x) => x.cat === c.id && match(x));
+      if (!list.length) return;
+      html += `<section class="cat" id="${c.id}"><div class="ch"><div><i>0${CATS.indexOf(c) + 1}</i><h2>${L(c.es, c.en)}</h2></div><p>${L(c.pes, c.pen)}</p></div><div class="grid">${list.map((x) => cardHTML(x, k++)).join("")}</div></section>`;
+    });
+    if (!html) html = `<section class="cat"><div class="grid"><div class="empty"><b>${L("No encontramos ese platillo", "We couldn't find that dish")}</b>${L("Prueba con otra palabra, como «latte» o «chilaquiles».", "Try another word, like \"latte\" or \"chilaquiles\".")}</div></div></section>`;
+  }
+  $("#menu").innerHTML = html;
+  paintAdds(); reveal();
+}
+let slideT = null;
+function slides() {
+  clearInterval(slideT); if (reduce) return;
+  slideT = setInterval(() => {
+    $$(".card.photo .ph").forEach((ph) => {
+      const imgs = $$("img", ph); if (imgs.length < 2) return;
+      const i = imgs.findIndex((im) => im.classList.contains("on")), n = (i + 1) % imgs.length;
+      imgs[i].classList.remove("on"); imgs[n].classList.add("on");
+      $$(".dots i", ph).forEach((d, k) => d.classList.toggle("on", k === n));
+    });
+  }, 3200);
+}
+
+/* ---------- detalle ---------- */
+let cur = null, lastFocus = null;
+function visibleIds() { return [...new Set($$("#menu .card").map((c) => c.dataset.open || ((c.querySelector("[data-open]") || {}).dataset || {}).open).filter(Boolean))]; }
+function open(id) {
+  const x = BY[id]; if (!x) return;
+  if (!$("#dlg").classList.contains("on")) lastFocus = document.activeElement;
+  cur = id;
+  const p = BY[x.pair];
+  const ph = x.photos.length
+    ? `<div class="pv"><div class="blur" style="background-image:url(/higuera/img/${x.photos[0]}.webp)"></div><img src="/higuera/img/${x.photos[0]}.webp" alt="${esc(x.n)}"><div class="grain"></div></div>`
+    : `<div class="pv paper"><div class="slip"><img class="lg" src="/higuera/img/logo-dark.png" alt=""><div class="r"><span>${L("MESA", "TABLE")} —</span><span>N.º ${x.no}</span></div><div class="it"><span>1</span> ${esc(x.n.toUpperCase())}</div><div class="r"><span>${esc(catName(x.cat).toUpperCase())}</span><span>${x.tag ? esc(tagTxt(x.tag).toUpperCase()) : ""}</span></div><div class="ft2">HIGUERA · TAMPIQUITO</div></div></div>`;
+  const ids = visibleIds(); let idx = ids.indexOf(id); if (idx < 0) { ids.push(id); idx = ids.length - 1; }
+  $("#dbox").innerHTML = `${ph}<div class="bd">
+    <span class="cl">${esc(catName(x.cat))}</span>
+    <h2>${esc(x.n)}</h2>
+    ${x.tag ? `<div class="tags"><span>${esc(tagTxt(x.tag))}</span></div>` : ""}
+    ${SOLD.includes(x.id) ? `<p class="note" style="color:var(--red);font-weight:700">${L("Se nos acabó por hoy. Mañana vuelve.", "We're out of it today. It'll be back tomorrow.")}</p>` : ""}
+    <p class="note">${L("La descripción y el precio se agregan con la carta de Higuera.", "Description and price are added with Higuera's menu.")}</p>
+    ${p ? `<div class="pair" data-open="${p.id}" role="button" tabindex="0">${p.photos.length ? `<img src="/higuera/img/${p.photos[0]}.webp" alt="">` : `<span class="pp">${esc(p.n[0])}</span>`}<div><small>${L("Para acompañar, una idea", "To go with it, an idea")}</small><b>${esc(p.n)}</b></div></div>` : ""}
+    <div class="acts"><button type="button" class="btn btn-ink" data-add="${x.id}" data-addtxt="${x.id}">${L("Agregar a mi comanda", "Add to my order")}</button></div>
+    <div class="nav">${ids.length > 1 ? `<button type="button" data-go="${ids[(idx - 1 + ids.length) % ids.length]}" aria-label="${L("Anterior", "Previous")}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button><button type="button" data-go="${ids[(idx + 1) % ids.length]}" aria-label="${L("Siguiente", "Next")}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button><span>${idx + 1} ${L("de", "of")} ${ids.length}</span>` : ""}</div>
+  </div><button type="button" class="x" id="dx2" aria-label="${L("Cerrar", "Close")}">×</button>`;
+  paintAdds();
+  $("#dlg").classList.add("on"); document.body.style.overflow = "hidden"; paintPill();
+  setTimeout(() => $("#dx2") && $("#dx2").focus({ preventScroll: true }), 50);
+}
+function close() { $("#dlg").classList.remove("on"); document.body.style.overflow = ""; cur = null; paintPill(); if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true }); }
+
+/* ---------- hoja de mi comanda ---------- */
+function sheet() {
+  const list = mine.map((id) => BY[id]);
+  $("#spn").innerHTML = `<div class="hd"><h3>${L("Mi comanda", "My order")}</h3><button type="button" id="sx" aria-label="${L("Cerrar", "Close")}">×</button></div>
+    <div class="slip"><img class="lg" src="/higuera/img/logo-dark.png" alt=""><div class="r"><span>${L("MESA", "TABLE")} —</span>${list.length ? `<button type="button" id="sclear">${L("BORRAR TODO", "CLEAR ALL")}</button>` : "<span></span>"}</div>
+    ${list.length ? list.map((x) => `<div class="it2"><span>1 ${esc(x.n.toUpperCase())}</span><button type="button" data-rm="${x.id}">${L("QUITAR", "REMOVE")}</button></div>`).join("") : `<div class="emp">${L("Todavía no agregas nada.<br>Toca + en los platillos.", "Nothing here yet.<br>Tap + on any dish.")}</div>`}
+    <div class="ft2">HIGUERA · TAMPIQUITO</div></div>
+    <p class="s">${L("Enséñasela al mesero al sentarte. Se guarda solo en este celular.", "Show it to your server when you sit down. It's only saved on this phone.")}</p>
+    <div class="acts"><button type="button" class="btn btn-ink btn-block" id="sx2">${L("Seguir viendo el menú", "Keep browsing")}</button></div>`;
+}
+function openSheet() { sheet(); $("#sheet").classList.add("on"); document.body.style.overflow = "hidden"; paintPill(); }
+function closeSheet() { $("#sheet").classList.remove("on"); document.body.style.overflow = ""; paintPill(); }
+
+/* ---------- el de la casa ---------- */
+const HOT = [
+  { x: 34, y: 58, es: ["Pan a la plancha", "Grilled cheese dorado y crujiente, cortado para remojar."], en: ["Griddled bread", "Golden, crispy grilled cheese, cut for dipping."] },
+  { x: 60, y: 45, es: ["Sopa de tomate", "Servida caliente en tazón de barro."], en: ["Tomato soup", "Served hot in a clay bowl."] },
+  { x: 54, y: 56, es: ["El remolino", "Un hilo de crema y un toque verde encima."], en: ["The swirl", "A thread of cream and a green touch on top."] },
+  { x: 9, y: 46, es: ["La comanda", "Cada pedido entra en papel, directo a la cocina."], en: ["The ticket", "Every order goes in on paper, straight to the kitchen."] },
+];
+let hi = 0, hEl = 0, hPause = false, hLast = null, hVis = false;
+function house() {
+  $("#hlist").innerHTML = HOT.map((h, i) => { const [t, d] = L(h.es, h.en); return `<li data-h="${i}" class="${i === hi ? "on" : ""}"><i>0${i + 1}</i><div><b>${t}</b><span>${d}</span></div></li>`; }).join("");
+  $$(".hot").forEach((e) => e.remove());
+  HOT.forEach((h, i) => { const b = document.createElement("button"); b.type = "button"; b.className = "hot" + (i === hi ? " on" : ""); b.dataset.h = i; b.style.left = h.x + "%"; b.style.top = h.y + "%"; b.textContent = "0" + (i + 1); b.setAttribute("aria-label", "0" + (i + 1) + " · " + L(h.es, h.en)[0]); $("#hphoto").append(b); });
+  setH(hi);
+}
+function setH(i) {
+  hi = i; hEl = 0;
+  $$("#hlist li").forEach((li, k) => li.classList.toggle("on", k === i));
+  $$(".hot").forEach((b, k) => b.classList.toggle("on", k === i));
+  const [t, d] = L(HOT[i].es, HOT[i].en);
+  $("#hcap").innerHTML = `<b>0${i + 1} · ${t}</b>${d}`;
+  const h = HOT[i]; $("#himg").style.transformOrigin = `${h.x}% ${h.y}%`; $("#himg").style.transform = reduce ? "none" : "scale(1.08)";
+}
+function hFrame(ts) {
+  if (hLast == null) hLast = ts; const dt = Math.min(100, ts - hLast); hLast = ts;
+  if (!hPause && !reduce && hVis) { hEl += dt; $("#hbar").style.width = Math.min(100, (hEl / 3400) * 100) + "%"; if (hEl >= 3400) setH((hi + 1) % HOT.length); }
+  requestAnimationFrame(hFrame);
+}
+$("#hphoto").addEventListener("mouseenter", () => (hPause = true)); $("#hphoto").addEventListener("mouseleave", () => (hPause = false));
+new IntersectionObserver((es) => es.forEach((en) => (hVis = en.isIntersecting)), { threshold: 0.3 }).observe($("#hphoto"));
+
+/* ---------- palabra que cambia en la portada ---------- */
+const ROT = () => L(["en la mesa", "en la barra", "en la plancha", "para compartir"], ["on the table", "at the bar", "on the griddle", "to share"]);
+let ri = 0;
+function rot() { $("#rot").textContent = ROT()[ri]; }
+if (!reduce) setInterval(() => {
+  const el = $("#rot"); el.classList.add("out");
+  setTimeout(() => { ri = (ri + 1) % ROT().length; el.textContent = ROT()[ri]; el.classList.remove("out"); el.classList.add("pre"); void el.offsetWidth; el.classList.remove("pre"); }, 450);
+}, 2600);
+
+/* ---------- eventos ---------- */
+document.addEventListener("click", (e) => {
+  const a = e.target.closest("[data-add]"); if (a) { e.stopPropagation(); toggle(a.dataset.add); return; }
+  const rm = e.target.closest("[data-rm]"); if (rm) { toggle(rm.dataset.rm); return; }
+  const t = e.target.closest("[data-tab]"); if (t) { view = t.dataset.tab; paintTabs(); render(); slides(); const top = $("#tools").offsetTop - hh(); if (scrollY > top) scrollTo({ top, behavior: "smooth" }); return; }
+  const g = e.target.closest("[data-go]"); if (g) { open(g.dataset.go); return; }
+  const o = e.target.closest("[data-open]"); if (o) { open(o.dataset.open); return; }
+  const h = e.target.closest("[data-h]"); if (h) { setH(+h.dataset.h); hPause = true; setTimeout(() => (hPause = false), 6000); return; }
+  if (e.target.closest("#dx2") || e.target === $("#dlg")) { close(); return; }
+  if (e.target.closest("#copen")) { openSheet(); return; }
+  if (e.target.closest("#sx") || e.target.closest("#sx2") || e.target === $("#sheet")) { closeSheet(); return; }
+  if (e.target.closest("#sclear")) { mine = []; saveMine(); paintAdds(); paintPill(); paintTabs(); sheet(); if (view === "mine") render(); }
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") { if ($("#dlg").classList.contains("on")) close(); else if ($("#sheet").classList.contains("on")) closeSheet(); }
+  if ($("#dlg").classList.contains("on") && (e.key === "ArrowRight" || e.key === "ArrowLeft")) { const b = $$("#dbox [data-go]")[e.key === "ArrowRight" ? 1 : 0]; if (b) b.click(); }
+  const o = e.target.closest && e.target.closest("[data-open][tabindex]"); if (o && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); open(o.dataset.open); }
+});
+let sx0 = null; $("#dlg").addEventListener("touchstart", (e) => (sx0 = e.touches[0].clientX), { passive: true });
+$("#dlg").addEventListener("touchend", (e) => { if (sx0 == null) return; const dx = e.changedTouches[0].clientX - sx0; sx0 = null; if (Math.abs(dx) > 60) { const b = $$("#dbox [data-go]")[dx < 0 ? 1 : 0]; if (b) b.click(); } });
+$("#q").addEventListener("input", (e) => { q = e.target.value; render(); slides(); });
+onLang(() => { $("#q").placeholder = L("Busca un platillo", "Search a dish"); paintTabs(); render(); house(); rot(); if (cur) open(cur); if ($("#sheet").classList.contains("on")) sheet(); });
+
+$("#q").placeholder = L("Busca un platillo", "Search a dish");
+paintTabs(); render(); slides(); house(); rot(); paintPill(); requestAnimationFrame(hFrame);
+if (location.hash) { const id = location.hash.slice(1); if (CATS.some((c) => c.id === id)) setTimeout(() => { const el = document.getElementById(id); if (el) scrollTo({ top: el.offsetTop - hh() - 66 }); }, 300); }
+})();
+</script>
+</body>
+</html>

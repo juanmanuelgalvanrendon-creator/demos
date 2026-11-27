@@ -190,6 +190,7 @@ body{background:var(--bg);padding-bottom:calc(var(--tabs) + env(safe-area-inset-
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:61;max-width:560px;margin:0 auto;background:var(--bg);border-radius:26px 26px 0 0;transform:translateY(105%);transition:transform .32s cubic-bezier(.2,.8,.2,1);max-height:90vh;overflow:auto;padding-bottom:calc(16px + env(safe-area-inset-bottom))}
 .sheet.on{transform:none}
 .sheet .grab{width:42px;height:5px;border-radius:9px;background:var(--line2);margin:10px auto 0}
+.sheet .row2{position:sticky;bottom:calc(-16px - env(safe-area-inset-bottom));background:var(--bg);padding-top:12px;padding-bottom:calc(16px + env(safe-area-inset-bottom));z-index:2}
 .sheet .ph{height:min(220px,32vh);margin:12px 16px 0;border-radius:20px;overflow:hidden;background:#ddd5c5}
 .sheet .ph img{width:100%;height:100%;object-fit:cover}
 .sheet .bd2{padding:16px}
@@ -226,6 +227,8 @@ body{background:var(--bg);padding-bottom:calc(var(--tabs) + env(safe-area-inset-
 .hb.on{background:var(--sage);color:var(--olive);box-shadow:inset 0 0 0 1.5px var(--olive)}
 .hact{min-width:0}
 @media (max-width:430px){.hb.on span{display:none}.hb.on{width:44px;padding:0;justify-content:center}}
+@media (max-width:400px){.top .logo{display:none}.top .tr{width:100%;justify-content:space-between}}
+@media (max-width:340px){.hb span{display:none}.hb{width:44px;padding:0;justify-content:center}.tchip{padding:0 9px}}
 .intro{padding:4px 2px 2px}
 .intro .h2{margin-top:6px}
 .how{font-size:14.5px;color:var(--ink2);margin-top:8px;line-height:1.45}
@@ -480,7 +483,7 @@ function rClub() {
   const rw = S.st ? S.st.reward : null;
   if (S.me) {
     const m = S.me, left = Math.max(0, m.need - m.visits);
-    const ios = /iphone|ipad|ipod/i.test(navigator.userAgent), standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+    const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1), standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
     const pushOk = "serviceWorker" in navigator && "PushManager" in window;
     const perm = window.Notification ? Notification.permission : "default";
     let pblk;

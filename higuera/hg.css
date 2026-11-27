@@ -48,3 +48,6 @@ img{display:block;max-width:100%}
 
 /* encabezados del equipo: el título se recorta antes que desbordar */
 .bar h1{min-width:0;overflow:hidden;text-overflow:ellipsis}
+
+/* pantallas muy angostas: el chip del usuario deja solo "Salir" y el estado solo el punto */
+@media (max-width:380px){#hgUser>span:first-child{display:none}#hgUser{padding-left:4px!important}.conn #ctxt{display:none}}

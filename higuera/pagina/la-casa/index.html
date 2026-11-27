@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La casa · Higuera, Tampiquito</title>
+<meta name="description" content="Higuera: cocina de barrio y café de especialidad en Tampiquito, San Pedro. Así se arma una mañana.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1c1b17">
+<link rel="icon" href="/higuera/img/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="/higuera/img/interior-xl.webp" fetchpriority="high">
+<link rel="stylesheet" href="/higuera/hg.css">
+<link rel="stylesheet" href="/higuera/pagina/site.css">
+<style>
+.about{padding:130px 0 0}
+.about .wrap{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+.about .film{border-radius:32px;aspect-ratio:4/4.6}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:30px}
+.facts div{border-top:1.5px solid var(--ink);padding-top:14px}
+.facts b{display:block;font:400 34px/1 var(--serif)}
+.facts span{font-size:13px;color:var(--mut);font-weight:600}
+.story{position:relative;height:420vh;margin-top:60px}
+.story .stick{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center;max-width:1240px;margin:0 auto;padding:90px 28px 40px}
+.steps ol{list-style:none;display:grid;gap:4px;margin-top:20px}
+.steps li{display:grid;grid-template-columns:56px 1fr;gap:10px;padding:14px 0;border-top:1px solid var(--line)}
+.steps li i,.steps li b{transition:color .5s}
+.steps li:not(.on) i,.steps li:not(.on) b{color:var(--mut)}
+.steps li:not(.on) b{color:#8a8478}
+.steps li i{font:600 13px var(--mono);font-style:normal;color:var(--terra);padding-top:8px}
+.steps li b{display:block;font:400 34px/1 var(--serif)}
+.steps li p{font-size:15px;color:var(--ink2);max-height:0;overflow:hidden;transition:max-height .6s var(--ease),margin .6s;margin:0}
+.steps li.on p{max-height:80px;margin-top:8px}
+.prog{height:2px;background:var(--line);margin-top:22px;position:relative;overflow:hidden;border-radius:2px}
+.prog i{position:absolute;left:0;top:0;bottom:0;background:var(--terra);width:0}
+.frames{position:relative;height:min(74vh,720px);border-radius:32px;overflow:hidden;background:#1c1b17;box-shadow:0 50px 90px -50px rgba(28,27,23,.8)}
+.frames figure{position:absolute;inset:0;opacity:0;transform:scale(1.06);transition:opacity .9s var(--ease),transform 1.4s var(--ease)}
+.frames figure.on{opacity:1;transform:none}
+.frames img{width:100%;height:100%;object-fit:cover}
+.frames .tag{position:absolute;left:20px;bottom:20px;z-index:2;background:rgba(244,241,234,.94);border-radius:999px;padding:9px 16px;font-size:13px;font-weight:800;display:flex;gap:8px;align-items:center;color:var(--ink)}
+.frames .tag i{font:600 12px var(--mono);font-style:normal;color:var(--terra)}
+.frames .num{position:absolute;right:22px;top:18px;z-index:2;font:600 12px var(--mono);color:#f4f1ea;opacity:.85;letter-spacing:.1em}
+.roll{padding:60px 0 0}
+.film-strip{margin-top:34px;background:#141310;padding:30px 0;position:relative;overflow:hidden}
+.film-strip::before,.film-strip::after{content:"";position:absolute;left:0;right:0;height:12px;background:repeating-linear-gradient(90deg,transparent 0 12px,rgba(244,241,234,.16) 12px 24px,transparent 24px 36px)}
+.film-strip::before{top:8px}.film-strip::after{bottom:8px}
+.reel{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 28px;scrollbar-width:none;cursor:grab;user-select:none}
+.reel::-webkit-scrollbar{display:none}
+.reel.drag{cursor:grabbing;scroll-snap-type:none}
+.fr{flex:none;width:300px;scroll-snap-align:center}
+.fr .film{height:380px;border-radius:6px}
+.fr span{display:block;font:600 11px var(--mono);color:var(--peach);margin-top:10px;letter-spacing:.12em}
+.fr b{display:block;font-size:13.5px;color:rgba(244,241,234,.8);font-weight:600;margin-top:2px}
+.ig{padding:120px 0 0}
+.ig .box2{background:var(--paper);border-radius:32px;padding:44px;box-shadow:var(--sh);display:flex;justify-content:space-between;align-items:center;gap:30px;flex-wrap:wrap}
+.ig h3{font:400 clamp(34px,3.6vw,52px)/1 var(--serif)}
+.ig p{color:var(--ink2);margin-top:8px}
+@media (min-width:961px){.steps li .mob{display:none}}
+@media (max-width:960px){
+  .about{padding-top:90px}.about .wrap{grid-template-columns:1fr;gap:34px}
+  .facts b{font-size:26px}
+  .story{height:auto;margin-top:30px}
+  .story .stick{position:relative;height:auto;grid-template-columns:1fr;padding:60px 20px 0;gap:22px}
+  .frames,.prog{display:none}
+  .steps li{opacity:1;grid-template-columns:44px 1fr}
+  .steps li p{max-height:none;margin-top:8px}
+  .steps li .mob{display:block;border-radius:18px;overflow:hidden;margin-top:12px;aspect-ratio:4/3.2}
+  .steps li .mob img{width:100%;height:100%;object-fit:cover}
+  .roll{padding-top:90px}
+  .fr{width:240px}.fr .film{height:300px}
+  .ig{padding-top:90px}.ig .box2{padding:28px}
+}
+</style>
+</head>
+<body data-page="casa">
+<header class="top" id="top"></header>
+
+<section class="phero">
+  <div class="bg" style="background-image:url(/higuera/img/interior-xl.webp)" role="img" aria-label="Interior de Higuera"></div>
+  <div class="grain"></div>
+  <div class="wrap">
+    <div class="crumb"><a href="/higuera/pagina/">Higuera</a><span>/</span><span data-i="h.crumb">La casa</span></div>
+    <h1><span class="ln"><span data-i="h.h1a">Un lugar</span></span><span class="ln"><span><em data-i="h.h1b">para quedarse</em></span></span></h1>
+    <p data-i="h.p">Cocina de barrio y café de especialidad en el corazón de Tampiquito.</p>
+  </div>
+</section>
+
+<section class="about"><div class="wrap">
+  <div class="film rv"><img src="/higuera/img/latte.webp" alt="Un latte en la barra de Higuera" loading="lazy"></div>
+  <div>
+    <span class="k rv" data-i="a.k">Higuera</span>
+    <h2 class="rv d1" data-i="a.h">Cocina y <em>sobremesa</em></h2>
+    <p class="lede rv d2" data-i="a.p">Chilaquiles, waffles, enfrijoladas, sándwiches y la sopa de tomate con grilled cheese que todos piden. Cocina por @sebastian.cocina8 y café de especialidad en barra, en el corazón de Tampiquito.</p>
+    <div class="facts rv d3"><div><b>8 – 4</b><span data-i="f1">Lunes a viernes</span></div><div><b>8 – 5</b><span data-i="f2">Sábado y domingo</span></div><div><b>Sin</b><span data-i="f3">reservaciones</span></div></div>
+  </div>
+</div></section>
+
+<section class="story" id="story">
+  <div class="stick">
+    <div class="steps">
+      <span class="k" data-i="s.k">De la cocina a tu mesa</span>
+      <h2 style="font-size:clamp(40px,4.6vw,70px)" data-i="s.h">Así se <em>arma</em> una mañana</h2>
+      <ol id="steps"></ol>
+      <div class="prog"><i id="prog"></i></div>
+    </div>
+    <div class="frames" id="frames"></div>
+  </div>
+</section>
+
+<section class="roll"><div class="wrap">
+  <span class="k rv" data-i="r.k">El rollo de Higuera</span>
+  <h2 class="rv d1" data-i="r.h">Tal cual <em>sale de la cocina</em></h2>
+</div>
+<div class="film-strip rv"><div class="reel" id="reel" tabindex="0" role="region" aria-label="Rollo de fotos, desliza para ver más"></div></div>
+<div class="wrap"><p class="mnote" data-i="r.c">Fotos: @higuera_mx · Arrastra para ver más</p></div>
+</section>
+
+<section class="ig"><div class="wrap">
+  <div class="box2 rv">
+    <div><h3 data-i="ig.h">Lo de temporada, primero en Instagram</h3><p data-i="ig.p">Platillos nuevos, horarios especiales y lo que sale de la cocina cada semana.</p></div>
+    <a class="btn btn-ink" href="https://www.instagram.com/higuera_mx/" target="_blank" rel="noopener">@higuera_mx</a>
+  </div>
+</div></section>
+
+<a class="nextp" href="/higuera/pagina/visitanos/"><div class="wrap"><div><small data-i="np.k">Siguiente</small><b data-i="np.b">Visítanos</b></div><span class="arr"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div></a>
+<footer id="foot"></footer>
+
+<script>
+window.T_EN = {
+  "h.crumb": "The house", "h.h1a": "A place", "h.h1b": "to stay", "h.p": "A neighborhood kitchen and specialty coffee in the heart of Tampiquito.",
+  "a.k": "Higuera", "a.h": "Kitchen & <em>lingering</em>", "a.p": "Chilaquiles, waffles, enfrijoladas, sandwiches and the tomato soup with grilled cheese everyone orders. Cooking by @sebastian.cocina8 and specialty coffee at the bar, in the heart of Tampiquito.",
+  "f1": "Monday to Friday", "f2": "Saturday & Sunday", "f3": "reservations",
+  "s.k": "From our kitchen to your table", "s.h": "How a <em>morning</em> comes together",
+  "r.k": "The Higuera roll", "r.h": "Straight <em>from the kitchen</em>", "r.c": "Photos: @higuera_mx · Drag to see more",
+  "ig.h": "Seasonal dishes, first on Instagram", "ig.p": "New dishes, special hours and what comes out of the kitchen every week.",
+  "np.k": "Next", "np.b": "Visit us",
+};
+</script>
+<script src="/higuera/pagina/site.js"></script>
+<script>
+(() => {
+const { L, esc, onLang, onScroll } = SITE;
+const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
+const STORY = [
+  ["La comanda", "The ticket", "Cada pedido entra en papel, directo a la cocina.", "Every order goes in on paper, straight to the kitchen.", "comandas"],
+  ["La plancha", "The griddle", "Pan dorado a la plancha, crujiente por fuera.", "Bread toasted golden on the griddle.", "sandwich"],
+  ["La salsa", "The salsa", "Chilaquiles verdes con crema y queso, recién servidos.", "Green chilaquiles with cream and cheese, just served.", "chilaquiles-md"],
+  ["La sobremesa", "The lingering", "Y después, un café de barra para quedarse un rato más.", "And then, a coffee from the bar to stay a little longer.", "barra-md"],
+];
+let cur = 0;
+function steps() {
+  $("#steps").innerHTML = STORY.map(([tes, ten, pes, pen, f], i) => `<li class="${i === cur ? "on" : ""}"><i>0${i + 1}</i><div><b>${L(tes, ten)}</b><p>${L(pes, pen)}</p><div class="mob"><img src="/higuera/img/${f}.webp" alt="${esc(L(tes, ten))}" loading="lazy"></div></div></li>`).join("");
+  $("#frames").innerHTML = STORY.map(([tes, ten, , , f], i) => `<figure class="${i === cur ? "on" : ""}"><img src="/higuera/img/${f}.webp" alt="${esc(L(tes, ten))}"><span class="num">0${i + 1} / 04</span><span class="tag"><i>0${i + 1}</i>${L(tes, ten)}</span></figure>`).join("");
+}
+steps(); onLang(steps);
+onScroll(() => {
+  if (innerWidth <= 960) return;
+  const el = $("#story"), r = el.getBoundingClientRect(), total = el.offsetHeight - innerHeight;
+  const p = Math.min(1, Math.max(0, -r.top / total));
+  $("#prog").style.width = (p * 100).toFixed(1) + "%";
+  const i = Math.min(3, Math.floor(p * 4 * 0.999));
+  if (i !== cur) { cur = i; $$("#steps li").forEach((li, k) => li.classList.toggle("on", k === i)); $$("#frames figure").forEach((f, k) => f.classList.toggle("on", k === i)); }
+});
+const ROLL = [["chilaquiles-md", "Chilaquiles verdes"], ["waffle", "Buttermilk waffle con moras"], ["sopa", "Sopa de tomate"], ["latte", "Latte"], ["comandas", "Comandas"], ["shakshouka", "Huevos con pan tostado"], ["barra-md", "La barra"], ["sandwich", "Sándwich a la plancha"], ["enfrijoladas", "Enfrijoladas"], ["bun", "Algo dulce"], ["sopa-bn", "Sopa, en blanco y negro"], ["postre", "Postre"]];
+$("#reel").innerHTML = ROLL.map(([f, n], i) => `<div class="fr"><div class="film"><img src="/higuera/img/${f}.webp" alt="${esc(n)}" loading="lazy" draggable="false"></div><span>${String(i + 1).padStart(2, "0")}A · HIGUERA</span><b>${esc(n)}</b></div>`).join("");
+const reel = $("#reel"); let down = false, sx = 0, sl = 0;
+reel.addEventListener("pointerdown", (e) => { if (e.pointerType !== "mouse") return; down = true; sx = e.clientX; sl = reel.scrollLeft; reel.classList.add("drag"); });
+addEventListener("pointerup", () => { down = false; reel.classList.remove("drag"); });
+addEventListener("pointermove", (e) => { if (down) reel.scrollLeft = sl - (e.clientX - sx); });
+})();
+</script>
+</body>
+</html>

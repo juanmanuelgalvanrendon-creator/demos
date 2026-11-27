@@ -29,6 +29,7 @@ body{min-height:100vh;min-height:100dvh}
 .live .lbl{font-size:13px;color:var(--mut);line-height:1.35}
 .live .lbl b{display:block;color:var(--ink);font-size:15px}
 .live .sep{width:1px;align-self:stretch;background:var(--line)}
+@media (max-width:360px){.live{gap:10px;padding:14px}.live .big{font-size:36px}.live .lbl{font-size:12px}.live .lbl b{font-size:13.5px}}
 h1{font:400 40px/1.02 var(--serif);margin:28px 0 8px;letter-spacing:-.01em}
 h1 em{font-style:italic;color:var(--terra)}
 .lead{color:var(--ink2);font-size:15.5px}
@@ -154,7 +155,8 @@ const pushSupported = "serviceWorker" in navigator && "PushManager" in window &&
 let pushState = "idle"; // idle | on | denied | unsupported | ios-home | busy
 function computePush(m) {
   if (m && m.hasPush && (!("Notification" in window) || Notification.permission === "granted")) return "on";
-  if (!pushSupported) return isIOS && !standalone ? "ios-home" : "unsupported";
+  if (isIOS && !standalone) return "ios-home";
+  if (!pushSupported) return "unsupported";
   if (Notification.permission === "denied") return "denied";
   return pushState === "busy" ? "busy" : "idle";
 }
